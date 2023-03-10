@@ -1,15 +1,21 @@
+#include <assert.h>
+#include <stdbool.h>
 #include <stdio.h>
 #include <unistd.h>
 #include <locale.h>
+#include <sys/types.h>
+#include <sys/wait.h>
 
 #include "color.h"
 #include "cursor.h"
+#include "draw_manager.h"
+#include "game_manager.h"
+#include "local_debug.h"
 #include "tetromino.h"
 #include "util.h"
 
-static void init(void);
-static void main2(void);
-static int test(char *[]);
+void main2(void);
+//static int test(char *[]);
 
 int main(int argc, char *argv[])
 {
@@ -22,28 +28,35 @@ int main(int argc, char *argv[])
     return 0;
 }
 
-static void init(void)
+void init(void)
 {
     setlocale(LC_CTYPE, "");
 }
 
-static void main2(void)
+
+void main2(void)
 {
     init();
-
-    FORN(i, TETROMINO_COUNT)
-    {
-        tetromino_t t = {
-            .polyomino_id = i,
-            .dir = DIR_BOT,
-            .color = COLOR_WHITE,
-        };
-        print_tetromino(&t);
-    }
+    menu();
+    load_game();
+    int res = start_game();
+    Assert(res == 0);
+    ewprintf("GAME ENDED\n");
 }
 
+/*
 static int test(char *argv[])
 {
+    {
+        forn(i, TETROMINO_COUNT)
+        {
+            tetromino_t t = {
+                .tetromino_id = i,
+                .dir = DIR_BOT,
+                .color = COLOR_WHITE,
+            };
+        }
+    }
     {
         wclear();
         wprintf(
@@ -55,7 +68,7 @@ static int test(char *argv[])
         int x = 2;
         int y = 1;
         wgotoxy(x, y);
-        for (int i = 0; i < 20; ++i)
+        forn(i, 20)
         {
             putwc('*', stdout);
             fflush(stdout);
@@ -64,8 +77,7 @@ static int test(char *argv[])
             putwc(' ', stdout);
             y += 1;
         }
-        gotoxy(4, 0);
+        wgotoxy(4, 0);
     }
     return 0;
-}
-
+} */
