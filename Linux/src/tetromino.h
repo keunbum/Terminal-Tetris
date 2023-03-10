@@ -5,18 +5,22 @@
 
 #include "block.h"
 #include "color.h"
+//#include "draw.h"
 
-#define MAX_HOR_BLOCK_LEN (4)
+#define DECLARE_POLYOMINO_SYMBOL_T(T) \
+    typedef struct polyomino_symbol_##T       \
+    {                                 \
+        block_t *blocks2d[T];         \
+    } polyomino_symbol_##T##_t
+
+DECLARE_POLYOMINO_SYMBOL_T(4);
+
 #define MAX_VER_BLOCK_LEN (4)
+#define TOTAL_TETROMINO_NUM (7)
 
-#define TETROMINO_COUNT (7)
+typedef polyomino_symbol_4_t tetromino_symbol_t;
 
-typedef struct polyomino
-{
-    block_t *block2d[MAX_VER_BLOCK_LEN];
-} polyomino_t;
-
-static const polyomino_t s_tetrominos[TETROMINO_COUNT] = {
+static const tetromino_symbol_t s_tetromino_symbols[TOTAL_TETROMINO_NUM] = {
     // I
     {
         {
@@ -28,14 +32,14 @@ static const polyomino_t s_tetrominos[TETROMINO_COUNT] = {
         {
             "11",
             "11",
-        }
+        },
     },
     // T
     {
         {
             "111",
             "010",
-        }
+        },
     },
     // J
     {
@@ -43,7 +47,7 @@ static const polyomino_t s_tetrominos[TETROMINO_COUNT] = {
             "01",
             "01",
             "11",
-        }
+        },
     },
     // L
     {
@@ -51,39 +55,40 @@ static const polyomino_t s_tetrominos[TETROMINO_COUNT] = {
             "10",
             "10",
             "11",
-        }
+        },
     },
     // S
     {
         {
             "011",
             "110",
-        }
+        },
     },
     // Z
     {
         {
             "110",
             "011",
-        }
+        },
     },
 };
 
-typedef enum dir
-{
+typedef enum dir {
     DIR_BOT,
 } dir_t;
 
-typedef struct tetromino
-{
-    int polyomino_id;
+typedef struct tetromino {
+    int tetromino_id;
+    int x;
+    int y;
+    int velocity;
+//    int acceleration;
     dir_t dir;
     color_t color;
 } tetromino_t;
 
 void print_tetromino(const tetromino_t *);
-void print_a_block(wchar_t);
-void print_full_block(void);
-void print_empty_block(void);
+
+#define print_empty_line draw_empty_line
 
 #endif /* __TETROMINO__H */
