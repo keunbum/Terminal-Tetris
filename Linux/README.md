@@ -47,12 +47,19 @@
 - [markdown toggle](https://codex.so/collapsed-block-for-github-markdown)  
 - [markdown set font size](https://linuxhint.com/markdown-font-size/)
 
+<details><summary>template(문서 작성용)</summary>
+
+### Achievements of the day
+
+</details>
+
+[//]: # (template)
+
 <font size="3"> <details><summary>2023.03</summary><blockquote> </font>
-
   <details><summary>03.09</summary>
-
-  - 기본 문서 생성 및 작성
-  - 테트로미노 디자인 시도
+  
+  **기본 문서 생성 및 작성**  
+  **테트로미노 디자인 시도**
       
   아마 수정될 사항이 많을 것으로 예상.  
   오늘은 일단 테트로미노를 화면에 출력하는 것까지 목표로.
@@ -98,7 +105,7 @@
   ```
   </details>
 
-
+  [//]: # (End of 03.09)
 
   <details><summary>03.10</summary>
 
@@ -111,34 +118,34 @@
   * [sigsuspend](https://man7.org/linux/man-pages/man2/sigsuspend.2.html)
 
 
-
   하.. 테트리스 괜히 하기로 한 것 같다. 진행이 너무 안된다. 큰일인데.
 
-  일단 시간 표시 모듈은 대충 구현되었으니 내일부턴 게임의 핵심 모듈 부분 구현 해보는 걸로.
+  일단 시간 표시 모듈은 대충 구현되었으니 내일부턴 게임의 핵심 모듈 부분 구현 해보는 걸로.  
   코드에 주석으로 써놓긴 했지만 한글로도 정리해 놓자.
 
-  각 모듈을 너무 잘게 쪼갤 필요는 없다.  
-  순차적인 걸 먼저 구상해보고 정 안되면 프로세스 하나씩 추가하기.
+    모듈을 너무 잘게 쪼갤 필요는 없다.  
+    순차적인 걸 먼저 구상해보고 정 안되면 프로세스 하나씩 추가하기.  
+    (물론 퍼포먼스 측면에서 멀티 프로세싱을 사용할 수도 있음)
 
-  이제 보니 B(A), D(C), E 이렇게 3개만 있으면 될 것 같다.
-  잘하면 B(A, C, D), E 이렇게 2개도 가능할지도..  
-  단, 추후에 변경될 소지가 있다는 점 감안하고 설계하기.
+    이제 보니 B(A), D(C), E 이렇게 3개만 있으면 될 것 같다.
+    잘하면 B(A, C, D), E 이렇게 2개도 가능할지도..  
+    단, 추후에 변경될 소지가 있다는 점 감안하고 설계하기.
 
-  * A: 블록을 생성하고 MAX_QUEUE_SIZE가 FULL이 될 때까지 que에 푸시.
-  
-  * B: que에서 테트로미노를 가져와 스카이라인에서 출발 시키고, A에게 큐를 채우도록 요청. (이 모듈의 관리자가 될 가능성 높음)
-  
-  * C: 사용자로부터(키보드로) 입력 값을 읽고 누군가(아마도 D?)에게 값을 주는 사람.  
-       (이제보니 D가 혼자해도 될 것 같기도 하고..)
-  
-  * D: 주기마다 테트로미노의 위치 값을 변경하는 사람.
+    * A: 블록을 생성하고 MAX_QUEUE_SIZE가 FULL이 될 때까지 que에 푸시.
+    
+    * B: que에서 테트로미노를 가져와 스카이라인에서 출발 시키고, A에게 큐를 채우도록 요청. (이 모듈의 관리자가 될 가능성 높음)
+    
+    * C: 사용자로부터(키보드로) 입력 값을 읽고 누군가(아마도 D?)에게 값을 주는 사람.  
+        (이제보니 D가 혼자해도 될 것 같기도 하고..)
+    
+    * D: 주기마다 테트로미노의 위치 값을 변경하는 사람.
 
-    1-1. 스카이라인(시작점)에 나오는 순간부터 테트로미노는 일정 속도로 떨어진다.  
-    1-2. D는 사용자의 입력이 들어올 때 그에 맞게 위치를 변경해야 한다.  
-    2-1. 테트로미노가 바닥(또는 다른 테르로미노)에 닿아 멈추면 B에게 새로운 테트로미노 출고를 요청한다.  
-    2-2. 스카이라인에서 테트로미노가 멈추면 B에게 게임 오버 메시지를 보낸다.  
+      1-1. 스카이라인(시작점)에 나오는 순간부터 테트로미노는 일정 속도로 떨어진다.  
+      1-2. D는 사용자의 입력이 들어올 때 그에 맞게 위치를 변경해야 한다.  
+      2-1. 테트로미노가 바닥(또는 다른 테르로미노)에 닿아 멈추면 B에게 새로운 테트로미노 출고를 요청한다.  
+      2-2. 스카이라인에서 테트로미노가 멈추면 B에게 게임 오버 메시지를 보낸다.  
 
-  * E: 매 주기마다 밖으로 나온 테트로미노의 현재 위치를 비롯해 모든 화면의 변화를 게임 화면에 그리는 사람.
+    * E: 매 주기마다 밖으로 나온 테트로미노의 현재 위치를 비롯해 모든 화면의 변화를 게임 화면에 그리는 사람.
 
   
   ### Achievements of the day
@@ -157,14 +164,122 @@
 
   </details>
 
+  [//]: # (End of 03.10)
 
 
   <details><summary>03.11</summary>
 
-  tetromino_manager::simulate_tetrominos()부터 구현하면 됨.
+  - 지금든 생각인데 버츄얼 박스나 우분투 깔린 노트북 이용해서 제대로 테스트 해보긴 해야 할 듯.  
+  (유니코드 깨지는 것 땜에..) 급한 건 아니니 나중에 해도 괜찮.
+
+  - Makefile 어떻게 만들지 고민이었는데 Bing AI가 알려줬다.. 대박..  
+  `HDRDIR`, `EXEFILE` 정도만 따로 추가한 정도.
+
+    ```makefile
+    # Makefile
+    # Bing AI's answer for the Question("Could you please create a Makefile to compile and run a C project with multiple folder structure?")
+
+    CC = gcc
+    CFLAGS = -Wall -Wextra -Werror
+    SRCDIR = src
+    OBJDIR = obj
+    BINDIR = bin
+    HDRDIR = src
+    EXEFILE = tetris
+
+    SOURCES := $(wildcard $(SRCDIR)/**/*.c $(SRCDIR)/*.c)
+    OBJECTS := $(SOURCES:$(SRCDIR)/%.c=$(OBJDIR)/%.o)
+
+    $(BINDIR)/$(EXEFILE): $(OBJECTS)
+      @mkdir -p $(@D)
+      $(CC) $(CFLAGS) $^ -o $@
+
+    $(OBJDIR)/%.o: $(SRCDIR)/%.c
+      @mkdir -p $(@D)
+      $(CC) $(CFLAGS) -c $< -o $@ -I $(HDRDIR)
+
+    .PHONY: clean run
+
+    clean:
+      rm -rfv $(BINDIR)/* $(OBJDIR)/*
+
+    run:
+      ./$(BINDIR)/$(EXEFILE)
+    ```
+
+    Compile: 
+
+    ```bash
+    $ make
+    ```
+
+    Execute:
+    
+    ```bash
+    $ make run
+    ```
+
+    Clean:
+
+    ```bash
+    $ make clean
+    ```
+
+  - 간단한 콘솔 테트리스 게임 만드는데도 조사해봐야할 API가 너무 많다.  
+  C언어를 많이 안써 버릇해서 그런건가...
+
+    일단, **사용자 입력 처리**는 검색 결과 발견한 것들.
+
+    ~~1. curses.h의 getch().\
+      --> Windows의 conio.h에서 제공.\
+      --> Linux에서도 설치해서 쓸 수 있긴 한데.. 그닥 추천하진 않는 듯.~~  
+    2. termios.h의 [tcgetattr()](https://xn--linux-8yu.die.net/man/3/tcgetattr).  
+      --> 리눅스에서 사용 가능.  
+      --> OK!
+
+
+  - 검색 해보니 **게임 루프 구현** 관련하여 대체적으로 해주는 조언은 간단한 단일 스레드 게임 루프로 시작하고,  
+  복잡한 기능을 추가하거나,  
+  멀티 프로세스를 도입하지 않으면 해결할 수 없는 문제가 발생한 경우에만 (ex. 최적화를 했음에도 눈에 띄는 성능 저하)  
+  다중 프로세싱 도입을 고려하라는 입장..
+
+  ### Achievements of the day
+  
+  - 소스 코드 폴더 구조로 분류.
+  - Makefile 도입
+  - 게임 루프 로직 구현에 대한 고찰 및 통찰. (구현은 아직 X)
+  - 사용자 입력 어떻게 받을지 힌트 얻기.
+  
+  </details>
+
+  [//]: # (End of 03.11)
+
+
+  <details><summary>03.12</summary>
+
+  어제 조사한 거 + 구상한 거 바탕으로 게임 루프 로직 설계  
+  종이에 구조 그려본 다음, 간단한 버전부터 구현해보기.
+
+  ### Achievements of the day
 
   </details>
+
+  [//]: # (End of 03.12)
+
+  <details><summary>03.13</summary>
+
+  게임 루프 정교화 과정 & 사용자 입력 처리 구현 예정.
+
+  ### Achievements of the day
+
+  </details>
+
+  [//]: # (End of 03.13)
+
 </blockquote></details>
+
+[//]: # (End of 2023.03)
+
 
 
 

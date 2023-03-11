@@ -8,8 +8,10 @@
 
 [개요](#개요)
 
-프로젝트
+[Project](#project)
+
 - [Linux](./Linux/)
+- Windows
 
 ---
 
@@ -66,6 +68,15 @@
 * 단순히 같은 OS뿐만 아니라 다른 OS와도 플레이할 수 있도록.  
 * 예를 들어 Windows 사용자와 Linux 사용자가 만날 수 있는.
 
+
+---
+
+
+### Project
+
+#### [Linux](./Linux/)
+
+#### Windows
 
 
 ---
