@@ -5,11 +5,11 @@
 #include <sys/types.h>
 #include <sys/wait.h>
 
-#include "local_debug.h"
-#include "game_manager.h"
-#include "util.h"
-#include "hud.h"
-#include "tetromino_manager.h"
+#include "debug/local_debug.h"
+#include "logic/game_manager.h"
+#include "util/util.h"
+#include "ui/hud.h"
+#include "tetromino/tetromino_manager.h"
 
 static sigset_t sigset;
 

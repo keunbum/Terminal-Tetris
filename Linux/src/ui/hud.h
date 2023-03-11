@@ -1,7 +1,7 @@
 #ifndef __HUD__H
 #define __HUD__H
 
-#include "draw_manager.h"
+#include "draw/draw_manager.h"
 
 #define UNIT_SEC (1)
 

@@ -1,8 +1,8 @@
 #ifndef __GAME_MANAGER__H
 #define __GAME_MANAGER__H
 
-#include "draw_manager.h"
-#include "hud.h"
+#include "draw/draw_manager.h"
+#include "ui/hud.h"
 
 #define EXIT_GAME_OVER (2)
 

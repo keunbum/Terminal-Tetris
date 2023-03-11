@@ -8,7 +8,7 @@
 #include <wchar.h>
 
 #include "cursor.h"
-#include "tetromino.h"
+#include "tetromino/tetromino.h"
 
 #define SCREEN_HEIGHT (30)
 #define SCREEN_WIDTH (44)

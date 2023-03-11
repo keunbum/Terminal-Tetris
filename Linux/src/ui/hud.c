@@ -4,11 +4,11 @@
 #include <unistd.h>
 #include <time.h>
 
-#include "game_manager.h"
-#include "local_debug.h"
-#include "hud.h"
-#include "cursor.h"
-#include "util.h"
+#include "logic/game_manager.h"
+#include "debug/local_debug.h"
+#include "ui/hud.h"
+#include "draw/cursor.h"
+#include "util/util.h"
 
 void run_draw_time_at()
 {

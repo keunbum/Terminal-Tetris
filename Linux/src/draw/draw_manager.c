@@ -1,9 +1,9 @@
 #include <assert.h>
 #include <stdio.h>
 
-#include "util.h"
-#include "draw_manager.h"
-#include "local_debug.h"
+#include "util/util.h"
+#include "draw/draw_manager.h"
+#include "debug/local_debug.h"
 
 void draw_unit_matrix(wchar_t ch)
 {
