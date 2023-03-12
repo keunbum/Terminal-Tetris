@@ -6,10 +6,10 @@ BINDIR = bin
 HDRDIR = src
 EXEFILE = tetris
 
-SOURCES := $(wildcard $(SRCDIR)/**/*.c $(SRCDIR)/*.c)
-OBJECTS := $(SOURCES:$(SRCDIR)/%.c=$(OBJDIR)/%.o)
+SRC := $(shell find $(SRCDIR) -name '*.c')
+OBJ := $(SRC:$(SRCDIR)/%.c=$(OBJDIR)/%.o)
 
-$(BINDIR)/$(EXEFILE): $(OBJECTS)
+$(BINDIR)/$(EXEFILE): $(OBJ)
 	@mkdir -p $(@D)
 	$(CC) $(CFLAGS) $^ -o $@
 
@@ -17,10 +17,7 @@ $(OBJDIR)/%.o: $(SRCDIR)/%.c
 	@mkdir -p $(@D)
 	$(CC) $(CFLAGS) -c $< -o $@ -I $(HDRDIR)
 
-.PHONY: clean run
+.PHONY: clean
 
 clean:
-	rm -rfv $(BINDIR)/* $(OBJDIR)/*
-
-run:
-	./$(BINDIR)/$(EXEFILE)
+	rm -rf $(BINDIR)/* $(OBJDIR)/*
