@@ -86,8 +86,4 @@ typedef struct tetromino {
     color_t color;
 } tetromino_t;
 
-void print_tetromino(const tetromino_t *);
-
-#define print_empty_line draw_empty_line
-
 #endif /* __TETROMINO__H */

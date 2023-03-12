@@ -10,7 +10,7 @@
 #include "game_manager/game_manager.h"
 #include "error/error_handling.h"
 #include "debug/local_debug.h"
-#include "draw/cursor.h"
+#include "draw_manager/cursor.h"
 
 static void init_localize(void)
 {

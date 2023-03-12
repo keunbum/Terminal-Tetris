@@ -26,7 +26,7 @@
 #define UNIT_MATRIX_HOR_LINE_THIN (0x2501)
 #define UNIT_MATRIX_VER_LINE_THIN (0x2503)
 
-#define draw_empty_line() wprintf(L"\n")
+#define draw_newline() wprintf(L"\n")
 
 //void draw_unit_matrix(wchar_t);
 void draw_whole_screen_at(int, int);

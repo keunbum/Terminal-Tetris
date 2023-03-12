@@ -4,8 +4,8 @@
 #include <unistd.h>
 #include <time.h>
 
-#include "draw/draw_manager.h"
-#include "draw/cursor.h"
+#include "draw_manager/draw_manager.h"
+#include "draw_manager/cursor.h"
 #include "game_manager/game_manager.h"
 #include "util/util.h"
 #include "game_play/game_play_timer.h"

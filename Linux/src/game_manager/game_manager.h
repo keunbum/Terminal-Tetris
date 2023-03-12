@@ -1,7 +1,7 @@
 #ifndef __GAME_MANAGER__H
 #define __GAME_MANAGER__H
 
-#include "draw/draw_manager.h"
+#include "draw_manager/draw_manager.h"
 #include "game_play/game_play_screen.h"
 
 #define EXIT_GAME_OVER (2)

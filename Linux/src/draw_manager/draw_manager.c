@@ -2,7 +2,7 @@
 #include <stdio.h>
 
 #include "util/util.h"
-#include "draw/draw_manager.h"
+#include "draw_manager/draw_manager.h"
 #include "debug/local_debug.h"
 #include "game_play/game_play_screen.h"
 #include "game_play/game_play_grid_matrix.h"
@@ -110,7 +110,7 @@ void draw_a_tetromino_at(const tetromino_t *t, int sx, int sy)
             static const wchar_t blocks[] = { BLOCK_FULL, BLOCK_EMPTY };
             draw_unit_matrix(blocks[(int) (s[j] - '1')]);
         }
-        print_empty_line();
+        draw_newline();
     }
 }
 
