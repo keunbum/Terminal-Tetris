@@ -56,7 +56,7 @@
 [//]: # (template)
 
 <font size="3"> <details><summary>2023.03</summary><blockquote> </font>
-  <details><summary>03.09</summary>
+  <details><summary>03.09(목)</summary>
   
   **기본 문서 생성 및 작성**  
   **테트로미노 디자인 시도**
@@ -107,7 +107,7 @@
 
   [//]: # (End of 03.09)
 
-  <details><summary>03.10</summary>
+  <details><summary>03.10(금)</summary>
 
   큰 틀의 HUI 출력하고 그 안에서
   시간의 흐름에 따라 테트로미노가 아래로 이동하도록 화면에 출력하기.
@@ -167,7 +167,7 @@
   [//]: # (End of 03.10)
 
 
-  <details><summary>03.11</summary>
+  <details><summary>03.11(토)</summary>
 
   - 지금든 생각인데 버츄얼 박스나 우분투 깔린 노트북 이용해서 제대로 테스트 해보긴 해야 할 듯.  
   (유니코드 깨지는 것 땜에..) 급한 건 아니니 나중에 해도 괜찮.
@@ -255,10 +255,17 @@
   [//]: # (End of 03.11)
 
 
-  <details><summary>03.12</summary>
+  <details><summary>03.12(일)</summary>
 
-  어제 조사한 거 + 구상한 거 바탕으로 게임 루프 로직 설계  
+  - 어제 조사한 거 + 구상한 거 바탕으로 게임 루프 로직 설계  
   종이에 구조 그려본 다음, 간단한 버전부터 구현해보기.
+
+  - 전반적인 프로젝트 구조 개선.  
+  (Makefile을 좀 더 정교하게 사용할 줄 알면, 더 체계적인 프로젝트 구조 갖출 수 있을 듯)
+
+  - main2() 관련 로직 고민하느라, 게임 루프 로직 설계 못함.  
+  일단 실행 시 문제 없게 끔 수정해놨으니까, 내일부터 Game Play 로직 구현하면 됨.  
+  한번에 다 짜려고 하지 말고, 단계적으로 차근차근 구현하기.
 
   ### Achievements of the day
 
@@ -266,7 +273,7 @@
 
   [//]: # (End of 03.12)
 
-  <details><summary>03.13</summary>
+  <details><summary>03.13(월)</summary>
 
   게임 루프 정교화 과정 & 사용자 입력 처리 구현 예정.
 
