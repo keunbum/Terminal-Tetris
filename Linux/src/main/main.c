@@ -7,10 +7,11 @@
 #include <sys/types.h>
 #include <sys/wait.h>
 
-#include "game_manager/game_manager.h"
-#include "error/error_handling.h"
 #include "debug/local_debug.h"
 #include "draw_manager/cursor.h"
+#include "error/error_handling.h"
+#include "game_manager/game_manager.h"
+#include "test/test.h"
 
 static void init_localize(void)
 {
@@ -31,8 +32,6 @@ static void main2(void)
     ewprintf("GAME ENDED.\n");
 }
 
-static int test(void);
-
 int main(int argc, char *argv[])
 {
     if (argc == 2)
@@ -50,15 +49,5 @@ int main(int argc, char *argv[])
         return 1;
     }
     main2();
-    return 0;
-}
-
-static int test(void)
-{
-    while (false)
-    {
-        //char ch = getch();
-
-    }
     return 0;
 }
