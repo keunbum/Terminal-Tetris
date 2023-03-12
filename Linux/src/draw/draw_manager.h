@@ -2,23 +2,13 @@
  * Header related to screen output.
  */
 
-#ifndef __DISPLAY__H
-#define __DISPLAY__H
+#ifndef __DRAW_MANAGER__H
+#define __DRAW_MANAGER__H
 
 #include <wchar.h>
 
 #include "cursor.h"
 #include "tetromino/tetromino.h"
-
-#define SCREEN_HEIGHT (30)
-#define SCREEN_WIDTH (44)
-#define SCREEN_START_X (0)
-#define SCREEN_START_Y (0)
-
-#define INSIDE_AREA_HEIGHT (20)
-#define INSIDE_AREA_WIDTH (20)
-#define INSIDE_AREA_START_X (5)
-#define INSIDE_AREA_START_Y (12)
 
 #define UNIT_MATRIX_CORNER_TOP_LEFT (0x2554)
 #define UNIT_MATRIX_CORNER_TOP_RIGHT (0x2557)
@@ -38,12 +28,12 @@
 
 #define draw_empty_line() wprintf(L"\n")
 
-void draw_unit_matrix(wchar_t);
+//void draw_unit_matrix(wchar_t);
 void draw_whole_screen_at(int, int);
 
-void draw_a_default_tetromino_at(int id, int sx, int sy);
 void draw_a_tetromino_at(const tetromino_t *, int, int);
+void draw_a_default_tetromino_at(int id, int sx, int sy);
 
-void draw_time_at(int, int, int);
+void draw_game_play_timer_at(int, int, int);
 
-#endif /* __DISPLAY__H */
+#endif /* __DRAW_MANAGER__H */

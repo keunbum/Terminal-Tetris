@@ -5,7 +5,6 @@
 
 #include "block.h"
 #include "color.h"
-//#include "draw.h"
 
 #define DECLARE_POLYOMINO_SYMBOL_T(T) \
     typedef struct polyomino_symbol_##T       \
@@ -15,7 +14,7 @@
 
 DECLARE_POLYOMINO_SYMBOL_T(4);
 
-#define MAX_VER_BLOCK_LEN (4)
+//#define TETROMINO_MAX_VER_BLOCK_LEN (4)
 #define TOTAL_TETROMINO_NUM (7)
 
 typedef polyomino_symbol_4_t tetromino_symbol_t;

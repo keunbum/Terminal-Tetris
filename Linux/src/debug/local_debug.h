@@ -1,8 +1,9 @@
 #ifndef __LOCAL_DEBUG__H
 #define __LOCAL_DEBUG__H
 
-#ifndef RELEASE
+#include <wchar.h>
 
+#ifndef RELEASE
 #define ewprintf(...) fwprintf(stderr, L ##__VA_ARGS__), fflush(stderr)
 #include <assert.h>
 #define Assert(...) assert(__VA_ARGS__)

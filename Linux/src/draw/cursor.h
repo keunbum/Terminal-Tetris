@@ -9,6 +9,7 @@
 
 // 0-based
 #define wgotoxy(x, y) wprintf(L"\e[%d;%df", (x) + 1, (y) + 1)
+#define ewgotoxy(x, y) fwprintf(stderr, L"\e[%d;%df", (x) + 1, (y) + 1)
 
 /* It need to be tested.
 #define wmove_cursor_up() wprintf(L"\e[1a")
