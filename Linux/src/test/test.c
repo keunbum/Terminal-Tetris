@@ -1,6 +1,6 @@
 #include "test/test.h"
 
-static int test(void)
+int test(void)
 {
     while (false)
     {

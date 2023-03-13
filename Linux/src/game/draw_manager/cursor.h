@@ -1,15 +1,14 @@
 #ifndef __CURSOR__H
 #define __CURSOR__H
 
+#include <wchar.h>
+
 /*
  * For all macro functions, it must be implemented as a wchar_t version.
  */
 
 #define wclear() wprintf(L"\e[H\e[J")
-
-// 0-based
 #define wgotoxy(x, y) wprintf(L"\e[%d;%df", (x) + 1, (y) + 1)
-#define ewgotoxy(x, y) fwprintf(stderr, L"\e[%d;%df", (x) + 1, (y) + 1)
 
 /* It need to be tested.
 #define wmove_cursor_up() wprintf(L"\e[1a")

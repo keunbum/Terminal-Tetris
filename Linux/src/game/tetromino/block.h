@@ -5,12 +5,8 @@
 // ref: https://en.wikipedia.org/wiki/Geometric_Shapes_(Unicode_block)
 // ref: https://en.wikipedia.org/wiki/Box-drawing_character
 
-//#define BLOCK_FULL (0x25A0)
-//#define BLOCK_EMPTY (0x25A1)
 #define BLOCK_FULL (0x2B1B)
 #define BLOCK_EMPTY (0x2B1C)
-//#define BLOCK_FULL (0x2588)
-//#define BLOCK_EMPTY (0x2592)
 
 typedef char block_t;
 

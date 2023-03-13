@@ -1,11 +1,12 @@
 #include <assert.h>
 #include <stdio.h>
+#include <unistd.h>
 
 #include "util/util.h"
-#include "draw_manager/draw_manager.h"
-#include "debug/local_debug.h"
-#include "game_play/game_play_screen.h"
-#include "game_play/game_play_grid_matrix.h"
+#include "game/draw_manager/draw_manager.h"
+#include "debug/debug.h"
+#include "game/game_play/game_play_screen.h"
+#include "game/game_play/game_play_grid_matrix.h"
 
 static void draw_unit_matrix(wchar_t ch)
 {
@@ -87,6 +88,8 @@ static void draw_inside_area_at(int sx, int sy)
 
 void draw_whole_screen_at(int sx, int sy)
 {
+    debug();
+
     wclear();
     wenable_cursor();
     //wdisable_cursor();
@@ -104,7 +107,7 @@ void draw_a_tetromino_at(const tetromino_t *t, int sx, int sy)
     for (int i = 0; symbol->blocks2d[i]; ++i)
     {
         const block_t *s = symbol->blocks2d[i];
-        Assert(s != NULL);
+        my_assert(s != NULL);
         for (int j = 0; s[j]; ++j)
         {
             static const wchar_t blocks[] = { BLOCK_FULL, BLOCK_EMPTY };
@@ -126,20 +129,23 @@ void draw_a_default_tetromino_at(int id, int sx, int sy)
 
 static void decode_seconds(int sec, int* const out_hh, int* const out_mm, int* const out_ss)
 {
+    debug();
     *out_hh = sec / 3600;
     *out_mm = (sec % 3600) / 60;
     *out_ss = sec % 60;
 }
 
-static void draw_sec_to_hhmmss(int sec)
+static void draw_sec_in_hhmmss(int sec)
 {
+    debug();
     int hh, mm, ss;
     decode_seconds(sec, &hh, &mm, &ss);
     wprintf(L"Time: %02d:%02d:%02d\n", hh, mm, ss);
 }
 
-void draw_game_play_timer_at(int sx, int sy, int sec)
+void draw_game_play_timer_at_with(int sx, int sy, int sec)
 {
+    debug();
     wgotoxy(sx, sy);
-    draw_sec_to_hhmmss(sec);
+    draw_sec_in_hhmmss(sec);
 }

@@ -3,4 +3,6 @@
 
 #include <stdbool.h>
 
+int test(void);
+
 #endif /* __TEST__H */
