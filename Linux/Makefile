@@ -1,5 +1,5 @@
 CC = gcc
-CFLAGS = -Wall -Wextra -Werror
+CFLAGS = -Wall -Wextra -Werror -DLOCAL
 SRCDIR = src
 OBJDIR = obj
 BINDIR = bin
@@ -17,7 +17,13 @@ $(OBJDIR)/%.o: $(SRCDIR)/%.c
 	@mkdir -p $(@D)
 	$(CC) $(CFLAGS) -c $< -o $@ -I $(HDRDIR)
 
-.PHONY: clean
+.PHONY: clean run test
 
 clean:
 	rm -rf $(BINDIR)/* $(OBJDIR)/*
+
+run:
+	./$(BINDIR)/$(EXEFILE) 2> err.txt
+
+test:
+	./$(BINDIR)/$(EXEFILE) -test
