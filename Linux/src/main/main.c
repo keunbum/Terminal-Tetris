@@ -45,7 +45,7 @@ int main(int argc, char *argv[])
             test();
             return 0;
         }
-        error_handling("Not a valid argument.");
+        handle_error("Not a valid argument.");
     }
     if (argc != 1)
     {
@@ -56,7 +56,8 @@ int main(int argc, char *argv[])
     return 0;
 }
 
-/* You actually read the stuff from the bottom.
+/*
+ * You actually read the stuff from the bottom.
 
  * basic strategy:
   * read it as if you were wrong once. --> "why is this wrong??"

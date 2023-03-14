@@ -5,6 +5,6 @@
 #include <stdlib.h>
 #include <errno.h>
 
-void error_handling(const char*);
+void handle_error(const char*);
 
 #endif /* __ERROR_HANDLING__H */

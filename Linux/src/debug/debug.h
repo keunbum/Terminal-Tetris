@@ -1,7 +1,10 @@
 #ifndef __DEBUG__H
 #define __DEBUG__H
 
+#include <stdio.h>
 #include <wchar.h>
+
+#define LOCAL
 
 #ifdef LOCAL
 #define ewgotoxy(x, y) fwprintf(stderr, L"\e[%d;%df", (x) + 1, (y) + 1)

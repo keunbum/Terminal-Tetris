@@ -1,7 +1,7 @@
 #include "error_handling.h"
 
-void error_handling(const char* message)
+void handle_error(const char* message)
 {
     perror(message);
-    exit(1);
+    exit(EXIT_FAILURE);
 }

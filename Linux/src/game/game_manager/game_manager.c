@@ -9,6 +9,7 @@
 #include "error/error_handling.h"
 #include "game/game_manager/game_manager.h"
 #include "game/game_manager/menu.h"
+#include "game/game_play/game_play_manager.h"
 #include "game/game_play/game_play_screen.h"
 #include "game/game_play/game_play_timer.h"
 #include "game/tetromino/tetromino_manager.h"
@@ -42,7 +43,7 @@ static void load_ui(void)
     debug();
     draw_whole_screen_at(GAME_PLAY_SCREEN_START_POS_X, GAME_PLAY_SCREEN_START_POS_Y);
     fflush(stdout);
-    //draw_a_default_tetromino_at(0, 20, 20);
+    // draw_a_default_tetromino_at(0, 20, 20);
     wgotoxy(GAME_PLAY_SCREEN_START_POS_X + GAME_PLAY_SCREEN_HEIGHT + 1, 0);
 }
 
@@ -50,13 +51,6 @@ static void load_game(void)
 {
     debug();
     load_ui();
-}
-
-static void start_game(const void *arg)
-{
-    debug();
-    // hmm..
-    (void)arg;
 }
 
 #define CHLD_PROCESS_NUM (2)
@@ -82,20 +76,22 @@ static void execute_game_modules(void)
     }
 }
 
-#define REGISTER_HANDLER(_act, _handler, _sa_flags, _sig_num, _oact) \
-    do                                                               \
-    {                                                                \
-        _act.sa_handler = _handler;                                  \
-        _act.sa_flags = _sa_flags;                                   \
-        sigaction(_sig_num, &_act, &o_act);                          \
+#define REGISTER_HANDLER_EMPTYSET(_act, _handler, _sa_flags, _sig_num, _oact) \
+    do                                                                        \
+    {                                                                         \
+        _act.sa_handler = _handler;                                           \
+        sigemptyset(&_act.sa_mask);                                           \
+        _act.sa_flags = _sa_flags;                                            \
+        sigaction(_sig_num, &_act, &o_act);                                   \
     } while (false)
 
-#define REGISTER_HANDLER_NO_OACT(_act, _handler, _sa_flags, _sig_num) \
-    do                                                                \
-    {                                                                 \
-        _act.sa_handler = _handler;                                   \
-        _act.sa_flags = _sa_flags;                                    \
-        sigaction(_sig_num, &_act, 0);                                \
+#define REGISTER_HANDLER_EMPTYSET_NOOACT(_act, _handler, _sa_flags, _sig_num) \
+    do                                                                        \
+    {                                                                         \
+        _act.sa_handler = _handler;                                           \
+        sigemptyset(&_act.sa_mask);                                           \
+        _act.sa_flags = _sa_flags;                                            \
+        sigaction(_sig_num, &_act, 0);                                        \
     } while (false)
 
 static void run_game(void)
@@ -103,12 +99,13 @@ static void run_game(void)
     debug();
 
     static struct sigaction act;
-    REGISTER_HANDLER_NO_OACT(act, childproc_handler, 0, SIGCHLD);
+    REGISTER_HANDLER_EMPTYSET_NOOACT(act, childproc_handler, 0, SIGCHLD);
 
     load_game();
+
     execute_game_modules();
 
-    sigemptyset(&sigset);
+    // hmmm...
     sigsuspend(&sigset);
     ewprintf("Parent-%d escaped from all of the %d waiting childprocs.\n", getpid(), CHLD_PROCESS_NUM);
 }
@@ -116,6 +113,7 @@ static void run_game(void)
 static void handle_cmd(int cmd)
 {
     debug();
+
     switch (cmd)
     {
     case MENU_CMD_START_GAME:
@@ -126,10 +124,10 @@ static void handle_cmd(int cmd)
         ewprintf("GAME EXITED\n");
         break;
     case MENU_CMD_ERROR:
-        error_handling("Read input faild.");
+        handle_error("Read input faild.");
         break;
     default:
-        error_handling("Not a valid menu cmd.");
+        handle_error("Not a valid menu cmd.");
         break;
     }
 }
@@ -143,3 +141,7 @@ void run_title_menu(void)
     int cmd = read_menu_option();
     handle_cmd(cmd);
 }
+
+/*
+ * You actually read the stuff from the bottom.
+ */
