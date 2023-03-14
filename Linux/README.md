@@ -15,8 +15,12 @@
 
 [개요](#개요)  
 [프로젝트 구상](#프로젝트-구상)  
-[프로젝트 기본 전제(전략)](#프로젝트-기본-전제전략)  
-[요구 사항 분석서](./requirements_analysis.md)
+[프로젝트 일지](#프로젝트-일지)
+
+[개발 문서](#개발-문서)
+
+  - [요구 사항 분석서](#요구-사항-분석서)
+  - [해결 방안](#해결-방안)
 
 ---
 
@@ -32,11 +36,60 @@
 
 - 개발 환경:
   - OS: 우분투(WSL)
-  - IDE: Visual Code
+  - IDE: Visual Studio Code
   - LANG: GNU C11
 
 - 타겟 플랫폼:  
   좁게는 우분투(LTS 20에서 개발하지만 그 이하도 큰 문제 없을듯)에서 넓게는 데비안 기반 리눅스?
+
+---
+
+## 프로젝트 구상
+
+### Q1. 왜 리눅스인가?
+
+실용성, 효용성 측면을 고려한다면 리눅스에서,    
+그것도 콘솔 게임을 만드는 건 다분히 포트폴리오 때문.  
+
+굳이 이유를 든다면 (리눅스 상에서 개발하여 얻을 수 있는 이점)
+
+- 내가 요즘 주로 공부하고 있는 내용이 리눅스 기반 소켓 프로그래밍이라서.
+- 윈도우즈의 여러 API도 그 원형은 리눅스에서 가져온 것이 많아서.
+- 리눅스 관련 프로젝트 경험을 어필할 때 필요할 수 있으니까.
+
+### Q2. 플랫폼은? (다르게 말하면 사용자 인터페이스?) (ex. 웹, 콘솔, GUI, ...)
+
+1. ~~웹(크롬 등의 인터넷 브라우저를 이용)~~
+2. ~~Qt (나름의 GUI? 사실 Qt에 대해 잘 모른다. 어설프게 들어보기만 한 정도)~~
+3. 터미널(GNOME 터미널 에뮬레이터로 대변되는 bash shell 위에서?)
+
+내 기준에선 크게 세 가지의 선택지가 있는데 이 중 터미널의 방식을 택하려고 한다.
+
+이유는..    
+- 웹은 제대로 된 게임을 서비스하기엔 한계가 있으니까.
+  - 테트리스 정도면 무리없을 듯.
+  - 아님 콘솔에서 만든 게임을 그대로 웹 상으로 포팅하기?
+  - 사실 가장 큰 이유는 내가 웹을 잘 몰라서.
+- 내가 개발을 WSL로 하고 있으니까.  
+  - CLI에서는 GUI 창을 못 띄우니까.
+- 상황에 따라 다르겠지만 GUI보다는 구현 난이도나 낮거나 개발 기간이 덜 걸릴 것 같아서.
+
+### Q3. 구체적으로 어떤 라이브러리나 기술을 가져다 만들 것인가?
+
+- 주 개발 언어: GNU C11 컴파일러
+  - 내가 요즘 C언어로 소켓 프로그래밍을 공부하고 있어서.
+  - 사실 C++만 되어도 구현 난이도가 한폭 낮아질 거다. OOP, template, STL 등이 워낙 강력하니까.  
+  - 그러나, 상대적으로 손이 많이 가는 C언어로 무언가를 만들 수 있다면 그것으로 개발 역량을 보여줄 수 있다고 생각해서.
+
+
+- 전반적으로 리눅스 운영체제가 제공해주는 시스템 콜, 라이브러리 함수 등을 많이 사용할 듯. (아마 유닉스 기반?)
+
+### Q5. 구현하려는 테트리스 게임의 규칙(로직)은?
+이건 [요구 분석서](./requirements_analysis.md)에서 본격적으로 써보는 걸로.
+
+### Q6. 향후 이 프로젝트를 확장 한다면 어떻게 발전시킬 수 있을까?
+지금 생각나는 건 다른 유저들과 경쟁할 수 있는 온라인 서비스.  
+여기에 추가로 크로스 플랫폼 지원(Windows, macOS, ...)  
 
 ---
 
@@ -275,13 +328,90 @@
 
   <details><summary>03.13(월)</summary>
 
-  게임 루프 정교화 과정 & 사용자 입력 처리 구현 예정.
+  ~~게임 루프 정교화 과정 & 사용자 입력 처리 구현 예정.~~
+
+  - 전반적인 프로젝트 구조 변경 for 가독성 향상
 
   ### Achievements of the day
 
   </details>
 
   [//]: # (End of 03.13)
+
+  <details><summary>03.14(화)</summary>
+
+  게임 루프 정교화 과정 & 사용자 입력 처리 구현 예정.
+
+  게임 루프 만들기 전에 사용자 입력 처리하는 모듈 구현 하기. 멀티 프로세스 돌릴 수 있게끔.  
+  항상 좀비 프로세스 발생하지 않게끔 조심.
+
+  - 시그널 조사
+
+    - [시그널 속성](https://man7.org/linux/man-pages/man7/signal.7.html#:~:text=Signal%20dispositions%0A%20%20%20%20%20%20%20Each,are%20left%20unchanged.)
+
+      프로세스는 특정 시그널에 대해 어떻게 반응할 것인가에 대한 속성을 지니고 있다.  
+
+      그렇기에 멀티 스레드 환경이라면 모든 스레드는 동일한 시그널 속성을 공유한다.  
+
+      [fork()](https://man7.org/linux/man-pages/man2/fork.2.html)는 부모의 시그널 속성을 물려 받고, 시그널 마스크는 초기화 되는 반면,  
+      [execve()](https://man7.org/linux/man-pages/man2/execve.2.html)는 시그널 속성이 초기화되고, 시그널 마스크는 보존된다고 한다.
+
+
+    - **calling process**와 **caller process**의 차이(크게 중요한 건 아닌데 혹시나 헷갈릴까봐.)  
+      'calling process’는 시스템 콜을 호출하는 프로세스를 의미한다.  
+      반면에 'caller process’는 다른 프로세스(스레드)의 실행을 시작하는 프로세스를 의미.
+
+    - [시그널을 보내는 다양한 시스템 콜](https://man7.org/linux/man-pages/man7/signal.7.html#:~:text=Sending%20a%20signal,a%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20specified%20process.)
+
+    - [특정 시그널이 잡히기를 기다리기](https://man7.org/linux/man-pages/man7/signal.7.html#:~:text=Waiting%20for%20a,signals%20is%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20caught.)
+
+      - [sigsuspend](https://man7.org/linux/man-pages/man2/sigsuspend.2.html):  
+        주로 크리티컬 섹션을 실행할 때 방해를 받지 않기 위해 실행.
+
+    - [동기적으로 신호 잡기](https://man7.org/linux/man-pages/man7/signal.7.html#:~:text=Synchronously%20accepting%20a,describing%20the%20signal.)
+
+      <details><summary>여기서 잠깐. 동기화와 비동기화란?</summary>
+      In computer science, synchronous and asynchronous are two types of programming models that define how software is designed and executed.
+
+      Synchronous operation means that a process runs only as a result of some other process being completed or handed off. In other words, things “wait” for other things.  
+      On the other hand, asynchronous operation means that a process operates independently of other processes. In this case, things don’t “wait” for other things. Asynchronous models are critical for performance reasons and to more efficiently use computing resources.
+
+    - [시그널 마스크와 보류 시그널](https://man7.org/linux/man-pages/man7/signal.7.html#:~:text=Signal%20mask%20and%20pending,an%20execve(2).)
+
+      시그널은 크게 프로레스-지향과 스레드-지향이 있는데 프로세스-지향은 시그널이 막히지 않은 스레드들 중 커널이 임의로  
+      하나를 고른다고 한다.
+
+      스레드는 [sigpending]를(https://man7.org/linux/man-pages/man2/sigpending.2.html) 통해서 보류된 시그널 집합을 얻을 수 있다.
+
+
+    - [시그널 핸들러 실행하기](https://man7.org/linux/man-pages/man7/signal.7.html#:~:text=Execution%20of%20signal,sensible%20software%20design!).)
+
+      커널 모드에서 유저 모드로 전환(context switching)될 때 마다 커널은 열린 시그널(프로세스가 등록한 핸들러가 목적으로 한)이 있는지 확인한다.
+
+
+  ### Achievements of the day
+
+  시그널 관련 문서 읽다가 쓰레드도 써야겠다는 결론..
+
+  </details>
+
+  [//]: # (End of 03.14)
+
+
+  <details><summary>03.15(수)</summary>
+
+  - 스레드 조사
+
+    이제 보니 스레드를 사용할 수도 있기 때문에  
+    관련하여 공부한 후 프로젝트 이어서 하기.
+
+  - 어제 검색하던 signal, sigsuspend 등 이어서 조사하기
+  ### Achievements of the day
+
+  </details>
+
+  [//]: # (End of 03.15)
+
 
 </blockquote></details>
 
@@ -292,78 +422,12 @@
 
 ---
 
-## 프로젝트 구상
+## 개발 문서
 
-### Q1. 왜 리눅스인가?
+### 요구 사항 분석서
+[본문](./requirements_analysis.md)
 
-실용성, 효용성 측면을 고려한다면 리눅스에서,    
-그것도 콘솔 게임을 만드는 건 다분히 포트폴리오 때문.  
-
-굳이 이유를 든다면 (리눅스 상에서 개발하여 얻을 수 있는 이점)
-
-- 내가 요즘 주로 공부하고 있는 내용이 리눅스 기반 소켓 프로그래밍이라서.
-- 윈도우즈의 여러 API도 그 원형은 리눅스에서 가져온 것이 많아서.
-- 리눅스 관련 프로젝트 경험을 어필할 때 필요할 수 있으니까.
-
-### Q2. 플랫폼은? (다르게 말하면 사용자 인터페이스 정도?) (ex. 웹, 콘솔, GUI, ...)
-
-1. ~~웹(크롬 등의 인터넷 브라우저를 이용)~~
-2. ~~Qt (나름의 GUI? 사실 Qt에 대해 잘 모른다. 어설프게 들어보기만 한 정도)~~
-3. 터미널(GNOME 터미널 에뮬레이터로 대변되는 bash shell 위에서?)
-
-내 기준에선 크게 세 가지의 선택지가 있는데 이 중 터미널의 방식을 택하려고 한다.
-
-이유는..    
-- 웹은 제대로 된 게임을 서비스하기엔 한계가 있으니까.
-  - 사실 테트리스 정도면 무리없을 듯.
-  - 아님 콘솔에서 만든 게임을 그대로 웹 상으로 포팅하기?
-  - 가장 큰 이유는 내가 웹을 잘 몰라서.
-- 내가 개발을 WSL로 하고 있으니까.  
-  - CLI에서는 GUI 창을 못 띄우니까.
-- 상황에 따라 다르겠지만 GUI보다는 구현 난이도나 낮거나 개발 기간이 덜 걸릴 것 같아서.
-
-### Q3. 구체적으로 어떤 라이브러리나 기술을 가져다 만들 것인가?
-
-- 주 개발 언어: GNU C11 컴파일러
-  - 내가 요즘 C언어로 소켓 프로그래밍을 공부하고 있어서.
-  - 사실 C++만 되어도 구현 난이도가 한폭 낮아질 거다. OOP, template, STL 등이 워낙 강력하니까.  
-  - 그러나, 상대적으로 손이 많이 가는 C언어로 무언가를 만들 수 있다면 그것으로 개발 역량을 보여줄 수 있다고 생각해서.
-
-
-- 전반적으로 리눅스 운영체제가 제공해주는 시스템 콜, 라이브러리 함수 등을 많이 사용할 듯. (아마 유닉스 기반?)
-
-### Q5. 구현하려는 테트리스 게임의 규칙(로직)은?
-이건 [요구 분석서](./requirements_analysis.md)에서 본격적으로 써보는 걸로.
-
-### Q6. 향후 이 프로젝트를 확장 한다면 어떻게 발전시킬 수 있을까?
-지금 생각나는 건 다른 유저들과 경쟁할 수 있는 온라인 서비스.  
-여기에 추가로 크로스 플랫폼 지원(Windows, macOS, ...)  
-
----
-
-## 프로젝트 기본 전제(전략)
-
-앞으로 내가 이 프로젝트를 진행하는데 있어서    
-근본적으로 따라야 할 강령 등을 서술한다.
-
-- 가급적 외부 라이브러리의 힘을 빌리지 않는다.  
-
-  이는 다른 사람들이 블로그나 깃허브에 올려 놓은 코드도 사용하지 않음을 내포한다.  
-  OS가 제공하는 시스템 콜에 의지하는 정도?
-
-  - 내가 가진 이론적인 베이스, 순수 프로그래밍 역량, 개성, 창의성 등을 최대한 발휘한다.  
-
-  - 내가 만든 것보다 더 근사한 코드, 솔루션이 있을지언정 지금은 나만의 코드를 작성해보는 것이 중요하다.  
-  - 다른 사람의 도움을 덜 받고, 가능한 한 가장 밑바닥부터 구현해보고, 스스로 문제를 해결해야 성장할 수 있으니까.  
-
-  - 물론 유용한 시스템 콜이나 게임 로직, 디자인 패턴 등을 찾기 위해 검색은 많이 해봐야 한다.  
-    
-
-- 유지 보수성(가독성) vs 생산성
-  - 애매하고 주관적인 부분이긴 한데, 일단 **유지 보수성**을 최우선으로 한다.  
-
-  - 누군가가 "이러 이러한 기능도 추가되면 좋겠어요." 라고 말할 때,  
-  그럴 줄 알았다는 듯이 유연하게 대처할 수 있는 코드가 좋은 코드라고 생각하기 때문.
-
+### 해결 방안
+[본문](./solution.md)
 
 ---

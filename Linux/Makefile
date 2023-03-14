@@ -1,5 +1,6 @@
 CC = gcc
-CFLAGS = -Wall -Wextra -Werror -DLOCAL
+#CFLAGS = -Wall -Wextra -Werror -DLOCAL
+CFLAGS = -Wall -Wextra -Werror
 SRCDIR = src
 OBJDIR = obj
 BINDIR = bin
