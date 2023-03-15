@@ -1,30 +1,52 @@
-CC = gcc
-#CFLAGS = -Wall -Wextra -Werror -DLOCAL
-CFLAGS = -Wall -Wextra -Werror
+CC = cc
+
+CFLAGS = -Wall -Werror -std=gnu17 -pthread
+
 SRCDIR = src
 OBJDIR = obj
 BINDIR = bin
 HDRDIR = src
-EXEFILE = tetris
+
+INCLUDES = -I $(HDRDIR)
+
+EXE = tetris
 
 SRC := $(shell find $(SRCDIR) -name '*.c')
 OBJ := $(SRC:$(SRCDIR)/%.c=$(OBJDIR)/%.o)
 
-$(BINDIR)/$(EXEFILE): $(OBJ)
+all: $(BINDIR)/$(EXE)
+
+$(BINDIR)/$(EXE): $(OBJ)
 	@mkdir -p $(@D)
 	$(CC) $(CFLAGS) $^ -o $@
 
 $(OBJDIR)/%.o: $(SRCDIR)/%.c
 	@mkdir -p $(@D)
-	$(CC) $(CFLAGS) -c $< -o $@ -I $(HDRDIR)
+	$(CC) $(CFLAGS) -c $< -o $@ $(INCLUDES)
 
-.PHONY: clean run test
+.PHONY: clean run depend
+
+dev: all
+
+release: CFLAGS += -Wextra
+release: dev
+
+debug: CFLAGS += -DDEBUG
+debug: dev
+
+test: CFLAGS += -DTEST
+test: dev
+
+testdebug: CFLAGS += -DTEST
+testdebug: CFLAGS += -DLOCAL
+testdebug: dev
 
 clean:
 	rm -rf $(BINDIR)/* $(OBJDIR)/*
 
 run:
-	./$(BINDIR)/$(EXEFILE) 2> err.txt
+	./$(BINDIR)/$(EXE) 2> err.txt
 
-test:
-	./$(BINDIR)/$(EXEFILE) -test
+# hmm..
+depend:
+	makedepend --$(CFLAGS)--$(INCLUDES)--$(SRC)--$(HDRDIR)
