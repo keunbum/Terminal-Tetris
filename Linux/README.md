@@ -14,13 +14,16 @@
 ## Index
 
 [개요](#개요)  
+
 [프로젝트 구상](#프로젝트-구상)  
-[프로젝트 일지](#프로젝트-일지)
 
 [개발 문서](#개발-문서)
 
   - [요구 사항 분석서](#요구-사항-분석서)
   - [해결 방안](#해결-방안)
+
+[프로젝트 일지](#프로젝트-일지)
+
 
 ---
 
@@ -76,7 +79,7 @@
 
 ### Q3. 구체적으로 어떤 라이브러리나 기술을 가져다 만들 것인가?
 
-- 주 개발 언어: GNU C11 컴파일러
+- 주 개발 언어: GCC 컴파일러
   - 내가 요즘 C언어로 소켓 프로그래밍을 공부하고 있어서.
   - 사실 C++만 되어도 구현 난이도가 한폭 낮아질 거다. OOP, template, STL 등이 워낙 강력하니까.  
   - 그러나, 상대적으로 손이 많이 가는 C언어로 무언가를 만들 수 있다면 그것으로 개발 역량을 보여줄 수 있다고 생각해서.
@@ -93,12 +96,27 @@
 
 ---
 
+
+## 개발 문서
+
+### 요구 사항 분석서
+[본문](./requirements_analysis.md)
+
+### 해결 방안
+[본문](./solution.md)
+
+---
+
 ## 프로젝트 일지
 
 #### Helpful Docs
 
 - [markdown toggle](https://codex.so/collapsed-block-for-github-markdown)  
 - [markdown set font size](https://linuxhint.com/markdown-font-size/)
+
+레퍼런스 문서 읽으면서 중요한 내용 잘 기록해 놓을 것.  
+단순히 기록하는데 그치지 말고 출처 링크도 다 명시해 놓을 것. (나중에 직접 가봐야할 필요 다분)  
+기억력 믿지 말자. 다음날만 되어도 다 까먹는다.
 
 <details><summary>template(문서 작성용)</summary>
 
@@ -283,10 +301,10 @@
 
     일단, **사용자 입력 처리**는 검색 결과 발견한 것들.
 
-    ~~1. curses.h의 getch().\
+    ~~1. curses.h의 getch.\
       --> Windows의 conio.h에서 제공.\
       --> Linux에서도 설치해서 쓸 수 있긴 한데.. 그닥 추천하진 않는 듯.~~  
-    2. termios.h의 [tcgetattr()](https://xn--linux-8yu.die.net/man/3/tcgetattr).  
+    2. termios.h의 [tcgetattr](https://xn--linux-8yu.die.net/man/3/tcgetattr).  
       --> 리눅스에서 사용 가능.  
       --> OK!
 
@@ -353,11 +371,13 @@
 
       그렇기에 멀티 스레드 환경이라면 모든 스레드는 동일한 시그널 속성을 공유한다.  
 
-      [fork()](https://man7.org/linux/man-pages/man2/fork.2.html)는 부모의 시그널 속성을 물려 받고, 시그널 마스크는 초기화 되는 반면,  
-      [execve()](https://man7.org/linux/man-pages/man2/execve.2.html)는 시그널 속성이 초기화되고, 시그널 마스크는 보존된다고 한다.
+      [fork](https://man7.org/linux/man-pages/man2/fork.2.html)는 부모의 시그널 속성을 물려 받고, 시그널 마스크는 초기화 되는 반면,  
+      [execve](https://man7.org/linux/man-pages/man2/execve.2.html)는 시그널 속성이 초기화되고, 시그널 마스크는 보존된다고 한다.
+
+      여기서 시그널 마스크란, blocked signal들의 비트마스크를 의미한다.
 
 
-    - **calling process**와 **caller process**의 차이(크게 중요한 건 아닌데 혹시나 헷갈릴까봐.)  
+    - **calling process**와 **caller process**의 차이(크게 중요한 건 아닌데 혹시나 헷갈릴까봐)  
       'calling process’는 시스템 콜을 호출하는 프로세스를 의미한다.  
       반면에 'caller process’는 다른 프로세스(스레드)의 실행을 시작하는 프로세스를 의미.
 
@@ -373,18 +393,18 @@
       <details><summary>여기서 잠깐. 동기화와 비동기화란?</summary>
       In computer science, synchronous and asynchronous are two types of programming models that define how software is designed and executed.
 
-      Synchronous operation means that a process runs only as a result of some other process being completed or handed off. In other words, things “wait” for other things.  
-      On the other hand, asynchronous operation means that a process operates independently of other processes. In this case, things don’t “wait” for other things. Asynchronous models are critical for performance reasons and to more efficiently use computing resources.
+      **Synchronous** operation means that a process runs only as a result of some other process being completed or handed off. In other words, things “wait” for other things.  
+      On the other hand, **asynchronous** operation means that a process operates independently of other processes. In this case, things don’t “wait” for other things. Asynchronous models are critical for performance reasons and to more efficiently use computing resources.
 
     - [시그널 마스크와 보류 시그널](https://man7.org/linux/man-pages/man7/signal.7.html#:~:text=Signal%20mask%20and%20pending,an%20execve(2).)
 
       시그널은 크게 프로레스-지향과 스레드-지향이 있는데 프로세스-지향은 시그널이 막히지 않은 스레드들 중 커널이 임의로  
       하나를 고른다고 한다.
 
-      스레드는 [sigpending]를(https://man7.org/linux/man-pages/man2/sigpending.2.html) 통해서 보류된 시그널 집합을 얻을 수 있다.
+      스레드는 [sigpending](https://man7.org/linux/man-pages/man2/sigpending.2.html)를 통해서 보류된 시그널 집합을 얻을 수 있다. 여기서 보류된 시그널 집합(이하 pending signal)이란 시그널이 발생했지만, 시그널 핸들러 등에 의해서 처리되지 않은 시그널을 일컫는다.
 
 
-    - [시그널 핸들러 실행하기](https://man7.org/linux/man-pages/man7/signal.7.html#:~:text=Execution%20of%20signal,sensible%20software%20design!).)
+    - [시그널 핸들러 실행하기](https://man7.org/linux/man-pages/man7/signal.7.html#:~:text=Execution%20of%20signal,sensible%20software%20design!)
 
       커널 모드에서 유저 모드로 전환(context switching)될 때 마다 커널은 열린 시그널(프로세스가 등록한 핸들러가 목적으로 한)이 있는지 확인한다.
 
@@ -402,15 +422,167 @@
 
   - 스레드 조사
 
-    이제 보니 스레드를 사용할 수도 있기 때문에  
+    이제 보니 멀티 스레드를 사용할 수도 있기 때문에  
     관련하여 공부한 후 프로젝트 이어서 하기.
 
-  - 어제 검색하던 signal, sigsuspend 등 이어서 조사하기
+    ---
+
+    [pthread](https://man7.org/linux/man-pages/man7/pthreads.7.html)는 [POSIX](https://en.wikipedia.org/wiki/POSIX) thread를 의미한다.
+    나는 그중에서 [nptl](https://man7.org/linux/man-pages/man7/nptl.7.html) 구현체를 사용.  
+    읽을게 많네..? 근데 충분히 읽을 만한 가치가 있는 문서인 듯.
+
+    ---
+    
+    스레드들은 전역 메모리(데이터, 힙 영역)를 공유하고 각자의 스택 영역을 가지고 있다.  
+    따라서 정적(static) 지역 변수를 사용한다면 이는 공유되므로 주의할 것.  
+    (그래서 스택 영역을 지칭할 때 `지역 변수`와 구분하기 위해 `자동 변수`라는 용어가 나온다.)
+
+
+    - 하나의 프로세스에 속한 스레드들은 다음의 속성을 공유한다.  
+      - process ID  
+      - parent process ID  
+      - prcess group ID and session ID  
+      - controlling terminal  
+      - user and group IDs (credentials)
+      - open file descriptors
+      - record locks (see [fcntl](https://man7.org/linux/man-pages/man2/fcntl.2.html))  
+      - signal dispositions  
+      - file mod creation mask  
+      - currently directory and root directory  
+      - interval timers and POSIX timers  
+      - nice value  
+      - resource limits  
+      - measurements of the comsumption of CPU time and resources  
+
+
+
+    - 스택 외에도 스레드들은 고유의 속성들을 지니는데 다음과 같다.  
+      - thread ID (pthread_t)  
+      - signal mask (pthread_sigmask(3))  
+      - the errno variable  
+      - alternate signal stack  
+      - real-time scheduling policy and priority  
+      다음과 같은 특정 리눅스 기능도 있음  
+      - capabilities (see capabilities(7))
+      - CPU affinity (see sched_setaffinity(2)))
+
+
+    - pthread 함수들은 errno를 설정하지 않는다.
+
+    - 표준 함수 중에는 thread-safe하지 않은 것도 있다.  
+      자세한 건 [man page 본문](https://man7.org/linux/man-pages/man7/pthreads.7.html#:~:text=Thread%2Dsafe%20functions,NULL%0A%20%20%20%20%20%20%20%20%20%20%20wcstombs()%0A%20%20%20%20%20%20%20%20%20%20%20wctomb()) 참고.
+
+    - `async-cancel-safe`라는 낯선 용어가 나오는데 일단 넘어감.  
+
+    - `cancellation points`.. 강제되는 것도 있고, 해도 좋은 것도 있고. 무슨 말인지 이해 못함. 넘어감.
+
+    - 스레딩을 구현할 때 [clone](https://man7.org/linux/man-pages/man2/clone.2.html)을, 스레드 동기화 프리미티브(뮤텍스, 스레드 조인 등)는
+    [futex](https://man7.org/linux/man-pages/man2/futex.2.html)를 사용하여 구현된다고 한다.
+
+    ---
+
+  - About [NPTL](https://man7.org/linux/man-pages/man7/nptl.7.html)
+
+    `NPTL (Native POSIX Threads Library) is the GNU C library POSIX threads implementation  
+    that is used on modern Linux systems.`
+
+    NPTL은 관리자 스레드(manager thread)를 사용하지 않는다고 한다.  
+
+    스택 사이즈 설정 관련해서는 [getrlimit](https://man7.org/linux/man-pages/man2/setrlimit.2.html) 참조.
+
+
+    NPTL 사용시 signul number 32([timer_create](https://man7.org/linux/man-pages/man2/timer_create.2.html) 참조), 33은 사용할 수 없음.  
+    웬만한 라이브러리 함수도 사용자의 32, 33 사용을 막거나 무시하게끔 설계한다고 한다.
+
+    한 프로세스 내 스레드들은 credential을 공유하기 때문에 한 스레드가 이를 변경하면  
+    내부적으로 설계된 wrapper funtion 덕에 모든 스레드가 한꺼번에 변경된다고 한다. ([본문](https://man7.org/linux/man-pages/man7/nptl.7.html#:~:text=NPTL%20and%20process,setgroups(2).))
+
+
+    ---
+
+  - About [pthreads](https://man7.org/linux/man-pages/man7/pthreads.7.html)
+
+    - [pthread_create](https://man7.org/linux/man-pages/man3/pthread_create.3.html)
+
+      스레드 사용시 컴파일 명령에 -pthread 추가해야 함.
+
+    - [pthread_exit](https://man7.org/linux/man-pages/man3/pthread_exit.3.html)
+    
+    - [pthread_attr_init](https://man7.org/linux/man-pages/man3/pthread_attr_init.3.html)
+
+    - [pthread_self](https://man7.org/linux/man-pages/man3/pthread_self.3.html): 자신의 스레드 ID 확인
+
+    ---
+
+  - 그밖에 자잘한 정보들
+
+    스레드를 새로 생성하면 부모 스레드의 blocked signal mask를 그대로 물려받고, pending signal은 초기화된다고 한다.  
+    그밖에 물려 받는 것들이 많은데, 어차피 일일이 기억 못함. 일단 읽고 넘어갈 것.
+
+    ---
+
+    스레드 ID를 '=='로 비교하는 건 바람직하지 않다고 한다.
+    [pthread_equal](https://man7.org/linux/man-pages/man3/pthread_equal.3.html)를 이용할 것.
+
+    ---
+
+    스레드는 `joinable`과 `detached` 두 가지 타입이 있다.  
+
+    새로 생성된 스레드의 결과나 종료 상태가 필요하다면 joinable한 스레드를 만들어야 할 것이다.  
+    --> `pthread_join` 사용 --> 종료 상태 확인 --> 자원이 환원됨
+
+    detached --> 종료 시 커널(운영체제)이 알아서 자원 회수해 감.  
+    억지로 pthread_join을 호출하여 종료 상태를 얻을 수 없다.  
+
+    스레드를 생성하면 디폴트는 joinable로 세팅된다.  
+    종료 결과가 필요하지 않은 데몬 스레드들은 detached로 설정하면 되겠다. ([pthread_attr_setdetachstate](https://man7.org/linux/man-pages/man3/pthread_attr_setdetachstate.3.html) 참조)  
+
+    [pthread_attr_setstacksize](https://man7.org/linux/man-pages/man3/pthread_attr_setstacksize.3.html)를 사용하여 스택 크기 조절 가능.
+
+  ---
+
+  - 그동안 리눅스 명령행에서 프로그램 실행할 때  
+    `-a`나 `--version` 같은 옵션 처리 어떻게 하나 했더니 시스템 콜이 다 있었네...  
+    [getopt](https://man7.org/linux/man-pages/man3/pthread_create.3.html)
+
+---
+
+  - abort랑 _Exit 조사하기
+
+
   ### Achievements of the day
+
+  오늘 스레드 조사한다고 프로젝트 코드엔 진전이 없고  
+  주구장창 man page만 읽고 있는데 이거 맞아?  
+  코딩하기 전에 거치는 이 자료 조사가 너무 힘들다..ㅠ  
+  언능 프로그래밍 좀 하고 싶은데.
 
   </details>
 
   [//]: # (End of 03.15)
+
+
+<details><summary>03.16(목)</summary>
+
+  - 일단.. 소켓 프로그래밍 공부로 넘어가서  
+  스레드 공부 빠삭하게 한 다음에 이쪽으로 넘어올 것.  
+  단, 책 내용 맹신하지 말고 man page 꼼꼼하게 다 읽어볼 것.  
+  책은 그냥 '이런 라이브러리 함수가 있다' 알려주는 정도로 봐야함.  
+
+  - signal, sigsuspend 등 이어서 조사하기
+
+---
+
+  - '멀티 프로세스 -> 멀티 스레드'로 바꾼 후, start_game()부터 이어서 구현하기
+
+---
+
+
+### Achievements of the day
+
+</details>
+
+[//]: # (End of 03.16)
 
 
 </blockquote></details>
@@ -419,15 +591,5 @@
 
 
 
-
----
-
-## 개발 문서
-
-### 요구 사항 분석서
-[본문](./requirements_analysis.md)
-
-### 해결 방안
-[본문](./solution.md)
 
 ---
