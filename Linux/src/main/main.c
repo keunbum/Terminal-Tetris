@@ -1,11 +1,6 @@
-#include <assert.h>
-#include <stdbool.h>
 #include <stdio.h>
-#include <unistd.h>
+#include <stdlib.h>
 #include <locale.h>
-#include <string.h>
-#include <sys/types.h>
-#include <sys/wait.h>
 
 #include "debug/debug.h"
 #include "game/draw_manager/cursor.h"
@@ -16,21 +11,23 @@
 static void init_localize(void)
 {
     debug();
+
     setlocale(LC_CTYPE, "");
 }
 
 static void init(void)
 {
     debug();
+
     init_localize();
 }
 
 static void main2(void)
 {
     debug();
+
     init();
     run_title_menu();
-
     wgotoxy(GAME_CONSOLE_STDOUT_POS_X + 1, GAME_CONSOLE_STDOUT_POS_Y);
     ewprintf("GAME ENDED.\n");
 }
@@ -38,22 +35,13 @@ static void main2(void)
 int main(int argc, char *argv[])
 {
     debug();
-    if (argc == 2)
-    {
-        if (strcmp(argv[1], "-test") == 0)
-        {
-            test();
-            return 0;
-        }
-        handle_error("Not a valid argument.");
-    }
-    if (argc != 1)
-    {
-        printf("usage: ./%s\n", argv[0]);
-        return 1;
-    }
+    
+#ifdef TEST
+    test_module(argc, argv);
+#else
     main2();
-    return 0;
+#endif
+    return EXIT_SUCCESS
 }
 
 /*

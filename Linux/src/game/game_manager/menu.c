@@ -1,16 +1,16 @@
 #include <stdio.h>
+#include <wchar.h>
 
 #include "debug/debug.h"
 #include "game/game_manager/menu.h"
 #include "util/util.h"
 
 #define TITLE_MENU_TOTAL_OPTION_NUM (2)
-
-void draw_menu_screen(void)
+void draw_title_menu_screen(void)
 {
     debug();
-    static const char *OPTIONS_TEXT[] = { "start", "exit" };
-    
+    static const char *TITLE_MENU_OPTIONS_TEXT[] = {"start", "exit"};
+
     wprintf(L"TETRIS\n");
     forn(i, TITLE_MENU_TOTAL_OPTION_NUM)
     {
@@ -18,23 +18,27 @@ void draw_menu_screen(void)
         {
             wprintf(L"  ");
         }
-        wprintf(L"%d) %s", i + 1, OPTIONS_TEXT[i]);
+        wprintf(L"%d) %s", i + 1, TITLE_MENU_OPTIONS_TEXT[i]);
     }
     wprintf(L"\n");
 }
 
-int read_menu_option(void)
+int read_title_menu_option(void)
 {
     debug();
     int cmd;
     scanf("%d", &cmd);
-    if (cmd == 1)
+    int ret = TITLE_MENU_CMD_ERROR;
+    switch (cmd)
     {
-        return MENU_CMD_START_GAME;
+    case 1:
+        ret = TITLE_MENU_CMD_START_GAME;
+        break;
+    case 2:
+        ret = TITLE_MENU_CMD_EXIT_GAME;
+        break;
+    default:
+        break;
     }
-    if (cmd == 2)
-    {
-        return MENU_CMD_EXIT_GAME;
-    }
-    return MENU_CMD_ERROR;
+    return ret;
 }

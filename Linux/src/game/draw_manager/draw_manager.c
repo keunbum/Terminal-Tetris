@@ -58,7 +58,7 @@ static void draw_boundary_at_with(wchar_t hor_block, wchar_t ver_block, int heig
     draw_col_matrix_at(ver_block, x0 + 1, x1, y1);
 }
 
-// height, width both means total length
+// height and width both means total length
 static void draw_boundary_at(wchar_t hor_block, wchar_t ver_block, int height, int width, int sx, int sy)
 {
     draw_boundary_at_with(hor_block, ver_block,height, width, sx, sy, UNIT_MATRIX_CORNER_TOP_LEFT, UNIT_MATRIX_CORNER_TOP_RIGHT, UNIT_MATRIX_CORNER_BOT_LEFT, UNIT_MATRIX_CORNER_BOT_RIGHT);
@@ -97,22 +97,25 @@ void draw_whole_screen_at(int sx, int sy)
     draw_inside_area_at(sx + GAME_PLAY_GRID_MATRIX_START_POS_X, sy + GAME_PLAY_GRID_MATRIX_START_POS_Y);
 }
 
+static void draw_row_blocks(const block_t* row)
+{
+    my_assert(row != NULL);
+    static const wchar_t BLOCK_UNICODE_FOR_DRAW[] = { BLOCK_FULL, BLOCK_EMPTY };
+    for (int j = 0; row[j]; ++j)
+    {
+        draw_unit_matrix(BLOCK_UNICODE_FOR_DRAW[encode_block(row[j])]);
+    }
+}
+
 void draw_a_tetromino_at(const tetromino_t *t, int sx, int sy)
 {
     const tetromino_symbol_t* symbol = s_tetromino_symbols + t->tetromino_id;
-    int x_offset = 0;
-    int y_offset = -1;
-
+    const int x_offset = 0;
+    const int y_offset = -1;
     wgotoxy(sx + x_offset, sy + y_offset);
-    for (int i = 0; symbol->blocks2d[i]; ++i)
+    forn(i, symbol->height)
     {
-        const block_t *s = symbol->blocks2d[i];
-        my_assert(s != NULL);
-        for (int j = 0; s[j]; ++j)
-        {
-            static const wchar_t blocks[] = { BLOCK_FULL, BLOCK_EMPTY };
-            draw_unit_matrix(blocks[(int) (s[j] - '1')]);
-        }
+        draw_row_blocks(symbol->grid[i]);
         draw_newline();
     }
 }
@@ -130,6 +133,7 @@ void draw_a_default_tetromino_at(int id, int sx, int sy)
 static void decode_seconds(int sec, int* const out_hh, int* const out_mm, int* const out_ss)
 {
     debug();
+
     *out_hh = sec / 3600;
     *out_mm = (sec % 3600) / 60;
     *out_ss = sec % 60;
@@ -138,6 +142,7 @@ static void decode_seconds(int sec, int* const out_hh, int* const out_mm, int* c
 static void draw_sec_in_hhmmss(int sec)
 {
     debug();
+
     int hh, mm, ss;
     decode_seconds(sec, &hh, &mm, &ss);
     wprintf(L"Time: %02d:%02d:%02d\n", hh, mm, ss);
@@ -146,6 +151,7 @@ static void draw_sec_in_hhmmss(int sec)
 void draw_game_play_timer_at_with(int sx, int sy, int sec)
 {
     debug();
+
     wgotoxy(sx, sy);
     draw_sec_in_hhmmss(sec);
 }

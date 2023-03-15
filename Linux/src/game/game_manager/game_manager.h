@@ -16,9 +16,8 @@
 #define GAME_CONSOLE_STDERR_POS_X (GAME_PLAY_SCREEN_START_POS_X)
 #define GAME_CONSOLE_STDERR_POS_Y (GAME_PLAY_SCREEN_START_POS_Y + GAME_PLAY_SCREEN_WIDTH + 5)
 
+typedef void (*module_t)(const void *);
 
 void run_title_menu(void);
-
-typedef void (*module_t)(const void *);
 
 #endif /* __GAME_MANAGER__H */

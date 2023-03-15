@@ -6,28 +6,29 @@
 #include "block.h"
 #include "color.h"
 
-#define DECLARE_POLYOMINO_SYMBOL_T(T) \
-    typedef struct polyomino_symbol_##T       \
-    {                                 \
-        block_t *blocks2d[T];         \
+#define DECLARE_POLYOMINO_SYMBOL_T(T)   \
+    typedef struct polyomino_symbol_##T \
+    {                                   \
+        int height;                     \
+        block_t *grid[T];               \
     } polyomino_symbol_##T##_t
 
 DECLARE_POLYOMINO_SYMBOL_T(4);
 
-//#define TETROMINO_MAX_VER_BLOCK_LEN (4)
-#define TOTAL_TETROMINO_NUM (7)
-
 typedef polyomino_symbol_4_t tetromino_symbol_t;
 
+#define TOTAL_TETROMINO_NUM (7)
 static const tetromino_symbol_t s_tetromino_symbols[TOTAL_TETROMINO_NUM] = {
     // I
     {
+        1,
         {
             "1111",
         },
     },
     // O
     {
+        2,
         {
             "11",
             "11",
@@ -35,6 +36,7 @@ static const tetromino_symbol_t s_tetromino_symbols[TOTAL_TETROMINO_NUM] = {
     },
     // T
     {
+        2,
         {
             "111",
             "010",
@@ -42,6 +44,7 @@ static const tetromino_symbol_t s_tetromino_symbols[TOTAL_TETROMINO_NUM] = {
     },
     // J
     {
+        3,
         {
             "01",
             "01",
@@ -50,6 +53,7 @@ static const tetromino_symbol_t s_tetromino_symbols[TOTAL_TETROMINO_NUM] = {
     },
     // L
     {
+        3,
         {
             "10",
             "10",
@@ -58,6 +62,7 @@ static const tetromino_symbol_t s_tetromino_symbols[TOTAL_TETROMINO_NUM] = {
     },
     // S
     {
+        2,
         {
             "011",
             "110",
@@ -65,6 +70,7 @@ static const tetromino_symbol_t s_tetromino_symbols[TOTAL_TETROMINO_NUM] = {
     },
     // Z
     {
+        2,
         {
             "110",
             "011",
@@ -72,18 +78,22 @@ static const tetromino_symbol_t s_tetromino_symbols[TOTAL_TETROMINO_NUM] = {
     },
 };
 
-typedef enum dir {
+typedef enum dir
+{
     DIR_BOT,
 } dir_t;
 
-typedef struct tetromino {
+typedef struct tetromino
+{
     int tetromino_id;
     int x;
     int y;
     int velocity;
-//    int acceleration;
+    //    int acceleration;
     dir_t dir;
     color_t color;
 } tetromino_t;
+
+int encode_block(char);
 
 #endif /* __TETROMINO__H */
