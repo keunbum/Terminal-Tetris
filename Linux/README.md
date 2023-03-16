@@ -126,6 +126,56 @@
 
 [//]: # (template)
 
+<font size="3"> <details><summary>miscellaneous search</summary><blockquote> </font>
+
+  <details><summary>abort()와 _Exit()</summary>
+
+  </details>  
+
+  <details><summary>getopt</summary>
+
+  [getopt](https://man7.org/linux/man-pages/man3/pthread_create.3.html)
+  그동안 리눅스 명령행에서 프로그램 실행할 때  
+  `-a`나 `--version` 같은 옵션 처리 어떻게 하나 했더니 시스템 콜이 다 있었네...  
+
+  </details>
+
+<details><summary>const int*와 int* const의 차이</summary>
+  
+  const int* and int* const are two different types of pointers.
+
+  const int* is a pointer to a const int. This means that the int value pointed to by the pointer cannot be modified through the pointer.  
+  However, the pointer itself can be modified to point to a different const int.
+
+  For example:
+
+  ```c
+  const int x = 10;
+  const int y = 20;
+  const int* p = &x; // p points to x
+  p = &y; // p can be modified to point to y
+  //*p = 30; // error: cannot modify the value pointed to by p
+  ```
+
+  On the other hand, int* const is a const pointer to an int. This means that the pointer itself cannot be modified to point to a different int,  
+  but the int value pointed to by the pointer can be modified.
+
+  For example:
+
+  ```c
+  int x = 10;
+  int y = 20;
+  int* const p = &x; // p points to x
+  //p = &y; // error: p cannot be modified to point to y
+  *p = 30; // the value pointed to by p can be modified
+  ```
+
+  </details>
+
+</details>
+
+[//]: # (miscellaneous search)
+
 <font size="3"> <details><summary>2023.03</summary><blockquote> </font>
   <details><summary>03.09(목)</summary>
   
@@ -539,18 +589,10 @@
 
     [pthread_attr_setstacksize](https://man7.org/linux/man-pages/man3/pthread_attr_setstacksize.3.html)를 사용하여 스택 크기 조절 가능.
 
-  ---
-
-  - 그동안 리눅스 명령행에서 프로그램 실행할 때  
-    `-a`나 `--version` 같은 옵션 처리 어떻게 하나 했더니 시스템 콜이 다 있었네...  
-    [getopt](https://man7.org/linux/man-pages/man3/pthread_create.3.html)
-
----
-
-  - abort랑 _Exit 조사하기
+    ---
 
 
-  ### Achievements of the day
+    ### Achievements of the day
 
   오늘 스레드 조사한다고 프로젝트 코드엔 진전이 없고  
   주구장창 man page만 읽고 있는데 이거 맞아?  
@@ -562,28 +604,137 @@
   [//]: # (End of 03.15)
 
 
-<details><summary>03.16(목)</summary>
+  <details><summary>03.16(목)</summary>
 
   - 일단.. 소켓 프로그래밍 공부로 넘어가서  
   스레드 공부 빠삭하게 한 다음에 이쪽으로 넘어올 것.  
   단, 책 내용 맹신하지 말고 man page 꼼꼼하게 다 읽어볼 것.  
   책은 그냥 '이런 라이브러리 함수가 있다' 알려주는 정도로 봐야함.  
 
-  - signal, sigsuspend 등 이어서 조사하기
+  ---
 
----
+  - [pthread_create](https://man7.org/linux/man-pages/man3/pthread_create.3.html)
+
+    : `MT-Safe`
+
+    ```c
+    int pthread_create(pthread_t *restrict thread,
+                          const pthread_attr_t *restrict attr,
+                          void *(*start_routine)(void *),
+                          void *restrict arg);
+    ```
+
+    성공: 0 return, 실패: [error num](https://man7.org/linux/man-pages/man3/pthread_create.3.html#:~:text=ERRORS%20%C2%A0%20%C2%A0%20%C2%A0%20%C2%A0%20top,specified%20in%20attr.) return;
+
+    `thread`: 스레드 ID 반환  
+    `attr`: 새로 생성될 스레드의 속성을 전달하기 위해 사용된다.
+            [pthread_attr_init](https://man7.org/linux/man-pages/man3/pthread_attr_init.3.html)와 관련 함수를 사용하여 설정.  
+            NULL 전달하면 기본 값으로 스레드 생성. 
+
+    생성된 스레드가 종료되는 법  
+    - [pthread_exit](https://man7.org/linux/man-pages/man3/pthread_exit.3.html)  
+      --> [pthread_join](https://man7.org/linux/man-pages/man3/pthread_join.3.html)을 호출한
+      스레드에게 종료 상태를 넘겨 줄 수 있다.  
+    - start_routine 함수에서 return 하기  
+    - [pthread_cancel](https://man7.org/linux/man-pages/man3/pthread_cancel.3.html)  
+    - 프로세스나 임의의 스레드가 [exit](https://man7.org/linux/man-pages/man3/exit.3.html)을 호출하거나,  
+      메인 스레드가 main 함수에서 return한 경우 --> 모든 스레드가 종료됨
+
+    새로 생성된 스레드의 signal mask: 그대로 상속, pending signal: 초기화, alternate signal stack: 초기화, CPU-time clock: 0으로 초기화.
+
+  ---
+
+  - [pthread_join](https://man7.org/linux/man-pages/man3/pthread_join.3.html)
+
+    : `MT-Safe`
+
+    ```c
+    #include <pthread.h>
+
+    int pthread_join(pthread_t thread, void **retval);    
+    ```
+    성공: 0 return, 실패: [error num](https://man7.org/linux/man-pages/man3/pthread_join.3.html#:~:text=ERRORS%20%C2%A0%20%C2%A0%20%C2%A0%20%C2%A0%20top,could%20be%20found.) 
+
+    반드시 `joinable`한 스레드를 대상으로 해야 한다.  
+    
+    `retval`: NULL로 해도 좋고,
+              void* 형 return 값을 받아도 좋고.  
+              아래와 같이 취소된 스레드인지도 확인 가능.
+
+      ```c
+      void *res;
+      pthread_join(..., &res);
+      if (res == PTHREAD_CANCELED) {
+        ...
+      }
+      ```
+
+    pthread_join이 실패하면 좀비 스레드가 만들어진다고 한다. 그래서 좀비가 다수 쌓이면 스레드 생성에 제한을 건다고 함.  
+
+    main 스레드뿐만 아니라 아무 스레드나 다른 joinable한 스레드와 결합 가능하다.
+    
+    > "waitpid(-1, &status, 0)의 pthread 버전은 없습니다. (즉, 종료된 스레드들 중 아무나와 합체)  
+      이런 기능이 필요하다고 생각되면 애플리케이션 디자인을 재고해야 할 것입니다."
+
+
+  - 이론적인 베이스
+
+    race condition을 막기 위한 어떤 방법론이 있고 장단점은 무엇이고 등을 빠삭하게 알아야 한다.  
+    영문 레퍼런스 문서 보는 걸 꺼려하지 말기. 일단 운영체제 책 보면서 정리한 내용 [링크](https://github.com/keunbum/os-world/tree/main/chapters/chapter05/03) 걸어 둠.
+
+
+
+  ---
+
+
+  ### Achievements of the day
+
+  이것저것 조사 많이 해봄..  
+  레퍼런스 문서 읽는게 끝도 없긴 한데,  
+  지금은 CS 지식 다지는 것도 중요. 
+  그러니 시간 아까워 하지 말고 이론 공부에 충분히 투자할 것.
+
+  </details>
+
+  [//]: # (End of 03.16)
+
+
+  <details><summary>03.17(금)</summary>
+
+  pthread에서 mutex랑 semaphore 관련 man page 읽기부터 시작하면 됨.
+
+  ---
+
+
+  - Mutex
+
+    - [pthread_mutex_init](https://man7.org/linux/man-pages/man3/pthread_mutex_init.3p.html)
+
+      ```c
+       #include <pthread.h>
+
+       int pthread_mutex_init(pthread_mutex_t *restrict mutex,
+           const pthread_mutexattr_t *restrict attr);
+       pthread_mutex_t mutex = PTHREAD_MUTEX_INITIALIZER;
+      ```      
+
+    - [pthread_mutex_destory](https://man7.org/linux/man-pages/man3/pthread_mutex_destroy.3p.html)
+
+  ---
 
   - '멀티 프로세스 -> 멀티 스레드'로 바꾼 후, start_game()부터 이어서 구현하기
 
----
+
+  ---
 
 
-### Achievements of the day
+  - signal, sigsuspend 등 이어서 조사하기
 
-</details>
+  ### Achievements of the day
 
-[//]: # (End of 03.16)
+  </details>
 
+  [//]: # (End of 03.17)
 
 </blockquote></details>
 

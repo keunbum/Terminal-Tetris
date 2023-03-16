@@ -1,20 +1,14 @@
 CC = cc
-
-CFLAGS = -Wall -Werror -std=gnu17 -pthread
-
+CFLAGS = -Wall -std=gnu17 -pthread
 SRCDIR = src
 OBJDIR = obj
 BINDIR = bin
 HDRDIR = src
-
 INCLUDES = -I $(HDRDIR)
-
 EXE = tetris
 
 SRC := $(shell find $(SRCDIR) -name '*.c')
 OBJ := $(SRC:$(SRCDIR)/%.c=$(OBJDIR)/%.o)
-
-all: $(BINDIR)/$(EXE)
 
 $(BINDIR)/$(EXE): $(OBJ)
 	@mkdir -p $(@D)
@@ -24,10 +18,11 @@ $(OBJDIR)/%.o: $(SRCDIR)/%.c
 	@mkdir -p $(@D)
 	$(CC) $(CFLAGS) -c $< -o $@ $(INCLUDES)
 
-.PHONY: clean run depend
+all: $(BINDIR)/$(EXE)
 
 dev: all
 
+release: CFLAGS += -Werror
 release: CFLAGS += -Wextra
 release: dev
 
@@ -38,8 +33,10 @@ test: CFLAGS += -DTEST
 test: dev
 
 testdebug: CFLAGS += -DTEST
-testdebug: CFLAGS += -DLOCAL
+testdebug: CFLAGS += -DDEBUG
 testdebug: dev
+
+.PHONY: clean run depend
 
 clean:
 	rm -rf $(BINDIR)/* $(OBJDIR)/*
@@ -47,6 +44,6 @@ clean:
 run:
 	./$(BINDIR)/$(EXE) 2> err.txt
 
-# hmm..
+# I don't think it's necessary, but I write it down for now.
 depend:
 	makedepend --$(CFLAGS)--$(INCLUDES)--$(SRC)--$(HDRDIR)
