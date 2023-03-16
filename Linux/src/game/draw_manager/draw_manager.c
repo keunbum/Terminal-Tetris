@@ -2,11 +2,12 @@
 #include <stdio.h>
 #include <unistd.h>
 
-#include "util/util.h"
-#include "game/draw_manager/draw_manager.h"
 #include "debug/debug.h"
-#include "game/game_play/game_play_screen.h"
+#include "game/draw_manager/cursor.h"
+#include "game/draw_manager/draw_manager.h"
 #include "game/game_play/game_play_grid_matrix.h"
+#include "game/game_play/game_play_screen.h"
+#include "util/util.h"
 
 static void draw_unit_matrix(wchar_t ch)
 {
@@ -23,8 +24,7 @@ static void draw_unit_matrix_at(wchar_t ch, int x, int y)
 static void draw_row_matrix_at(wchar_t ch, int sx, int sy, int ey)
 {
     wgotoxy(sx, sy);
-    for (int j = sy; j < ey; j += 1)
-    {
+    for (int j = sy; j < ey; j += 1) {
         draw_unit_matrix(ch);
     }
 }
@@ -33,8 +33,7 @@ static void draw_row_matrix_at(wchar_t ch, int sx, int sy, int ey)
 static void draw_col_matrix_at(wchar_t ch, int sx, int ex, int sy)
 {
     wgotoxy(sx, sy);
-    for (int i = sx; i < ex; i += 1)
-    {
+    for (int i = sx; i < ex; i += 1) {
         draw_unit_matrix_at(ch, i, sy);
     }
 }
@@ -80,8 +79,7 @@ static void draw_inside_area_at(int sx, int sy)
     int small_h = GAME_PLAY_GRID_MATRIX_HEIGHT - 2;
     int small_w = GAME_PLAY_GRID_MATRIX_WIDTH - 2;
     wgotoxy(sx + 1, sy + 1);
-    forn(i, small_h)
-    {
+    forn (i, small_h) {
         draw_row_matrix_at(BLOCK_EMPTY, sx + 1 + i, sy + 1, sy + 1 + small_w / 2);
     }
 }
@@ -91,7 +89,6 @@ void draw_whole_screen_at(int sx, int sy)
     debug();
 
     wclear();
-    wenable_cursor();
     //wdisable_cursor();
     draw_outside_area_at(sx, sy);
     draw_inside_area_at(sx + GAME_PLAY_GRID_MATRIX_START_POS_X, sy + GAME_PLAY_GRID_MATRIX_START_POS_Y);
@@ -100,21 +97,21 @@ void draw_whole_screen_at(int sx, int sy)
 static void draw_row_blocks(const block_t* row)
 {
     my_assert(row != NULL);
-    static const wchar_t BLOCK_UNICODE_FOR_DRAW[] = { BLOCK_FULL, BLOCK_EMPTY };
-    for (int j = 0; row[j]; ++j)
-    {
-        draw_unit_matrix(BLOCK_UNICODE_FOR_DRAW[encode_block(row[j])]);
+
+    static const wchar_t S_BLOCK_UNICODE_FOR_DRAW[] = { BLOCK_FULL, BLOCK_EMPTY };
+    for (int j = 0; row[j]; ++j) {
+        draw_unit_matrix(S_BLOCK_UNICODE_FOR_DRAW[encode_block(row[j])]);
     }
 }
 
 void draw_a_tetromino_at(const tetromino_t *t, int sx, int sy)
 {
-    const tetromino_symbol_t* symbol = s_tetromino_symbols + t->tetromino_id;
-    const int x_offset = 0;
-    const int y_offset = -1;
-    wgotoxy(sx + x_offset, sy + y_offset);
-    forn(i, symbol->height)
-    {
+    static const int X_OFFSET = 0;
+    static const int Y_OFFSET = -1;
+    const tetromino_symbol_t* symbol = g_tetromino_symbols + t->tetromino_id;
+    
+    wgotoxy(sx + X_OFFSET, sy + Y_OFFSET);
+    forn (i, symbol->height) {
         draw_row_blocks(symbol->grid[i]);
         draw_newline();
     }
@@ -130,9 +127,13 @@ void draw_a_default_tetromino_at(int id, int sx, int sy)
     draw_a_tetromino_at(&t, sx, sy);
 }
 
-static void decode_seconds(int sec, int* const out_hh, int* const out_mm, int* const out_ss)
+static void decode_sec_to_hhmmss(int sec, int* const out_hh, int* const out_mm, int* const out_ss)
 {
     debug();
+
+    my_assert(out_hh != NULL);
+    my_assert(out_mm != NULL);
+    my_assert(out_ss != NULL);
 
     *out_hh = sec / 3600;
     *out_mm = (sec % 3600) / 60;
@@ -144,7 +145,7 @@ static void draw_sec_in_hhmmss(int sec)
     debug();
 
     int hh, mm, ss;
-    decode_seconds(sec, &hh, &mm, &ss);
+    decode_sec_to_hhmmss(sec, &hh, &mm, &ss);
     wprintf(L"Time: %02d:%02d:%02d\n", hh, mm, ss);
 }
 

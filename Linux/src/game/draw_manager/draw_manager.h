@@ -7,7 +7,6 @@
 
 #include <wchar.h>
 
-#include "cursor.h"
 #include "game/tetromino/tetromino.h"
 
 #define UNIT_MATRIX_CORNER_TOP_LEFT (0x2554)
@@ -28,12 +27,9 @@
 
 #define draw_newline() wprintf(L"\n")
 
-//void draw_unit_matrix(wchar_t);
 void draw_whole_screen_at(int, int);
-
 void draw_a_tetromino_at(const tetromino_t *, int, int);
 void draw_a_default_tetromino_at(int id, int sx, int sy);
-
 void draw_game_play_timer_at_with(int, int, int);
 
 #endif /* __DRAW_MANAGER__H */

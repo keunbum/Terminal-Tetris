@@ -8,6 +8,8 @@
 
 #include "debug/debug.h"
 #include "error/error_handling.h"
+#include "game/draw_manager/cursor.h"
+#include "game/draw_manager/draw_manager.h"
 #include "game/game_manager/game_manager.h"
 #include "game/game_manager/menu.h"
 #include "game/game_play/game_play_manager.h"
@@ -17,8 +19,7 @@
 #include "util/util.h"
 
 #define REGISTER_HANDLER_EMPTYSET(_act, _handler, _sa_flags, _sig_num, _oact) \
-    do                                                                        \
-    {                                                                         \
+    do {                                                                      \
         _act.sa_handler = _handler;                                           \
         sigemptyset(&_act.sa_mask);                                           \
         _act.sa_flags = _sa_flags;                                            \
@@ -26,8 +27,7 @@
     } while (false)
 
 #define REGISTER_HANDLER_EMPTYSET_NOOACT(_act, _handler, _sa_flags, _sig_num) \
-    do                                                                        \
-    {                                                                         \
+    do {                                                                      \
         _act.sa_handler = _handler;                                           \
         sigemptyset(&_act.sa_mask);                                           \
         _act.sa_flags = _sa_flags;                                            \
@@ -36,9 +36,9 @@
 
 #define GAME_MODULE_NUM (2)
 
-static sigset_t sigset;
+static sigset_t g_s_sigset;
 
-static void childproc_handler(int sig)
+static void handle_childproc(int sig)
 {
     ewprintf("me: %d, p: %d, take_childproc(%d)\n", getpid(), getppid(), sig);
     assert(sig == SIGCHLD);
@@ -51,17 +51,17 @@ static void childproc_handler(int sig)
     // ewprintf("Removed proc id: %d\n", pid);
     // ewprintf("Child send %d\n", );
 
-    int exit_status = WEXITSTATUS(status);
-    if (exit_status == EXIT_GAME_OVER)
-    {
+    int exit_status;
+    if ((exit_status = WEXITSTATUS(status)) == EXIT_GAME_OVER) {
         return;
     }
-    sigsuspend(&sigset);
+    sigsuspend(&g_s_sigset);
 }
 
 static void load_ui(void)
 {
     debug();
+
     draw_whole_screen_at(GAME_PLAY_SCREEN_START_POS_X, GAME_PLAY_SCREEN_START_POS_Y);
     // draw_a_default_tetromino_at(0, 20, 20);
     fflush(stdout);
@@ -71,21 +71,21 @@ static void load_ui(void)
 static void load_game(void)
 {
     debug();
+
     load_ui();
 }
 
-static void execute_game_module_in_parallel(module_t module, const void* arg)
+static void execute_game_module_in_parallel(const module_t module, const void* arg)
 {
     debug();
 
     /* It may be replaced with a thread method in the future.
        So keep maintainability. */
     pid_t pid = fork();
-    if (pid == 0)
-    {
-        module(arg);
+    if (pid == 0) {
+        module((void*) arg);
         exit(EXIT_SUCCESS);
-    }   
+    }
 }
 
 static void execute_game_modules_in_parallel(void)
@@ -93,11 +93,10 @@ static void execute_game_modules_in_parallel(void)
     debug();
 //    ewprintf("me: %d, p: %d, run_game()\n", getpid(), getppid());
 
-    static const module_t module_ignite_funcs[] = {run_game_play_timer, start_game};
-    static const int args[] = {GAME_PLAY_TIME_LIMIT, 0};
-    forn(i, GAME_MODULE_NUM)
-    {
-        execute_game_module_in_parallel(module_ignite_funcs[i], &args[i]);
+    static const module_t s_module_ignite_funcs[GAME_MODULE_NUM] = {run_game_play_timer, start_game};
+    static const int s_args[] = {GAME_PLAY_TIME_LIMIT, 0};
+    forn (i, GAME_MODULE_NUM) {
+        execute_game_module_in_parallel(s_module_ignite_funcs[i], &s_args[i]);
         // ewprintf("%dth loop, child's pid: %d\n", i, pid);
     }
 }
@@ -108,15 +107,15 @@ static void wait_modules(void)
        but when I searched, there were sigwait, sigwaitinfo, etc.
        You need to read the ref docs properly and use the appropriate system call. */
     /* Of course, you may use the thread method. */
-    sigsuspend(&sigset);
+    sigsuspend(&g_s_sigset);
 }
 
 static void run_game(void)
 {
     debug();
 
-    static struct sigaction act;
-    REGISTER_HANDLER_EMPTYSET_NOOACT(act, childproc_handler, 0, SIGCHLD);
+    static struct sigaction s_act;
+    REGISTER_HANDLER_EMPTYSET_NOOACT(s_act, handle_childproc, 0, SIGCHLD);
     load_game();
     execute_game_modules_in_parallel();
     wait_modules();
@@ -133,8 +132,7 @@ static void handle_cmd(int cmd)
 {
     debug();
 
-    switch (cmd)
-    {
+    switch (cmd) {
     case TITLE_MENU_CMD_START_GAME:
         run_game();
         break;
@@ -142,7 +140,7 @@ static void handle_cmd(int cmd)
         exit_game();
         break;
     case TITLE_MENU_CMD_ERROR:
-        handle_error("Read input faild.");
+        handle_error("Reading input faild.");
         break;
     default:
         handle_error("Not a valid menu cmd.");

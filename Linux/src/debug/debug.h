@@ -2,9 +2,10 @@
 #define __DEBUG__H
 
 #ifdef DEBUG
-#include <stdio.h>
-#include <wchar.h>
 #include <assert.h>
+#include <wchar.h>
+#include <stdio.h>
+
 #define ewgotoxy(x, y) fwprintf(stderr, L"\e[%d;%df", (x) + 1, (y) + 1)
 #define ewprintf(...) fwprintf(stderr, L ##__VA_ARGS__), fflush(stderr)
 #define my_assert(...) assert(__VA_ARGS__)

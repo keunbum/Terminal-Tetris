@@ -5,8 +5,7 @@
 
 int test_module(int argc, char* argv[])
 {
-    while (false)
-    {
+    while (false) {
         //char ch = getch();
 
     }
