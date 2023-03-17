@@ -1,14 +1,14 @@
-CC = cc
-CFLAGS = -Wall -std=gnu17 -pthread
-SRCDIR = src
-OBJDIR = obj
-BINDIR = bin
-HDRDIR = src
-INCLUDES = -I $(HDRDIR)
-EXE = tetris
+CC=cc
+CFLAGS=-Wall -std=gnu17 -pthread
+SRCDIR=src
+OBJDIR=obj
+BINDIR=bin
+HDRDIR=src
+INCLUDES=-I $(HDRDIR)
+EXE=tetris
 
-SRC := $(shell find $(SRCDIR) -name '*.c')
-OBJ := $(SRC:$(SRCDIR)/%.c=$(OBJDIR)/%.o)
+SRC:=$(shell find $(SRCDIR) -name '*.c')
+OBJ:=$(SRC:$(SRCDIR)/%.c=$(OBJDIR)/%.o)
 
 $(BINDIR)/$(EXE): $(OBJ)
 	@mkdir -p $(@D)
@@ -22,18 +22,18 @@ all: $(BINDIR)/$(EXE)
 
 dev: all
 
-release: CFLAGS += -Werror
-release: CFLAGS += -Wextra
+release: CFLAGS+=-Werror
+release: CFLAGS+=-Wextra
 release: dev
 
-debug: CFLAGS += -DDEBUG
+debug: CFLAGS+=-DDEBUG
 debug: dev
 
-test: CFLAGS += -DTEST
+test: CFLAGS+=-DTEST
 test: dev
 
-testdebug: CFLAGS += -DTEST
-testdebug: CFLAGS += -DDEBUG
+testdebug: CFLAGS+=-DTEST
+testdebug: CFLAGS+=-DDEBUG
 testdebug: dev
 
 .PHONY: clean run depend

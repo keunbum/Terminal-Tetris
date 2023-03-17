@@ -128,13 +128,19 @@
 
 <font size="3"> <details><summary>miscellaneous search</summary><blockquote> </font>
 
+  <details><summary>signal</summary>
+  
+  signal, sigsuspend 등 이어서 조사하기
+  
+  </details>  
+
   <details><summary>abort()와 _Exit()</summary>
 
   </details>  
 
   <details><summary>getopt</summary>
 
-  [getopt](https://man7.org/linux/man-pages/man3/pthread_create.3.html)
+  [getopt](https://man7.org/linux/man-pages/man3/pthread_create.3.html)  
   그동안 리눅스 명령행에서 프로그램 실행할 때  
   `-a`나 `--version` 같은 옵션 처리 어떻게 하나 했더니 시스템 콜이 다 있었네...  
 
@@ -269,7 +275,7 @@
     * E: 매 주기마다 밖으로 나온 테트로미노의 현재 위치를 비롯해 모든 화면의 변화를 게임 화면에 그리는 사람.
 
   
-  ### Achievements of the day
+### Achievements of the day
 
   근데 콘솔 출력 Visual Studio Code에서만 예쁘게 나오는 것 같은데..
 
@@ -364,7 +370,7 @@
   멀티 프로세스를 도입하지 않으면 해결할 수 없는 문제가 발생한 경우에만 (ex. 최적화를 했음에도 눈에 띄는 성능 저하)  
   다중 프로세싱 도입을 고려하라는 입장..
 
-  ### Achievements of the day
+### Achievements of the day
   
   - 소스 코드 폴더 구조로 분류.
   - Makefile 도입
@@ -388,7 +394,7 @@
   일단 실행 시 문제 없게 끔 수정해놨으니까, 내일부터 Game Play 로직 구현하면 됨.  
   한번에 다 짜려고 하지 말고, 단계적으로 차근차근 구현하기.
 
-  ### Achievements of the day
+### Achievements of the day
 
   </details>
 
@@ -400,7 +406,7 @@
 
   - 전반적인 프로젝트 구조 변경 for 가독성 향상
 
-  ### Achievements of the day
+### Achievements of the day
 
   </details>
 
@@ -459,7 +465,7 @@
       커널 모드에서 유저 모드로 전환(context switching)될 때 마다 커널은 열린 시그널(프로세스가 등록한 핸들러가 목적으로 한)이 있는지 확인한다.
 
 
-  ### Achievements of the day
+### Achievements of the day
 
   시그널 관련 문서 읽다가 쓰레드도 써야겠다는 결론..
 
@@ -592,7 +598,7 @@
     ---
 
 
-    ### Achievements of the day
+### Achievements of the day
 
   오늘 스레드 조사한다고 프로젝트 코드엔 진전이 없고  
   주구장창 man page만 읽고 있는데 이거 맞아?  
@@ -687,7 +693,7 @@
   ---
 
 
-  ### Achievements of the day
+### Achievements of the day
 
   이것저것 조사 많이 해봄..  
   레퍼런스 문서 읽는게 끝도 없긴 한데,  
@@ -703,6 +709,10 @@
 
   pthread에서 mutex랑 semaphore 관련 man page 읽기부터 시작하면 됨.
 
+  멀티 스레딩에서 임계 영역 문제를 해결하기 위해 어떤 매커니즘을 사용하기로 했으면,  
+  다양한 선택지 중에 왜 그 매커니즘을 선택했는지 근거를 말할 수 있어야 한다.
+
+
   ---
 
 
@@ -710,31 +720,264 @@
 
     - [pthread_mutex_init](https://man7.org/linux/man-pages/man3/pthread_mutex_init.3p.html)
 
-      ```c
-       #include <pthread.h>
 
-       int pthread_mutex_init(pthread_mutex_t *restrict mutex,
-           const pthread_mutexattr_t *restrict attr);
-       pthread_mutex_t mutex = PTHREAD_MUTEX_INITIALIZER;
+      ```c
+      #include <pthread.h>
+
+      int pthread_mutex_init(pthread_mutex_t *restrict mutex,
+          const pthread_mutexattr_t *restrict attr);
+      pthread_mutex_t mutex = PTHREAD_MUTEX_INITIALIZER;
       ```      
+
+      성공: 0; 실패: [error](https://man7.org/linux/man-pages/man3/pthread_mutex_destroy.3p.html#:~:text=ERRORS%20%C2%A0%20%C2%A0%20%C2%A0%20%C2%A0%20top,sections%20are%20informative) return
+
+      `attr`: `mutex`의 특성 지정. NULL 넘기면 디폴트 값 지정.  
+              따로 지정하고 싶으면 [pthread_mutexattr_init](https://man7.org/linux/man-pages/man3/pthread_mutexattr_init.3.html) 이용
+
+      성공적으로 초기화 되었으면 unlocked 상태로 나옴.
+      추가 요구 사항은 [여기](https://pubs.opengroup.org/onlinepubs/9699919799/functions/V2_chap02.html#:~:text=2.9.9%20Synchronization%20Object,is%20non%2Dzero.) 참조.
+
+      이미 초기화되어 있는 뮤텍스를 다시 초기화 -> UB.
+
+      `attr` 넘길 때 초기화되지 않은 `attr` 넘기는 건 UB. 그러니 꼭 초기화된 객체를 넘기도록.
+
 
     - [pthread_mutex_destory](https://man7.org/linux/man-pages/man3/pthread_mutex_destroy.3p.html)
 
+      ```c
+      #include <pthread.h>
+
+      int pthread_mutex_destroy(pthread_mutex_t *mutex);
+      ```
+
+      성공: 0; 실패: [error](https://man7.org/linux/man-pages/man3/pthread_mutex_destroy.3p.html#:~:text=ERRORS%20%C2%A0%20%C2%A0%20%C2%A0%20%C2%A0%20top,sections%20are%20informative) return
+      
+      뮤텍스 객체 파괴. 초기화되지 않은 상태가 된다.  
+      이러한 객체를 다시 참조하는 건 UB.
+      이러한 뮤텍스 객체는 `pthread_mutex_init`을 통해 다시 초기화된다.  
+
+      잠금 해제된 초기화된 뮤텍스를 파괴하는 건 안전하다. 그러나,  
+      잠긴 뮤텍스나 잠그려고 시도하는 뮤텍스 또는 `pthread_cond_timedwait`, `pthread_cond_wait` 호출에  
+      사용 중인 뮤텍스를 파괴하려고 하는 건 UB.
+
+      초기화되지 않은 mutex 객체를 파괴하는 건 UB.
+
+
+      문서를 읽어 보면 장황하게 서술되어 있는데,  
+      결국 UB로 남길 것인가 에러를 감지하도록 할 것인가 그거 말하는 거 같음.  
+      퍼포먼스가 중요하면 체크를 덜 하고, 성능을 좀 버리더라도 에러를 꼭 피하고 싶다면 체크를 세세하게 체크하는 식.
+
+      시스템 리소스를 사용할 수 없는 오류 같은 필수적인 건 정의를 하지만,  
+      사용자가 코딩을 잘못해서 저지르는 에러까지 굳이 잡을 필요는 없다 그 얘기.  
+      (전반적으로 사용자보단 시스템 콜 구현자한테 하는 말인듯.
+
+      static 초기화에 대해서도 말이 나온다.  
+      C에는 모듈을 초기화 하기 위해서 명시적으로 함수를 호출하지 않고,  
+      스스로 초기화 하는 경우가 종종 있다고 함. 이럴 때 정적 초기화가 유용한 듯.
+
+      예제 코드 읽고 있는데, [pthread_once](https://man7.org/linux/man-pages/man3/pthread_once.3p.html)
+      이건 또 뭐야? 심지어 `pthread_once_t`이 따로 있네.
+
+
+        Without static initialization, a self-initializing routine foo()
+        might look as follows:
+
+        ```c
+            static pthread_once_t foo_once = PTHREAD_ONCE_INIT;
+            static pthread_mutex_t foo_mutex;
+
+            void foo_init()
+            {
+                pthread_mutex_init(&foo_mutex, NULL);
+            }
+
+            void foo()
+            {
+                pthread_once(&foo_once, foo_init);
+                pthread_mutex_lock(&foo_mutex);
+              /* Do work. */
+                pthread_mutex_unlock(&foo_mutex);
+            }
+        ```
+
+        With static initialization, the same routine could be coded as
+        follows:
+
+        ```c
+            static pthread_mutex_t foo_mutex = PTHREAD_MUTEX_INITIALIZER;
+
+            void foo()
+            {
+                pthread_mutex_lock(&foo_mutex);
+              /* Do work. */
+                pthread_mutex_unlock(&foo_mutex);
+            }      
+        ```
+
+
+      그렇다고 합니다. (코드도 간결하고 성능 측면에서도 이득이라고 함)  
+      근데 초기화 실패를 감지 못하기 때문에 상황 봐 가면서 사용할 것.  
+
+      나머지 글들은 번역하기 귀찮아서 그대로 올림.
+
+      Destroying Mutexes  
+        A mutex can be destroyed immediately after it is unlocked.  
+        However, since attempting to destroy a locked mutex, or a mutex  
+        that another thread is attempting to lock, or a mutex that is  
+        being used in a pthread_cond_timedwait() or pthread_cond_wait()  
+        call by another thread, results in undefined behavior, care must  
+        be taken to ensure that no other thread may be referencing the  
+        mutex. 
+
+      Robust Mutexes  
+        Implementations are required to provide robust mutexes for  
+        mutexes with the process-shared attribute set to  
+        PTHREAD_PROCESS_SHARED. Implementations are allowed, but not  
+        required, to provide robust mutexes when the process-shared  
+        attribute is set to PTHREAD_PROCESS_PRIVATE.  
+
+
+    - [pthread_mutex_lock](https://man7.org/linux/man-pages/man3/pthread_mutex_lock.3p.html)
+
+      ```c
+      #include <pthread.h>
+
+      int pthread_mutex_lock(pthread_mutex_t *mutex);
+      int pthread_mutex_trylock(pthread_mutex_t *mutex);
+      int pthread_mutex_unlock(pthread_mutex_t *mutex);
+      ```
+
+      뮤텍스 속성 중에 recursive가 나오는데 뭔 소린지 모르겠다..  
+      일단 [링크](https://man7.org/linux/man-pages/man3/pthread_mutex_lock.3p.html#:~:text=DESCRIPTION%20%C2%A0%20%C2%A0%20%C2%A0%20%C2%A0%20top,()%20is%20undefined.) 걸어 둠.
+
+      
+      뮤텍스 락에서 블로킹 되어 있는 스레드에게 시그널이 전달되면 시그널 핸들러로부터 return 한 후  
+      돌아와서 다시 블로킹 상태에 머문다고 한다.
+
+      스레드가 exit 하려고 할 때, 이전에 mutex로 lock을 걸어놓고 unlock을 빼먹는 일이 일어나지 않도록 유의하자. (이런 면에서 file io와 유사)
+
+      <뮤텍스를 소유하고 있는 스레드가 lock을 해놓고 아직 unlock은 하지 않은> 상황에서
+      '뮤텍스를 소유하고 있는 스레드'의 프로세스가 exit 하면 pthread_mutex_lock은 `EOWNERDEAD`를 반환한다.  
+      뮤텍스를 소유하고 있는 스레드가 exit하고 프로세스가 살아있어도 `pthread_mutex_lock`은 `EOWNERDEAD`를 반환한다. 
+
+      위의 세 함수들이 return 하는 [error](https://man7.org/linux/man-pages/man3/pthread_mutex_lock.3p.html#:~:text=ERRORS%20%C2%A0%20%C2%A0%20%C2%A0%20%C2%A0%20top,sections%20are%20informative.) 값들.  
+      함수 별로 잘 설명되어 있다.
+
+
+      여기서 잠시.  
+      man page를 읽다 보면 계속 'robust mutex'란 표현이 나오는데,  
+      robust mutex란 무엇인가? 보통의 mutex와 어떻게 다른가?  
+      (번역하면 어색해서 원문 그대로 작성)
+
+      > A robust mutex is a type of mutex that specifies the behavior of the mutex when the owning thread dies without unlocking it. If a process or thread holding a robust mutex doesn’t unlock it (because it crashed or was terminated), then instead of hanging forever on the lock, the next acquirer of the mutex will be told about this situation and given a chance to clean up whatever was left inconsistent.
+      >
+      > The robustness attribute can be set using pthread_mutexattr_setrobust() function. The default value for this attribute is PTHREAD_MUTEX_STALLED, which means that if the owning thread dies without unlocking the mutex, no action is taken.
+
+      robust 개념을 제대로 이해하고 [설명](https://man7.org/linux/man-pages/man3/pthread_mutex_lock.3p.html#:~:text=Applications%20that%20have,take%20appropriate%20action.) 읽어볼 것.
+
+      [pthread_mutexattr_setrobust](https://man7.org/linux/man-pages/man3/pthread_mutexattr_setrobust.3.html) 좀  
+      읽어 봐야 할 듯.
+
+      [근거? 문서](https://man7.org/linux/man-pages/man3/pthread_mutex_lock.3p.html)도 읽긴 했음.
+
+      robust 관련해서 [pthread_mutex_consistent](https://man7.org/linux/man-pages/man3/pthread_mutex_consistent.3p.html)도 읽어 봐야 함. (.. 근데 정상적으로 종료할 자신 있으면 굳이..?)
+
+      뮤텍스를 공부하다 보면 'consistent'란 단어가 자주 등장하는데,  
+      여기서 'consistent'는 어떤 의미로 쓰인 걸까?  
+      > In the context of mutexes and multithreading, the term “consistent” often refers to the state of shared data or resources that are protected by a mutex. When multiple threads access shared data concurrently, a mutex is used to ensure that only one thread can access the data at a time. This helps to prevent race conditions and ensures that the shared data remains in a consistent state.
+      >
+      > If a thread holding a mutex dies without unlocking it (for example, due to a crash), then the shared data protected by the mutex may be left in an inconsistent state. In this case, it is up to the next owner of the mutex to make the state consistent again.
+
+
+
   ---
 
-  - '멀티 프로세스 -> 멀티 스레드'로 바꾼 후, start_game()부터 이어서 구현하기
+  - Semaphore
+
+    - [sem_overview](https://man7.org/linux/man-pages/man7/sem_overview.7.html)
+    
+    
+      [여기](https://github.com/keunbum/os-world/tree/main/chapters/chapter05/03)에 세마포어에 대해서 적어놨지만 도움이 될만 한 내용 또 서술.
+
+      `semaphore`는 그 값이 0 미만으로 절대 떨어지지 않는 정수이다. 두 가지 연산이 수행될 수 있는데,
+
+      1. `semaphore`를 1 증가시킨다. ([sem_post(3)](https://man7.org/linux/man-pages/man3/sem_post.3.html))
+      2. `semaphore`를 1 감소시킨다. ([sem_wait(3)](https://man7.org/linux/man-pages/man3/sem_wait.3.html))
+
+      `samephore`가 0일 때 sem_wait을 호출하면 값이 0보다 커질 때 까지 스레드가 block 당함.
+
+      [Named Unnamed semaphore](https://man7.org/linux/man-pages/man7/sem_overview.7.html#:~:text=Named%20semaphores%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20A,sem_unlink(3).)
+
+        두 프로세스가 세마포어 이름을 공유하면 같은 세마포어 사용 가능. ([sem_open](https://man7.org/linux/man-pages/man3/sem_open.3.html), [sem_close](https://man7.org/linux/man-pages/man3/sem_close.3.html) 참조)
+
+        모든 프로세스가 완전히 다 사용했으면 [sem_unlink](https://man7.org/linux/man-pages/man3/sem_unlink.3.html) 
+        호출하여 시스템에서 완전히 제거.
 
 
-  ---
+      [Unnamed semaphore (memory-based semaphores)](https://man7.org/linux/man-pages/man7/sem_overview.7.html#:~:text=Unnamed%20semaphores%20(memory,sem_destroy(3).))
 
+        unnamed는 멀티 스레드나 멀티 프로세스에 의해서 공유되는 세마포어이다. 스레드의 경우 전역 변수가 대표적.  
+        프로세스는 세마포어가 반드시 미리 할당된 공유된 메모리 공간에 위치해야 한다. (e.g., a System V shared memory segment created using [shmget](https://man7.org/linux/man-pages/man2/shmget.2.html), or a POSIX shared memory object built created using [shm_open](https://man7.org/linux/man-pages/man3/shm_open.3.html))
 
-  - signal, sigsuspend 등 이어서 조사하기
+        사용 전 반드시 [sem_init](https://man7.org/linux/man-pages/man3/sem_init.3.html) 호출할 것.
+        그리고 상응하여 반드시 [sem_destroy](https://man7.org/linux/man-pages/man3/sem_destroy.3.html) 호출할 것.
 
-  ### Achievements of the day
+      [Accessing named semaphores via the filesystem](https://man7.org/linux/man-pages/man7/sem_overview.7.html#:~:text=Accessing%20named%20semaphores,per%2D%0A%20%20%20%20%20%20%20group%20basis.)도 가능하다고 한다.
 
+      구식: System V  
+      신식: POSIX
+
+    - [sem_init](https://man7.org/linux/man-pages/man3/sem_init.3.html)  
+
+    - [sem_wait](https://man7.org/linux/man-pages/man3/sem_wait.3.html)  
+
+  --- 
+
+---
+
+### Achievements of the day
+
+  - 동기화 문제를 해결하기 위한 솔루션들.
+
+    - Semaphore  
+    : 스레드들 사이에 실행 순서가 중요할 때 요긴하게 쓰인다. (2개 이상의 세마포어를 사용할 수도 있다.)
+
+    - Mutex
+
+    - Atomic operation
+
+    - Condition variables
+
+    - Message passing
+
+    정답은 없다. 사실 제일 좋은 건 다양한 버전을 구현해서 경험해보고  
+    프로젝트에 적합한 솔루션을 고르는 것인 듯.
+
+    처음부터 멀티 스레드를 고려하면서 게임을 만들면 오히려 더 머리 아플 수도 있음.
+    각각을 모듈화 한 다음에 직렬 버전으로 구현하고, 차차 발전시키는 식으로.  
+  
+  소켓 프로그래밍 책 보면 '임계 영역' 범위를 잡는 데 정답은 없고, 프로그래머 재량이란다.  
+  뮤텍스랑 세마포어 그리고 그밖에 동기화 문제 솔루션들 개념 익힘.  
+
+  다음엔 sem_init, sem_wait부터 읽으면 됨.
   </details>
 
   [//]: # (End of 03.17)
+
+
+  <details><summary>03.18(토)</summary>
+
+  다시 코드 작성으로 넘어가자.  
+  세마포어가 프로젝트에 당장 필요한 부분이 아니기도 하고, man page 읽는데 너무 오래 걸려서..  
+
+  1. 게임 모듈 - 멀티 프로세스 -> 멀티 스레드 로 수정
+  2. 아토믹이나 뮤텍스 둘 중에 하나 골라서 입출력 동기화 문제 해결
+
+### Achievements of the day
+
+  </details>
+
+[//]: # (End of 03.18)
 
 </blockquote></details>
 
