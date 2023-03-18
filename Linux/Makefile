@@ -5,7 +5,7 @@ OBJDIR=obj
 BINDIR=bin
 HDRDIR=src
 INCLUDES=-I $(HDRDIR)
-EXE=tetris
+EXE=Tetris
 
 SRC:=$(shell find $(SRCDIR) -name '*.c')
 OBJ:=$(SRC:$(SRCDIR)/%.c=$(OBJDIR)/%.o)
@@ -26,7 +26,10 @@ release: CFLAGS+=-Werror
 release: CFLAGS+=-Wextra
 release: dev
 
+debug: CFLAGS+=-g
 debug: CFLAGS+=-DDEBUG
+#debug: CFLAGS+=-Werror
+#debug: CFLAGS+=-Wextra
 debug: dev
 
 test: CFLAGS+=-DTEST

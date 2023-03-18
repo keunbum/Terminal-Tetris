@@ -973,11 +973,109 @@
   1. 게임 모듈 - 멀티 프로세스 -> 멀티 스레드 로 수정
   2. 아토믹이나 뮤텍스 둘 중에 하나 골라서 입출력 동기화 문제 해결
 
+  ---
+
+  - Visual Studio Code에서 gdb로 디버깅하는 세팅 작업
+
+    ~~[공식 사이트 문서](https://code.visualstudio.com/docs/cpp/config-wsl)~~  
+    ~~[블로그 글](https://goodgodgd.github.io/ian-flow/archivers/vscode-tutorial)~~  
+    [공식 사이트 문서2](https://code.visualstudio.com/docs/editor/debugging)  
+
+    make로 컴파일하고 디버깅 따로 돌리기로.
+
+
+  - pthread 구현 문제..
+
+    [pthread_cleanup_pop](https://man7.org/linux/man-pages/man3/pthread_cleanup_pop.3p.html)
+
+    하.. 뭐지 왜 적절한 멀티 스레딩 방법이 안떠오르지..  
+    정답이 없어서 더 어려운 이 느낌. 그냥 멀티 프로세스로 할까? 스레드에도 시그널 기법을 사용하면 안되나?
+
+    괜히 너무 어렵게 구현하려고 하고 있는 건가..
+
+    벌써 포기하고 싶은 맘이 드는데;  
+    Bing AI에게 털어놓게 되는 이 심정. (얘 공감할 줄도 안다)
+
+    > Q. I'm making a Tetris game as a portfolio for a job at a game company. But is it right that I'm doing this right now? Am I making a game that is too old? I'm worried. Help me. Is there anything you can give me?
+    >
+    > A. It’s understandable to feel worried about your portfolio. However, creating a Tetris game can demonstrate your skills in game development and programming. It’s a classic game that has been popular for decades and is still enjoyed by many people today. Additionally, adding your own unique twist or features to the game can showcase your creativity and innovation.
+
+    ---
+
+    > Q.What do you think about making a Tetris game in a CLI environment? Is it way too outdated? To be competitive, should I use an engine like Unreal or Unity, or an API like DirectX?
+    >
+    > A. Making a Tetris game in a Command Line Interface (CLI) environment can be an interesting and unique approach. While it may not have the same visual appeal as a game made with a modern game engine like Unreal or Unity, it can still be engaging and fun to play. Additionally, creating a CLI game can demonstrate your skills in programming and problem-solving.  
+    >
+    > That being said, if your goal is to create a visually impressive game that showcases your skills in graphics and technology, using a modern game engine or API like DirectX may be a better choice. These tools provide powerful features and capabilities that can help you create high-quality games.  
+    >
+    > Ultimately, the decision of which tools to use depends on your goals for the project and what you want to showcase in your portfolio.  
+
+    ---
+
+    > Q. How can I make my CLI Tetris game engaging?  
+    > A. Making a CLI Tetris game engaging can be challenging, but there are several ways you can approach it. One way is to focus on the gameplay mechanics and make sure they are well-designed and fun to play. You could add unique twists to the classic Tetris gameplay, such as power-ups or special abilities.  
+    >
+    > Another way to make your CLI Tetris game engaging is by incorporating a story or theme into the game. As mentioned earlier, you could create a narrative that unfolds as the player progresses through the levels. You could also use text-based storytelling techniques such as dialogue or descriptions to convey mood and emotion.  
+    >
+    > Additionally, you could focus on creating a polished and user-friendly interface for your CLI Tetris game. Make sure that the controls are intuitive and easy to use, and consider adding features such as high score tracking or customizable settings.
+
+    ---
+
+    > Q. What are some examples of unique gameplay mechanics?  
+    > A. There are many unique gameplay mechanics that you could incorporate into your Tetris game to make it stand out. Here are a few examples:  
+    > 
+    > - Power-ups: You could add power-ups that the player can collect and use to gain an advantage. For example, a power-up that clears multiple lines at once or one that slows down the falling blocks.
+    > 
+    > - Special abilities: You could give the player special abilities that they can use to manipulate the blocks in unique ways. For example, an ability that allows the player to rotate a block in place or one that lets them swap two adjacent blocks.
+    >
+    > - Objectives: You could add objectives for the player to complete as they play. For example, clearing a certain number of lines within a time limit or reaching a specific score.
+    >
+    > - Multiplayer: You could add multiplayer modes where players compete against each other in real-time. This could include traditional head-to-head gameplay or more unique modes such as cooperative play or team-based challenges.
+    >
+    > These are just a few examples of unique gameplay mechanics that you could incorporate into your Tetris game. The key is to experiment and find what works best for your game.
+
+    ---
+
+    > Q. How can I implement special abilities in my Tetris game?  
+    > A. Implementing special abilities in your Tetris game can add an extra layer of depth and strategy to the gameplay. Here are a few steps you can follow to implement special abilities:
+    > 
+    > 1. Design the abilities: Start by brainstorming and designing the special abilities that you want to include in your game. Think about how they will affect the gameplay and how they will be balanced.
+    > 
+    > 2. Implement the mechanics: Once you have designed your special abilities, you’ll need to implement them into your game’s code. This will involve creating new functions and logic to handle the abilities and their effects.
+    >
+    > 3. Create a user interface: You’ll need to create a user interface that allows players to use their special abilities. This could include buttons or hotkeys that players can press to activate their abilities.
+    >
+    > 4. Balance and playtest: Once you have implemented your special abilities, it’s important to playtest them and make sure they are balanced and fun to use. You may need to make adjustments based on feedback from playtesting. 
+
+    ---
+
 ### Achievements of the day
+.. 언급할 내용 X.  
+오늘 문득 들었던 의문은 내가 정말로 만들고 싶어 하는 게임이 뭘까?  
+다른 사람들한테 인정받는 건 차치하더라도, 나부터 찐으로 만족할 만한 게임을 만들고 있는 걸까 나는?  
+아직 그런 게임을 만들기엔 기술력이 부족?
+
+테트리스 게임에 나만의 특별한 요소를 넣는 것도 쉽지 않을 듯.  
+그렇게 하기엔 내 게임 플레이 경험이 다소 빈곤하다 해야 하나.  
+
+- 플레이 시간 내에 어떤 유니크한(생각지도 못한) 미션을 준다거나 (like 스팀 달성 과제처럼)  
+- 특정 색깔끼리 인접하면 어드벤티지를 준다거나  
+- ... (생각나는 족족 메모해보는 걸로)
 
   </details>
 
 [//]: # (End of 03.18)
+
+
+  <details><summary>03.19(일)</summary>
+
+  - 멀티 스레딩에 시그널을 도입하는 게 괜찮은 방식인지 검색해볼 것
+
+  ### Achievements of the day
+
+  </details>
+
+  [//]: # (End of 03.19)
 
 </blockquote></details>
 

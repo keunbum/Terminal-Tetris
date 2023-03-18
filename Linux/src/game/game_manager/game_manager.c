@@ -101,6 +101,29 @@ static void execute_game_modules_in_parallel(void)
     }
 }
 
+/*
+static pthread_t threads[2];
+static void execute_game_module_in_parallel_by_thread(const module_t module, const void* arg)
+{
+    debug();
+
+
+}
+
+static void execute_game_modules_in_parallel_by_thread(void)
+{
+    debug();
+
+    static const module_t s_module_ignite_funcs[GAME_MODULE_NUM] = {run_game_play_timer, start_game};
+    static const int s_args[] = {GAME_PLAY_TIME_LIMIT, 0};
+    forn (i, GAME_MODULE_NUM) {
+        execute_game_module_in_parallel(s_module_ignite_funcs[i], &s_args[i]);
+        //execute_game_module_in_parallel_by_thread(s_module_ignite_funcs[i], &s_args[i]);
+        //ewprintf("%dth loop, child's pid: %d\n", i, pid);
+    }
+}
+*/
+
 static void wait_modules(void)
 {
     /* Now, I use sigsuspend,
