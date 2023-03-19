@@ -1,6 +1,0 @@
-#ifndef __TETROMINO_MANAGER__H
-#define __TETROMINO_MANAGER__H
-
-#define MAX_TETROMINO_QUEUE_SIZE (3)
-
-#endif /* __TETROMINO_MANAGER__H */

@@ -4,7 +4,7 @@
 
 #include "debug/debug.h"
 #include "error/error_handling.h"
-#include "game/draw_manager/cursor.h"
+#include "game/draw_tool/cursor.h"
 #include "game/game_manager/game_manager.h"
 #include "init/init.h"
 #include "test/test.h"
@@ -14,7 +14,7 @@ static void main2(void)
     debug();
 
     init();
-    run_title_menu();
+    run_game_manager();
     wgotoxy(GAME_CONSOLE_STDOUT_POS_X + 1, GAME_CONSOLE_STDOUT_POS_Y);
     ewprintf("GAME ENDED.\n");
 }
@@ -23,7 +23,7 @@ int main(int argc, char *argv[])
 {
     debug();
     
-#ifdef TEST
+#ifdef UNIT_TEST
     test_module(argc, argv);
 #else
     main2();

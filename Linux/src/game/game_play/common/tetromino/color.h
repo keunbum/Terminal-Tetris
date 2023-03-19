@@ -1,7 +1,7 @@
 #ifndef __COLOR__H
 #define __COLOR__H
 
-typedef enum color {
+typedef enum {
     COLOR_BLACK,
     COLOR_WHITE,
 } color_t;
