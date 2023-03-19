@@ -1069,19 +1069,52 @@
 
   <details><summary>03.19(일)</summary>
 
-  - 멀티 스레딩에 시그널을 도입하는 게 괜찮은 방식인지 검색해볼 것
+  ~~- 멀티 스레딩에 시그널을 도입하는 게 괜찮은 방식인지 검색해볼 것~~
+
+  - 멀티 프로세스와 멀티 스레드..
+
+    > Q. Can you tell me the pros and cons of multi-process vs. multi-threaded and when it's useful?  
+    >
+    > A.  
+    > 
+    > In general, multi-processing is a good choice when you have CPU-bound tasks that can benefit from running on multiple cores simultaneously. It’s also a good choice when you want strong isolation between different parts of your program.
+    >
+    > On the other hand, multi-threading is a good choice when you have I/O-bound tasks that spend most of their time waiting for external resources (e.g., network or disk I/O). It’s also a good choice when you have fine-grained parallelism with lots of shared data that needs to be accessed by multiple threads simultaneously.
+
+  일단 타이머는 따로 fork 해서 돌리기로 결정.
+
+  [posix-timer-tutorial](https://programmer.group/setting-timer-and-posix-timer-functions.html)
+
+  
 
   ### Achievements of the day
+
+  프로젝트 구조 '유지보수성' 높임(리팩토링) --> 모듈 세분화  
+  프로젝트 구조에 정답은 없는지라 일단 내가 보기에 가장 가독성이 높게끔 작성.  
+
 
   </details>
 
   [//]: # (End of 03.19)
 
+  <details><summary>03.20(월)</summary>
+
+  - realtime timer 구현
+
+  ---
+
+  - menu에도 wgotoxy 적용하기
+  
+
+  ### Achievements of the day
+
+  </details>
+
+  [//]: # (End of 03.20)
+
 </blockquote></details>
 
 [//]: # (End of 2023.03)
-
-
 
 
 ---

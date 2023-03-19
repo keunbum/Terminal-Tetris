@@ -35,7 +35,7 @@ debug: dev
 test: CFLAGS+=-DTEST
 test: dev
 
-testdebug: CFLAGS+=-DTEST
+testdebug: CFLAGS+=-DUNIT_TEST
 testdebug: CFLAGS+=-DDEBUG
 testdebug: dev
 
