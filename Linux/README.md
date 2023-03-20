@@ -126,6 +126,48 @@
 
 [//]: # (template)
 
+
+<font size="3"> <details><summary>difficulties during the project</summary><blockquote> </font>
+
+  - [X] timer_create 시스템 콜을 사용하려고 했는데 WSL에는 구현이 안되어 있다고 한다. 어떡하지; 
+    
+    ~~해결책 1. setitimer나 alarm 함수 사용.  
+      -> 아쉽지만, 지금 상황에선 적절한 타협책이긴 함.  
+         근데 이거 쓰면 내가 조사한게 너무 아까운데ㅠㅠㅠㅠ.~~
+
+    해결책 2. 버츄얼 박스 깔아서 우분투 배포판 띄우기. 이러면 에디터 설정도 해야 함.  
+      -> 컴퓨터 사양은 좋아서 문제 안됨.  
+      -> 컴퓨터 용량..도 괜찮음.  
+      -> 그리고 리눅스 버전 게임을 만들 거면 이렇게 만드는 게 가장 확실한 방법이긴 함.  
+      -> 무엇보다도 대체 불가능한 라이브러리 함수를 사용해야 하는 상황이 올 수도 있기 때문에.  
+      ~~-> (근데 나 무슨 생각으로 리눅스에서 테트리스 게임 만들 생각을 한 거지?  
+          리눅스는 소켓 프로그래밍 할 때나 사용하면 될 것 같은데..
+          지금이라도 Windows로 넘어갈까?)  
+      -> 검색 좀 해봤는데, 이거 관련 세팅 하느라 하루 다 가겠는데? 흠...~~
+    
+    ~~그밖에 AWS 서버를 빌리는 방법도 있긴 한데.. 개발할 때는 좀 불편할 듯.~~
+
+    일단 리눅스 프로젝트는 마무리 하는 게 맞는 것 같음 --> 가상 머신 사용
+
+
+</details>
+
+[//]: # (difficulties during the project)
+
+
+<font size="3"> <details><summary>miscellaneous tip</summary><blockquote> </font>
+
+  - Visual Studio format 설정.  
+    **Ctrl+,** -> **C_Cpp: Clang_format_style 검색** -> **값 WebKit으로 설정** -> **Alt+Shift+F(자동 포맷 완성)**
+
+  - [The GNU C Library](You can use the sigprocmask function to block signals while you modify global variables that are also modified by the handlers for these signals.)  
+    man page 외 유용한 레퍼런스 문서.
+
+</details>
+
+[//]: # (miscellaneous tip)
+
+
 <font size="3"> <details><summary>miscellaneous search</summary><blockquote> </font>
 
   <details><summary>signal</summary>
@@ -140,7 +182,7 @@
 
   <details><summary>getopt</summary>
 
-  [getopt](https://man7.org/linux/man-pages/man3/pthread_create.3.html)  
+  [getopt](https://man7.org/linux/man-pages/man3/getopt.3.html)  
   그동안 리눅스 명령행에서 프로그램 실행할 때  
   `-a`나 `--version` 같은 옵션 처리 어떻게 하나 했더니 시스템 콜이 다 있었네...  
 
@@ -181,6 +223,10 @@
 </details>
 
 [//]: # (miscellaneous search)
+
+
+---
+
 
 <font size="3"> <details><summary>2023.03</summary><blockquote> </font>
   <details><summary>03.09(목)</summary>
@@ -360,7 +406,7 @@
     ~~1. curses.h의 getch.\
       --> Windows의 conio.h에서 제공.\
       --> Linux에서도 설치해서 쓸 수 있긴 한데.. 그닥 추천하진 않는 듯.~~  
-    2. termios.h의 [tcgetattr](https://xn--linux-8yu.die.net/man/3/tcgetattr).  
+    2. termios.h의 [tcgetattr](https://man7.org/linux/man-pages/man3/tcgetattr.3p.html).  
       --> 리눅스에서 사용 가능.  
       --> OK!
 
@@ -1075,9 +1121,7 @@
 
     > Q. Can you tell me the pros and cons of multi-process vs. multi-threaded and when it's useful?  
     >
-    > A.  
-    > 
-    > In general, multi-processing is a good choice when you have CPU-bound tasks that can benefit from running on multiple cores simultaneously. It’s also a good choice when you want strong isolation between different parts of your program.
+    > A. In general, multi-processing is a good choice when you have CPU-bound tasks that can benefit from running on multiple cores simultaneously. It’s also a good choice when you want strong isolation between different parts of your program.
     >
     > On the other hand, multi-threading is a good choice when you have I/O-bound tasks that spend most of their time waiting for external resources (e.g., network or disk I/O). It’s also a good choice when you have fine-grained parallelism with lots of shared data that needs to be accessed by multiple threads simultaneously.
 
@@ -1101,6 +1145,122 @@
 
   - realtime timer 구현
 
+    [timer_create](https://man7.org/linux/man-pages/man2/timer_create.2.html)  
+
+    create a POSIX per-process interval timer.  
+
+    ```c
+    #include <signal.h>           /* Definition of SIGEV_* constants */
+    #include <time.h>
+
+    int timer_create(clockid_t clockid, struct sigevent *restrict sevp,
+                    timer_t *restrict timerid);
+    /* Link with -lrt */
+    ```
+
+    성공 시 0 return. *timerid에 새 타이머 ID 저장.  
+    실패 시 -1 return. errno가 설정된다.
+
+    [에러 값들](https://man7.org/linux/man-pages/man2/timer_create.2.html#:~:text=ERRORS%20%C2%A0%20%C2%A0%20%C2%A0%20%C2%A0%20top,the%20CAP_WAKE_ALARM%20capability.)
+
+    ---
+
+    `timerid`: get the id of the new timer (unique within the process)  
+
+    ---
+
+    `clockid_t`:  
+    타이머에는 각자 속성(어떤 시계를 사용할 것인가)이 있으며    
+    다음의 값들을 넘길 수 있다. (자신이 구현하려는 모듈의 특성을 잘 파악하여 적절한 시계를 사용해야 한다.)
+
+    `CLOCK_REALTIME`: 설정 가능한 시스템 전체 실시간 시계.  
+
+    `CLOCK_MONOTONIC`: 설정 불가능한 단조 증가 시계. 시스템 시작 후 불특정 시점부터 시간 측정.  
+
+    `CLOCK_PROCESS_CPUTIME_ID`: 호출 프로세스(내의 모든 스레드)에서 소비하는 (사용자 및 시스템) CPU 시간 측정하는 시계.  
+
+    `CLOCK_THREAD_CPUTIME_ID`: 호출 스레드가 소비하는 (사용자 및 시스템) CPU 시간을 측정하는 시계.  
+
+    `CLOCK_BOOTTIME`: CLOCK_MONOTONIC처럼 단조 증가 시계이다. 그러나,  
+                      CLOCK_MONOTONIC은 시스템이 일시 중지된 시간을 측정하지 않는 반면,  
+                      CLOCK_BOOTTIME에는 시스템이 일시 중지된 시간이 포함된다.  
+                      이는 일시 중단을 인식해야 하는 애플리케이션에 유용하다.  
+                      CLOCK_REALTIME은 (동일한 역할을 하는 거라고 생각할 수 있는데) 시스템 시계에 대한  
+                      불연속적인 변경의 영향을 받기 때문에 이러한 애플리케이션에는 적합하지 않다고 한다.  
+
+    `CLOCK_REALTIME_ALARM`: CLOCK_REALTIME과 비슷하지만 일시 중단된 경우 시스템을 깨운다.  
+                            호출자(caller)는 이 시계에 대한 타이머를 설정하기 위해 `CAP_WAKE_ALARM` 기능이 있어야 한다.  
+                            (시스템을 깨운다는 게 무슨 뜻인지 잘 모르겠다..)  
+
+    `CLOCK_BOOTTIME_ALARM`: CLOCK_BOOTTIME과 유사하지만 일시 중단된 경우 시스템을 깨운다.  
+                            호출자는 이 시계에 대한 타이머를 설정하기 위해 `CAP_WAKE_ALARM` 기능이 있어야 한다.  
+
+    `CLOCK_TAI`: [벽시계 시간](https://ko.dict.naver.com/#/entry/koko/dfa624fd5f96403b9ad5bfdee0ae47b6)에서 파생되지만 [윤초](https://namu.wiki/w/%EC%9C%A4%EC%B4%88)를 무시하는 시스템 전체(system-wide) 시계.
+
+    위 시계들에 대한 세부적인 항목을 보고 싶다면 --> [clock_getres](https://man7.org/linux/man-pages/man2/clock_getres.2.html)
+
+    이 값들 말고도 `clockid`에는 [clock_getcpuclockid](https://man7.org/linux/man-pages/man2/clock_getres.2.html)나 [pthread_getcpuclockid](https://man7.org/linux/man-pages/man3/clock_getcpuclockid.3.html)의 return 값을 명시할 수 있다고 한다.
+
+    ---
+
+    `sevp`:  
+    타이머가 만료될 때 호출자에게 알리는 방법을 지정하는 sigevent 구조체를 가리킨다.  
+    sigevent에 대한 보다 자세한 정보 --> [sigevent](https://man7.org/linux/man-pages/man7/sigevent.7.html)
+
+    `sevp.sigev_notify` 필드는 아래의 값을 가질 수 있다.
+
+    `SIGEV_NONE`: 타이머의 만료를 비동기적으로 알리지 않는다. [timer_gettime](https://man7.org/linux/man-pages/man2/timer_gettime.2.html)을 사용하여 타이머의 진행 상황을 알 수 있다.
+
+    `SIGEV_SIGNAL`: 타이머가 만료되면 프로세스에 대한 신호 `sevp.sigev_signo`를 생성한다(자세한 건 [sigevent](https://man7.org/linux/man-pages/man7/sigevent.7.html) 참조).  
+    [siginfo_t](https://man7.org/linux/man-pages/man2/sigaction.2.html#:~:text=The%20siginfo_t%20data,since%20Linux%203.5)%20*/%0A%20%20%20%20%20%20%20%20%20%20%20%7D) 구조의 si_code 필드는 `SI_TIMER`로 설정된다.  
+    어느 시점에서든 최대 하나의 신호가 주어진 타이머에 대한 프로세스에 대기한다. 자세한 내용은 [timer_getoverrun](https://man7.org/linux/man-pages/man2/timer_getoverrun.2.html) 참조.
+
+    `SIGEV_THREAD`: 타이머 만료시 새 스레드의 시작 함수인 것처럼 `sigev_notify_function`을 호출한다(자세한 건 [sigevent](https://man7.org/linux/man-pages/man7/sigevent.7.html) 참조).
+
+    `SIGEV_THREAD_ID` (Linux-specific):  
+    `sigen_notify_thread_id`에 부여된 ID를 지닌 스레드를 대상으로 하며, 호출자와 동일한 프로세스의 스레드여야 한다.  
+    `sigev_notify_thread_id` 필드는 커널 스레드 ID, 즉 [clone](https://man7.org/linux/man-pages/man2/clone.2.html) 또는 [getid](https://man7.org/linux/man-pages/man2/gettid.2.html)에서 반환된 값을 지정한다.
+
+
+    `sevp`를 NULL로 지정하는 것은  
+    `sigev_notify`가 `SIGEV_SIGNAL`이고,  
+    `sigev_isgno`가 `SIGALRM`이고,  
+    `sigev_value.sival_int`가 타이머 ID인 sigevent 구조에 대한 포인터를 지정하는 것과 동일하다.
+
+    ---
+
+    타이머는 fork에 의해 상속되지 않으며, execve 중에 해제되고 삭제된다고 한다.  
+
+    커널은 timer_create()를 사용하여 생성된 각 타이머에 대해 "대기중인 실시간 시그널"를 사전 할당한다.  
+    결과적으로 타이머의 수는 `RLIMIT_SIGPENDING`로 제한된다([setrlimit](https://man7.org/linux/man-pages/man2/setrlimit.2.html) 참조).
+
+    timer_create에 의해 생성된 타이머는 "POSIX (interval) timer"라고 흔히 불리는데,  
+    POSIX 타이머 API는 다음과 같은 인터페이스로 구성된다:
+
+    - timer_create(): 타이머 생성.
+
+    - [timer_settime](https://man7.org/linux/man-pages/man2/timer_settime.2.html): 타이머를 준비(시작)하거나 해제(중지)한다.
+
+    - [timer_gettime](): 타이머의 인터벌 중에 다음 만료까지 남은 시간을 가져온다.
+
+    - [timer_getoverrun](): 마지막 타이머 만료에 대한 오버런 횟수 반환
+
+    - [timer_delete](): 타이머를 해제하거나 삭제한다.
+
+    ---
+
+  ---
+
+  - 스레드에게 시그널 보내기
+
+    [tgkill](https://man7.org/linux/man-pages/man2/tgkill.2.html)  
+    thread group kill?  
+
+  --- 
+
+  - [sigaction]()
+
+
   ---
 
   - menu에도 wgotoxy 적용하기
@@ -1108,6 +1268,8 @@
 
   ### Achievements of the day
 
+  버추얼 박스에 우분투 설치하고 개발 환경 세팅만 하면 오늘 할 일 다 한 거.
+  
   </details>
 
   [//]: # (End of 03.20)

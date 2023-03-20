@@ -1,5 +1,5 @@
 CC=cc
-CFLAGS=-Wall -std=gnu17 -pthread
+CFLAGS=-Wall -std=gnu17 -pthread -lrt
 SRCDIR=src
 OBJDIR=obj
 BINDIR=bin
