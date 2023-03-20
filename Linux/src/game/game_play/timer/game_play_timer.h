@@ -9,6 +9,6 @@
 #define GAME_PLAY_TIMER_POS_Y (GAME_PLAY_SCREEN_START_POS_Y + GAME_PLAY_SCREEN_WIDTH + 2)
 
 void draw_game_play_timer_at_with(int, int, int);
-void* main_func_for_game_play_timer(void *);
+void* main_func_for_game_play_timer(void*);
 
 #endif /* __GAME_PLAY_TIMER__H */

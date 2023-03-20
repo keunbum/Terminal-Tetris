@@ -47,7 +47,7 @@ void draw_boundary_at_with(wchar_t hor_block, wchar_t ver_block, int height, int
     draw_unit_matrix_at(top_rgt, x0, y1);
     draw_unit_matrix_at(bot_lft, x1, y0);
     draw_unit_matrix_at(bot_rgt, x1, y1);
-    
+
     draw_row_matrix_at(hor_block, x0, y0 + 1, y1);
     draw_row_matrix_at(hor_block, x1, y0 + 1, y1);
 
@@ -58,7 +58,7 @@ void draw_boundary_at_with(wchar_t hor_block, wchar_t ver_block, int height, int
 // height and width both means total length
 void draw_boundary_at(wchar_t hor_block, wchar_t ver_block, int height, int width, int sx, int sy)
 {
-    draw_boundary_at_with(hor_block, ver_block,height, width, sx, sy, UNIT_MATRIX_CORNER_TOP_LEFT, UNIT_MATRIX_CORNER_TOP_RIGHT, UNIT_MATRIX_CORNER_BOT_LEFT, UNIT_MATRIX_CORNER_BOT_RIGHT);
+    draw_boundary_at_with(hor_block, ver_block, height, width, sx, sy, UNIT_MATRIX_CORNER_TOP_LEFT, UNIT_MATRIX_CORNER_TOP_RIGHT, UNIT_MATRIX_CORNER_BOT_LEFT, UNIT_MATRIX_CORNER_BOT_RIGHT);
 }
 
 void draw_row_blocks(const block_t* row)

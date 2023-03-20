@@ -4,11 +4,11 @@
 #include "block.h"
 #include "color.h"
 
-#define DECLARE_POLYOMINO_SYMBOL_T(T)                                         \
-  typedef struct {                                                            \
-    int height;                                                               \
-    block_t *grid[T];                                                         \
-  } polyomino_symbol_##T##_t
+#define DECLARE_POLYOMINO_SYMBOL_T(T) \
+    typedef struct {                  \
+        int height;                   \
+        block_t* grid[T];             \
+    } polyomino_symbol_##T##_t
 
 DECLARE_POLYOMINO_SYMBOL_T(4);
 

@@ -9,7 +9,7 @@
 #define GAME_CONSOLE_STDERR_POS_X (GAME_PLAY_SCREEN_START_POS_X)
 #define GAME_CONSOLE_STDERR_POS_Y (GAME_PLAY_SCREEN_START_POS_Y + GAME_PLAY_SCREEN_WIDTH + 5)
 
-//typedef void* (*module_t)(void *);
+// typedef void* (*module_t)(void *);
 
 void run_game_manager(void);
 

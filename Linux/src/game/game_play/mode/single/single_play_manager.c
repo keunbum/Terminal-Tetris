@@ -2,18 +2,18 @@
 #include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include <unistd.h>
 #include <sys/types.h>
 #include <sys/wait.h>
+#include <unistd.h>
 
 #include "debug/debug.h"
 #include "error/error_handling.h"
 #include "game/game_play/common/game_play_common.h"
+#include "game/game_play/mode/single/single_play_manager.h"
+#include "game/game_play/signal/signal_handler.h"
 #include "game/game_play/timer/game_play_timer.h"
 #include "game/game_play/timer/realtime_timer.h"
-#include "game/game_play/signal/signal_handler.h"
 #include "game/game_play/ui/game_play_screen.h"
-#include "game/game_play/mode/single/single_play_manager.h"
 #include "game/game_play/ui/game_play_ui.h"
 #include "util/util.h"
 
@@ -24,7 +24,7 @@ static void handle_game_sub_modules(int sig)
     ewprintf("me: %d, p: %d, take_childproc(%d)\n", getpid(), getppid(), sig);
     assert(sig == SIGCHLD);
     int status;
-    //pid_t pid = waitpid(-1, &status, WNOHANG);
+    // pid_t pid = waitpid(-1, &status, WNOHANG);
     pid_t pid = waitpid(-1, &status, 0);
     ewprintf("proc-%d: exited.\n", pid);
     assert(pid != -1);
@@ -54,7 +54,7 @@ static void execute_game_sub_module_in_parallel(const game_play_sub_module_t mod
        So keep maintainability. */
     pid_t pid = fork();
     if (pid == 0) {
-        module((void*) arg);
+        module((void*)arg);
         exit(EXIT_SUCCESS);
     }
 }
@@ -63,7 +63,7 @@ static void execute_game_sub_modules_in_parallel(void)
 {
     debug();
 
-    static const game_play_sub_module_t s_module_main_funcs[] = {main_func_for_game_play_timer};
+    static const game_play_sub_module_t s_module_main_funcs[] = { main_func_for_game_play_timer };
     static const realtime_timer_data_t s_timer_data = {
         .time_limit = GAME_PLAY_TIME_LIMIT,
         .draw_module = {
@@ -73,17 +73,17 @@ static void execute_game_sub_modules_in_parallel(void)
             .draw_func = draw_game_play_timer_at_with,
         },
     };
-    static const void *s_args[] = {&s_timer_data};
-    static const int S_GAME_MODULE_NUM = (int) (sizeof(s_module_main_funcs) / sizeof(s_module_main_funcs[0]));
+    static const void* s_args[] = { &s_timer_data };
+    static const int S_GAME_MODULE_NUM = (int)(sizeof(s_module_main_funcs) / sizeof(s_module_main_funcs[0]));
 
-    forn (i, S_GAME_MODULE_NUM) {
+    forn(i, S_GAME_MODULE_NUM) {
         execute_game_sub_module_in_parallel(s_module_main_funcs[i], s_args[i]);
     }
 }
 
 static int execute_game_main_module(void)
 {
-    // ... 
+    // ...
     return GAME_PLAY_CMD_EXIT_GAME;
 }
 
@@ -99,19 +99,16 @@ static int play_game(void)
     return execute_game_main_module();
 }
 
-void* run_single_mode(void *arg)
+void* run_single_mode(void* arg)
 {
     debug();
 
-    while (true)
-    {
+    while (true) {
         int status = play_game();
-        if (status == GAME_PLAY_CMD_EXIT_GAME)
-        {
+        if (status == GAME_PLAY_CMD_EXIT_GAME) {
             break;
         }
-        if (status == GAME_PLAY_CMD_ERROR)
-        {
+        if (status == GAME_PLAY_CMD_ERROR) {
             handle_error("run_single_play() error");
         }
     }
