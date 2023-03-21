@@ -32,7 +32,7 @@ debug: CFLAGS+=-DDEBUG
 #debug: CFLAGS+=-Wextra
 debug: dev
 
-test: CFLAGS+=-DTEST
+test: CFLAGS+=-DUNIT_TEST
 test: dev
 
 testdebug: CFLAGS+=-DUNIT_TEST
@@ -45,6 +45,9 @@ clean:
 	rm -rf $(BINDIR)/* $(OBJDIR)/*
 
 run:
+	./$(BINDIR)/$(EXE)
+
+rundebug:
 	./$(BINDIR)/$(EXE) 2> err.txt
 
 # I don't think it's necessary, but I write it down for now.

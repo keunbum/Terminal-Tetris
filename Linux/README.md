@@ -38,12 +38,12 @@
   이 프로젝트를 수행하기 위해서 어느 정도 시간이 필요할지 가늠할 수 없음.
 
 - 개발 환경:
-  - OS: 우분투(WSL)
+  - OS: Ubuntu 22.04 (in VirtualBox on Windows)
   - IDE: Visual Studio Code
-  - LANG: GNU C11
+  - LANG: GNU C17
 
 - 타겟 플랫폼:  
-  좁게는 우분투(LTS 20에서 개발하지만 그 이하도 큰 문제 없을듯)에서 넓게는 데비안 기반 리눅스?
+  우분투를 비롯한 데비안 기반 리눅스 정도.
 
 ---
 
@@ -150,6 +150,15 @@
     일단 리눅스 프로젝트는 마무리 하는 게 맞는 것 같음 --> 가상 머신 사용
 
 
+  - [ ] 현재 내 로직에서는 둘 이상의 스레드가 표준 출력을 하는데,  
+      printf가 thread-safe 하지 않기 때문에 의도한 대로 출력되지 않을 가능성이 있다.
+
+      write 정도면 thread-safe한 줄 알았는데 이 [링크](https://stackoverflow.com/questions/467938/stdout-thread-safe-in-c-on-linux)에 따르면 그것도 100% 보장할 순 없단다.  
+      
+      printf 앞뒤로 lock, unlock을 걸면 되긴 하는데 그러면 성능 저하가 오고..  
+      일단 단위 출력량이 많지는 않기 때문에 atomic 하게 출력되겠지 라는 믿음을 가지고 간다..
+
+
 </details>
 
 [//]: # (difficulties during the project)
@@ -160,7 +169,7 @@
   - Visual Studio format 설정.  
     **Ctrl+,** -> **C_Cpp: Clang_format_style 검색** -> **값 WebKit으로 설정** -> **Alt+Shift+F(자동 포맷 완성)**
 
-  - [The GNU C Library](You can use the sigprocmask function to block signals while you modify global variables that are also modified by the handlers for these signals.)  
+  - [The GNU C Library](https://www.gnu.org/software/libc/manual/html_node/index.html)  
     man page 외 유용한 레퍼런스 문서.
 
 </details>
@@ -169,6 +178,12 @@
 
 
 <font size="3"> <details><summary>miscellaneous search</summary><blockquote> </font>
+
+  <details><summary>poll, select</summary>
+  
+  시간 되면 poll, select 공부하기
+  
+  </details>  
 
   <details><summary>signal</summary>
   
@@ -1159,9 +1174,7 @@
     ```
 
     성공 시 0 return. *timerid에 새 타이머 ID 저장.  
-    실패 시 -1 return. errno가 설정된다.
-
-    [에러 값들](https://man7.org/linux/man-pages/man2/timer_create.2.html#:~:text=ERRORS%20%C2%A0%20%C2%A0%20%C2%A0%20%C2%A0%20top,the%20CAP_WAKE_ALARM%20capability.)
+    실패 시 -1 return. errno가 설정된다. [에러 값들](https://man7.org/linux/man-pages/man2/timer_create.2.html#:~:text=ERRORS%20%C2%A0%20%C2%A0%20%C2%A0%20%C2%A0%20top,the%20CAP_WAKE_ALARM%20capability.)
 
     ---
 
@@ -1262,17 +1275,109 @@
 
 
   ---
-
-  - menu에도 wgotoxy 적용하기
   
 
   ### Achievements of the day
 
   버추얼 박스에 우분투 설치하고 개발 환경 세팅만 하면 오늘 할 일 다 한 거.
+
+  Thanks To: [친절한 블로그](https://velog.io/@dailylifecoding/installing-ubuntu-server-on-virtual-box), [공식 문서](https://code.visualstudio.com/docs/remote/ssh)
   
   </details>
 
   [//]: # (End of 03.20)
+
+  <details><summary>03.21(화)</summary>
+
+  - [X] menu에도 wgotoxy 적용하기
+
+  ---
+
+  - real timer 구현
+  
+    - POSIX timer 이어서 조사
+
+    - [sigwait](https://man7.org/linux/man-pages/man3/sigwait.3.html)
+
+      wait for a signal
+
+      ```c
+      #include <signal.h>
+
+      int sigwait(const sigset_t *restrict set, int *restrict sig);
+      ```
+
+      성공 시 0; 실패 시 양의 정수 [error 값](https://man7.org/linux/man-pages/man3/sigwait.3.html#:~:text=ERRORS%20%C2%A0%20%C2%A0%20%C2%A0%20%C2%A0%20top,invalid%20signal%20number.) 리턴
+
+      이를 호출한 스레드는 일시 중단한다. (실행 중이던 문맥은 스택에 쌓아두고 풀리면 이를 복원하는 식)  
+      시그널 집합 `set`에 포함된 시그널 중 하나가 pending 상태가 되면 일시 정지가 풀리고  
+      pending list에서 해당 시그널을 지운다.  
+      다음 사항을 제외하곤 sigwaitinfo와 동일하다고 한다.  
+      - sigwait는 시그널 번호를 반환하고, sigaitinfo는 `siginfo_t` 구조체를 반환한다.  
+      - 반환 타입이 다르다.
+
+      sigwait은 sigtimedwait으로 구현한다고 한다.
+
+
+    - [sigwaitinfo](https://man7.org/linux/man-pages/man2/sigwaitinfo.2.html)
+
+      다수의 시그널이 pending 상태라면 일반적인 우선 순위에 의해 회수할 시그널을 결정한다고 한다.
+
+
+    - [sigtimedwait](https://man7.org/linux/man-pages/man2/sigwaitinfo.2.html)
+
+
+      타이머 기능이 있는 sigwaitinfo라고 보면 됨.  
+      시스템 시계 정밀도에 의해 반올림되고, 커널 스케줄링 지연으로 인해 인터벌이 약간 초과될 수 있음.  
+
+      ```c
+      struct timespec {
+          long    tv_sec;         /* seconds */
+          long    tv_nsec;        /* nanoseconds */
+      }
+      ```
+
+      위 구조의 두 필드 모두에 0을 넣으면 poll이 수행되고 즉시 리턴된다고 한다.  
+      (근데 poll이 무슨 뜻인지 모르겠음. [이걸](https://man7.org/linux/man-pages/man2/poll.2.html) 의미하는 건가?)
+
+      두 함수 모두 성공시 시그널 번호를 return;  
+      실패 시 -1 return 하고 [errno 값](https://man7.org/linux/man-pages/man2/sigwaitinfo.2.html#:~:text=ERRORS%20%C2%A0%20%C2%A0%20%C2%A0%20%C2%A0%20top,timeout%20was%20invalid.) 세팅.
+
+      [유용한 정보](https://man7.org/linux/man-pages/man2/sigwaitinfo.2.html#:~:text=NOTES%20%C2%A0%20%C2%A0%20%C2%A0%20%C2%A0%20top,done%20on%20Linux.)
+
+
+      시그널 핸들러 등록 제대로 알려면 [sigaction](https://man7.org/linux/man-pages/man2/sigaction.2.html)도
+      읽어 보긴 해야 되는데,  
+      오늘은 일단 아는 선에서 구현 해보고 낼 읽어보는 걸로. (하루에 받아들일 수 있는 정보에 한계가 있는 느낌)
+
+
+  ---
+
+
+  ### Achievements of the day
+  일단 시간 표시 sleep 안쓰고 타이머 써서 해결하긴 했는데,  
+  왜 `CLOCK_PROCESS_CPUTIME_ID` 말고 `CLOCK_REALTIME` 이걸 써야 시간이 흐르는 건지 잘 모르겠음..
+
+  시그널 쓸 때는 핸들러는 등록 안하면 안되는 걸로...
+
+  그리고 멀티 스레드/프로세스 디버깅이 힘듬.  
+  내가 예측한 대로 스레드와 프로세스가 생성되고 소멸되는지 확신할 수 없음.
+  </details>
+
+  [//]: # (End of 03.21)
+
+<details><summary>03.22(수)</summary>
+
+1. 지금 서브 모듈 멀티 프로세스로 호출 하는 거 스레드로 바꿀 것.  
+2. 타입 정의할 때 더 세세하게 이름 선언하기.  
+3. 테트로미노 일정 속도로 아래로 떨어져서 바닥에 닿는 거 구현.  
+4. 사용자 입력 받는 스레드 따로 돌려서 테트로미노 움직임 반영하는 것까지 하면 좋고.
+
+### Achievements of the day
+
+</details>
+
+[//]: # (End of 03.22)
 
 </blockquote></details>
 
