@@ -7,8 +7,6 @@
 
 #include <wchar.h>
 
-#include "game/game_play/common/tetromino/tetromino.h"
-
 #define UNIT_MATRIX_CORNER_TOP_LEFT (0x2554)
 #define UNIT_MATRIX_CORNER_TOP_RIGHT (0x2557)
 #define UNIT_MATRIX_CORNER_BOT_LEFT (0x255A)
@@ -27,9 +25,9 @@
 
 #define draw_newline() wprintf(L"\n")
 
+void draw_unit_matrix(wchar_t);
 void draw_row_matrix_at(wchar_t, int, int, int);
 void draw_boundary_at_with(wchar_t, wchar_t, int, int, int, int, wchar_t, wchar_t, wchar_t, wchar_t);
 void draw_boundary_at(wchar_t, wchar_t, int, int, int, int);
-void draw_row_blocks(const block_t*);
 
 #endif /* __DRAW_TOOL__H */

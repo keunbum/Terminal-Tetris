@@ -3,8 +3,8 @@
 #include <stdlib.h>
 
 #include "debug/debug.h"
+#include "draw_tool/cursor.h"
 #include "error/error_handling.h"
-#include "game/draw_tool/cursor.h"
 #include "game/game_manager/game_manager.h"
 #include "init/init.h"
 #include "test/test.h"
@@ -19,10 +19,10 @@ static void main2(void)
     ewprintf("GAME ENDED.\n");
 }
 
-int main(int argc, char *argv[])
+int main(int argc, char* argv[])
 {
     debug();
-    
+
 #ifdef UNIT_TEST
     test_module(argc, argv);
 #else
@@ -41,9 +41,10 @@ int main(int argc, char *argv[])
   * think rationally. keep calm
   * WRITE STUFF DOWN
   * DON'T GET STUCK ON ONE APPROACH
-  
+
  * stuff you should look for
   * special cases
   * invalid pointer operation (ex. null pointer exception)
   * invalid argument passing --> type conversion required
+  * error return handling
 */

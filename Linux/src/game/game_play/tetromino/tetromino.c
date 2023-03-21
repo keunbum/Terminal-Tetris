@@ -1,7 +1,7 @@
-#include "game/game_play/common/tetromino/tetromino.h"
-#include "game/draw_tool/cursor.h"
-#include "game/draw_tool/draw_tool.h"
-#include "util/util.h"
+#include "debug/debug.h"
+#include "draw_tool/cursor.h"
+#include "draw_tool/draw_tool.h"
+#include "game/game_play/tetromino/tetromino.h"
 
 const tetromino_symbol_t g_tetromino_symbols[TOTAL_TETROMINO_NUM] = {
     // I
@@ -63,11 +63,23 @@ const tetromino_symbol_t g_tetromino_symbols[TOTAL_TETROMINO_NUM] = {
     },
 };
 
+/*
+static void draw_row_blocks(const block_t* row)
+{
+    my_assert(row != NULL);
+
+    static const wchar_t S_BLOCK_UNICODE_FOR_DRAW[] = { BLOCK_FULL, BLOCK_EMPTY };
+    for (int j = 0; row[j]; ++j) {
+        draw_unit_matrix(S_BLOCK_UNICODE_FOR_DRAW[encode_block(row[j])]);
+    }
+}*/
+
 int encode_block(char ch)
 {
     return (int)(ch - '1');
 }
 
+/*
 void draw_a_tetromino_at(const tetromino_t* t, int sx, int sy)
 {
     static const int X_OFFSET = 0;
@@ -75,7 +87,7 @@ void draw_a_tetromino_at(const tetromino_t* t, int sx, int sy)
     const tetromino_symbol_t* symbol = g_tetromino_symbols + t->tetromino_id;
 
     wgotoxy(sx + X_OFFSET, sy + Y_OFFSET);
-    forn(i, symbol->height) {
+    for (int i = 0; i < symbol->height; ++i) {
         draw_row_blocks(symbol->grid[i]);
         draw_newline();
     }
@@ -90,3 +102,4 @@ void draw_a_default_tetromino_at(int id, int sx, int sy)
     };
     draw_a_tetromino_at(&t, sx, sy);
 }
+*/

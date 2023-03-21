@@ -3,14 +3,8 @@
 #include <unistd.h>
 
 #include "debug/debug.h"
-#include "game/draw_tool/cursor.h"
-#include "game/draw_tool/draw_tool.h"
-#include "util/util.h"
-
-static void draw_unit_matrix(wchar_t ch)
-{
-    putwc(ch, stdout);
-}
+#include "draw_tool/cursor.h"
+#include "draw_tool/draw_tool.h"
 
 static void draw_unit_matrix_at(wchar_t ch, int x, int y)
 {
@@ -25,6 +19,11 @@ static void draw_col_matrix_at(wchar_t ch, int sx, int ex, int sy)
     for (int i = sx; i < ex; i += 1) {
         draw_unit_matrix_at(ch, i, sy);
     }
+}
+
+void draw_unit_matrix(wchar_t ch)
+{
+    putwc(ch, stdout);
 }
 
 // [sy, ey)
@@ -59,14 +58,4 @@ void draw_boundary_at_with(wchar_t hor_block, wchar_t ver_block, int height, int
 void draw_boundary_at(wchar_t hor_block, wchar_t ver_block, int height, int width, int sx, int sy)
 {
     draw_boundary_at_with(hor_block, ver_block, height, width, sx, sy, UNIT_MATRIX_CORNER_TOP_LEFT, UNIT_MATRIX_CORNER_TOP_RIGHT, UNIT_MATRIX_CORNER_BOT_LEFT, UNIT_MATRIX_CORNER_BOT_RIGHT);
-}
-
-void draw_row_blocks(const block_t* row)
-{
-    my_assert(row != NULL);
-
-    static const wchar_t S_BLOCK_UNICODE_FOR_DRAW[] = { BLOCK_FULL, BLOCK_EMPTY };
-    for (int j = 0; row[j]; ++j) {
-        draw_unit_matrix(S_BLOCK_UNICODE_FOR_DRAW[encode_block(row[j])]);
-    }
 }

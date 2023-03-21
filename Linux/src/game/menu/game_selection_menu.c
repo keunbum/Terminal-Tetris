@@ -4,21 +4,21 @@
 #include <stdio.h>
 
 #include "debug/debug.h"
+#include "draw_tool/cursor.h"
 #include "error/error_handling.h"
 #include "game/game_play/game_object/game_object.h"
 #include "game/game_play/mode/single/single_play_manager.h"
 #include "game/menu/game_selection_menu.h"
-#include "util/util.h"
 #include <wchar.h>
 
 static const game_object_t G_S_GAME_OBJECTS[] = {
-    { 
+    {
         "basic tetris",
         run_single_mode,
     }
 };
 
-static const char* G_S_GAME_SELECTION_MENU_OPTIONS_TEXT[] = { G_S_GAME_OBJECTS[0].name, "exit" };
+static const char* G_S_GAME_SELECTION_MENU_OPTIONS_TEXT[] = { G_S_GAME_OBJECTS[0].name, "back" };
 
 static const int G_S_GAME_SELECTION_MENU_TOTAL_OPTION_NUM = (int)(sizeof(G_S_GAME_SELECTION_MENU_OPTIONS_TEXT) / sizeof(G_S_GAME_SELECTION_MENU_OPTIONS_TEXT[0]));
 
@@ -26,8 +26,9 @@ static void draw_game_selection_menu_screen(void)
 {
     debug();
 
+    wclear();
     wprintf(L"SELECT GAME\n");
-    forn(i, G_S_GAME_SELECTION_MENU_TOTAL_OPTION_NUM) {
+    for (int i = 0; i < G_S_GAME_SELECTION_MENU_TOTAL_OPTION_NUM; ++i) {
         if (i > 0) {
             wprintf(L"  ");
         }
@@ -78,8 +79,8 @@ static bool handle_game_selection_menu_cmd(int cmd)
 void run_game_selection_menu(void)
 {
     int cmd;
-    draw_game_selection_menu_screen();
     do {
+        draw_game_selection_menu_screen();
         cmd = read_game_selection_menu_option();
     } while (handle_game_selection_menu_cmd(cmd));
 }

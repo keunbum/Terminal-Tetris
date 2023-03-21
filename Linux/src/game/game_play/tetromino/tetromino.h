@@ -33,7 +33,7 @@ typedef struct {
 extern const tetromino_symbol_t g_tetromino_symbols[TOTAL_TETROMINO_NUM];
 
 int encode_block(char);
-void draw_a_tetromino_at(const tetromino_t*, int, int);
-void draw_a_default_tetromino_at(int, int, int);
+//void draw_a_tetromino_at(const tetromino_t*, int, int);
+//void draw_a_default_tetromino_at(int, int, int);
 
 #endif /* __TETROMINO__H */

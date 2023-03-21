@@ -3,10 +3,10 @@
 #include <wchar.h>
 
 #include "debug/debug.h"
+#include "draw_tool/cursor.h"
 #include "error/error_handling.h"
 #include "game/menu/game_selection_menu.h"
 #include "game/menu/title_menu.h"
-#include "util/util.h"
 
 static void draw_title_menu_screen(void)
 {
@@ -15,8 +15,9 @@ static void draw_title_menu_screen(void)
     static const char* S_TITLE_MENU_OPTIONS_TEXT[] = { "select games", "exit" };
     static const int S_TITLE_MENU_TOTAL_OPTION_NUM = (int)(sizeof(S_TITLE_MENU_OPTIONS_TEXT) / sizeof(S_TITLE_MENU_OPTIONS_TEXT[0]));
 
+    wclear();
     wprintf(L"TETRIS GAME\n");
-    forn(i, S_TITLE_MENU_TOTAL_OPTION_NUM) {
+    for (int i = 0; i < S_TITLE_MENU_TOTAL_OPTION_NUM; ++i) {
         if (i > 0) {
             wprintf(L"  ");
         }
@@ -34,7 +35,7 @@ static int read_title_menu_option(void)
     int ret = TITLE_MENU_CMD_ERROR;
     switch (cmd) {
     case 1:
-        ret = TITLE_MENU_CMD_GOTO_GAME_SELECTION_MENU;
+        ret = TITLE_MENU_CMD_RUN_GAME_SELECTION_MENU;
         break;
     case 2:
         ret = TITLE_MENU_CMD_EXIT_GAME;
@@ -58,7 +59,7 @@ static void handle_title_menu_cmd(int cmd)
     debug();
 
     switch (cmd) {
-    case TITLE_MENU_CMD_GOTO_GAME_SELECTION_MENU:
+    case TITLE_MENU_CMD_RUN_GAME_SELECTION_MENU:
         run_game_selection_menu();
         break;
     case TITLE_MENU_CMD_EXIT_GAME:

@@ -3,7 +3,7 @@
 #include "debug/debug.h"
 #include "init.h"
 
-void init_localize(void)
+static void localize(void)
 {
     debug();
 
@@ -14,5 +14,5 @@ void init(void)
 {
     debug();
 
-    init_localize();
+    localize();
 }
