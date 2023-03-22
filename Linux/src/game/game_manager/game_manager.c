@@ -7,7 +7,3 @@ void run_game_manager(void)
 
     run_title_menu();
 }
-
-/*
- * You actually read the stuff from the bottom.
- */

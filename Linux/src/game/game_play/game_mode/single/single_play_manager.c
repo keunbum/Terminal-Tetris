@@ -9,12 +9,12 @@
 #include "debug/debug.h"
 #include "draw_tool/cursor.h"
 #include "error/error_handling.h"
-#include "game/game_play/common/game_play_common.h"
-#include "game/game_play/mode/single/single_play_manager.h"
-#include "game/game_play/signal/signal_handler.h"
+#include "game/game_play/game_play.h"
+#include "game/game_play/game_mode/single/single_play_manager.h"
+#include "game/game_play/signal/signal_macro.h"
 #include "game/game_play/timer/game_play_timer.h"
 #include "game/game_play/timer/realtime_timer_drawer.h"
-#include "game/game_play/common/game_play_screen.h"
+#include "game/game_play/ui/game_play_screen.h"
 #include "game/game_play/ui/game_play_ui.h"
 
 static sigset_t g_s_sigset;
@@ -22,12 +22,12 @@ static sigset_t g_s_sigset;
 static void handle_game_sub_modules(int sig)
 {
     ewprintf("me: %d, p: %d, take_childproc(%d)\n", getpid(), getppid(), sig);
-    assert(sig == SIGCHLD);
+    my_assert(sig == SIGCHLD);
     int status;
     // pid_t pid = waitpid(-1, &status, WNOHANG);
     pid_t pid = waitpid(-1, &status, 0);
     ewprintf("proc-%d: exited.\n", pid);
-    assert(pid != -1);
+    my_assert(pid != -1);
     if (!WIFEXITED(status)) {
         ewprintf("proc has no status\n");
         return;
@@ -42,14 +42,19 @@ static void handle_game_sub_modules(int sig)
     sigsuspend(&g_s_sigset);
 }
 
-static void load_game(void)
+/* Add 3. 2. 1. Start! */
+static int load_game(void)
 {
     debug();
 
-    load_game_play_ui(GAME_PLAY_MODE_SINGLE, GAME_PLAY_SCREEN_START_POS_X, GAME_PLAY_SCREEN_START_POS_Y, GAME_PLAY_SCREEN_HEIGHT);
+    int res = load_game_play_ui(GAME_PLAY_MODE_SINGLE, GAME_PLAY_SCREEN_START_POS_X, GAME_PLAY_SCREEN_START_POS_Y, GAME_PLAY_SCREEN_HEIGHT);
+    if (res == -1) {
+        handle_error("load_game_play_ui() error");
+    }
+    return res;
 }
 
-static void execute_game_sub_module_in_parallel(const game_play_sub_module_t module, const void* arg)
+static void execute_game_sub_module_in_parallel(const game_play_module_t module, const void* arg)
 {
     debug();
 
@@ -63,11 +68,11 @@ static void execute_game_sub_module_in_parallel(const game_play_sub_module_t mod
     }
 }
 
-static void execute_game_sub_modules_in_parallel(void)
+static int execute_game_sub_modules_in_parallel(void)
 {
     debug();
 
-    static const game_play_sub_module_t S_MODULE_MAIN_FUNCS[] = { main_func_for_game_play_timer };
+    static const game_play_module_t S_MODULE_MAIN_FUNCS[] = { main_func_for_game_play_timer };
     static const realtime_timer_data_t S_TIMER_DATA = {
         .time_limit = GAME_PLAY_TIME_LIMIT,
         .draw_module = {
@@ -83,13 +88,18 @@ static void execute_game_sub_modules_in_parallel(void)
     static const void* S_ARGS[] = { &S_TIMER_DATA };
     static const int S_GAME_MODULE_NUM = (int)(sizeof(S_MODULE_MAIN_FUNCS) / sizeof(S_MODULE_MAIN_FUNCS[0]));
 
+    struct sigaction s_act;
+    REGISTER_HANDLER_EMPTYSET_NOOACT(s_act, handle_game_sub_modules, 0, SIGCHLD);
+
     for (int i = 0; i < S_GAME_MODULE_NUM; ++i) {
         execute_game_sub_module_in_parallel(S_MODULE_MAIN_FUNCS[i], S_ARGS[i]);
     }
+    return 0;
 }
 
 static int execute_game_main_module(void)
 {
+    debug();
     // ...
     while (true) {
         sleep(GAME_PLAY_TIME_LIMIT);
@@ -102,12 +112,18 @@ static int play_game(void)
 {
     debug();
 
-    static struct sigaction s_act;
-
-    REGISTER_HANDLER_EMPTYSET_NOOACT(s_act, handle_game_sub_modules, 0, SIGCHLD);
-    load_game();
-    execute_game_sub_modules_in_parallel();
-    return execute_game_main_module();
+    int res = GAME_PLAY_CMD_ERROR;
+    if ((res = load_game()) == -1) {
+        handle_error("load_game() error");
+    }
+    if ((res = execute_game_sub_modules_in_parallel()) == -1) {
+        handle_error("execute_game_sub_modules_in_parallel() error");
+    };
+    if ((res = execute_game_main_module() == -1)) {
+        handle_error("execute_game_main_module() error");
+    };
+    res = GAME_PLAY_CMD_EXIT_GAME;
+    return res;
 }
 
 void* run_single_mode(void* arg)

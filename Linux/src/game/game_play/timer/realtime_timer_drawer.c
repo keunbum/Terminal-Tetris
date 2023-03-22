@@ -5,7 +5,7 @@
 
 #include "debug/debug.h"
 #include "draw_tool/cursor.h"
-#include "game/game_play/signal/signal_handler.h"
+#include "game/game_play/signal/signal_macro.h"
 #include "game/game_play/timer/realtime_timer_drawer.h"
 #include "game/game_play/ui/game_play_ui.h"
 
@@ -21,6 +21,7 @@
 #define TIMER_FRAME_WIDTH (14)
 
 #define REALTIME_TIMER_SIG SIGRTMIN
+
 //#define REALTIME_TIMER_CLOCK_ID CLOCK_PROCESS_CPUTIME_ID
 //#define REALTIME_TIMER_CLOCK_ID CLOCK_THREAD_CPUTIME_ID
 #define REALTIME_TIMER_CLOCK_ID CLOCK_REALTIME
@@ -134,7 +135,6 @@ void* new_run_realtime_timer_drawer_with(void* arg)
             handle_error_en(res, "sigwait() error");
         }
     }
-    ewprintf("HI\n");
 
     return NULL;
 }

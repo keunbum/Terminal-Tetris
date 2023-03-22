@@ -1,7 +1,7 @@
 #ifndef __GAME_MANAGER__H
 #define __GAME_MANAGER__H
 
-#include "game/game_play/common/game_play_screen.h"
+#include "game/game_play/ui/game_play_screen.h"
 
 #define GAME_CONSOLE_STDOUT_POS_X (GAME_PLAY_SCREEN_START_POS_X + GAME_PLAY_SCREEN_HEIGHT + 1)
 #define GAME_CONSOLE_STDOUT_POS_Y (0)

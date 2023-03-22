@@ -6,15 +6,16 @@
 #include "debug/debug.h"
 #include "draw_tool/cursor.h"
 #include "error/error_handling.h"
-#include "game/game_play/game_object/game_object.h"
-#include "game/game_play/mode/single/single_play_manager.h"
+#include "game/game_play/game_mode/game_mode.h"
+#include "game/game_play/game_mode/single/single_play_manager.h"
 #include "game/menu/game_selection_menu.h"
 #include <wchar.h>
 
-static const game_object_t G_S_GAME_OBJECTS[] = {
+static const game_mode_t G_S_GAME_OBJECTS[] = {
     {
         "basic tetris",
         run_single_mode,
+        NULL,
     }
 };
 
@@ -58,11 +59,15 @@ static int cmd_to_gamenum(int cmd)
     return cmd - 1;
 }
 
+/* 
+ * if exit: return false; 
+ * else return true;
+ */
 static bool handle_game_selection_menu_cmd(int cmd)
 {
     debug();
 
-    if (cmd == GAME_SELECTION_MENU_CMD_ERROR) {
+    if (cmd == GAME_SELECTION_MENU_CMD_INVAL) {
         handle_error("Reading input failed.");
     }
     if (cmd == G_S_GAME_SELECTION_MENU_TOTAL_OPTION_NUM) {
@@ -70,7 +75,8 @@ static bool handle_game_selection_menu_cmd(int cmd)
         return false;
     }
     if (1 <= cmd && cmd <= G_S_GAME_SELECTION_MENU_TOTAL_OPTION_NUM - 1) {
-        G_S_GAME_OBJECTS[cmd_to_gamenum(cmd)].module(NULL);
+        const game_mode_t* g = G_S_GAME_OBJECTS + cmd_to_gamenum(cmd);
+        g->module(g->arg);
         return true;
     }
     return true;

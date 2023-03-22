@@ -5,8 +5,8 @@
 #include "draw_tool/cursor.h"
 #include "draw_tool/draw_tool.h"
 #include "game/game_play/tetromino/block.h"
-#include "game/game_play/common/game_play_grid_matrix.h"
-#include "game/game_play/common/game_play_screen.h"
+#include "game/game_play/ui/game_play_grid_matrix.h"
+#include "game/game_play/ui/game_play_screen.h"
 #include "game/game_play/ui/game_play_ui.h"
 
 
@@ -75,14 +75,17 @@ void set_row_line(wchar_t* const buf, int length, wchar_t beg, wchar_t mid, wcha
     buf[length] = L'\0';
 }
 
-void load_game_play_ui(int game_mode, int screen_start_pos_x, int screen_start_pos_y, int screen_height)
+int load_game_play_ui(int game_mode, int screen_start_pos_x, int screen_start_pos_y, int screen_height)
 {
     debug();
 
     wclear();
+
+    int res = -1;
     switch (game_mode) {
     case GAME_PLAY_MODE_SINGLE:
         draw_game_play_single_whole_screen_at(screen_start_pos_x, screen_start_pos_y);
+        res = 0;
         break;
     /* Multiplayer mode is not yet developed. */
     // case GAME_PLAY_MODE_MULTI:
@@ -93,4 +96,5 @@ void load_game_play_ui(int game_mode, int screen_start_pos_x, int screen_start_p
     }
     fflush(stdout);
     wgotoxy(screen_start_pos_x + screen_height + 1, 0);
+    return res;
 }

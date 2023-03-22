@@ -1,7 +1,7 @@
-#ifndef __GAME_PLAY_COMMON__H
-#define __GAME_PLAY_COMMON__H
+#ifndef __GAME_PLAY__H
+#define __GAME_PLAY__H
 
-#include "game/game_play/common/game_play_screen.h"
+#include "game/game_play/ui/game_play_screen.h"
 
 #define GAME_PLAY_STATUS_GAME_OVER (2)
 
@@ -16,7 +16,6 @@
 #define GAME_PLAY_TIMER_POS_X (GAME_PLAY_SCREEN_START_POS_X + 2)
 #define GAME_PLAY_TIMER_POS_Y (GAME_PLAY_SCREEN_START_POS_Y + GAME_PLAY_SCREEN_WIDTH + 2)
 
-typedef void* (*game_play_sub_module_t)(void* arg);
-//typedef int (*game_play_sub_module_t)(void* arg);
+typedef void* (*game_play_module_t)(void* arg);
 
-#endif /* __GAME_PLAY_COMMON__H */
+#endif /* __GAME_PLAY__H */

@@ -1,5 +1,5 @@
-#ifndef __SIGNAL_HANDLER__H
-#define __SIGNAL_HANDLER__H
+#ifndef __SIGNAL_MACRO__H
+#define __SIGNAL_MACRO__H
 
 #include <stdbool.h>
 #include <stdlib.h>
@@ -27,4 +27,4 @@
         sigaction(_sig_num, &_act, 0);                                        \
     } while (false)
 
-#endif /* __SIGNAL_HANDLER__H */
+#endif /* __SIGNAL_MACRO__H */

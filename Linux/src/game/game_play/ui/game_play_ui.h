@@ -7,6 +7,6 @@
 #define draw_row_cursor_newline(buf, width) wprintf(buf), wprintf(L"\e[1B\e[%dD", width)
 
 void set_row_line(wchar_t* const, int, wchar_t, wchar_t, wchar_t);
-void load_game_play_ui(int, int, int, int);
+int load_game_play_ui(int, int, int, int);
 
 #endif /* __GAME_PLAY_UI__H */

@@ -31,8 +31,11 @@ static int read_title_menu_option(void)
     debug();
 
     int cmd;
-    scanf("%d", &cmd);
-    int ret = TITLE_MENU_CMD_ERROR;
+    int ret;
+    if (scanf("%d", &cmd) != 1) {
+        ret = TITLE_MENU_CMD_INVAL;
+        goto return_line;
+    }
     switch (cmd) {
     case 1:
         ret = TITLE_MENU_CMD_RUN_GAME_SELECTION_MENU;
@@ -41,9 +44,10 @@ static int read_title_menu_option(void)
         ret = TITLE_MENU_CMD_EXIT_GAME;
         break;
     default:
-        handle_error("read_title_menu_option() error");
+        ret = TITLE_MENU_CMD_INVAL;
         break;
     }
+return_line:
     return ret;
 }
 
@@ -65,11 +69,10 @@ static void handle_title_menu_cmd(int cmd)
     case TITLE_MENU_CMD_EXIT_GAME:
         exit_title_menu();
         break;
-    case TITLE_MENU_CMD_ERROR:
-        handle_error("Reading input failed.");
+    case TITLE_MENU_CMD_INVAL:
         break;
     default:
-        /* do nothing */
+        my_assert(false);
         break;
     }
 }
@@ -79,7 +82,7 @@ void run_title_menu(void)
     debug();
 
     /* Right now it's accepting options in scanf format,
-       but in the future I'd like to be able to navigate through the options with the arrow keys.
+       but I'd like to be able to navigate through the options with the arrow keys later.
        It would be better to run separate modules for drawing on the screen and receiving input. */
     while (true) {
         draw_title_menu_screen();

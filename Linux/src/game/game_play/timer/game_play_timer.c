@@ -41,6 +41,7 @@ void draw_game_play_timer_at_with(int x, int y, int sec)
 
 void* main_func_for_game_play_timer(void* arg)
 {
+    debug();
     return new_run_realtime_timer_drawer_with(arg);
 //    return run_realtime_timer_drawer_with(arg);
 }

@@ -6,8 +6,15 @@
 #include "draw_tool/cursor.h"
 #include "error/error_handling.h"
 #include "game/game_manager/game_manager.h"
-#include "init/init.h"
+#include "localize/localize.h"
 #include "test/test.h"
+
+static void init(void)
+{
+    debug();
+    
+    localize();
+}
 
 static void main2(void)
 {
