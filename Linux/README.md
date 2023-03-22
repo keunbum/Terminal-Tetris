@@ -52,7 +52,8 @@
 ### Q1. 왜 리눅스인가?
 
 실용성, 효용성 측면을 고려한다면 리눅스에서,    
-그것도 콘솔 게임을 만드는 건 다분히 포트폴리오 때문.  
+그것도 CLI 기반 게임을 만드는 건 현명하지 못한 선택일수 있다.  
+근데 이상하게 리눅스에서 CLI 기반 게임을 만들어 보고 싶었음.
 
 굳이 이유를 든다면 (리눅스 상에서 개발하여 얻을 수 있는 이점)
 
@@ -71,11 +72,9 @@
 이유는..    
 - 웹은 제대로 된 게임을 서비스하기엔 한계가 있으니까.
   - 테트리스 정도면 무리없을 듯.
-  - 아님 콘솔에서 만든 게임을 그대로 웹 상으로 포팅하기?
-  - 사실 가장 큰 이유는 내가 웹을 잘 몰라서.
-- 내가 개발을 WSL로 하고 있으니까.  
-  - CLI에서는 GUI 창을 못 띄우니까.
-- 상황에 따라 다르겠지만 GUI보다는 구현 난이도나 낮거나 개발 기간이 덜 걸릴 것 같아서.
+  - 아님 터미널에서 만든 게임을 그대로 웹 상으로 포팅하기?
+  - 사실 가장 큰 이유는 내가 웹을 잘 몰라서.  
+- GUI보다는 구현 난이도나 낮거나 개발 기간이 덜 걸릴 것 같아서.
 
 ### Q3. 구체적으로 어떤 라이브러리나 기술을 가져다 만들 것인가?
 
@@ -126,6 +125,16 @@
 
 [//]: # (template)
 
+<font size="3"> <details><summary>TODO LIST</summary><blockquote> </font>
+
+- [ ] 게임 메인 루프 설계.  
+- [ ] 지금 서브 모듈 멀티 프로세스로 호출 하는 거 스레드로 바꿀 것.  
+- [ ] 테트로미노 일정 속도로 아래로 떨어져서 바닥에 닿는 거 구현.  
+- [ ] 사용자 입력 받는 스레드 따로 돌려서 테트로미노 움직임 반영.  
+  
+</details>
+
+[//]: # (difficulties during the project)
 
 <font size="3"> <details><summary>difficulties during the project</summary><blockquote> </font>
 
@@ -1225,7 +1234,7 @@
     `SIGEV_NONE`: 타이머의 만료를 비동기적으로 알리지 않는다. [timer_gettime](https://man7.org/linux/man-pages/man2/timer_gettime.2.html)을 사용하여 타이머의 진행 상황을 알 수 있다.
 
     `SIGEV_SIGNAL`: 타이머가 만료되면 프로세스에 대한 신호 `sevp.sigev_signo`를 생성한다(자세한 건 [sigevent](https://man7.org/linux/man-pages/man7/sigevent.7.html) 참조).  
-    [siginfo_t](https://man7.org/linux/man-pages/man2/sigaction.2.html#:~:text=The%20siginfo_t%20data,since%20Linux%203.5)%20*/%0A%20%20%20%20%20%20%20%20%20%20%20%7D) 구조의 si_code 필드는 `SI_TIMER`로 설정된다.  
+    [siginfo_t](https://man7.org/linux/man-pages/man2/sigaction.2.html#:~:text=The%20siginfo_t%20data,since%20Linux%203.5) 구조의 si_code 필드는 `SI_TIMER`로 설정된다.  
     어느 시점에서든 최대 하나의 신호가 주어진 타이머에 대한 프로세스에 대기한다. 자세한 내용은 [timer_getoverrun](https://man7.org/linux/man-pages/man2/timer_getoverrun.2.html) 참조.
 
     `SIGEV_THREAD`: 타이머 만료시 새 스레드의 시작 함수인 것처럼 `sigev_notify_function`을 호출한다(자세한 건 [sigevent](https://man7.org/linux/man-pages/man7/sigevent.7.html) 참조).
@@ -1368,12 +1377,34 @@
 
 <details><summary>03.22(수)</summary>
 
-1. 지금 서브 모듈 멀티 프로세스로 호출 하는 거 스레드로 바꿀 것.  
-2. 타입 정의할 때 더 세세하게 이름 선언하기.  
-3. 테트로미노 일정 속도로 아래로 떨어져서 바닥에 닿는 거 구현.  
-4. 사용자 입력 받는 스레드 따로 돌려서 테트로미노 움직임 반영하는 것까지 하면 좋고.
+전반적인 프로젝트 구조 짜는 게 어렵다..  
+어떤 식으로 폴더 구조를 가져야 할지. 헤더 파일을 어떤 식으로 나눠야 할지.
+
+전반적인 게임 아키텍처 설계에 대한 고민. (동기/비동기. 멀티 프로세스/스레드)
+
+  [gamedeveloper](https://www.gamedeveloper.com/programming/multithreaded-game-engine-architectures)  
+  [stackoverflow](https://stackoverflow.com/questions/12684844/structuring-and-synchronizing-a-multithreaded-game-loop)
+
+  게임을 시작했을 때 가능한 모든 시나리오를 나열하고, 그걸 어떻게 처리할 것인지 구상해야 함.  
+  문제는 이게 정해진 답이 없어서 어떻게 구성할지 고민된다는 거.
+
+  게임 플레이 루프 구조 고민해봤는데,  
+  결론은 select랑 epoll 도 좀 알아봐야 겠음.  
+
+  시그널끼리 신호를 주고 받고, 원하는 스레드들을 수거하는 로직을 어떻게 구성할 것인가.
+
+  (메모리 풀? 형식의 스레딩 기법도 있다는데 그것도 알아볼 것)
+
 
 ### Achievements of the day
+
+컨디션 난조로 인한 휴식..  
+일단 당분간은 다시 네트워크 프로그래밍 공부로 넘어가야 할듯.  
+네트워크 프로그래밍이지만 멀티 스레드에 대한 인사이트를 얻을 수 있어서.  
+
+근데 왠지 이 프로젝트는 1일1커밋 이어가고 싶다..
+
+
 
 </details>
 
