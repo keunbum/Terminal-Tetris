@@ -44,6 +44,15 @@ iterate do smths each unit sec:
 
 이건.. 직접 코딩하면서 완성해보는 걸로.
 
+### 의사 난수 생성기
+
+랜덤하게 테트로미노를 생성하기 위해서 필요하다.  
+
+우선은 개발 편의상 [rand]()로 구현해놓고,  
+나중에 [drand48](https://man7.org/linux/man-pages/man3/random.3.html)나 
+[random](https://man7.org/linux/man-pages/man3/random.3.html)도 고려해볼 것.
+
+
 
 ### 입력 체계
 
