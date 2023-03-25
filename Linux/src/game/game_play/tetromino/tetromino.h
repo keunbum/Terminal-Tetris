@@ -15,14 +15,18 @@ DECLARE_POLYOMINO_SYMBOL_T(4);
 typedef polyomino_symbol_4_t tetromino_symbol_t;
 
 typedef enum {
-    DIR_BOT,
+    DIR_BOT = 0,
+    DIR_LEFT = 1,
+    DIR_RIGHT = 2,
 } dir_t;
 
+typedef int pos_t;
+
 typedef struct {
-    int tetromino_id;
-    int x;
-    int y;
-    int velocity;
+    unsigned int tetromino_id;
+    pos_t pos_x;
+    pos_t pos_y;
+    unsigned int velocity;
     //    int acceleration;
     dir_t dir;
     color_t color;
@@ -33,7 +37,7 @@ typedef struct {
 extern const tetromino_symbol_t g_tetromino_symbols[TOTAL_TETROMINO_NUM];
 
 int encode_block(char);
-//void draw_a_tetromino_at(const tetromino_t*, int, int);
-//void draw_a_default_tetromino_at(int, int, int);
+// void draw_a_tetromino_at(const tetromino_t*, int, int);
+// void draw_a_default_tetromino_at(int, int, int);
 
 #endif /* __TETROMINO__H */

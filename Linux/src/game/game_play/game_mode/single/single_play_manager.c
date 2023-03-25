@@ -9,9 +9,12 @@
 #include "debug/debug.h"
 #include "draw_tool/cursor.h"
 #include "error/error_handling.h"
-#include "game/game_play/game_play.h"
 #include "game/game_play/game_mode/single/single_play_manager.h"
+#include "game/game_play/game_play.h"
+#include "game/game_play/random/random.h"
 #include "game/game_play/signal/signal_macro.h"
+#include "game/game_play/simulate/simulate.h"
+#include "game/game_play/tetromino/tetromino.h"
 #include "game/game_play/timer/game_play_timer.h"
 #include "game/game_play/timer/realtime_timer_drawer.h"
 #include "game/game_play/ui/game_play_screen.h"
@@ -28,18 +31,20 @@ static void handle_game_sub_modules(int sig)
     pid_t pid = waitpid(-1, &status, 0);
     ewprintf("proc-%d: exited.\n", pid);
     my_assert(pid != -1);
+    my_assert(WIFEXITED(status));
     if (!WIFEXITED(status)) {
         ewprintf("proc has no status\n");
         return;
     }
-    // ewprintf("Removed proc id: %d\n", pid);
-    // ewprintf("Child send %d\n", );
-    int exit_status;
+    int exit_status = WEXITSTATUS(status);
+    my_assert(exit_status == GAME_PLAY_STATUS_GAME_OVER);
+    return;
+    /*
     if ((exit_status = WEXITSTATUS(status)) == GAME_PLAY_STATUS_GAME_OVER) {
         return;
     }
-    // hmm..
     sigsuspend(&g_s_sigset);
+    */
 }
 
 static int load_game(void)
@@ -75,6 +80,10 @@ static int run_game_sub_modules_in_parallel(void)
 {
     debug();
 
+    // main_func_for_user_input_handler() should be added.
+    // change_direction_based_on_user_input();
+    // rotate_based_on_user_input();
+
     static const game_play_module_t S_MODULE_MAIN_FUNCS[] = { main_func_for_game_play_timer };
     static const realtime_timer_data_t S_TIMER_DATA = {
         .time_limit = GAME_PLAY_TIME_LIMIT,
@@ -103,10 +112,31 @@ static int run_game_sub_modules_in_parallel(void)
 static int run_game_main_module(void)
 {
     debug();
-    // ...
+    /* Not a good logic yet. There is a possibility of change,
+       but first of all, I will write the code sequentially. */
+    init_rng((unsigned int)time(NULL));
     while (true) {
-        sleep(GAME_PLAY_TIME_LIMIT);
-        handle_error("Damn I shouldn't wake up;\n");
+        tetromino_t tetromino_obj = {
+            .tetromino_id = rng() % TOTAL_TETROMINO_NUM,
+            .pos_x = GAME_PLAY_INIT_TETROMINO_POS_X,
+            .pos_y = GAME_PLAY_INIT_TETROMINO_POS_Y,
+            .velocity = GAME_PLAY_INIT_TETROMINO_VELOCITY,
+            .dir = DIR_BOT,
+            .color = COLOR_BLACK,
+        };
+        /* Uh.. I think.. The concept of speed should be defined like this,
+           "Every few frames it goes down by one block." */
+        while (true) {
+            // draw_over_all(); ->
+            // handle_user_input();
+            move_tetromino(&tetromino_obj);
+            /*
+            if (tetromino_is_stopped()) {
+                clear_filled_lines(); --> reflect_them_visually(); : maybe internally.
+                break;
+            } */
+            usleep(16666);
+        }
     }
     return GAME_PLAY_STATUS_GAME_OVER;
 }
@@ -184,7 +214,7 @@ static int run_simulation(void)
 
     ready_getset_go(GAME_PLAY_TIMEINTERVAL_BEFORESTART_SEC);
     run_game_play_modules_in_parallel();
-    
+
     // may be smth needed..
 
     return 0;
@@ -208,7 +238,7 @@ static int start_game(void)
 static int new_play_game(void)
 {
     debug();
-    
+
     int res = GAME_PLAY_CMD_ERROR;
 
     if ((res = load_game()) == -1) {
