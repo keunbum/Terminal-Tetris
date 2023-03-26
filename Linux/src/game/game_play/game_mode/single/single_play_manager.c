@@ -20,9 +20,9 @@
 #include "game/game_play/ui/game_play_screen.h"
 #include "game/game_play/ui/game_play_ui.h"
 
-static sigset_t g_s_sigset;
+// static sigset_t g_s_sigset;
 
-static void handle_game_sub_modules(int sig)
+static void handle_game_play_sub_modules(int sig)
 {
     ewprintf("me: %d, p: %d, take_childproc(%d)\n", getpid(), getppid(), sig);
     my_assert(sig == SIGCHLD);
@@ -58,11 +58,9 @@ static int load_game(void)
     return res;
 }
 
-/* --------------------------------------------------------------------------------------------------------- */
+/* -----------------------------------fork version------------------------------------ */
 
-/* fork version */
-
-static void run_game_sub_module_in_parallel(const game_play_module_t module, const void* arg)
+static void run_game_sub_module_in_parallel(const game_play_module_t module)
 {
     debug();
 
@@ -70,7 +68,7 @@ static void run_game_sub_module_in_parallel(const game_play_module_t module, con
        So keep maintainability. */
     pid_t pid = fork();
     if (pid == 0) {
-        module((void*)arg);
+        module.func(module.arg);
         assert(false);
         exit(EXIT_SUCCESS);
     }
@@ -84,7 +82,6 @@ static int run_game_sub_modules_in_parallel(void)
     // change_direction_based_on_user_input();
     // rotate_based_on_user_input();
 
-    static const game_play_module_t S_MODULE_MAIN_FUNCS[] = { main_func_for_game_play_timer };
     static const realtime_timer_data_t S_TIMER_DATA = {
         .time_limit = GAME_PLAY_TIME_LIMIT,
         .draw_module = {
@@ -97,14 +94,20 @@ static int run_game_sub_modules_in_parallel(void)
             .draw_func = draw_game_play_timer_at_with,
         },
     };
-    static const void* S_ARGS[] = { &S_TIMER_DATA };
-    static const int S_GAME_MODULE_NUM = (int)(sizeof(S_MODULE_MAIN_FUNCS) / sizeof(S_MODULE_MAIN_FUNCS[0]));
+    static const game_play_module_t S_GAME_PLAY_MODULES[] = {
+        {
+            main_func_for_game_play_timer,
+            (void*)&S_TIMER_DATA,
+        },
+    };
+
+    static const size_t S_GAME_MODULE_NUM = (size_t)(sizeof(S_GAME_PLAY_MODULES) / sizeof(S_GAME_PLAY_MODULES[0]));
 
     struct sigaction s_act;
-    REGISTER_HANDLER_EMPTYSET_NOOACT(s_act, handle_game_sub_modules, 0, SIGCHLD);
+    REGISTER_HANDLER_EMPTYSET_NOOACT(s_act, handle_game_play_sub_modules, 0, SIGCHLD);
 
-    for (int i = 0; i < S_GAME_MODULE_NUM; ++i) {
-        run_game_sub_module_in_parallel(S_MODULE_MAIN_FUNCS[i], S_ARGS[i]);
+    for (size_t i = 0; i < S_GAME_MODULE_NUM; ++i) {
+        run_game_sub_module_in_parallel(S_GAME_PLAY_MODULES[i]);
     }
     return 0;
 }
@@ -112,9 +115,11 @@ static int run_game_sub_modules_in_parallel(void)
 static int run_game_main_module(void)
 {
     debug();
+
     /* Not a good logic yet. There is a possibility of change,
        but first of all, I will write the code sequentially. */
     init_rng((unsigned int)time(NULL));
+
     while (true) {
         tetromino_t tetromino_obj = {
             .tetromino_id = rng() % TOTAL_TETROMINO_NUM,
@@ -160,11 +165,9 @@ static int play_game(void)
     return res;
 }
 
-/* --------------------------------------------------------------------------------------------------------- */
+/* -------------------------------Will be replaced with threaded version------------------------------- */
 
-/*  Will be replaced with threaded version */
-
-static void run_game_play_module_in_parallel(const game_play_module_t module, const void* arg)
+static void run_game_play_module_in_parallel(const game_play_module_t module)
 {
     debug();
 
@@ -175,7 +178,6 @@ static void run_game_play_modules_in_parallel(void)
 {
     debug();
 
-    static const game_play_module_t S_GAME_PLAY_MODULE_MAIN_FUNCS[] = { main_func_for_game_play_timer };
     static const realtime_timer_data_t S_TIMER_DATA = {
         .time_limit = GAME_PLAY_TIME_LIMIT,
         .draw_module = {
@@ -188,15 +190,20 @@ static void run_game_play_modules_in_parallel(void)
             .draw_func = draw_game_play_timer_at_with,
         },
     };
-    static const void* S_ARGS[] = { &S_TIMER_DATA };
-    static const int S_GAME_PLAY_MODULE_NUM = (int)(sizeof(S_GAME_PLAY_MODULE_MAIN_FUNCS) / sizeof(S_GAME_PLAY_MODULE_MAIN_FUNCS[0]));
+    static const game_play_module_t S_GAME_PLAY_MODULES[] = {
+        {
+            main_func_for_game_play_timer,
+            &S_TIMER_DATA,
+        },
+    };
+    static const size_t S_GAME_PLAY_MODULE_NUM = (size_t)(sizeof(S_GAME_PLAY_MODULES) / sizeof(S_GAME_PLAY_MODULES[0]));
 
     // hmm..
     // struct sigaction s_act;
-    // REGISTER_HANDLER_EMPTYSET_NOOACT(s_act, handle_game_sub_modules, 0, SIGCHLD);
+    // REGISTER_HANDLER_EMPTYSET_NOOACT(s_act, handle_game_play_sub_modules, 0, SIGCHLD);
 
-    for (int i = 0; i < S_GAME_PLAY_MODULE_NUM; ++i) {
-        run_game_play_module_in_parallel(S_GAME_PLAY_MODULE_MAIN_FUNCS[i], S_ARGS[i]);
+    for (size_t i = 0; i < S_GAME_PLAY_MODULE_NUM; ++i) {
+        run_game_play_module_in_parallel(S_GAME_PLAY_MODULES[i]);
     }
 }
 

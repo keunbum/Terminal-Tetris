@@ -28,6 +28,11 @@
 
 // #define GAME_PLAY_TETROMINO_UNIT_VELOCITY (1)
 
-typedef void* (*game_play_module_t)(void* arg);
+typedef void* (*game_play_func_t)(void* arg);
+
+typedef struct {
+    game_play_func_t func;
+    void* arg;
+} game_play_module_t;
 
 #endif /* __GAME_PLAY__H */
