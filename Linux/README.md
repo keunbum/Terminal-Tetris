@@ -1646,12 +1646,106 @@ C언어로 개발하기 넘 어렵다.
 소켓 프로그래밍 책 이어서 공부하기.  
 프로그래밍 못하고 있다고 해서 조급할 필요 없다.  
 
+- send & recv 공부 이어서.
+
+  - MSG_PEEK 
+
+    std::priority_queue<>에 비유하자면 pop()이 아니라, top()을 위한 플래그라고 볼 수 있음.  
+    MSG_DONTWAIT(논블로킹)까지 걸면 데이터의 존재 유무만 빠르게 판단할 수 있다.
+
+
+  - readv & writev 입출력 함수
+
+    함수 호출 횟수를 줄일 수 있다. --> 비용 감소
+
+
+- 멀티 캐스트 & 브로드 캐스트
+
+  UDP 기반이라서.. 내 프로젝트와는 무관한 기술 아닌가?  
+  개념적인 내용은 알아둬야 하는 걸까? 일단 넘어 가자.  
+
+- C언어의 표준 입출력 함수
+
+  표준 입출력 함수가 지니는 장점은 다음과 같다고 한다.  
+  (ANSI C 표준 기반 함수들)
+
+  1. 이식성(Portability)이 좋다.  
+  2. 버퍼링을 통해 성능 향상에 도움이 된다.
+
+  입출력 함수뿐만 아니라 모든 표준(standard) 함수들은 이식성이 좋다.  
+
+  이렇게만 놓고 보면 마냥 좋기만 한 것 같지만, 그렇지도 않다.  
+  나름 단점이 있다.
+
+  1. 양방향 통신이 쉽지 않다.  
+  2. 상황에 따라서 fflush 함수가 빈번히 호출될 수 있다.  
+  3. 파일 디스크립터를 FILE 구조체의 포인터로 변환해야 한다.
+
+
+  - [fdopen](https://man7.org/linux/man-pages/man3/fdopen.3p.html)
+
+    파일 디스크립터를 FILE 구조체로 변환해준다. --> 표준 입출력 함수를 사용할 수 있다.
+
+  - [fileno](https://man7.org/linux/man-pages/man3/fileno.3.html)
+
+      fdopen의 반대격 함수.  
+
+- [epoll](https://man7.org/linux/man-pages/man7/epoll.7.html) 공부
+
+  [epoll_create](https://man7.org/linux/man-pages/man2/epoll_create.2.html)
+
+    `size` 0보다 큰 값만 넘기면 된다.
+
+  [epoll_ctl](https://man7.org/linux/man-pages/man2/epoll_ctl.2.html)
+
+    ```c
+    #include <sys/epoll.h>
+
+    typedef union epoll_data {
+        void        *ptr;
+        int          fd;
+        uint32_t     u32;
+        uint64_t     u64;
+    } epoll_data_t;
+
+    struct epoll_event {
+        uint32_t     events;      /* Epoll events */
+        epoll_data_t data;        /* User data variable */
+    };
+    ```
+
+  [epoll_wait](https://man7.org/linux/man-pages/man2/epoll_wait.2.html)
+
+
+
+
+
 ### Achievements of the day
+
+작업에 대한 부담감 때문에 시작조차 하지 않으려는 경향이 있는 것 같다.  
+이겨내야 돼. 힘들 때마다 내가 왜 이 게임을 만들고 싶은지 계속 상기하자.  
+난 게임 만드는 게 정말로 재밌는 걸까?
+
+그.. epoll 대강 읽어봤는데, 멀티 스레딩..에는 불필요한 것 같은데.  
 
 </details>
 
 [//]: # (End of 03.27)
 
+
+<details><summary>03.28(화)</summary>
+
+레벨 트리거, 엣지 트리거 이어서 공부하기(멀티 스레딩에 도움이 될 수도 있으니까)  
+epoll 공부 끝내고, 스레드 부분 복습하기.  
+내 메인 로직의 핵심 근거가 멀티 스레드이기 때문에 이 부분에 투자를 안할 수가 없다.
+
+
+
+### Achievements of the day
+
+</details>
+
+[//]: # (End of 03.28)
 
 </blockquote></details>
 
