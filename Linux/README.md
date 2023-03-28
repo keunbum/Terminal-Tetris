@@ -661,14 +661,14 @@
 
     스레드는 `joinable`과 `detached` 두 가지 타입이 있다.  
 
-    새로 생성된 스레드의 결과나 종료 상태가 필요하다면 joinable한 스레드를 만들어야 할 것이다.  
+    새로 생성된 스레드의 결과나 종료 상태가 필요하다면 `joinable`한 스레드를 만들어야 할 것이다.  
     --> `pthread_join` 사용 --> 종료 상태 확인 --> 자원이 환원됨
 
-    detached --> 종료 시 커널(운영체제)이 알아서 자원 회수해 감.  
-    억지로 pthread_join을 호출하여 종료 상태를 얻을 수 없다.  
+    `detached` --> 종료 시 커널(운영체제)이 알아서 자원 회수해 감.  
+    억지로 `pthread_join`을 호출하여 종료 상태를 얻을 수 없다.  
 
-    스레드를 생성하면 디폴트는 joinable로 세팅된다.  
-    종료 결과가 필요하지 않은 데몬 스레드들은 detached로 설정하면 되겠다. ([pthread_attr_setdetachstate](https://man7.org/linux/man-pages/man3/pthread_attr_setdetachstate.3.html) 참조)  
+    스레드를 생성하면 디폴트는 `joinable`로 세팅된다.  
+    종료 결과가 필요하지 않은 데몬 스레드들은 `detached`로 설정하면 되겠다. ([pthread_attr_setdetachstate](https://man7.org/linux/man-pages/man3/pthread_attr_setdetachstate.3.html) 참조)  
 
     [pthread_attr_setstacksize](https://man7.org/linux/man-pages/man3/pthread_attr_setstacksize.3.html)를 사용하여 스택 크기 조절 가능.
 
@@ -710,7 +710,7 @@
     성공: 0 return, 실패: [error num](https://man7.org/linux/man-pages/man3/pthread_create.3.html#:~:text=ERRORS%20%C2%A0%20%C2%A0%20%C2%A0%20%C2%A0%20top,specified%20in%20attr.) return;
 
     `thread`: 스레드 ID 반환  
-    `attr`: 새로 생성될 스레드의 속성을 전달하기 위해 사용된다.
+    `attr`: 새로 생성될 스레드의 속성을 전달하기 위해 사용된다.  
             [pthread_attr_init](https://man7.org/linux/man-pages/man3/pthread_attr_init.3.html)와 관련 함수를 사용하여 설정.  
             NULL 전달하면 기본 값으로 스레드 생성. 
 
@@ -718,12 +718,16 @@
     - [pthread_exit](https://man7.org/linux/man-pages/man3/pthread_exit.3.html)  
       --> [pthread_join](https://man7.org/linux/man-pages/man3/pthread_join.3.html)을 호출한
       스레드에게 종료 상태를 넘겨 줄 수 있다.  
-    - start_routine 함수에서 return 하기  
+    - `start_routine` 함수(시동 함수)에서 return 하기  
     - [pthread_cancel](https://man7.org/linux/man-pages/man3/pthread_cancel.3.html)  
     - 프로세스나 임의의 스레드가 [exit](https://man7.org/linux/man-pages/man3/exit.3.html)을 호출하거나,  
       메인 스레드가 main 함수에서 return한 경우 --> 모든 스레드가 종료됨
 
-    새로 생성된 스레드의 signal mask: 그대로 상속, pending signal: 초기화, alternate signal stack: 초기화, CPU-time clock: 0으로 초기화.
+    새로 생성된 스레드의  
+      signal mask: 그대로 상속,  
+      pending signal: 초기화,  
+      alternate signal stack: 초기화,  
+      CPU-time clock: 0으로 초기화.
 
   ---
 
@@ -754,7 +758,7 @@
 
     pthread_join이 실패하면 좀비 스레드가 만들어진다고 한다. 그래서 좀비가 다수 쌓이면 스레드 생성에 제한을 건다고 함.  
 
-    main 스레드뿐만 아니라 아무 스레드나 다른 joinable한 스레드와 결합 가능하다.
+    main 스레드뿐만 아니라 아무 스레드나 다른 `joinable`한 스레드와 결합 가능하다.
     
     > "waitpid(-1, &status, 0)의 pthread 버전은 없습니다. (즉, 종료된 스레드들 중 아무나와 합체)  
       이런 기능이 필요하다고 생각되면 애플리케이션 디자인을 재고해야 할 것입니다."
@@ -1739,13 +1743,72 @@ C언어로 개발하기 넘 어렵다.
 epoll 공부 끝내고, 스레드 부분 복습하기.  
 내 메인 로직의 핵심 근거가 멀티 스레드이기 때문에 이 부분에 투자를 안할 수가 없다.
 
+- 레벨 트리거(Level Trigger)와 엣지 트리거(Edge Trigger)
+
+  그.. 중요한 내용인 건 알겠는데, 내 프로젝트에 당장 필요한 내용은 아님.
+
+- 다시 스레드
+
+  충분히 공부한 내용이라고 생각했는데, 막상 코드를 짜려고 하면 어떻게 해야 할지 감이 안잡힘.  
+  소켓 프로그래밍 책에 나와 있는 예제 따라 치면서 사용에 익숙해질 것.  
+
+  ```c
+  // ...
+  worker_t workers[THREAD_NUM];
+  for (int i = 0; i < THREAD_NUM; ++i) {
+      int start = (5 * i + 1);
+      if (pthread_create(&(workers[i].thread_id), NULL, thread_main, (void*)&start) != 0) {
+          puts("pthread_create() error");
+          return 1;
+      }
+  }
+  // ...
+  ```
+
+  위 코드가 잘못된 코드임을 알아야 한다.    
+  (머리 속에 2개 이상의 함수 콜스택을 만들어서 시뮬레이션 할 줄 알아야 함.  
+   `context switch`의 간격이 상상 이상으로 찰나임을 간과하면 안된다.  
+   이는 곧 스레드의 실행 순서를 함부로 예측하면 안됨을 의미한다.  
+   사실 위 코드는 포인터의 존재를 의식하지 않아서 발생한 문제이기도 함)
+
+
 
 
 ### Achievements of the day
 
+새로운 API 공부할 때는 예제도 이것저것 작성해보면서 익숙해질 것.  
+API와 친해져야 한다.
+
+chat-gpt(copilot)가 생각보다 코드를 잘 짬.  
+나랑 안맞는 부분 일일이 수정하는게 번거로워서 그렇지  
+요구 사항만 자세하게 명시하면 꽤 그럴싸하게 작성해준다.  
+물론 흔하디 흔한 코드를 작성하라고 해서 그런게 크겠지만.  
+
+생소한 분야의 코딩이라면 배울점도 있음.
+AI보다는 선대 개발자들한테 배우는 셈이라고 봄.  
+
+단.. AI 코드가 만능은 아니다. 휘둘리면 안돼.  
+AI가 작성한 코드를 내려다볼 수준은 되어야 쓸만한 것 같다.  
+난 아직 그럴 수준은 못되기에 혼자서 더 프로그래밍 해보련다.
+
+
 </details>
 
 [//]: # (End of 03.28)
+
+<details><summary>03.29(수)</summary>
+
+스레드 공부 이어서 진행.  
+너무 시간 끌린다 싶으면 아는 선에서 멀티 스레드 구조 설계해서 구현해볼 것.  
+그래.. 완벽주의는 신중하게 적용하자.
+
+### Achievements of the day
+
+
+</details>
+
+[//]: # (End of 03.29)
+
 
 </blockquote></details>
 
