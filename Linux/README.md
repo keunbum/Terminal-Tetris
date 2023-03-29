@@ -166,13 +166,15 @@
     일단 리눅스 프로젝트는 마무리 하는 게 맞는 것 같음 --> 가상 머신 사용
 
 
-  - [ ] 현재 내 로직에서는 둘 이상의 스레드가 표준 출력을 하는데,  
+  - [X] 현재 내 로직에서는 둘 이상의 스레드가 표준 출력을 하는데,  
       printf가 thread-safe 하지 않기 때문에 의도한 대로 출력되지 않을 가능성이 있다.
 
       write 정도면 thread-safe한 줄 알았는데 이 [링크](https://stackoverflow.com/questions/467938/stdout-thread-safe-in-c-on-linux)에 따르면 그것도 100% 보장할 순 없단다.  
       
-      printf 앞뒤로 lock, unlock을 걸면 되긴 하는데 그러면 성능 저하가 오고..  
-      일단 단위 출력량이 많지는 않기 때문에 atomic 하게 출력되겠지 라는 믿음을 가지고 간다..
+      ~~printf 앞뒤로 lock, unlock을 걸면 되긴 하는데 그러면 성능 저하가 오고..  
+      일단 단위 출력량이 많지는 않기 때문에 atomic 하게 출력되겠지 라는 믿음을 가지고 간다..~~
+
+      --> 일단은 pthread_mutex_lock, unlock으로 해결.
 
 
 </details>
@@ -1802,7 +1804,23 @@ AI가 작성한 코드를 내려다볼 수준은 되어야 쓸만한 것 같다.
 너무 시간 끌린다 싶으면 아는 선에서 멀티 스레드 구조 설계해서 구현해볼 것.  
 그래.. 완벽주의는 신중하게 적용하자.
 
+책에 나와 있는 내용이 뭐랄까.  
+워커 스레드 모델, 그러니까 대량의 작업 처리를 병렬로 돌릴 때에 대한 예시만 보여주고 있지  
+스레드들 간의 복잡한 상호 작용에 대한 처리를 다루고 있지는 않음.  
+그래서 다양한 API와 기법들을 조사해서 적용할 줄 알아야 함.  
+
+- [pthread_detach](https://man7.org/linux/man-pages/man3/pthread_detach.3.html)
+
+  자기 자신을 떼어놓고 싶으면 아래와 같이 콜하면 됨.
+
+  ```c
+  pthread_detach(pthread_self());
+  ```
+
+  
 ### Achievements of the day
+
+실행해보면 오늘 어디까지 했는지 알 거임.  
 
 
 </details>
