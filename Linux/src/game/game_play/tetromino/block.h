@@ -1,13 +1,31 @@
 #ifndef __BLOCK__H
 #define __BLOCK__H
 
+#include <wchar.h>
+
 // ref: https://ko.wikipedia.org/wiki/%ED%8B%80:%EC%9D%B4%EB%AA%A8%EC%A7%80_(%EC%9C%A0%EB%8B%88%EC%BD%94%EB%93%9C_%EB%B8%94%EB%A1%9D)
 // ref: https://en.wikipedia.org/wiki/Geometric_Shapes_(Unicode_block)
 // ref: https://en.wikipedia.org/wiki/Box-drawing_character
+// ref: https://www.compart.com/en/unicode/block/U+25A0
+// ref: https://emojiterra.com/geometric-symbols/
 
-#define BLOCK_FULL (0x2B1B)
-#define BLOCK_EMPTY (0x2B1C)
+#define BLOCK_BLACK_LARGE_SQUARE (0x2B1B)
+#define BLOCK_WHITE_LARGE_SQUARE (0x2B1C)
 
 typedef char block_t;
+typedef wchar_t block_code_t;
+
+typedef struct {
+    const int size;
+    const block_code_t codes[];
+} block_code_set_t;
+
+extern const block_code_set_t G_BLOCK_CODE_SET_DEFAULT;
+
+int get_block_code_random(const block_code_set_t*);
+int get_block_code_fixed(const block_code_set_t*, int, int);
+
+#define BLOCK_T_TRUE ('1')
+#define BLOCK_T_FALSE ('0')
 
 #endif /* __BLOCK__H */

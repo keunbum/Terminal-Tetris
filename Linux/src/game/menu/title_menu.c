@@ -6,7 +6,7 @@
 #include "draw_tool/cursor.h"
 #include "error/error_handling.h"
 #include "game/menu/game_selection_menu.h"
-#include "game/menu/title_menu.h"
+#include "title_menu.h"
 
 static void draw_title_menu_screen(void)
 {

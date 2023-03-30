@@ -1,4 +1,7 @@
-#include "test/test.h"
+#include <wchar.h>
+#include <wctype.h>
+
+#include "test.h"
 #include "localize/localize.h"
 
 extern int test_timer(int, char*[]);

@@ -1,9 +1,9 @@
-#include "game/game_play/tetromino/tetromino.h"
+#include "tetromino.h"
 #include "debug/debug.h"
-#include "draw_tool/cursor.h"
-#include "draw_tool/draw_tool.h"
 
-const tetromino_symbol_t g_tetromino_symbols[TOTAL_TETROMINO_NUM] = {
+static tetromino_id_t g_s_tetromino_ptr;
+
+const tetromino_symbol_t G_TETROMINO_SYMBOLS[TOTAL_TETROMINO_NUM] = {
     // I
     {
         1,
@@ -63,7 +63,29 @@ const tetromino_symbol_t g_tetromino_symbols[TOTAL_TETROMINO_NUM] = {
     },
 };
 
-int encode_block(char ch)
+int encode_block(block_t ch)
 {
+    debug();
+
     return (int)(ch - '1');
+}
+
+void init_tetromino_generator(void)
+{
+    debug();
+
+    g_s_tetromino_ptr = 1;
+}
+
+void init_tetromino(tetromino_t* const out_t, int symbol_id, pos_t pos_x, pos_t pos_y, unsigned int velocity, dir_t dir, wchar_t block_code)
+{
+    debug();
+    
+    out_t->id = g_s_tetromino_ptr++;
+    out_t->symbol_id = symbol_id;
+    out_t->pos_x = pos_x;
+    out_t->pos_y = pos_y;
+    out_t->velocity = velocity;
+    out_t->dir = dir;
+    out_t->block_code = block_code;
 }

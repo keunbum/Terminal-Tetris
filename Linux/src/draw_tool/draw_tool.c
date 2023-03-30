@@ -3,59 +3,69 @@
 #include <unistd.h>
 
 #include "debug/debug.h"
+#include "draw_tool.h"
 #include "draw_tool/cursor.h"
-#include "draw_tool/draw_tool.h"
 
-static void draw_unit_matrix_at(wchar_t ch, int x, int y)
+static void wdraw_unit_matrix_at(wchar_t ch, int x, int y)
 {
+    debug();
+
     wgotoxy(x, y);
-    draw_unit_matrix(ch);
+    wdraw_unit_matrix(ch);
 }
 
 // [sx, ex)
-static void draw_col_matrix_at(wchar_t ch, int sx, int ex, int sy)
+static void wdraw_col_matrix_at(wchar_t ch, int sx, int ex, int sy)
 {
+    debug();
+
     wgotoxy(sx, sy);
     for (int i = sx; i < ex; i += 1) {
-        draw_unit_matrix_at(ch, i, sy);
+        wdraw_unit_matrix_at(ch, i, sy);
     }
 }
 
-void draw_unit_matrix(wchar_t ch)
+void wdraw_unit_matrix(wchar_t ch)
 {
+    debug();
+
     putwc(ch, stdout);
 }
 
 // [sy, ey)
-void draw_row_matrix_at(wchar_t ch, int sx, int sy, int ey)
+void wdraw_row_matrix_at(wchar_t ch, int sx, int sy, int ey)
 {
+    debug();
+
     wgotoxy(sx, sy);
     for (int j = sy; j < ey; j += 1) {
-        draw_unit_matrix(ch);
+        wdraw_unit_matrix(ch);
     }
 }
 
-void draw_boundary_at_with(wchar_t hor_block, wchar_t ver_block, int height, int width, int sx, int sy, wchar_t top_lft, wchar_t top_rgt, wchar_t bot_lft, wchar_t bot_rgt)
+void wdraw_boundary_at_with(wchar_t hor_block, wchar_t ver_block, int height, int width, int sx, int sy, wchar_t top_lft, wchar_t top_rgt, wchar_t bot_lft, wchar_t bot_rgt)
 {
+    debug();
+
     int x0 = sx;
     int x1 = x0 + height - 1;
     int y0 = sy;
     int y1 = y0 + width - 1;
 
-    draw_unit_matrix_at(top_lft, x0, y0);
-    draw_unit_matrix_at(top_rgt, x0, y1);
-    draw_unit_matrix_at(bot_lft, x1, y0);
-    draw_unit_matrix_at(bot_rgt, x1, y1);
+    wdraw_unit_matrix_at(top_lft, x0, y0);
+    wdraw_unit_matrix_at(top_rgt, x0, y1);
+    wdraw_unit_matrix_at(bot_lft, x1, y0);
+    wdraw_unit_matrix_at(bot_rgt, x1, y1);
 
-    draw_row_matrix_at(hor_block, x0, y0 + 1, y1);
-    draw_row_matrix_at(hor_block, x1, y0 + 1, y1);
+    wdraw_row_matrix_at(hor_block, x0, y0 + 1, y1);
+    wdraw_row_matrix_at(hor_block, x1, y0 + 1, y1);
 
-    draw_col_matrix_at(ver_block, x0 + 1, x1, y0);
-    draw_col_matrix_at(ver_block, x0 + 1, x1, y1);
+    wdraw_col_matrix_at(ver_block, x0 + 1, x1, y0);
+    wdraw_col_matrix_at(ver_block, x0 + 1, x1, y1);
 }
 
 // height and width both means total length
-void draw_boundary_at(wchar_t hor_block, wchar_t ver_block, int height, int width, int sx, int sy)
+void wdraw_boundary_at(wchar_t hor_block, wchar_t ver_block, int height, int width, int sx, int sy)
 {
-    draw_boundary_at_with(hor_block, ver_block, height, width, sx, sy, UNIT_MATRIX_CORNER_TOP_LEFT, UNIT_MATRIX_CORNER_TOP_RIGHT, UNIT_MATRIX_CORNER_BOT_LEFT, UNIT_MATRIX_CORNER_BOT_RIGHT);
+    wdraw_boundary_at_with(hor_block, ver_block, height, width, sx, sy, UNIT_MATRIX_CORNER_TOP_LEFT, UNIT_MATRIX_CORNER_TOP_RIGHT, UNIT_MATRIX_CORNER_BOT_LEFT, UNIT_MATRIX_CORNER_BOT_RIGHT);
 }

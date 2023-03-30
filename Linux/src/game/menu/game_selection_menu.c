@@ -2,14 +2,14 @@
 #include <stdbool.h>
 #include <stddef.h>
 #include <stdio.h>
+#include <wchar.h>
 
 #include "debug/debug.h"
 #include "draw_tool/cursor.h"
 #include "error/error_handling.h"
 #include "game/game_play/game_mode/game_mode.h"
 #include "game/game_play/game_mode/single/single_play_manager.h"
-#include "game/menu/game_selection_menu.h"
-#include <wchar.h>
+#include "game_selection_menu.h"
 
 static const game_mode_t G_S_GAME_OBJECTS[] = {
     {
@@ -21,7 +21,7 @@ static const game_mode_t G_S_GAME_OBJECTS[] = {
 
 static const char* G_S_GAME_SELECTION_MENU_OPTIONS_TEXT[] = { G_S_GAME_OBJECTS[0].name, "back" };
 
-static const int G_S_GAME_SELECTION_MENU_TOTAL_OPTION_NUM = (int)(sizeof(G_S_GAME_SELECTION_MENU_OPTIONS_TEXT) / sizeof(G_S_GAME_SELECTION_MENU_OPTIONS_TEXT[0]));
+static const size_t G_S_GAME_SELECTION_MENU_TOTAL_OPTION_NUM = (size_t)(sizeof(G_S_GAME_SELECTION_MENU_OPTIONS_TEXT) / sizeof(G_S_GAME_SELECTION_MENU_OPTIONS_TEXT[0]));
 
 static void draw_game_selection_menu_screen(void)
 {
@@ -29,7 +29,7 @@ static void draw_game_selection_menu_screen(void)
 
     wclear();
     wprintf(L"SELECT GAME\n");
-    for (int i = 0; i < G_S_GAME_SELECTION_MENU_TOTAL_OPTION_NUM; ++i) {
+    for (size_t i = 0; i < G_S_GAME_SELECTION_MENU_TOTAL_OPTION_NUM; ++i) {
         if (i > 0) {
             wprintf(L"  ");
         }
@@ -84,6 +84,8 @@ static bool handle_game_selection_menu_cmd(int cmd)
 
 void run_game_selection_menu(void)
 {
+    debug();
+    
     int cmd;
     do {
         draw_game_selection_menu_screen();

@@ -1,7 +1,7 @@
 #include <locale.h>
 
 #include "debug/debug.h"
-#include "localize/localize.h"
+#include "localize.h"
 
 void localize(void)
 {
