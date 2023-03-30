@@ -145,6 +145,24 @@
 
 <font size="3"> <details><summary>difficulties during the project</summary><blockquote> </font>
 
+  - [ ] 리얼 타임 타이머가 fork일 때는 예상대로 잘 동작했었는데  
+        pthread 돌리니까 예상밖의 행동(시그널 핸들러 호출 이후에 하던 일 계속 안하고 계속 블로킹 당하고 있음)을 함.  
+        하; 어렵다. 병렬 프로그래밍..  
+        핸들러 안에서 로직을 수행하는 걸로 수정하긴 했는데, 왜 그런지는 알고 싶음..  
+        (혹시 [sigaltstack](https://man7.org/linux/man-pages/man2/sigaltstack.2.html) 이거 안써서 그런건가? 확실치는 않음)  
+
+        물론 fork를 쓰면 원래대로 잘되긴 하겠지만, 바람직한 솔루션은 아님.
+
+  - [X] 현재 내 로직에서는 둘 이상의 스레드가 표준 출력을 하는데,  
+      printf가 thread-safe 하지 않기 때문에 의도한 대로 출력되지 않을 가능성이 있다.
+
+      write 정도면 thread-safe한 줄 알았는데 이 [링크](https://stackoverflow.com/questions/467938/stdout-thread-safe-in-c-on-linux)에 따르면 그것도 100% 보장할 순 없단다.  
+      
+      ~~printf 앞뒤로 lock, unlock을 걸면 되긴 하는데 그러면 성능 저하가 오고..  
+      일단 단위 출력량이 많지는 않기 때문에 atomic 하게 출력되겠지 라는 믿음을 가지고 간다..~~
+
+      --> 일단은 pthread_mutex_lock, unlock으로 해결.
+
   - [X] timer_create 시스템 콜을 사용하려고 했는데 WSL에는 구현이 안되어 있다고 한다. 어떡하지; 
     
     ~~해결책 1. setitimer나 alarm 함수 사용.  
@@ -165,16 +183,6 @@
 
     일단 리눅스 프로젝트는 마무리 하는 게 맞는 것 같음 --> 가상 머신 사용
 
-
-  - [X] 현재 내 로직에서는 둘 이상의 스레드가 표준 출력을 하는데,  
-      printf가 thread-safe 하지 않기 때문에 의도한 대로 출력되지 않을 가능성이 있다.
-
-      write 정도면 thread-safe한 줄 알았는데 이 [링크](https://stackoverflow.com/questions/467938/stdout-thread-safe-in-c-on-linux)에 따르면 그것도 100% 보장할 순 없단다.  
-      
-      ~~printf 앞뒤로 lock, unlock을 걸면 되긴 하는데 그러면 성능 저하가 오고..  
-      일단 단위 출력량이 많지는 않기 때문에 atomic 하게 출력되겠지 라는 믿음을 가지고 간다..~~
-
-      --> 일단은 pthread_mutex_lock, unlock으로 해결.
 
 
 </details>
@@ -1822,11 +1830,21 @@ AI가 작성한 코드를 내려다볼 수준은 되어야 쓸만한 것 같다.
 
 실행해보면 오늘 어디까지 했는지 알 거임.  
 
-
 </details>
 
 [//]: # (End of 03.29)
 
+
+<details><summary>03.30(목)</summary>
+#define 상수들 대부분 다 extern으로 바꿀 것.
+
+### Achievements of the day
+
+오늘도 발전이 있긴 했는데 코드 아직 진행중이라 문서만 업데이트 해서 올림.
+
+</details>
+
+[//]: # (End of 03.30)
 
 </blockquote></details>
 
