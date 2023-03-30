@@ -12,12 +12,12 @@
 ---
 
 <2023.03.30 현황>  
-gif라 화질은 별로..  
+[![TETRIS 2023 03 31](http://img.youtube.com/vi/hotEwiW4uZQ/0.jpg)](https://youtu.be/hotEwiW4uZQ)  
+동적 영상 지원 안해서 유튜브 링크로 대체  
 - 아직 못움직임.
 - 라인 클리어 못함.
 - 난수 생성 빈약함.
 
-<img width="50%" src="../gif/TETRIS_2023_03_31.gif"/>
 
 ---
 
