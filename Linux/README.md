@@ -11,12 +11,29 @@
 
 ---
 
-<2023.03.30 현황>  
-[![TETRIS 2023 03 31](http://img.youtube.com/vi/hotEwiW4uZQ/0.jpg)](https://youtu.be/hotEwiW4uZQ)  
-동적 영상 지원 안해서 유튜브 링크로 대체  
+## 시현 영상
+
+마크다운 동영상 지원 안돼서 유튜브 링크로 대체  
+
+<details><summary>2023.03.30</summary>
+
+https://youtu.be/hotEwiW4uZQ  
+
 - 아직 못움직임.
 - 라인 클리어 못함.
 - 난수 생성 빈약함.
+
+</details>
+ 
+
+<details><summary>2023.04.01</summary>
+ 
+https://youtu.be/ffQKhxhylG8  
+
+어제 상황에서 추가로 구현한 건 없고 테트리스 블록만 바꿈.  
+- 이제보니 시간 오차도 있음. (최대한 1초에 가깝게 구현하기.)   
+
+</details>
 
 
 ---
@@ -277,6 +294,8 @@
 
 
 ---
+
+
 
 
 <font size="3"> <details><summary>2023.03</summary><blockquote> </font>
@@ -1856,9 +1875,52 @@ AI가 작성한 코드를 내려다볼 수준은 되어야 쓸만한 것 같다.
 
 [//]: # (End of 03.30)
 
+
+<details><summary>03.31(금)</summary>
+
+game 폴더부터 리팩토링 하면 됨.  
+
+### Achievements of the day
+
+블록 이쁘게 꾸민다고 거기에 너무 시간 쏟음;  
+담부턴 이러지 말자. 가끔은 과정보다는 결과에 신경써야 한다.  
+
+실질적으로 서비스할 게임은 아니라고 생각하다 보니 그런 것 같은데  
+그래도 가장 중요한 것부터 수행해 나갈 것.  
+불필요한 완벽주의는 독이다.
+
+전반적으로 코드 리팩토링도 함.
+
+</details>
+
+[//]: # (End of 03.31)
+
+
 </blockquote></details>
 
 [//]: # (End of 2023.03)
 
 
----
+
+
+
+<font size="3"> <details><summary>2023.04</summary><blockquote> </font>
+
+<details><summary>04.01(토)</summary>
+
+simulate.h부터 리팩토링 하면 됨.
+
+리팩토링 다하면 의사 난수 생성 보완하거나, 
+사용자 입력 받기 구현할 것.
+
+코드 더 객체지향적으로 리팩토링.
+
+### Achievements of the day
+
+</details>
+
+[//]: # (End of 04.01)
+
+</blockquote></details>
+
+[//]: # (End of 2023.04)
