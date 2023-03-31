@@ -13,7 +13,7 @@ void handle_error(const char* msg)
     exit(EXIT_FAILURE);
 }
 
-void handle_error_en(int en, const char* msg)
+void handle_error_en(const char* msg, int en)
 {
     debug();
 

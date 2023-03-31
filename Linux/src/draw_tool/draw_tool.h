@@ -1,7 +1,3 @@
-/*
- * Header related to screen output.
- */
-
 #ifndef __DRAW_TOOL__H
 #define __DRAW_TOOL__H
 
@@ -27,17 +23,17 @@
 #define UNIT_MATRIX_VER_LINE_THIN (0x2503)
 
 #define wdraw_newline() wprintf(L"\n")
-#define wdraw_row_newline(buf, width)   \
+#define wdraw_row_newline(buf, cursor_move_width)   \
     do {                                \
         wprintf(buf);                   \
-        wprintf(L"\e[1B\e[%dD", width); \
+        wprintf(L"\e[1B\e[%dD", cursor_move_width); \
     } while (false)
-#define wdraw_rows_newline_at_r(height, buf, width, x, y) \
+#define wdraw_rows_newline_at_r(height, buf, cursor_move_width, x, y) \
     do {                                                  \
         pthread_mutex_lock(&g_cursor_mutex);              \
         wgotoxy(x, y);                                    \
         for (int i = 0; i < height; ++i) {                \
-            wdraw_row_newline(buf[i], width);             \
+            wdraw_row_newline(buf[i], cursor_move_width);             \
         }                                                 \
         wdraw_newline();                                  \
         pthread_mutex_unlock(&g_cursor_mutex);            \

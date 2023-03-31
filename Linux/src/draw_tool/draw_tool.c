@@ -67,5 +67,7 @@ void wdraw_boundary_at_with(wchar_t hor_block, wchar_t ver_block, int height, in
 // height and width both means total length
 void wdraw_boundary_at(wchar_t hor_block, wchar_t ver_block, int height, int width, int sx, int sy)
 {
+    debug();
+    
     wdraw_boundary_at_with(hor_block, ver_block, height, width, sx, sy, UNIT_MATRIX_CORNER_TOP_LEFT, UNIT_MATRIX_CORNER_TOP_RIGHT, UNIT_MATRIX_CORNER_BOT_LEFT, UNIT_MATRIX_CORNER_BOT_RIGHT);
 }

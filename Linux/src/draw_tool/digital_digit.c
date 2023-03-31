@@ -84,18 +84,10 @@ const digital_digit_t G_DIGITAL_DIGIT_EMPTY = {
     L"     ",
 };
 
-void wdraw_digital_digit_at_r(const digital_digit_t digit, int x, int y)
+void wdraw_digital_digit_at_r(const digital_digit_t digit, int pos_x, int pos_y)
 {
 
     debug();
 
-    wdraw_rows_newline_at_r(DIGITAL_DIGIT_HEIGHT, digit, DIGITAL_DIGIT_WIDTH, x, y);
-
-    pthread_mutex_lock(&g_cursor_mutex);
-    wgotoxy(x, y);
-    for (int i = 0; i < DIGITAL_DIGIT_HEIGHT; ++i) {
-        wdraw_row_newline(digit[i], DIGITAL_DIGIT_WIDTH);
-    }
-    wdraw_newline();
-    pthread_mutex_unlock(&g_cursor_mutex);
+    wdraw_rows_newline_at_r(DIGITAL_DIGIT_HEIGHT, digit, DIGITAL_DIGIT_WIDTH, pos_x, pos_y);
 }

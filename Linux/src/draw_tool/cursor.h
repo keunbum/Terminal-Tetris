@@ -24,8 +24,6 @@
 #define wmove_cursor_right() wmove_cursor_right_by(1)
 #define wmove_cursor_left() wmove_cursor_left_by(1)
 
-extern pthread_mutex_t g_cursor_mutex;
-
 #define wprintf_at(x, y, ...) \
     do {                      \
         wgotoxy(x, y);        \
@@ -38,5 +36,7 @@ extern pthread_mutex_t g_cursor_mutex;
         wprintf(__VA_ARGS__);                  \
         pthread_mutex_unlock(&g_cursor_mutex); \
     } while (false);
+
+extern pthread_mutex_t g_cursor_mutex;
 
 #endif /* __CURSOR__H */
