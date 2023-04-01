@@ -161,10 +161,12 @@ https://youtu.be/ffQKhxhylG8
 
 <font size="3"> <details><summary>TODO LIST</summary><blockquote> </font>
 
+- [X] 지금 서브 모듈 멀티 프로세스로 호출 하는 거 스레드로 바꿀 것.  
+- [X] 테트로미노 일정 속도로 아래로 떨어져서 바닥에 닿는 거 구현.  
 - [ ] 게임 메인 루프 설계.  
-- [ ] 지금 서브 모듈 멀티 프로세스로 호출 하는 거 스레드로 바꿀 것.  
-- [ ] 테트로미노 일정 속도로 아래로 떨어져서 바닥에 닿는 거 구현.  
-- [ ] 사용자 입력 받는 스레드 따로 돌려서 테트로미노 움직임 반영.  
+- [ ] 사용자 입력 받는 스레드 따로 돌려서 테트로미노를 연산하는 로직 구현.  
+- [ ] 채워진 라인들 지우는 로직 구현
+- [ ] 라인이 지워졌을 때 위에 있는 블록들 아래로 이동하는 로직 구현
   
 </details>
 
@@ -172,13 +174,15 @@ https://youtu.be/ffQKhxhylG8
 
 <font size="3"> <details><summary>difficulties during the project</summary><blockquote> </font>
 
-  - [ ] 리얼 타임 타이머가 fork일 때는 예상대로 잘 동작했었는데  
+  - [X] ~~리얼 타임 타이머가 fork일 때는 예상대로 잘 동작했었는데  
         pthread 돌리니까 예상밖의 행동(시그널 핸들러 호출 이후에 하던 일 계속 안하고 계속 블로킹 당하고 있음)을 함.  
         하; 어렵다. 병렬 프로그래밍..  
         핸들러 안에서 로직을 수행하는 걸로 수정하긴 했는데, 왜 그런지는 알고 싶음..  
         (혹시 [sigaltstack](https://man7.org/linux/man-pages/man2/sigaltstack.2.html) 이거 안써서 그런건가? 확실치는 않음)  
+        물론 fork를 쓰면 원래대로 잘되긴 하겠지만, 바람직한 솔루션은 아님.~~
 
-        물론 fork를 쓰면 원래대로 잘되긴 하겠지만, 바람직한 솔루션은 아님.
+      스레드들의 시그널 마스크에 대한 이해 부족이었음.  
+      아직 100% 알겠는 건 아닌데, 일단 해결은 함.
 
   - [X] 현재 내 로직에서는 둘 이상의 스레드가 표준 출력을 하는데,  
       printf가 thread-safe 하지 않기 때문에 의도한 대로 출력되지 않을 가능성이 있다.
@@ -232,29 +236,6 @@ https://youtu.be/ffQKhxhylG8
 
 <font size="3"> <details><summary>miscellaneous search</summary><blockquote> </font>
 
-  <details><summary>poll, select</summary>
-  
-  시간 되면 poll, select 공부하기
-  
-  </details>  
-
-  <details><summary>signal</summary>
-  
-  signal, sigsuspend 등 이어서 조사하기
-  
-  </details>  
-
-  <details><summary>abort()와 _Exit()</summary>
-
-  </details>  
-
-  <details><summary>getopt</summary>
-
-  [getopt](https://man7.org/linux/man-pages/man3/getopt.3.html)  
-  그동안 리눅스 명령행에서 프로그램 실행할 때  
-  `-a`나 `--version` 같은 옵션 처리 어떻게 하나 했더니 시스템 콜이 다 있었네...  
-
-  </details>
 
 <details><summary>const int*와 int* const의 차이</summary>
   
@@ -287,6 +268,36 @@ https://youtu.be/ffQKhxhylG8
   ```
 
   </details>
+
+
+  <details><summary>getopt</summary>
+
+  [getopt](https://man7.org/linux/man-pages/man3/getopt.3.html)  
+  그동안 리눅스 명령행에서 프로그램 실행할 때  
+  `-a`나 `--version` 같은 옵션 처리 어떻게 하나 했더니 시스템 콜이 다 있었네...  
+
+  </details>
+
+
+  <details><summary>poll, select</summary>
+  
+  시간 되면 poll, select 공부하기
+  
+  </details>  
+
+
+  <details><summary>signal</summary>
+  
+  signal, sigsuspend 등 이어서 조사하기
+  
+  </details>  
+
+
+  <details><summary>abort()와 _Exit()</summary>
+
+  </details>  
+
+
 
 </details>
 
@@ -1916,6 +1927,9 @@ simulate.h부터 리팩토링 하면 됨.
 코드 더 객체지향적으로 리팩토링.
 
 ### Achievements of the day
+
+simulate.c까지 리팩토링 하긴 했는데,  
+이쪽은 아직 추가하거나 수정할 게 꽤 있음.
 
 </details>
 
