@@ -1,136 +1,138 @@
 #include <stdbool.h>
+#include <stdio.h>
 
 #include "debug/debug.h"
 #include "draw_tool/cursor.h"
 #include "draw_tool/draw_tool.h"
+#include "game/game_play/game_play.h"
 #include "game/game_play/physics/game_board.h"
-#include "game/game_play/physics/game_play_grid_matrix.h"
+#include "game/game_play/physics/game_play_board_frame.h"
 #include "game/game_play/tetromino/tetromino.h"
 #include "game/game_play/ui/game_play_ui.h"
 #include "simulate.h"
-#include "game/game_play/game_play.h"
 
-static void render_tetromino_at_r(const tetromino_t* t, wchar_t block_type, pos_t pos_x, pos_t pos_y)
+static void render_tetromino_at(const tetromino_t* tetro, wchar_t block_wprint, pos_t pos_x, pos_t pos_y)
 {
     debug();
 
-    my_assert(t != NULL);
+    my_assert(tetro != NULL);
 
-    pthread_mutex_lock(&g_cursor_mutex);
-    const tetromino_symbol_t* s = G_TETROMINO_SYMBOLS + t->symbol_id;
-    const int x_offset = GAME_PLAY_BOARD_START_POS_X_IN_WPRINT;
-    const int y_offset = GAME_PLAY_BOARD_START_POS_Y_IN_WPRINT - 1;
-    for (int i = 0; i < s->height; ++i) {
-        const block_t* row = s->grid[i];
+    const tetromino_symbol_t* symbol = G_TETROMINO_SYMBOLS + tetro->symbol_id;
+    const int x_wprint_offset = GAME_PLAY_BOARD_START_POS_X_WPRINT;
+    const int y_wprint_offset = GAME_PLAY_BOARD_START_POS_Y_WPRINT - 1;
+    for (int i = 0; i < symbol->height; ++i) {
+        const block_t* row = symbol->matrix[i];
         for (int j = 0; row[j]; ++j) {
             if (row[j] == BLOCK_T_FALSE) {
                 continue;
             }
-            pos_t block_pos_x_in_wprint = pos_x + i + x_offset;
-            if (block_pos_x_in_wprint < GAME_PLAY_BOARD_START_POS_X_IN_WPRINT) {
+            pos_t each_pos_x_wprint = pos_x + i + x_wprint_offset;
+            if (each_pos_x_wprint < GAME_PLAY_BOARD_START_POS_X_WPRINT) {
                 continue;
             }
-            pos_t block_pos_y_in_wprint = 2 * (pos_y + j) + y_offset;
-            wprintf_at(block_pos_x_in_wprint, block_pos_y_in_wprint, L"%lc", block_type);
+            pos_t each_pos_y_wprint = 2 * (pos_y + j) + y_wprint_offset;
+            wprintf_at(each_pos_x_wprint, each_pos_y_wprint, L"%lc", block_wprint);
         }
     }
-    wdraw_newline();
+    fflush(stdout);
+    // wdraw_newline();
+}
+
+static void render_tetromino_at_r(const tetromino_t* tetro, wchar_t block_wprint, pos_t pos_x, pos_t pos_y)
+{
+    debug();
+
+    pthread_mutex_lock(&g_cursor_mutex);
+    render_tetromino_at(tetro, block_wprint, pos_x, pos_y);
     pthread_mutex_unlock(&g_cursor_mutex);
 }
 
-static void render_tetromino(const tetromino_t* t, wchar_t block_type)
+static void render_tetromino_r(const tetromino_t* tetro, wchar_t block_wprint)
 {
     debug();
 
-    render_tetromino_at_r(t, block_type, t->pos_x, t->pos_y);
+    render_tetromino_at_r(tetro, block_wprint, tetro->pos_x, tetro->pos_y);
 }
 
-void disappear_tetromino(const tetromino_t* t)
+void erase_tetromino_r(const tetromino_t* tetro)
 {
     debug();
 
-    render_tetromino(t, BLOCK_WHITE_LARGE_SQUARE);
+    render_tetromino_r(tetro, BLOCK_WHITE_LARGE_SQUARE);
 }
 
-void draw_tetromino(const tetromino_t* t)
+void draw_tetromino_r(const tetromino_t* tetro)
 {
     debug();
 
-    render_tetromino(t, t->block_code);
+    render_tetromino_r(tetro, tetro->block_code);
 }
 
-void draw_tetromino_at_r(const tetromino_t* t, pos_t pos_x, pos_t pos_y)
-{
-    debug();
-
-    render_tetromino_at_r(t, t->block_code, pos_x, pos_y);
-}
-
-/* return tetromino's status */
-int move_tetromino(tetromino_t* const out_t)
+/* return tetromino's status when moving left, right, or down. 
+   implement the rotation operation separately. */
+int move_tetromino(tetromino_t* const out_tetro)
 {
     debug();
 
     static const pos_t S_DX[] = { 1, 0, -1, 0 };
     static const pos_t S_DY[] = { 0, 1, 0, -1 };
 
-    pos_t npos_x = out_t->pos_x + out_t->velocity * S_DX[out_t->dir];
-    pos_t npos_y = out_t->pos_y + out_t->velocity * S_DY[out_t->dir];
-    const tetromino_symbol_t* s = G_TETROMINO_SYMBOLS + out_t->symbol_id;
-    for (int i = 0; i < s->height; ++i) {
-        const block_t* row = s->grid[i];
+    pos_t npos_x = out_tetro->pos_x + out_tetro->velocity * S_DX[out_tetro->dir];
+    pos_t npos_y = out_tetro->pos_y + out_tetro->velocity * S_DY[out_tetro->dir];
+    const tetromino_symbol_t* symbol = G_TETROMINO_SYMBOLS + out_tetro->symbol_id;
+    for (int i = 0; i < symbol->height; ++i) {
+        const block_t* row = symbol->matrix[i];
         for (int j = 0; row[j]; ++j) {
             if (row[j] == BLOCK_T_FALSE) {
                 continue;
             }
-            pos_t cpos_x = npos_x + (pos_t)i;
-            pos_t cpos_y = npos_y + (pos_t)j;
-            my_assert(cpos_x >= GAME_PLAY_TETROMINO_POS_X_MIN);
-            if (cpos_y < GAME_PLAY_TETROMINO_POS_Y_MIN || cpos_y > GAME_PLAY_TETROMINO_POS_Y_MAX) {
+            pos_t each_npos_x = npos_x + (pos_t)i;
+            pos_t each_npos_y = npos_y + (pos_t)j;
+            my_assert(each_npos_x >= GAME_PLAY_TETROMINO_POS_X_MIN);
+            if (each_npos_y < GAME_PLAY_TETROMINO_POS_Y_MIN || each_npos_y > GAME_PLAY_TETROMINO_POS_Y_MAX) {
                 ewprintf("hi1\n");
                 return TETROMINO_STATUS_INPLACE;
             }
-            if (cpos_x > GAME_PLAY_TETROMINO_POS_X_MAX) {
+            if (each_npos_x > GAME_PLAY_TETROMINO_POS_X_MAX) {
                 ewprintf("hi2\n");
-                return TETROMINO_STATUS_ON_OTHERBLOCK;
+                return TETROMINO_STATUS_ONTHEGROUND;
             }
-            //my_assert(cpos_x >= 0 && cpos_x < GAME_PLAY_BOARD_HEIGHT);
-            if (cpos_x < 0) {
+            if (each_npos_x < 0) {
                 continue;
             }
-            my_assert(cpos_x < GAME_PLAY_BOARD_HEIGHT);
-            my_assert(cpos_y >= 0 && cpos_y < GAME_PLAY_BOARD_WIDTH);
-            game_board_grid_element_t val = g_game_board.grid[cpos_x][cpos_y];
-            if (val != GAME_PLAY_BOARD_GRID_ELEMENT_DEFAULT && val != out_t->id) {
-                return TETROMINO_STATUS_ON_OTHERBLOCK;
+            my_assert(each_npos_x < GAME_PLAY_BOARD_HEIGHT);
+            my_assert(0 <= each_npos_y && each_npos_y < GAME_PLAY_BOARD_WIDTH);
+            game_board_grid_element_t each_value = g_game_board.grid[each_npos_x][each_npos_y];
+            if (each_value != GAME_PLAY_BOARD_GRID_ELEMENT_DEFAULT && each_value != out_tetro->id) {
+                ewprintf("hi3\n");
+                return TETROMINO_STATUS_ONTHEGROUND;
             }
         }
     }
-    out_t->pos_x = npos_x;
-    out_t->pos_y = npos_y;
-    ewprintf("(%d, %d)\n", out_t->pos_x, out_t->pos_y);
+    out_tetro->pos_x = npos_x;
+    out_tetro->pos_y = npos_y;
     ewprintf("hi4\n");
     return TETROMINO_STATUS_MOVED;
 }
 
-void petrity_tetromino(const tetromino_t* t)
+void petrity_tetromino(const tetromino_t* tetro)
 {
-    const tetromino_symbol_t* s = G_TETROMINO_SYMBOLS + t->symbol_id;
-    for (int i = 0; i < s->height; ++i) {
-        const block_t* row = s->grid[i];
+    const tetromino_symbol_t* symbol = G_TETROMINO_SYMBOLS + tetro->symbol_id;
+    for (int i = 0; i < symbol->height; ++i) {
+        const block_t* row = symbol->matrix[i];
         for (int j = 0; row[j]; ++j) {
             if (row[j] == BLOCK_T_FALSE) {
                 continue;
             }
-            pos_t pos_x = t->pos_x + i;
-            pos_t pos_y = t->pos_y + j;
-            g_game_board.grid[pos_x][pos_y] = t->id;
+            pos_t each_pos_x = tetro->pos_x + i;
+            pos_t each_pos_y = tetro->pos_y + j;
+            g_game_board.grid[each_pos_x][each_pos_y] = tetro->id;
         }
     }
 }
 
-bool is_at_skyline(const tetromino_t* t)
+bool is_at_skyline(const tetromino_t* tetro)
 {
-    const tetromino_symbol_t* s = G_TETROMINO_SYMBOLS + t->symbol_id;
-    return t->pos_x + s->height <= 0;
+    const tetromino_symbol_t* symbol = G_TETROMINO_SYMBOLS + tetro->symbol_id;
+    return tetro->pos_x + symbol->height <= 0;
 }
