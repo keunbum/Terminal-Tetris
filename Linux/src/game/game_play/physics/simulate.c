@@ -1,4 +1,3 @@
-#include <stdbool.h>
 #include <stdio.h>
 
 #include "debug/debug.h"
@@ -11,7 +10,7 @@
 #include "game/game_play/ui/game_play_ui.h"
 #include "simulate.h"
 
-static void render_tetromino_at(const tetromino_t* tetro, wchar_t block_wprint, pos_t pos_x, pos_t pos_y)
+static void render_a_tetromino_at(const tetromino_t* tetro, wchar_t block_wprint, pos_t pos_x, pos_t pos_y)
 {
     debug();
 
@@ -21,7 +20,7 @@ static void render_tetromino_at(const tetromino_t* tetro, wchar_t block_wprint, 
     const int x_wprint_offset = GAME_PLAY_BOARD_START_POS_X_WPRINT;
     const int y_wprint_offset = GAME_PLAY_BOARD_START_POS_Y_WPRINT - 1;
     for (int i = 0; i < symbol->height; ++i) {
-        const block_t* row = symbol->matrix[i];
+        const block_t* row = symbol->block_matrix[i];
         for (int j = 0; row[j]; ++j) {
             if (row[j] == BLOCK_T_FALSE) {
                 continue;
@@ -38,39 +37,39 @@ static void render_tetromino_at(const tetromino_t* tetro, wchar_t block_wprint, 
     // wdraw_newline();
 }
 
-static void render_tetromino_at_r(const tetromino_t* tetro, wchar_t block_wprint, pos_t pos_x, pos_t pos_y)
+static void render_a_tetromino_at_r(const tetromino_t* tetro, wchar_t block_wprint, pos_t pos_x, pos_t pos_y)
 {
     debug();
 
     pthread_mutex_lock(&g_cursor_mutex);
-    render_tetromino_at(tetro, block_wprint, pos_x, pos_y);
+    render_a_tetromino_at(tetro, block_wprint, pos_x, pos_y);
     pthread_mutex_unlock(&g_cursor_mutex);
 }
 
-static void render_tetromino_r(const tetromino_t* tetro, wchar_t block_wprint)
+static void render_a_tetromino_r(const tetromino_t* tetro, wchar_t block_wprint)
 {
     debug();
 
-    render_tetromino_at_r(tetro, block_wprint, tetro->pos_x, tetro->pos_y);
+    render_a_tetromino_at_r(tetro, block_wprint, tetro->pos_x, tetro->pos_y);
 }
 
-void erase_tetromino_r(const tetromino_t* tetro)
+void erase_a_tetromino_r(const tetromino_t* tetro)
 {
     debug();
 
-    render_tetromino_r(tetro, BLOCK_WHITE_LARGE_SQUARE);
+    render_a_tetromino_r(tetro, BLOCK_WHITE_LARGE_SQUARE_WPRINT);
 }
 
-void draw_tetromino_r(const tetromino_t* tetro)
+void draw_a_tetromino_r(const tetromino_t* tetro)
 {
     debug();
 
-    render_tetromino_r(tetro, tetro->block_code);
+    render_a_tetromino_r(tetro, tetro->block_code);
 }
 
-/* return tetromino's status when moving left, right, or down. 
+/* return tetromino's status when moving left, right, or down.
    implement the rotation operation separately. */
-int move_tetromino(tetromino_t* const out_tetro)
+int move_a_tetromino(tetromino_t* const out_tetro)
 {
     debug();
 
@@ -81,7 +80,7 @@ int move_tetromino(tetromino_t* const out_tetro)
     pos_t npos_y = out_tetro->pos_y + out_tetro->velocity * S_DY[out_tetro->dir];
     const tetromino_symbol_t* symbol = G_TETROMINO_SYMBOLS + out_tetro->symbol_id;
     for (int i = 0; i < symbol->height; ++i) {
-        const block_t* row = symbol->matrix[i];
+        const block_t* row = symbol->block_matrix[i];
         for (int j = 0; row[j]; ++j) {
             if (row[j] == BLOCK_T_FALSE) {
                 continue;
@@ -119,7 +118,7 @@ void petrity_tetromino(const tetromino_t* tetro)
 {
     const tetromino_symbol_t* symbol = G_TETROMINO_SYMBOLS + tetro->symbol_id;
     for (int i = 0; i < symbol->height; ++i) {
-        const block_t* row = symbol->matrix[i];
+        const block_t* row = symbol->block_matrix[i];
         for (int j = 0; row[j]; ++j) {
             if (row[j] == BLOCK_T_FALSE) {
                 continue;

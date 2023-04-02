@@ -25,11 +25,11 @@ static void wdraw_col_matrix_at(wchar_t ch, int sx, int ex, int sy)
     }
 }
 
-void wdraw_unit_matrix(wchar_t ch)
+void wdraw_unit_matrix(wchar_t wch)
 {
     debug();
 
-    putwc(ch, stdout);
+    putwc(wch, stdout);
 }
 
 // [sy, ey)

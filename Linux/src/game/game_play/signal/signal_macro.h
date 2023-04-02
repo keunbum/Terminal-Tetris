@@ -9,6 +9,7 @@
 
 #include "error/error_handling.h"
 
+/*
 #define REGISTER_HANDLER_EMPTYSET(_act, _handler, _sa_flags, _sig_num, _oact) \
     do {                                                                      \
         _act.sa_handler = _handler;                                           \
@@ -26,5 +27,6 @@
         _act.sa_flags = _sa_flags;                                            \
         sigaction(_sig_num, &_act, 0);                                        \
     } while (false)
+*/
 
 #endif /* __SIGNAL_MACRO__H */

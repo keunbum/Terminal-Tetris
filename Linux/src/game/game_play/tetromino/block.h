@@ -8,22 +8,10 @@
 // ref: https://en.wikipedia.org/wiki/Box-drawing_character
 // ref: https://www.compart.com/en/unicode/block/U+25A0
 // ref: https://emojiterra.com/geometric-symbols/
-
-#define BLOCK_BLACK_LARGE_SQUARE (0x2B1B)
-#define BLOCK_WHITE_LARGE_SQUARE (0x2B1C)
+#define BLOCK_BLACK_LARGE_SQUARE_WPRINT (0x2B1B)
+#define BLOCK_WHITE_LARGE_SQUARE_WPRINT (0x2B1C)
 
 typedef char block_t;
-typedef wchar_t block_code_t;
-
-typedef struct {
-    const int size;
-    const block_code_t codes[];
-} block_code_set_t;
-
-extern const block_code_set_t G_BLOCK_CODE_SET_DEFAULT;
-
-int get_block_code_random(const block_code_set_t*);
-int get_block_code_fixed(const block_code_set_t*, int, int);
 
 #define BLOCK_T_TRUE ('1')
 #define BLOCK_T_FALSE ('0')

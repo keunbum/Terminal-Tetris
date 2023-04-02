@@ -8,6 +8,8 @@
 #include "game_play_timer.h"
 #include "game/game_play/timer/realtime_timer_drawer.h"
 
+/* It will be printed a bit prettier. */
+
 static void decode_sec_to_hhmmss(int sec, int* const out_hh, int* const out_mm, int* const out_ss)
 {
     debug();

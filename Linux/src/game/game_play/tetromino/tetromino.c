@@ -1,9 +1,9 @@
 #include "tetromino.h"
 #include "debug/debug.h"
 
-static tetromino_id_t g_s_tetromino_ptr;
+static tetromino_id_t g_s_tetromino_cnt;
 
-const tetromino_symbol_t G_TETROMINO_SYMBOLS[TOTAL_TETROMINO_NUM] = {
+const tetromino_symbol_t G_TETROMINO_SYMBOLS[TOTAL_TETROMINO_NUM_OF_KINDS] = {
     // I
     {
         1,
@@ -23,26 +23,24 @@ const tetromino_symbol_t G_TETROMINO_SYMBOLS[TOTAL_TETROMINO_NUM] = {
     {
         2,
         {
-            "111",
             "010",
+            "111",
         },
     },
     // J
     {
-        3,
+        2,
         {
-            "01",
-            "01",
-            "11",
+            "100",
+            "111",
         },
     },
     // L
     {
-        3,
+        2,
         {
-            "10",
-            "10",
-            "11",
+            "001",
+            "111",
         },
     },
     // S
@@ -63,25 +61,25 @@ const tetromino_symbol_t G_TETROMINO_SYMBOLS[TOTAL_TETROMINO_NUM] = {
     },
 };
 
-int encode_block(block_t ch)
+int encode_block_t(block_t block)
 {
     debug();
 
-    return (int)(ch - '1');
+    return (int)(block - '1');
 }
 
 void init_tetromino_generator(void)
 {
     debug();
 
-    g_s_tetromino_ptr = 1;
+    g_s_tetromino_cnt = 1;
 }
 
-void init_tetromino(tetromino_t* const out_t, int symbol_id, pos_t pos_x, pos_t pos_y, unsigned int velocity, dir_t dir, wchar_t block_code)
+void init_a_tetromino(tetromino_t* const out_t, symbol_id_t symbol_id, pos_t pos_x, pos_t pos_y, velocity_t velocity, dir_t dir, wchar_t block_code)
 {
     debug();
-    
-    out_t->id = g_s_tetromino_ptr++;
+
+    out_t->id = g_s_tetromino_cnt++;
     out_t->symbol_id = symbol_id;
     out_t->pos_x = pos_x;
     out_t->pos_y = pos_y;

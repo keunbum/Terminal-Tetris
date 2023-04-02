@@ -11,8 +11,9 @@
 #include "error/error_handling.h"
 #include "game/game_play/game_play.h"
 #include "game/game_play/physics/simulate.h"
-#include "game/game_play/random/random.h"
+#include "util/random/random.h"
 #include "game/game_play/signal/signal_macro.h"
+#include "game/game_play/tetromino/block_code_set.h"
 #include "game/game_play/tetromino/tetromino.h"
 #include "game/game_play/timer/game_play_timer.h"
 #include "game/game_play/timer/realtime_timer_drawer.h"
@@ -67,26 +68,26 @@ static void* main_func_game_main_module(void*)
     while (!is_game_over) {
         const block_code_set_t* code_set = G_BLOCK_CODE_SET_DEFAULT;
         tetromino_t tetromino_obj;
-        symbol_id_t sid = rng() % TOTAL_TETROMINO_NUM;
-        init_tetromino(
+        symbol_id_t symbol_id = rng() % TOTAL_TETROMINO_NUM_OF_KINDS;
+        init_a_tetromino(
             &tetromino_obj,
-            sid,
-            GAME_PLAY_INIT_TETROMINO_POS_X,
-            GAME_PLAY_INIT_TETROMINO_POS_Y,
-            GAME_PLAY_INIT_TETROMINO_VELOCITY,
+            symbol_id,
+            GAME_PLAY_TETROMINO_INIT_POS_X,
+            GAME_PLAY_TETROMINO_INIT_POS_Y,
+            GAME_PLAY_TETROMINO_INIT_VELOCITY,
             DIR_BOT,
-            code_set->codes[get_block_code_fixed(code_set, sid)]);
+            code_set->codes[get_block_code_fixed(code_set, symbol_id)]);
         // hmm...
-        draw_tetromino_at_r(&tetromino_obj, tetromino_obj.pos_x, tetromino_obj.pos_y);
+        draw_a_tetromino_r(&tetromino_obj);
         /* Uh.. I think.. The concept of speed should be defined like this,
            "Every few frames it goes down by one block." */
         while (true) {
             // draw_over_all();
             // handle_user_input();
-            disappear_tetromino(&tetromino_obj);
-            int status = move_tetromino(&tetromino_obj);
-            draw_tetromino(&tetromino_obj);
-            if (status == TETROMINO_STATUS_ON_OTHERBLOCK) {
+            erase_a_tetromino_r(&tetromino_obj);
+            int status = move_a_tetromino(&tetromino_obj);
+            draw_a_tetromino_r(&tetromino_obj);
+            if (status == TETROMINO_STATUS_ONTHEGROUND) {
                 petrity_tetromino(&tetromino_obj);
                 // clear_filled_lines(); --> maybe internally.
                 // reflect_them_visually();
@@ -191,7 +192,7 @@ static int run_simulation(void)
     if (run_game_play_modules_in_parallel() == -1) {
         handle_error("run_game_play_modules_in_parallel() error");
     }
-    
+
     /* UX after Game Over not implemented yet. */
     return GAME_PLAY_CMD_REGAME;
     // return selection_after_game_over();
@@ -227,7 +228,7 @@ void* run_single_play_mode(void* arg)
 {
     debug();
 
-    (void) arg;
+    (void)arg;
 
     while (true) {
         int res = play_a_new_game();
