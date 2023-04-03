@@ -42,6 +42,7 @@ testdebug: dev
 .PHONY: clean run depend
 
 clean:
+	clear
 	rm -rf $(BINDIR)/* $(OBJDIR)/*
 
 run:

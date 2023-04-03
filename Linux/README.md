@@ -1951,7 +1951,23 @@ simulate.c까지 리팩토링 하긴 했는데,
 
 </details>
 
-[//]: # (End of 04.01)
+[//]: # (End of 04.02)
+
+
+<details><summary>04.03(월)</summary>
+
+
+### Achievements of the day
+
+realtime_timer부터 시작해서 객체 지향적으로 짜봤는데, C언어 특성상 한계가 있음.  
+~~왜 C언어 안쓰는지 알 것 같음. 하.. 이제 와서 C++로 전환하긴 좀 그런데.~~
+
+일단.. 하는데까지 해보기. 어쨌든 객체 지향 도입하는 건 좋은 면이 많긴 함.
+
+</details>
+
+[//]: # (End of 04.03)
+
 
 
 </blockquote></details>
