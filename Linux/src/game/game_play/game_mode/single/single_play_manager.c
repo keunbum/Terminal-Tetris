@@ -9,34 +9,35 @@
 #include "draw_tool/cursor.h"
 #include "draw_tool/digital_digit.h"
 #include "error/error_handling.h"
+#include "game/game_play/game_mode/game_play_manager.h"
 #include "game/game_play/game_play.h"
 #include "game/game_play/physics/simulate.h"
-#include "util/random/random.h"
 #include "game/game_play/signal/signal_macro.h"
 #include "game/game_play/tetromino/block_code_set.h"
 #include "game/game_play/tetromino/tetromino.h"
 #include "game/game_play/timer/game_play_timer.h"
-#include "game/game_play/timer/realtime_timer_drawer.h"
+#include "game/game_play/timer/timer_drawer.h"
 #include "game/game_play/ui/game_play_screen.h"
 #include "game/game_play/ui/game_play_ui.h"
 #include "single_play_manager.h"
+#include "util/random/random.h"
 
-static void load_ui(void)
+static void load_ui(const game_play_manager_module_arg_t* play_manager)
 {
     debug();
 
-    int res = load_game_play_ui(GAME_PLAY_MODE_SINGLE, GAME_PLAY_SINGLE_SCREEN_START_POS_X_WPRINT, GAME_PLAY_SINGLE_SCREEN_START_POS_Y_WPRINT, GAME_PLAY_SINGLE_SCREEN_HEIGHT_WPRINT);
+    int res = load_game_play_ui(play_manager->mode, play_manager->screen_start_pos_x_wprint, play_manager->screen_start_pos_y_wprint, play_manager->screen_height_wprint);
     if (res == -1) {
         handle_error("load_game_play_ui() error");
     }
 }
 
-static int ready_getset_go(int init_sec)
+static int ready_getset_go(const game_play_manager_module_arg_t* play_manager)
 {
     debug();
 
-    for (int cur_sec = init_sec; cur_sec >= 0; --cur_sec) {
-        pos_t pos_x_in_wprint = GAME_PLAY_SINGLE_SCREEN_START_POS_X_WPRINT + 2;
+    for (int cur_sec = play_manager->ready_getset_go_sec; cur_sec >= 0; --cur_sec) {
+        pos_t pos_x_in_wprint = play_manager->screen_start_pos_x_wprint + 2;
         pos_t pos_y_in_wprint = GAME_PLAY_BOARD_FRAME_START_POS_Y_WPRINT + GAME_PLAY_BOARD_FRAME_WIDTH - 2;
         if (cur_sec == 0) {
             wdraw_digital_digit_at_r(G_DIGITAL_DIGIT_EMPTY, (int)pos_x_in_wprint, (int)pos_y_in_wprint);
@@ -58,7 +59,7 @@ static void init_game_main_module(void)
     init_tetromino_generator();
 }
 
-static void* main_func_game_main_module(void*)
+static void* main_func_game_main_module(void* arg)
 {
     debug();
     /* Not a good logic yet. There is a possibility of change,
@@ -102,7 +103,8 @@ static void* main_func_game_main_module(void*)
             // usleep(60000);
         }
     }
-    set_realtime_timer(false);
+    timer_drawer_t* timer_drawer = (timer_drawer_t*)arg;
+    set_realtime_timer(&timer_drawer->timer, false);
     wclear();
 
     return (void*)GAME_PLAY_STATUS_GAME_OVER;
@@ -118,33 +120,26 @@ static void run_game_play_module_in_parallel(game_play_module_t* const out_game_
     }
 }
 
-static int run_game_play_modules_in_parallel(void)
+static int run_game_play_modules_in_parallel(const game_play_manager_module_arg_t* play_manager)
 {
     debug();
 
-    realtime_timer_data_t timer_data = {
-        // .time_limit = GAME_PLAY_TIME_LIMIT,
-        .draw_module = {
-            .pos_x_wprint = GAME_PLAY_TIMER_POS_X_WPRINT,
-            .pos_y_wprint = GAME_PLAY_TIMER_POS_Y_WPRINT,
-            .its.it_interval = G_GAME_PLAY_TIMER_INTERVAL,
-            .its.it_value = G_GAME_PLAY_TIMER_INIT_EXPIRE,
-            .draw_func = draw_game_play_timer_at_with_r,
-        },
-    };
     game_play_module_t game_play_modules[] = {
         {
             .main_func = main_func_game_main_module,
-            .main_func_arg = NULL,
+            .main_func_arg = (void*)&play_manager->timer_drawer,
             .is_detached = false,
         },
         {
             .main_func = main_func_game_play_timer,
-            .main_func_arg = (void*)&timer_data,
+            .main_func_arg = (void*)&play_manager->timer_drawer,
             .is_detached = false,
         },
     };
     size_t game_play_module_num = (size_t)(sizeof(game_play_modules) / sizeof(game_play_modules[0]));
+
+    /* Block REALTIME_TIMER_SIG */
+    block_signal(SIGRTMIN);
 
     for (size_t i = 0; i < game_play_module_num; ++i) {
         run_game_play_module_in_parallel(game_play_modules + i);
@@ -172,24 +167,15 @@ static int selection_after_game_over(void)
     return GAME_PLAY_CMD_EXIT_GAME;
 } */
 
-static int run_simulation(void)
+static int run_simulation(const game_play_manager_module_arg_t* play_manager)
 {
     debug();
 
-    if (ready_getset_go(GAME_PLAY_TIMEINTERVAL_BEFORESTART_SEC) == -1) {
+    if (ready_getset_go(play_manager) == -1) {
         handle_error("ready_getset_go() error");
     }
 
-    /* Block REALTIME_TIMER_SIG */
-    sigset_t sigset;
-    sigemptyset(&sigset);
-    sigaddset(&sigset, REALTIME_TIMER_SIG);
-    int res;
-    if ((res = pthread_sigmask(SIG_BLOCK, &sigset, NULL)) == -1) {
-        handle_error_en("pthread_sigmask() error", res);
-    }
-
-    if (run_game_play_modules_in_parallel() == -1) {
+    if (run_game_play_modules_in_parallel(play_manager) == -1) {
         handle_error("run_game_play_modules_in_parallel() error");
     }
 
@@ -198,25 +184,25 @@ static int run_simulation(void)
     // return selection_after_game_over();
 }
 
-static int start_game(void)
+static int start_game(const game_play_manager_module_arg_t* play_manager)
 {
     debug();
 
-    load_ui();
+    load_ui(play_manager);
 
     int res;
-    if ((res = run_simulation()) == -1) {
+    if ((res = run_simulation(play_manager)) == -1) {
         handle_error("run_simulation() error");
     }
     return res;
 }
 
-static int play_a_new_game(void)
+static int play_a_new_game(const game_play_manager_module_arg_t* play_manager)
 {
     debug();
 
     int res = GAME_PLAY_CMD_ERROR;
-    if ((res = start_game()) == -1) {
+    if ((res = start_game(play_manager)) == -1) {
         handle_error("start_simulation() error");
     }
     return res;
@@ -230,8 +216,35 @@ void* run_single_play_mode(void* arg)
 
     (void)arg;
 
+    game_play_manager_module_arg_t play_manager = {
+        .mode = GAME_PLAY_MODE_SINGLE,
+        .screen_start_pos_x_wprint = GAME_PLAY_SINGLE_SCREEN_START_POS_X_WPRINT,
+        .screen_start_pos_y_wprint = GAME_PLAY_SINGLE_SCREEN_START_POS_Y_WPRINT,
+        .screen_height_wprint = GAME_PLAY_SINGLE_SCREEN_HEIGHT_WPRINT,
+        .ready_getset_go_sec = GAME_PLAY_TIMEINTERVAL_BEFORESTART_SEC,
+        .timer_drawer = {
+            .timer = {
+                .its.it_interval = {
+                    .tv_sec = GAME_PLAY_TIMER_IT_INTERVAL_SEC,
+                    .tv_nsec = GAME_PLAY_TIMER_IT_INTERVAL_NSEC,
+                },
+                .its.it_value = {
+                    .tv_sec = GAME_PLAY_TIMER_IT_VALUE_SEC,
+                    .tv_nsec = GAME_PLAY_TIMER_IT_VALUE_NSEC,
+                },
+                .timer_sig = SIGRTMIN,
+                .clockid = REALTIME_TIMER_CLOCK_ID,
+            },
+            .draw_module = {
+                .pos_x_wprint = GAME_PLAY_TIMER_POS_X_WPRINT,
+                .pos_y_wprint = GAME_PLAY_TIMER_POS_Y_WPRINT,
+                .draw_func = draw_game_play_timer_at_with_r,
+            },
+        },
+    };
+
     while (true) {
-        int res = play_a_new_game();
+        int res = play_a_new_game(&play_manager);
         if (res == GAME_PLAY_CMD_EXIT_GAME) {
             break;
         }

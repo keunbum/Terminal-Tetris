@@ -6,7 +6,7 @@
 #include "debug/debug.h"
 #include "draw_tool/cursor.h"
 #include "game_play_timer.h"
-#include "game/game_play/timer/realtime_timer_drawer.h"
+#include "game/game_play/timer/timer_drawer.h"
 
 /* It will be printed a bit prettier. */
 
@@ -43,5 +43,5 @@ void* main_func_game_play_timer(void* arg)
 {
     debug();
     
-    return run_realtime_timer_drawer_with(arg);
+    return run_timer_drawer_with(arg);
 }

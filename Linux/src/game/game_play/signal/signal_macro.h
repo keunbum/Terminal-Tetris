@@ -1,6 +1,7 @@
 #ifndef __SIGNAL_MACRO__H
 #define __SIGNAL_MACRO__H
 
+#include <signal.h>
 #include <stdbool.h>
 #include <stdlib.h>
 #include <sys/types.h>
@@ -28,5 +29,16 @@
         sigaction(_sig_num, &_act, 0);                                        \
     } while (false)
 */
+
+#define block_signal(signum)                                           \
+    do {                                                               \
+        sigset_t sigset;                                               \
+        sigemptyset(&sigset);                                          \
+        sigaddset(&sigset, signum);                                    \
+        int res;                                                       \
+        if ((res = pthread_sigmask(SIG_BLOCK, &sigset, NULL)) == -1) { \
+            handle_error_en("pthread_sigmask() error", res);           \
+        }                                                              \
+    } while (false)
 
 #endif /* __SIGNAL_MACRO__H */

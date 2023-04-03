@@ -28,15 +28,15 @@
         wprintf(buf);                               \
         wprintf(L"\e[1B\e[%dD", cursor_move_width); \
     } while (false)
-#define wdraw_rows_newline_at_r(height, buf, cursor_move_width, x, y) \
-    do {                                                              \
-        pthread_mutex_lock(&g_cursor_mutex);                          \
-        wgotoxy(x, y);                                                \
-        for (int i = 0; i < height; ++i) {                            \
-            wdraw_row_newline(buf[i], cursor_move_width);             \
-        }                                                             \
-        wdraw_newline();                                              \
-        pthread_mutex_unlock(&g_cursor_mutex);                        \
+#define wdraw_rows_newline_at_r(height, buf, cursor_move_width, pos_x_wprint, pos_y_wprint) \
+    do {                                                                                    \
+        pthread_mutex_lock(&g_cursor_mutex);                                                \
+        wgotoxy(pos_x_wprint, pos_y_wprint);                                                \
+        for (int i = 0; i < height; ++i) {                                                  \
+            wdraw_row_newline(buf[i], cursor_move_width);                                   \
+        }                                                                                   \
+        wdraw_newline();                                                                    \
+        pthread_mutex_unlock(&g_cursor_mutex);                                              \
     } while (false)
 
 void wdraw_unit_matrix(wchar_t);
