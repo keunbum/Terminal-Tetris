@@ -174,6 +174,14 @@ https://youtu.be/ffQKhxhylG8
 
 <font size="3"> <details><summary>difficulties during the project</summary><blockquote> </font>
 
+  - [ ] ~~현재 내 로직에서는 둘 이상의 스레드가 표준 출력을 하는데,  
+      printf가 thread-safe 하지 않기 때문에 의도한 대로 출력되지 않을 가능성이 있다.~~
+
+      [pthread 문서](https://man7.org/linux/man-pages/man7/pthreads.7.html#:~:text=Thread%2Dsafe%20functions,NULL%0A%20%20%20%20%20%20%20%20%20%20%20wcstombs()%0A%20%20%20%20%20%20%20%20%20%20%20wctomb())에 따르면 
+      printf, write 모두 thread-safe한 것 같음.  
+      thread-safe한 줄 모르고 mutex로 해결했었는데, 그냥 printf 사용해도 될 듯. (검색할 때 더 꼼꼼하게 확인하기)  
+      --> 근데, wgotoxy랑 같이 쓰이면 mutex 필요하긴 할 듯.
+
   - [X] ~~리얼 타임 타이머가 fork일 때는 예상대로 잘 동작했었는데  
         pthread 돌리니까 예상밖의 행동(시그널 핸들러 호출 이후에 하던 일 계속 안하고 계속 블로킹 당하고 있음)을 함.  
         하; 어렵다. 병렬 프로그래밍..  
@@ -183,16 +191,6 @@ https://youtu.be/ffQKhxhylG8
 
       스레드들의 시그널 마스크에 대한 이해 부족이었음.  
       아직 100% 알겠는 건 아닌데, 일단 해결은 함.
-
-  - [X] 현재 내 로직에서는 둘 이상의 스레드가 표준 출력을 하는데,  
-      printf가 thread-safe 하지 않기 때문에 의도한 대로 출력되지 않을 가능성이 있다.
-
-      write 정도면 thread-safe한 줄 알았는데 이 [링크](https://stackoverflow.com/questions/467938/stdout-thread-safe-in-c-on-linux)에 따르면 그것도 100% 보장할 순 없단다.  
-      
-      ~~printf 앞뒤로 lock, unlock을 걸면 되긴 하는데 그러면 성능 저하가 오고..  
-      일단 단위 출력량이 많지는 않기 때문에 atomic 하게 출력되겠지 라는 믿음을 가지고 간다..~~
-
-      --> 일단은 pthread_mutex_lock, unlock으로 해결.
 
   - [X] timer_create 시스템 콜을 사용하려고 했는데 WSL에는 구현이 안되어 있다고 한다. 어떡하지; 
     
@@ -1968,6 +1966,21 @@ realtime_timer부터 시작해서 객체 지향적으로 짜봤는데, C언어 �
 
 [//]: # (End of 04.03)
 
+
+<details><summary>04.04(화)</summary>
+
+
+### Achievements of the day
+
+오늘 딱히 한 건 없지만 값진 경험 했음. 
+
+내일부턴 사용자 입력 받는 로직 구현해보기.  
+프로젝트 진행 질질 끌리면 흐름 끊겨서 위험함.
+
+
+</details>
+
+[//]: # (End of 04.04)
 
 
 </blockquote></details>

@@ -27,7 +27,7 @@ release: CFLAGS+=-Wextra
 release: dev
 
 debug: CFLAGS+=-g
-debug: CFLAGS+=-DDEBUG
+debug: CFLAGS+=-DTETRIS_DEBUG
 #debug: CFLAGS+=-Werror
 #debug: CFLAGS+=-Wextra
 debug: dev
@@ -36,7 +36,7 @@ test: CFLAGS+=-DUNIT_TEST
 test: dev
 
 testdebug: CFLAGS+=-DUNIT_TEST
-testdebug: CFLAGS+=-DDEBUG
+testdebug: CFLAGS+=-DTETRIS_DEBUG
 testdebug: dev
 
 .PHONY: clean run depend
