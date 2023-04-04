@@ -1,9 +1,11 @@
-#include "draw_tool/cursor.h"
+#include "draw/cursor.h"
 
 #define EMPTY_LENGTH (20)
 
-int test_wmove_cursor(int argc, char*[])
+int test_wmove_cursor(int argc, char* argv[])
 {
+    (void) argc;
+    (void) argv;
     wclear();
     wchar_t buf[EMPTY_LENGTH + 1];
     wmemset(buf, ' ', EMPTY_LENGTH);

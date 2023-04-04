@@ -2,10 +2,10 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#include "debug/debug.h"
-#include "draw_tool/cursor.h"
-#include "error/error_handling.h"
-#include "game/game_manager/game_manager.h"
+#include "debug.h"
+#include "draw/cursor.h"
+#include "error_handling.h"
+#include "game_system/game_system_manager.h"
 #include "localize/localize.h"
 #include "test/test.h"
 
@@ -22,7 +22,7 @@ static void main2(void)
 
     init();
     run_game_manager();
-    wgotoxy(GAME_CONSOLE_STDOUT_POS_X + 1, GAME_CONSOLE_STDOUT_POS_Y);
+    wgotoxy(CONSOLE_STDOUT_POS_X + 1, CONSOLE_STDOUT_POS_Y);
     ewprintf("GAME ENDED.\n");
 }
 
@@ -30,8 +30,11 @@ int main(int argc, char* argv[])
 {
     debug();
 
+    (void) argc;
+    (void) argv;
+
 #ifdef UNIT_TEST
-    test_module(argc, argv);
+    test_module();
 #else
     main2();
 #endif

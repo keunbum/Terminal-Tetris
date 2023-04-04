@@ -40,6 +40,7 @@ static void handler(int sig, siginfo_t* si, void* uc)
         Nevertheless, we use printf() here as a simple way of
         showing that the handler was called. */
 
+    (void) uc;
     printf("Caught signal %d\n", sig);
     print_siginfo(si);
     signal(sig, SIG_IGN);

@@ -1,6 +1,6 @@
 #include <locale.h>
 
-#include "debug/debug.h"
+#include "debug.h"
 #include "localize.h"
 
 void localize(void)
