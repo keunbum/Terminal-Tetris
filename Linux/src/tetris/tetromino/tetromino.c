@@ -75,14 +75,13 @@ void init_tetromino_generator(void)
     g_s_tetromino_cnt = 1;
 }
 
-void init_a_tetromino(tetromino_t* const out_t, symbol_id_t symbol_id, pos_t pos_x, pos_t pos_y, velocity_t velocity, dir_t dir, wchar_t block_code)
+void init_a_tetromino(tetromino_t* const out_t, symbol_id_t symbol_id, pos_t pos, velocity_t velocity, dir_t dir, wchar_t block_code)
 {
     debug();
 
     out_t->id = g_s_tetromino_cnt++;
     out_t->symbol_id = symbol_id;
-    out_t->pos_x = pos_x;
-    out_t->pos_y = pos_y;
+    out_t->pos = pos;
     out_t->velocity = velocity;
     out_t->dir = dir;
     out_t->block_code = block_code;
