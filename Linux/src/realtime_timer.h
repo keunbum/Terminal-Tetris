@@ -9,19 +9,21 @@
 #define REALTIME_TIMER_CLOCK_ID CLOCK_REALTIME
 #define REALTIME_TIMER_SIG SIGRTMIN
 
-typedef int timersig_t;
+//typedef struct realtime_timer realtime_timer_t;
+//typedef void* (*timer_main_logic_t)(const realtime_timer_t*);
 
-typedef struct realtime_timer realtime_timer_t;
-struct realtime_timer {
+typedef struct {
     timer_t timerid;
     clockid_t clockid;
     sigset_t sigset;
-    timersig_t timersig;
+    int timersig;
     atomic_bool is_running;
     struct itimerspec its;
-};
+    //timer_main_logic_t logic;
+    //void* logic_arg;
+} realtime_timer_t;
 
 void set_realtime_timer(realtime_timer_t* const, bool);
-bool is_realtimer_timer_running(const realtime_timer_t*);
+bool is_realtime_timer_running(const realtime_timer_t*);
 
 #endif /* __REALTIME_TIMER__H */

@@ -11,12 +11,12 @@
 #include "error_handling.h"
 #include "game_main_loop.h"
 #include "signal_macro.h"
+#include "tetris/physics/tetris_play_board_frame.h"
 #include "tetris/scene/tetris_play_scene.h"
 #include "tetris/tetris_play_manager.h"
-#include "tetris_play_single_manager.h"
-#include "tetris/timer/game_play_timer.h"
-#include "tetris/physics/tetris_play_board_frame.h"
 #include "tetris/tetris_play_submodule.h"
+#include "tetris/timer/game_play_timer.h"
+#include "tetris_play_single_manager.h"
 
 static game_play_manager_module_arg_t g_s_play_manager = {
     .mode = TETRIS_PLAY_MODE_SINGLE,
@@ -52,16 +52,6 @@ static game_play_manager_module_arg_t g_s_play_manager = {
     },
 };
 
-static void load_ui(void)
-{
-    debug();
-
-    int res = load_tetris_play_scene(g_s_play_manager.mode, g_s_play_manager.screen_start_pos_x_wprint, g_s_play_manager.screen_start_pos_y_wprint);
-    if (res == -1) {
-        handle_error("load_tetris_play_scene() error");
-    }
-}
-
 static void ready_getset_go(void)
 {
     debug();
@@ -95,19 +85,20 @@ static tetris_play_status_t run_game_play_modules_in_parallel(void)
 {
     debug();
 
-    game_play_submodule_t game_play_modules[] = {
+    static game_play_submodule_t s_modules[] = {
         {
-            .main_func = main_func_game_main_loop,
+            .main_func = mainfunc_game_main_loop,
+            // .main_func = new_mainfunc_game_main_loop,
             .main_func_arg = (void*)&g_s_play_manager,
             .is_detached = false,
         },
         {
-            .main_func = main_func_game_play_timer,
-            .main_func_arg = (void*)&g_s_play_manager.timer_drawer,
+            .main_func = mainfunc_game_play_timer,
+            .main_func_arg = (void*)&g_s_play_manager.timer_drawer.timer,
             .is_detached = false,
         },
     };
-    size_t game_play_module_num = (size_t)(sizeof(game_play_modules) / sizeof(game_play_modules[0]));
+    static size_t s_module_num = (size_t)(sizeof(s_modules) / sizeof(s_modules[0]));
 
     timer_drawer_t* timer_drawer = &g_s_play_manager.timer_drawer;
     realtime_timer_t* timer = &timer_drawer->timer;
@@ -115,11 +106,12 @@ static tetris_play_status_t run_game_play_modules_in_parallel(void)
     /* Block REALTIME_TIMER_SIG */
     block_signal(timer->timersig);
 
-    for (size_t i = 0; i < game_play_module_num; ++i) {
-        run_game_play_module_in_parallel(game_play_modules + i);
+    for (size_t i = 0; i < s_module_num; ++i) {
+        run_game_play_module_in_parallel(s_modules + i);
     }
-    for (size_t i = 0; i < game_play_module_num; ++i) {
-        game_play_submodule_t* const module = game_play_modules + i;
+
+    for (size_t i = 0; i < s_module_num; ++i) {
+        game_play_submodule_t* const module = s_modules + i;
         if (module->is_detached) {
             continue;
         }
@@ -127,7 +119,7 @@ static tetris_play_status_t run_game_play_modules_in_parallel(void)
             handle_error("pthread_join() error");
         }
     }
-    game_play_submodule_t* const main_module = game_play_modules + 0;
+    const game_play_submodule_t* main_module = s_modules + 0;
     return (tetris_play_status_t)(long long)main_module->retval;
 }
 
@@ -141,9 +133,13 @@ static int selection_after_game_over(void)
     return TETRIS_PLAY_CMD_EXIT_GAME;
 } */
 
-static tetris_play_cmd_t run_simulation(void)
+static tetris_play_cmd_t play_a_new_game(void)
 {
     debug();
+
+    if (load_tetris_play_scene(g_s_play_manager.mode, g_s_play_manager.screen_start_pos_x_wprint, g_s_play_manager.screen_start_pos_y_wprint) == -1) {
+        handle_error("load_tetris_play_scene() error");
+    }
 
     ready_getset_go();
 
@@ -154,30 +150,6 @@ static tetris_play_cmd_t run_simulation(void)
     /* UX after Game Over not implemented yet. */
     return TETRIS_PLAY_CMD_REGAME;
     // return selection_after_game_over();
-}
-
-static tetris_play_cmd_t start_game(void)
-{
-    debug();
-
-    load_ui();
-
-    tetris_play_cmd_t res;
-    if ((res = run_simulation()) == TETRIS_PLAY_CMD_ERROR) {
-        handle_error("run_simulation() error");
-    }
-    return res;
-}
-
-static tetris_play_cmd_t play_a_new_game(void)
-{
-    debug();
-
-    tetris_play_cmd_t res;
-    if ((res = start_game()) == TETRIS_PLAY_CMD_ERROR) {
-        handle_error("start_simulation() error");
-    }
-    return res;
 }
 
 /* --------------------------------------------------------------------------------------------------------- */

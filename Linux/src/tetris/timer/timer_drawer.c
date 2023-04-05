@@ -26,25 +26,22 @@ static void wdraw_timer_frame_at(int pos_x_wprint, int pos_y_wprint)
     wdraw_rows_newline_at_r(S_STR_NUM, (const wchar_t**)s_strs, TIMER_FRAME_WIDTH, pos_x_wprint, pos_y_wprint);
 }
 
-static void doit_drawer_main_logic(const realtime_timer_t* timer_ptr, const draw_module_t* draw_module_ptr)
+static void doit_drawer_main_logic(const realtime_timer_t* timer, const draw_module_t* draw_module)
 {
-    const int timer_pos_x_wprint = draw_module_ptr->pos_x_wprint + 1;
-    const int timer_pos_y_wprint = draw_module_ptr->pos_y_wprint + 3;
+    const int timer_pos_x_wprint = draw_module->pos_x_wprint + 1;
+    const int timer_pos_y_wprint = draw_module->pos_y_wprint + 3;
 
-    wdraw_timer_frame_at(draw_module_ptr->pos_x_wprint, draw_module_ptr->pos_y_wprint);
-    draw_module_ptr->draw_func(timer_pos_x_wprint, timer_pos_y_wprint, 0);
+    wdraw_timer_frame_at(draw_module->pos_x_wprint, draw_module->pos_y_wprint);
+    draw_module->draw_func(timer_pos_x_wprint, timer_pos_y_wprint, 0);
 
     int sec = 1;
-    while (true) {
-        if (!is_realtimer_timer_running(timer_ptr)) {
-            break;
-        }
+    while (is_realtime_timer_running(timer)) {
         int sig;
-        int res = sigwait(&timer_ptr->sigset, &sig);
+        int res = sigwait(&timer->sigset, &sig);
         if (res != 0) {
             handle_error_en("sigwait() error", res);
         }
-        draw_module_ptr->draw_func(timer_pos_x_wprint, timer_pos_y_wprint, sec);
+        draw_module->draw_func(timer_pos_x_wprint, timer_pos_y_wprint, sec);
         sec += 1;
     }
 }

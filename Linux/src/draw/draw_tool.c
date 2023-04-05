@@ -75,7 +75,7 @@ void wdraw_boundary_at(wchar_t hor_block, wchar_t ver_block, int height, int wid
 void wset_row_line(wchar_t* const buf, int length, wchar_t beg, wchar_t mid, wchar_t end)
 {
     debug();
-    
+
     buf[0] = beg;
     for (int i = 1; i < length - 1; ++i) {
         buf[i] = mid;
@@ -84,4 +84,3 @@ void wset_row_line(wchar_t* const buf, int length, wchar_t beg, wchar_t mid, wch
     buf[length - 1] = end;
     buf[length] = L'\0';
 }
-

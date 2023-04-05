@@ -13,13 +13,13 @@ static void draw_game_play_outside_area_at_r(int sx, int sy)
 {
     debug();
 
-    // pthread_mutex_lock(&g_cursor_mutex);
+    pthread_mutex_lock(&g_cursor_mtx);
     wdraw_boundary_at_with(UNIT_MATRIX_HOR_LINE_THIN, UNIT_MATRIX_VER_LINE_THIN, TETRIS_PLAY_SINGLE_SCREEN_HEIGHT_WPRINT, TETRIS_PLAY_SINGLE_SCREEN_WIDTH_WPRINT, sx, sy,
         UNIT_MATRIX_CORNER_TOP_LEFT_THIN,
         UNIT_MATRIX_CORNER_TOP_RIGHT_THIN,
         UNIT_MATRIX_CORNER_BOT_LEFT_THIN,
         UNIT_MATRIX_CORNER_BOT_RIGHT_THIN);
-    // pthread_mutex_unlock(&g_cursor_mutex);
+    pthread_mutex_unlock(&g_cursor_mtx);
 }
 
 static void wdraw_game_play_inside_area_at_r(int topleft_pos_x, int topleft_pos_y)

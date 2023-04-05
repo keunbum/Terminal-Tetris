@@ -39,7 +39,7 @@ void draw_game_play_timer_at_with_r(int x, int y, int sec)
     draw_sec_in_hhmmss_at_r(sec, x, y);
 }
 
-void* main_func_game_play_timer(void* arg)
+void* mainfunc_game_play_timer(void* arg)
 {
     debug();
     return run_timer_drawer_with(arg);
