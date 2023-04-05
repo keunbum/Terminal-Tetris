@@ -1,5 +1,5 @@
-#ifndef __REALTIME_TIMER_DRAWER__H
-#define __REALTIME_TIMER_DRAWER__H
+#ifndef __TIMER_DRAWER__H
+#define __TIMER_DRAWER__H
 
 #include <stdbool.h>
 
@@ -21,4 +21,4 @@ typedef struct {
 
 void* run_timer_drawer_with(void* arg);
 
-#endif /* __REALTIME_TIMER_DRAWER__H */
+#endif /* __TIMER_DRAWER__H */

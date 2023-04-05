@@ -1,8 +1,24 @@
-#ifndef __PLAY_MANAGER__H
-#define __PLAY_MANAGER__H
+#ifndef __TETRIS_PLAY_MANAGER__H
+#define __TETRIS_PLAY_MANAGER__H
 
+#include "tetris/physics/tetris_play_board.h"
 #include "timer/timer_drawer.h"
-#include "tetris/physics/game_board.h"
+
+typedef enum {
+    TETRIS_PLAY_CMD_ERROR = -1,
+    TETRIS_PLAY_CMD_EXIT_GAME = 0,
+    TETRIS_PLAY_CMD_REGAME = 1,
+} tetris_play_cmd_t;
+
+typedef enum {
+    TETRIS_PLAY_STATUS_ERROR = -1,
+    TETRIS_PLAY_STATUS_GAME_OVER = 2,
+} tetris_play_status_t;
+
+#define TETRIS_PLAY_TIMER_POS_X_WPRINT (TETRIS_PLAY_SINGLE_SCREEN_START_POS_X_WPRINT + 2)
+#define TETRIS_PLAY_TIMER_POS_Y_WPRINT (TETRIS_PLAY_SINGLE_SCREEN_START_POS_Y_WPRINT + TETRIS_PLAY_SINGLE_SCREEN_WIDTH_WPRINT + 2)
+
+#define TETRIS_PLAY_TIMEINTERVAL_BEFORESTART_SEC (3)
 
 typedef int play_mode_t;
 typedef void* (*game_play_manager_module_t)(void*);
@@ -19,8 +35,8 @@ typedef struct {
 
 typedef struct {
     const char* name;
-    game_play_manager_module_t module;
+    const game_play_manager_module_t module;
     void* module_arg;
 } play_manager_t;
 
-#endif /* __PLAY_MANAGER__H */
+#endif /* __TETRIS_PLAY_MANAGER__H */

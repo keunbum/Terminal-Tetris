@@ -2,7 +2,7 @@
 #include "game_system/menu/title_menu.h"
 #include "game_system_manager.h"
 
-void run_game_manager(void)
+void run_game_system_manager(void)
 {
     debug();
 

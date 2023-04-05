@@ -9,14 +9,14 @@
 #define REALTIME_TIMER_CLOCK_ID CLOCK_REALTIME
 #define REALTIME_TIMER_SIG SIGRTMIN
 
-typedef int timer_sig_t;
+typedef int timersig_t;
 
 typedef struct realtime_timer realtime_timer_t;
 struct realtime_timer {
     timer_t timerid;
     clockid_t clockid;
     sigset_t sigset;
-    timer_sig_t timersig;
+    timersig_t timersig;
     atomic_bool is_running;
     struct itimerspec its;
 };

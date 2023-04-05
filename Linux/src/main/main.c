@@ -21,9 +21,7 @@ static void main2(void)
     debug();
 
     init();
-    run_game_manager();
-    wgotoxy(CONSOLE_STDOUT_POS_X + 1, CONSOLE_STDOUT_POS_Y);
-    ewprintf("GAME ENDED.\n");
+    run_game_system_manager();
 }
 
 int main(int argc, char* argv[])

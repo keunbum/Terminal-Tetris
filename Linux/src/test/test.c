@@ -10,7 +10,8 @@ extern int test_wmove_cursor(int, char*[]);
 int test_module()
 {
     localize();
-    wprintf(L"\e[0;31m");
+    wprintf(L"\e[0;31m"); // red
+    wprintf(L"Hello World!\n");
     return 0;
     //    return test_wmove_cursor(argc, argv);
     //    return test_timer(argc, argv);

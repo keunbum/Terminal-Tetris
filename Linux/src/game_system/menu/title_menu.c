@@ -16,7 +16,7 @@ static void draw_title_menu_screen(void)
     static const int S_TITLE_MENU_TOTAL_OPTION_NUM = (int)(sizeof(S_TITLE_MENU_OPTIONS_TEXT) / sizeof(S_TITLE_MENU_OPTIONS_TEXT[0]));
 
     wclear();
-    wprintf(L"TETRIS GAME\n");
+    wprintf(L"TETRIS\n");
     for (int i = 0; i < S_TITLE_MENU_TOTAL_OPTION_NUM; ++i) {
         if (i > 0) {
             wprintf(L"  ");
@@ -70,6 +70,7 @@ static void handle_title_menu_cmd(int cmd)
         exit_title_menu();
         break;
     case TITLE_MENU_CMD_INVAL:
+        /* do nothing */
         break;
     default:
         my_assert(false);

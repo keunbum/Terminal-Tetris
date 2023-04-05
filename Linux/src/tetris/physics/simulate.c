@@ -4,8 +4,8 @@
 #include "draw/cursor.h"
 #include "draw/draw_tool.h"
 #include "simulate.h"
-#include "tetris/physics/game_board.h"
-#include "tetris/scene/game_play_scene.h"
+#include "tetris/physics/tetris_play_board.h"
+#include "tetris/scene/tetris_play_scene.h"
 #include "tetris/tetris_play_submodule.h"
 
 static void render_a_tetromino_at(const tetromino_t* tetro, wchar_t block_wprint, pos_t pos_x, pos_t pos_y)
@@ -15,8 +15,8 @@ static void render_a_tetromino_at(const tetromino_t* tetro, wchar_t block_wprint
     my_assert(tetro != NULL);
 
     const tetromino_symbol_t* symbol = G_TETROMINO_SYMBOLS + tetro->symbol_id;
-    const int x_wprint_offset = GAME_PLAY_BOARD_START_POS_X_WPRINT;
-    const int y_wprint_offset = GAME_PLAY_BOARD_START_POS_Y_WPRINT - 1;
+    const int x_wprint_offset = TETRIS_PLAY_BOARD_START_POS_X_WPRINT;
+    const int y_wprint_offset = TETRIS_PLAY_BOARD_START_POS_Y_WPRINT - 1;
     for (int i = 0; i < symbol->height; ++i) {
         const block_t* row = symbol->block_matrix[i];
         for (int j = 0; row[j]; ++j) {
@@ -24,7 +24,7 @@ static void render_a_tetromino_at(const tetromino_t* tetro, wchar_t block_wprint
                 continue;
             }
             pos_t each_pos_x_wprint = pos_x + i + x_wprint_offset;
-            if (each_pos_x_wprint < GAME_PLAY_BOARD_START_POS_X_WPRINT) {
+            if (each_pos_x_wprint < TETRIS_PLAY_BOARD_START_POS_X_WPRINT) {
                 continue;
             }
             pos_t each_pos_y_wprint = 2 * (pos_y + j) + y_wprint_offset;
@@ -54,7 +54,7 @@ void erase_a_tetromino_r(const tetromino_t* tetro)
 {
     debug();
 
-    render_a_tetromino_r(tetro, BLOCK_WHITE_LARGE_SQUARE_WPRINT);
+    render_a_tetromino_r(tetro, BLOCK_WPRINT_WHITE_LARGE_SQUARE);
 }
 
 void draw_a_tetromino_r(const tetromino_t* tetro)
@@ -66,7 +66,7 @@ void draw_a_tetromino_r(const tetromino_t* tetro)
 
 /* return tetromino's status when moving left, right, or down.
    implement the rotation operation separately. */
-int move_a_tetromino(game_board_t* const board, tetromino_t* const out_tetro)
+tetromino_status_t move_a_tetromino(game_board_t* const board, tetromino_t* const out_tetro)
 {
     debug();
 
@@ -84,12 +84,12 @@ int move_a_tetromino(game_board_t* const board, tetromino_t* const out_tetro)
             }
             pos_t each_npos_x = npos_x + (pos_t)i;
             pos_t each_npos_y = npos_y + (pos_t)j;
-            my_assert(each_npos_x >= GAME_PLAY_TETROMINO_POS_X_MIN);
-            if (each_npos_y < GAME_PLAY_TETROMINO_POS_Y_MIN || each_npos_y > GAME_PLAY_TETROMINO_POS_Y_MAX) {
+            my_assert(each_npos_x >= TETRIS_PLAY_TETROMINO_POS_X_MIN);
+            if (each_npos_y < TETRIS_PLAY_TETROMINO_POS_Y_MIN || each_npos_y > TETRIS_PLAY_TETROMINO_POS_Y_MAX) {
                 ewprintf("hi1\n");
                 return TETROMINO_STATUS_INPLACE;
             }
-            if (each_npos_x > GAME_PLAY_TETROMINO_POS_X_MAX) {
+            if (each_npos_x > TETRIS_PLAY_TETROMINO_POS_X_MAX) {
                 ewprintf("hi2\n");
                 return TETROMINO_STATUS_ONTHEGROUND;
             }
@@ -97,10 +97,10 @@ int move_a_tetromino(game_board_t* const board, tetromino_t* const out_tetro)
                 continue;
             }
             my_assert(each_npos_x >= 0);
-            my_assert(each_npos_x < GAME_PLAY_BOARD_HEIGHT);
-            my_assert(0 <= each_npos_y && each_npos_y < GAME_PLAY_BOARD_WIDTH);
+            my_assert(each_npos_x < TETRIS_PLAY_BOARD_HEIGHT);
+            my_assert(0 <= each_npos_y && each_npos_y < TETRIS_PLAY_BOARD_WIDTH);
             game_board_grid_element_t each_value = board->grid[each_npos_x][each_npos_y];
-            if (each_value != GAME_PLAY_BOARD_GRID_ELEMENT_DEFAULT && each_value != out_tetro->id) {
+            if (each_value != TETRIS_PLAY_BOARD_GRID_ELEMENT_DEFAULT && each_value != out_tetro->id) {
                 ewprintf("hi3\n");
                 return TETROMINO_STATUS_ONTHEGROUND;
             }
@@ -129,8 +129,8 @@ void petrity_tetromino(game_board_t* const board, const tetromino_t* tetro)
                 continue;
             }
             my_assert(each_pos_x >= 0);
-            my_assert(each_pos_x < GAME_PLAY_BOARD_HEIGHT);
-            my_assert(0 <= each_pos_y && each_pos_y < GAME_PLAY_BOARD_WIDTH);
+            my_assert(each_pos_x < TETRIS_PLAY_BOARD_HEIGHT);
+            my_assert(0 <= each_pos_y && each_pos_y < TETRIS_PLAY_BOARD_WIDTH);
             board->grid[each_pos_x][each_pos_y] = tetro->id;
         }
     }

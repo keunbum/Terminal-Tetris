@@ -55,7 +55,7 @@ void* run_timer_drawer_with(void* arg)
 
     timer_drawer_t* timer_drawer = (timer_drawer_t*) arg;
     realtime_timer_t* timer = (realtime_timer_t*) &timer_drawer->timer;
-
+    my_assert(timer->timersig == REALTIME_TIMER_SIG);
     /* Set sigset */
     sigemptyset(&timer->sigset);
     sigaddset(&timer->sigset, timer->timersig);

@@ -8,13 +8,13 @@
 #include "draw/cursor.h"
 #include "error_handling.h"
 #include "game_selection_menu.h"
-#include "tetris/single/single_play_manager.h"
+#include "tetris/single/tetris_play_single_manager.h"
 #include "tetris/tetris_play_manager.h"
 
 static const play_manager_t G_S_GAME_OBJECTS[] = {
     {
         .name = "basic tetris",
-        .module = run_single_play_mode,
+        .module = run_tetris_play_single_mode,
         .module_arg = NULL,
     },
 };

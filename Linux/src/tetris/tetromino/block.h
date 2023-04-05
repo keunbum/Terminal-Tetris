@@ -8,8 +8,10 @@
 // ref: https://en.wikipedia.org/wiki/Box-drawing_character
 // ref: https://www.compart.com/en/unicode/block/U+25A0
 // ref: https://emojiterra.com/geometric-symbols/
-#define BLOCK_BLACK_LARGE_SQUARE_WPRINT (0x2B1B)
-#define BLOCK_WHITE_LARGE_SQUARE_WPRINT (0x2B1C)
+
+#define BLOCK_WPRINT_BLACK_LARGE_SQUARE (0x2B1B)
+#define BLOCK_WPRINT_WHITE_LARGE_SQUARE (0x2B1C)
+#define BLOCK_WPRINT_BLACK_SQUARE_BUTTON (L'\U0001f532')
 
 typedef char block_t;
 
