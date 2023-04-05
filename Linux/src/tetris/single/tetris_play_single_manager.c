@@ -9,16 +9,14 @@
 #include "draw/cursor.h"
 #include "draw/digital_digit.h"
 #include "error_handling.h"
-#include "random.h"
+#include "game_main_loop.h"
 #include "signal_macro.h"
-#include "tetris/physics/tetris_play_board_frame.h"
-#include "tetris/physics/simulate.h"
 #include "tetris/scene/tetris_play_scene.h"
 #include "tetris/tetris_play_manager.h"
-#include "tetris/tetris_play_submodule.h"
-#include "tetris/tetromino/block_code_set.h"
-#include "tetris/timer/game_play_timer.h"
 #include "tetris_play_single_manager.h"
+#include "tetris/timer/game_play_timer.h"
+#include "tetris/physics/tetris_play_board_frame.h"
+#include "tetris/tetris_play_submodule.h"
 
 static game_play_manager_module_arg_t g_s_play_manager = {
     .mode = TETRIS_PLAY_MODE_SINGLE,
@@ -69,76 +67,18 @@ static void ready_getset_go(void)
     debug();
 
     for (int cur_sec = g_s_play_manager.ready_getset_go_sec; cur_sec >= 0; --cur_sec) {
-        const pos_t pos_x_in_wprint = g_s_play_manager.screen_start_pos_x_wprint + 2;
-        const pos_t pos_y_in_wprint = TETRIS_PLAY_BOARD_FRAME_START_POS_Y_WPRINT + TETRIS_PLAY_BOARD_FRAME_WIDTH - 2;
+        const pos_t pos_wprint = {
+            g_s_play_manager.screen_start_pos_x_wprint + 2,
+            TETRIS_PLAY_BOARD_FRAME_START_POS_Y_WPRINT + TETRIS_PLAY_BOARD_FRAME_WIDTH - 2,
+        };
         if (cur_sec == 0) {
-            wdraw_digital_digit_at_r(G_DIGITAL_DIGIT_EMPTY, (int)pos_x_in_wprint, (int)pos_y_in_wprint);
+            wdraw_digital_digit_at_r(G_DIGITAL_DIGIT_EMPTY, (int)pos_wprint.x, (int)pos_wprint.y);
             break;
         }
-        wdraw_digital_digit_at_r(G_DIGITAL_DIGITS[cur_sec], (int)pos_x_in_wprint, (int)pos_y_in_wprint);
+        wdraw_digital_digit_at_r(G_DIGITAL_DIGITS[cur_sec], (int)pos_wprint.x, (int)pos_wprint.y);
         /* Of course, it's not exactly 1 second. */
         sleep(1);
     }
-}
-
-static void init_game_main_module(void)
-{
-    debug();
-
-    init_rng((unsigned int)time(NULL));
-    init_game_board(&g_s_play_manager.board);
-    init_tetromino_generator();
-}
-
-static void* main_func_game_main_module(void* arg)
-{
-    debug();
-
-    /* Not a good logic yet. There is a possibility of change,
-       but first of all, I will write the code sequentially. */
-    game_play_manager_module_arg_t* g_s_play_manager = (game_play_manager_module_arg_t*)arg;
-    timer_drawer_t* timer_drawer = &g_s_play_manager->timer_drawer;
-    game_board_t* board = &g_s_play_manager->board;
-    init_game_main_module();
-    bool is_game_over = false;
-    while (!is_game_over) {
-        const block_code_set_t* code_set = G_BLOCK_CODE_SET_DEFAULT;
-        tetromino_t tetromino_obj;
-        symbol_id_t symbol_id = (int)(rng() % TOTAL_TETROMINO_NUM_OF_KINDS);
-        init_a_tetromino(
-            &tetromino_obj,
-            symbol_id,
-            TETRIS_PLAY_TETROMINO_INIT_POS_X,
-            TETRIS_PLAY_TETROMINO_INIT_POS_Y,
-            TETRIS_PLAY_TETROMINO_INIT_VELOCITY,
-            DIR_BOT,
-            code_set->codes[get_block_code_fixed(code_set, symbol_id)]);
-        // hmm...
-        draw_a_tetromino_r(&tetromino_obj);
-        /* Uh.. I think.. The concept of speed should be defined like this,
-           "Every few frames it goes down by one block." */
-        while (true) {
-            // draw_over_all();
-            // handle_user_input();
-            erase_a_tetromino_r(&tetromino_obj);
-            tetromino_status_t status = move_a_tetromino(board, &tetromino_obj);
-            draw_a_tetromino_r(&tetromino_obj);
-            if (status == TETROMINO_STATUS_ONTHEGROUND) {
-                petrity_tetromino(board, &tetromino_obj);
-                // clear_filled_lines(); --> maybe internally.
-                // reflect_them_visually();
-                is_game_over = is_at_skyline(&tetromino_obj);
-                break;
-            }
-            /* Not a good way. Either define a constant or use a separate variable.*/
-            usleep(16666);
-            // usleep(60000);
-        }
-    }
-    set_realtime_timer(&timer_drawer->timer, false);
-    wclear();
-
-    return (void*)TETRIS_PLAY_STATUS_GAME_OVER;
 }
 
 static void run_game_play_module_in_parallel(game_play_submodule_t* const out_game_play_module)
@@ -157,7 +97,7 @@ static tetris_play_status_t run_game_play_modules_in_parallel(void)
 
     game_play_submodule_t game_play_modules[] = {
         {
-            .main_func = main_func_game_main_module,
+            .main_func = main_func_game_main_loop,
             .main_func_arg = (void*)&g_s_play_manager,
             .is_detached = false,
         },
@@ -234,7 +174,7 @@ static tetris_play_cmd_t play_a_new_game(void)
     debug();
 
     tetris_play_cmd_t res;
-    if ((res = start_game()) == -1) {
+    if ((res = start_game()) == TETRIS_PLAY_CMD_ERROR) {
         handle_error("start_simulation() error");
     }
     return res;
