@@ -1,7 +1,7 @@
 #include <stdio.h>
+#include <stdlib.h>
 #include <time.h>
 #include <unistd.h>
-#include <stdlib.h>
 
 #include "debug.h"
 #include "draw/cursor.h"

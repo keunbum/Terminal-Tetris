@@ -16,6 +16,6 @@ void init_rng(unsigned int seed)
 unsigned int rng(void)
 {
     debug();
-    
+
     return (unsigned int)rand();
 }

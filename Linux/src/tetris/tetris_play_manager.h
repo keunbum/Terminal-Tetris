@@ -1,9 +1,9 @@
 #ifndef __TETRIS_PLAY_MANAGER__H
 #define __TETRIS_PLAY_MANAGER__H
 
+#include "game_system/game_system_manager.h"
 #include "tetris/play/tetris_play_board.h"
 #include "timer/timer_drawer.h"
-#include "game_system/game_system_manager.h"
 
 typedef enum {
     TETRIS_PLAY_CMD_ERROR = -1,
@@ -30,6 +30,5 @@ typedef struct {
     timer_drawer_t timer_drawer;
     game_board_t board;
 } tetris_play_manager_t;
-
 
 #endif /* __TETRIS_PLAY_MANAGER__H */
