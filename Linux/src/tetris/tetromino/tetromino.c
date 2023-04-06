@@ -62,15 +62,14 @@ const tetromino_symbol_t G_TETROMINO_SYMBOLS[TOTAL_TETROMINO_NUM_OF_KINDS] = {
     },
 };
 
-void init_a_tetromino(tetromino_t* const out_tetro, tetromino_id_t id, symbol_id_t symbol_id, pos_t pos, velocity_t velocity, dir_t dir, wchar_t block_code)
-{
-    debug();
-    ewprintf("init tetromino.pos: (%lf, %lf)\n", pos.x, pos.y);
+// void init_a_tetromino(tetromino_t* const out_tetro, tetromino_id_t id, symbol_id_t symbol_id, pos_t pos, velocity_t velocity, dir_t dir, wchar_t block_code)
+// {
+//     debug();
 
-    out_tetro->id = id;
-    out_tetro->symbol_id = symbol_id;
-    out_tetro->pos = pos;
-    out_tetro->velocity = velocity;
-    out_tetro->dir = dir;
-    out_tetro->block_code = block_code;
-}
+//     out_tetro->id = id;
+//     out_tetro->symbol_id = symbol_id;
+//     out_tetro->pos = pos;
+//     out_tetro->velocity = velocity;
+//     out_tetro->dir = dir;
+//     out_tetro->block_code = block_code;
+// }

@@ -6,7 +6,6 @@
 #include "tetris/tetromino/tetromino.h"
 
 void init_tetromino_generator(void);
-void new_spawn_tetromino(tetromino_t* const);
-void spawn_tetromino(tetromino_t* const);
+void spawn_tetromino(const game_board_t* restrict, tetromino_t* restrict const);
 
 #endif /* __TETROMINO_GENERATOR__H */

@@ -5,7 +5,6 @@
 
 void erase_a_tetromino_r(const tetromino_t*);
 void draw_a_tetromino_r(const tetromino_t*);
-void erase_a_tetromino_at_r(const tetromino_t*, pos_t);
-void draw_a_tetromino_at_r(const tetromino_t*, pos_t);
+void render_out(void);
 
 #endif /* __RENDERER__H */

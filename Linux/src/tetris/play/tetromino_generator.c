@@ -1,3 +1,4 @@
+#include <stdbool.h>
 #include <time.h>
 
 #include "debug.h"
@@ -5,6 +6,37 @@
 #include "tetromino_generator.h"
 
 static tetromino_id_t g_s_tetromino_spawned_cnt;
+
+static bool is_tetromino_y_in_board(const game_board_t* board, const tetromino_t* tetro, pos_e_t pos_y)
+{
+    debug();
+
+    const tetromino_symbol_t* symbol = G_TETROMINO_SYMBOLS + tetro->symbol_id;
+    for (int i = 0; i < symbol->height; ++i) {
+        const block_t* row = symbol->block_matrix[i];
+        for (int j = 0; row[j]; ++j) {
+            if (row[j] == BLOCK_T_FALSE) {
+                continue;
+            }
+            pos_e_t each_pos_y = pos_y + j;
+            if (each_pos_y < 0 || each_pos_y >= board->width) {
+                return false;
+            }
+        }
+    }
+    return true;
+}
+
+static pos_e_t get_pos_y_random(const game_board_t* board, const tetromino_t* tetro)
+{
+    debug();
+
+    pos_e_t pos_y;
+    do {
+        pos_y = rng() % (board->width);
+    } while (!is_tetromino_y_in_board(board, tetro, pos_y));
+    return pos_y;
+}
 
 void init_tetromino_generator(void)
 {
@@ -14,36 +46,17 @@ void init_tetromino_generator(void)
     g_s_tetromino_spawned_cnt = 1;
 }
 
-void new_spawn_tetromino(tetromino_t* const out_tetro)
+void spawn_tetromino(const game_board_t* restrict board, tetromino_t* restrict const out_tetro)
 {
     debug();
 
-    symbol_id_t symbol_id = (int)(rng() % TOTAL_TETROMINO_NUM_OF_KINDS);
-    pos_t pos = { TETRIS_PLAY_TETROMINO_INIT_POS_X, TETRIS_PLAY_TETROMINO_INIT_POS_Y };
-    tetromino_id_t tetromino_id = g_s_tetromino_spawned_cnt++;
-    init_a_tetromino(
-        out_tetro,
-        tetromino_id,
-        symbol_id,
-        pos,
-        NEW_TETRIS_PLAY_TETROMINO_INIT_VELOCITY,
-        DIR_BOT,
-        G_BLOCK_CODE_SET->codes[get_block_code_fixed(symbol_id, G_BLOCK_CODE_SET->size)]);
-}
-
-void spawn_tetromino(tetromino_t* const out_tetro)
-{
-    debug();
-
-    symbol_id_t symbol_id = (int)(rng() % TOTAL_TETROMINO_NUM_OF_KINDS);
-    pos_t pos = { TETRIS_PLAY_TETROMINO_INIT_POS_X, TETRIS_PLAY_TETROMINO_INIT_POS_Y };
-    tetromino_id_t tetromino_id = g_s_tetromino_spawned_cnt++;
-    init_a_tetromino(
-        out_tetro,
-        tetromino_id,
-        symbol_id,
-        pos,
-        TETRIS_PLAY_TETROMINO_INIT_VELOCITY,
-        DIR_BOT,
-        G_BLOCK_CODE_SET->codes[get_block_code_fixed(symbol_id, G_BLOCK_CODE_SET->size)]);
+    out_tetro->id = g_s_tetromino_spawned_cnt++;
+    out_tetro->symbol_id = (int)(rng() % TOTAL_TETROMINO_NUM_OF_KINDS);
+    out_tetro->pos.x = TETRIS_PLAY_TETROMINO_INIT_POS_X;
+    out_tetro->pos.y = get_pos_y_random(board, out_tetro);
+    out_tetro->expected_pos.x = -1;
+    out_tetro->expected_pos.y = -1;
+    out_tetro->velocity = TETRIS_PLAY_TETROMINO_INIT_VELOCITY;
+    out_tetro->dir = DIR_BOT;
+    out_tetro->block_code = G_BLOCK_CODE_SET->codes[get_block_code_fixed(out_tetro->symbol_id, G_BLOCK_CODE_SET->size)];
 }

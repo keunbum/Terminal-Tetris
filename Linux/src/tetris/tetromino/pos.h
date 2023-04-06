@@ -5,11 +5,12 @@
     typedef struct {     \
         T x;             \
         T y;             \
-    } pos_##T##_t
+    } pos_t
 
-//DECLARE_POS_T(double);
-DECLARE_POS_T(int);
+// DECLARE_POS_T(double);
 
-typedef pos_int_t pos_t;
+typedef int pos_e_t;
+
+DECLARE_POS_T(pos_e_t);
 
 #endif /* __POS__H */

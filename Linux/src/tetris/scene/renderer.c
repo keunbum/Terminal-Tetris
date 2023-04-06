@@ -1,5 +1,7 @@
-#include "renderer.h"
+#include <stdio.h>
+
 #include "debug.h"
+#include "renderer.h"
 #include "tetris_play_scene.h"
 
 static void render_a_tetromino_at(const tetromino_t* tetro, wchar_t block_wprint, pos_t pos)
@@ -10,7 +12,7 @@ static void render_a_tetromino_at(const tetromino_t* tetro, wchar_t block_wprint
 
     const tetromino_symbol_t* symbol = G_TETROMINO_SYMBOLS + tetro->symbol_id;
     const int x_wprint_offset = TETRIS_PLAY_BOARD_START_POS_X_WPRINT;
-    const int y_wprint_offset = TETRIS_PLAY_BOARD_START_POS_Y_WPRINT - 1;
+    const int y_wprint_offset = TETRIS_PLAY_BOARD_START_POS_Y_WPRINT;
     for (int i = 0; i < symbol->height; ++i) {
         const block_t* row = symbol->block_matrix[i];
         for (int j = 0; row[j]; ++j) {
@@ -43,19 +45,19 @@ static inline void render_a_tetromino_r(const tetromino_t* tetro, wchar_t block_
     render_a_tetromino_at_r(tetro, block_wprint, tetro->pos);
 }
 
-void erase_a_tetromino_at_r(const tetromino_t* tetro, pos_t pos)
-{
-    debug();
+// static void erase_a_tetromino_at_r(const tetromino_t* tetro, pos_t pos)
+// {
+//     debug();
 
-    render_a_tetromino_at_r(tetro, BLOCK_WPRINT_WHITE_LARGE_SQUARE, pos);
-}
+//     render_a_tetromino_at_r(tetro, BLOCK_WPRINT_WHITE_LARGE_SQUARE, pos);
+// }
 
-void draw_a_tetromino_at_r(const tetromino_t* tetro, pos_t pos)
-{
-    debug();
+// static void draw_a_tetromino_at_r(const tetromino_t* tetro, pos_t pos)
+// {
+//     debug();
 
-    render_a_tetromino_at_r(tetro, tetro->block_code, pos);
-}
+//     render_a_tetromino_at_r(tetro, tetro->block_code, pos);
+// }
 
 void erase_a_tetromino_r(const tetromino_t* tetro)
 {
@@ -69,4 +71,9 @@ void draw_a_tetromino_r(const tetromino_t* tetro)
     debug();
 
     render_a_tetromino_r(tetro, tetro->block_code);
+}
+
+void render_out(void)
+{
+    fflush(stdout);
 }

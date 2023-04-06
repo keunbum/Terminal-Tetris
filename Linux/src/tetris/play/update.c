@@ -8,9 +8,11 @@
 /* return tetromino's status when moving left, right, or down.
    implement the rotation operation separately. */
 
-static tetromino_status_t check_tetromino_next_status(game_board_t* const board, tetromino_t* const out_tetro, pos_t npos)
+static tetromino_status_t check_tetromino_next_status(const game_board_t* board, const tetromino_t* tetro, pos_t npos)
 {
-    const tetromino_symbol_t* symbol = G_TETROMINO_SYMBOLS + out_tetro->symbol_id;
+    debug();
+
+    const tetromino_symbol_t* symbol = G_TETROMINO_SYMBOLS + tetro->symbol_id;
     for (int i = 0; i < symbol->height; ++i) {
         const block_t* row = symbol->block_matrix[i];
         for (int j = 0; row[j]; ++j) {
@@ -19,7 +21,7 @@ static tetromino_status_t check_tetromino_next_status(game_board_t* const board,
             }
             pos_t each_npos = { npos.x + i, npos.y + j };
             my_assert(each_npos.x >= TETRIS_PLAY_TETROMINO_POS_X_MIN);
-            if (each_npos.y < TETRIS_PLAY_TETROMINO_POS_Y_MIN || each_npos.y > TETRIS_PLAY_TETROMINO_POS_Y_MAX) {
+            if (each_npos.y < 0 || each_npos.y >= board->width) {
                 ewprintf("hi1\n");
                 return TETROMINO_STATUS_INPLACE;
             }
@@ -34,7 +36,7 @@ static tetromino_status_t check_tetromino_next_status(game_board_t* const board,
             my_assert(each_npos.x < TETRIS_PLAY_BOARD_HEIGHT);
             my_assert(0 <= each_npos.y && each_npos.y < TETRIS_PLAY_BOARD_WIDTH);
             game_board_grid_element_t each_value = board->grid[(int)each_npos.x][(int)each_npos.y];
-            if (each_value != TETRIS_PLAY_BOARD_GRID_ELEMENT_DEFAULT && each_value != out_tetro->id) {
+            if (each_value != TETRIS_PLAY_BOARD_GRID_ELEMENT_DEFAULT && each_value != tetro->id) {
                 ewprintf("hi3\n");
                 return TETROMINO_STATUS_ONTHEGROUND;
             }
@@ -44,14 +46,14 @@ static tetromino_status_t check_tetromino_next_status(game_board_t* const board,
     return TETROMINO_STATUS_MOVED;
 }
 
-static tetromino_status_t move_a_tetromino_mainbody(game_board_t* const board, tetromino_t* const out_tetro)
+static tetromino_status_t move_a_tetromino_mainbody(const game_board_t* board, tetromino_t* const out_tetro)
 {
     debug();
 
     static const pos_t S_POS_D[] = { { 1, 0 }, { 0, 1 }, { -1, 0 }, { 0, -1 } };
     pos_t npos = {
-        out_tetro->pos.x + (int)(out_tetro->velocity * 1) * S_POS_D[out_tetro->dir].x,
-        out_tetro->pos.y + (int)(out_tetro->velocity * 1) * S_POS_D[out_tetro->dir].y
+        out_tetro->pos.x + (pos_e_t)(out_tetro->velocity * 1) * S_POS_D[out_tetro->dir].x,
+        out_tetro->pos.y + (pos_e_t)(out_tetro->velocity * 1) * S_POS_D[out_tetro->dir].y
     };
     tetromino_status_t res = check_tetromino_next_status(board, out_tetro, npos);
     if (res == TETROMINO_STATUS_MOVED) {
@@ -64,7 +66,7 @@ static tetromino_status_t move_a_tetromino_mainbody(game_board_t* const board, t
 // {
 // }
 
-tetromino_status_t move_a_tetromino(game_board_t* const board, tetromino_t* const out_tetro)
+tetromino_status_t move_a_tetromino(const game_board_t* board, tetromino_t* const out_tetro)
 {
     debug();
 
@@ -73,7 +75,7 @@ tetromino_status_t move_a_tetromino(game_board_t* const board, tetromino_t* cons
     return res;
 }
 
-void petrity_tetromino(game_board_t* const board, const tetromino_t* tetro)
+void petrity_tetromino(game_board_t* const out_board, const tetromino_t* tetro)
 {
     debug();
 
@@ -91,7 +93,7 @@ void petrity_tetromino(game_board_t* const board, const tetromino_t* tetro)
             my_assert(each_pos.x >= 0);
             my_assert(each_pos.x < TETRIS_PLAY_BOARD_HEIGHT);
             my_assert(0 <= each_pos.y && each_pos.y < TETRIS_PLAY_BOARD_WIDTH);
-            board->grid[(int)each_pos.x][(int)each_pos.y] = tetro->id;
+            out_board->grid[(int)each_pos.x][(int)each_pos.y] = tetro->id;
         }
     }
 }

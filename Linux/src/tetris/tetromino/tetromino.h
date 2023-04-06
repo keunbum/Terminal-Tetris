@@ -24,6 +24,7 @@ typedef struct {
     tetromino_id_t id;
     symbol_id_t symbol_id;
     pos_t pos;
+    pos_t expected_pos;
     velocity_t velocity;
     dir_t dir;
     wchar_t block_code;
@@ -33,6 +34,6 @@ typedef struct {
 
 extern const tetromino_symbol_t G_TETROMINO_SYMBOLS[TOTAL_TETROMINO_NUM_OF_KINDS];
 
-void init_a_tetromino(tetromino_t* const, tetromino_id_t, symbol_id_t, pos_t, velocity_t, dir_t, wchar_t);
+// void init_a_tetromino(tetromino_t* const, tetromino_id_t, symbol_id_t, pos_t, velocity_t, dir_t, wchar_t);
 
 #endif /* __TETROMINO__H */
