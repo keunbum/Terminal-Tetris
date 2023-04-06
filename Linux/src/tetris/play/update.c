@@ -7,16 +7,9 @@
 
 /* return tetromino's status when moving left, right, or down.
    implement the rotation operation separately. */
-tetromino_status_t move_a_tetromino(game_board_t* const board, tetromino_t* const out_tetro)
+
+static tetromino_status_t check_tetromino_next_status(game_board_t* const board, tetromino_t* const out_tetro, pos_t npos)
 {
-    debug();
-
-    static const pos_t S_POS_D[] = { { 1, 0 }, { 0, 1 }, { -1, 0 }, { 0, -1 } };
-
-    pos_t npos = {
-        out_tetro->pos.x + (int)(out_tetro->velocity * 1) * S_POS_D[out_tetro->dir].x,
-        out_tetro->pos.y + (int)(out_tetro->velocity * 1) * S_POS_D[out_tetro->dir].y,
-    };
     const tetromino_symbol_t* symbol = G_TETROMINO_SYMBOLS + out_tetro->symbol_id;
     for (int i = 0; i < symbol->height; ++i) {
         const block_t* row = symbol->block_matrix[i];
@@ -47,9 +40,37 @@ tetromino_status_t move_a_tetromino(game_board_t* const board, tetromino_t* cons
             }
         }
     }
-    out_tetro->pos = npos;
     ewprintf("hi4\n");
     return TETROMINO_STATUS_MOVED;
+}
+
+static tetromino_status_t move_a_tetromino_mainbody(game_board_t* const board, tetromino_t* const out_tetro)
+{
+    debug();
+
+    static const pos_t S_POS_D[] = { { 1, 0 }, { 0, 1 }, { -1, 0 }, { 0, -1 } };
+    pos_t npos = {
+        out_tetro->pos.x + (int)(out_tetro->velocity * 1) * S_POS_D[out_tetro->dir].x,
+        out_tetro->pos.y + (int)(out_tetro->velocity * 1) * S_POS_D[out_tetro->dir].y
+    };
+    tetromino_status_t res = check_tetromino_next_status(board, out_tetro, npos);
+    if (res == TETROMINO_STATUS_MOVED) {
+        out_tetro->pos = npos;
+    }
+    return res;
+}
+
+// static void move_a_tetromino_expected(game_board_t* const board, tetromino_t* const out_tetro)
+// {
+// }
+
+tetromino_status_t move_a_tetromino(game_board_t* const board, tetromino_t* const out_tetro)
+{
+    debug();
+
+    tetromino_status_t res = move_a_tetromino_mainbody(board, out_tetro);
+    // move_a_tetromino_expected(board, out_tetro);
+    return res;
 }
 
 void petrity_tetromino(game_board_t* const board, const tetromino_t* tetro)
