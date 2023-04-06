@@ -94,7 +94,7 @@ static tetris_play_status_t run_game_play_modules_in_parallel(void)
         },
         {
             .main_func = mainfunc_game_play_timer,
-            .main_func_arg = (void*)&g_s_play_manager.timer_drawer.timer,
+            .main_func_arg = (void*)&g_s_play_manager.timer_drawer,
             .is_detached = false,
         },
     };
@@ -163,7 +163,6 @@ void* run_tetris_play_single_mode(void* arg)
     g_s_play_manager.timer_drawer.timer.timersig = REALTIME_TIMER_SIG;
 
     while (true) {
-        ewprintf("run_tetris_play_single_mode() HI\n");
         tetris_play_cmd_t res = play_a_new_game();
         if (res == TETRIS_PLAY_CMD_EXIT_GAME) {
             break;

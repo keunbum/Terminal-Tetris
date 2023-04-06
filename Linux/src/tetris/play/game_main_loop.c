@@ -89,7 +89,8 @@ void* mainfunc_game_main_loop(void* arg)
     bool is_game_over = false;
     while (!is_game_over) {
         tetromino_t tetromino;
-        spawn_tetromino(&play_manager->board, &tetromino);
+        spawn_tetromino(&play_manager->board, &tetromino);        
+        update_tetromino_ground_pos(&play_manager->board, &tetromino);
         while (true) {
             // handle_user_input();
             erase_a_tetromino_r(&tetromino);

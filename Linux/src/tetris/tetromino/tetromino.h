@@ -24,7 +24,7 @@ typedef struct {
     tetromino_id_t id;
     symbol_id_t symbol_id;
     pos_t pos;
-    pos_t expected_pos;
+    pos_t ground_pos;
     velocity_t velocity;
     dir_t dir;
     wchar_t block_code;

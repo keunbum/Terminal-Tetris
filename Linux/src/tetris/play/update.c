@@ -25,7 +25,7 @@ static tetromino_status_t check_tetromino_next_status(const game_board_t* board,
                 ewprintf("hi1\n");
                 return TETROMINO_STATUS_INPLACE;
             }
-            if (each_npos.x > TETRIS_PLAY_TETROMINO_POS_X_MAX) {
+            if (each_npos.x >= board->height) {
                 ewprintf("hi2\n");
                 return TETROMINO_STATUS_ONTHEGROUND;
             }
@@ -33,8 +33,8 @@ static tetromino_status_t check_tetromino_next_status(const game_board_t* board,
                 continue;
             }
             my_assert(each_npos.x >= 0);
-            my_assert(each_npos.x < TETRIS_PLAY_BOARD_HEIGHT);
-            my_assert(0 <= each_npos.y && each_npos.y < TETRIS_PLAY_BOARD_WIDTH);
+            my_assert(each_npos.x < board->height);
+            my_assert(0 <= each_npos.y && each_npos.y < board->width);
             game_board_grid_element_t each_value = board->grid[(int)each_npos.x][(int)each_npos.y];
             if (each_value != TETRIS_PLAY_BOARD_GRID_ELEMENT_DEFAULT && each_value != tetro->id) {
                 ewprintf("hi3\n");
@@ -105,6 +105,19 @@ bool is_at_skyline(const tetromino_t* tetro)
     my_assert(0 <= tetro->symbol_id && tetro->symbol_id < TOTAL_TETROMINO_NUM_OF_KINDS);
     const tetromino_symbol_t* symbol = G_TETROMINO_SYMBOLS + tetro->symbol_id;
     return tetro->pos.x + symbol->height <= 0;
+}
+
+void update_tetromino_ground_pos(const game_board_t* restrict board, tetromino_t* restrict const out_tetro)
+{
+    for (pos_t cground_pos = out_tetro->pos; cground_pos.x < board->height; ++cground_pos.x) {
+        pos_t nground_pos = { cground_pos.x + 1, cground_pos.y };
+        tetromino_status_t res = check_tetromino_next_status(board, out_tetro, nground_pos);
+        if (res != TETROMINO_STATUS_MOVED) {
+            out_tetro->ground_pos = cground_pos;
+            return;
+        }
+    }
+    my_assert(false);
 }
 
 /* ------------------------------------------------------------------------------------------------------------------------------------------- */

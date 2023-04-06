@@ -54,8 +54,6 @@ void spawn_tetromino(const game_board_t* restrict board, tetromino_t* restrict c
     out_tetro->symbol_id = (int)(rng() % TOTAL_TETROMINO_NUM_OF_KINDS);
     out_tetro->pos.x = TETRIS_PLAY_TETROMINO_INIT_POS_X;
     out_tetro->pos.y = get_pos_y_random(board, out_tetro);
-    out_tetro->expected_pos.x = -1;
-    out_tetro->expected_pos.y = -1;
     out_tetro->velocity = TETRIS_PLAY_TETROMINO_INIT_VELOCITY;
     out_tetro->dir = DIR_BOT;
     out_tetro->block_code = G_BLOCK_CODE_SET->codes[get_block_code_fixed(out_tetro->symbol_id, G_BLOCK_CODE_SET->size)];

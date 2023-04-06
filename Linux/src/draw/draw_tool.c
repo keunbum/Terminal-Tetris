@@ -1,18 +1,9 @@
 #include <assert.h>
-#include <stdio.h>
 #include <unistd.h>
 
 #include "cursor.h"
 #include "debug.h"
 #include "draw_tool.h"
-
-static void wdraw_unit_matrix_at(wchar_t ch, int x, int y)
-{
-    debug();
-
-    wgotoxy(x, y);
-    wdraw_unit_matrix(ch);
-}
 
 // [sx, ex)
 static void wdraw_col_matrix_at(wchar_t ch, int sx, int ex, int sy)
@@ -23,13 +14,6 @@ static void wdraw_col_matrix_at(wchar_t ch, int sx, int ex, int sy)
     for (int i = sx; i < ex; i += 1) {
         wdraw_unit_matrix_at(ch, i, sy);
     }
-}
-
-void wdraw_unit_matrix(wchar_t wch)
-{
-    debug();
-
-    putwc(wch, stdout);
 }
 
 // [sy, ey)

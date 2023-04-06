@@ -2,6 +2,7 @@
 #define __DRAW_TOOL__H
 
 #include <stdbool.h>
+#include <stdio.h>
 #include <wchar.h>
 
 #include "cursor.h"
@@ -46,7 +47,17 @@ static inline void wdraw_rows_newline_at(int height, const wchar_t** buf, int cu
         pthread_mutex_unlock(&g_cursor_mtx); \
     } while (false)
 
-void wdraw_unit_matrix(wchar_t);
+static inline void wdraw_unit_matrix(wchar_t wch)
+{
+    putwc(wch, stdout);
+}
+
+static inline void wdraw_unit_matrix_at(wchar_t ch, int x, int y)
+{
+    wgotoxy(x, y);
+    wdraw_unit_matrix(ch);
+}
+
 void wdraw_row_matrix_at(wchar_t, int, int, int);
 void wdraw_boundary_at_with(wchar_t, wchar_t, int, int, int, int, wchar_t, wchar_t, wchar_t, wchar_t);
 void wdraw_boundary_at(wchar_t, wchar_t, int, int, int, int);

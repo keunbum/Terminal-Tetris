@@ -28,6 +28,8 @@ static void wdraw_timer_frame_at(int pos_x_wprint, int pos_y_wprint)
 
 static void doit_drawer_main_logic(const realtime_timer_t* timer, const draw_module_t* draw_module)
 {
+    debug();
+    
     const int timer_pos_x_wprint = draw_module->pos_x_wprint + 1;
     const int timer_pos_y_wprint = draw_module->pos_y_wprint + 3;
 
@@ -81,6 +83,6 @@ void* run_timer_drawer_with(void* arg)
     if (timer_delete(timer->timerid) == -1) {
         handle_error("timer_delete() error");
     }
-    ewprintf("run_timer_drawer_with() return NULL\n");
+    // ewprintf("run_timer_drawer_with() return NULL\n");
     return NULL;
 }
