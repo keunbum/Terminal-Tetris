@@ -8,7 +8,7 @@
 #include "draw/cursor.h"
 #include "error_handling.h"
 #include "game_selection_menu.h"
-#include "tetris/single/tetris_play_single_manager.h"
+#include "tetris/play/tetris_play_single_manager.h"
 #include "tetris/tetris_play_manager.h"
 
 static const play_manager_t G_S_GAME_OBJECTS[] = {

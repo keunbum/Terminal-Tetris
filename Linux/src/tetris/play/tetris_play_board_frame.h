@@ -1,7 +1,7 @@
 #ifndef __TETRIS_PLAY_BOARD_FRAME__H
 #define __TETRIS_PLAY_BOARD_FRAME__H
 
-#include "tetris/physics/tetris_play_board.h"
+#include "tetris_play_board.h"
 
 #define TETRIS_PLAY_BOARD_FRAME_HEIGHT (TETRIS_PLAY_BOARD_HEIGHT + 2)
 #define TETRIS_PLAY_BOARD_FRAME_WIDTH (TETRIS_PLAY_BOARD_WIDTH + 2)

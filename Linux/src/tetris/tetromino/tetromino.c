@@ -1,11 +1,8 @@
 #include <time.h>
 
-#include "debug.h"
-#include "random.h"
-#include "tetromino.h"
 #include "block_code_set.h"
-
-static tetromino_id_t g_s_tetromino_spawned_cnt;
+#include "debug.h"
+#include "tetromino.h"
 
 const tetromino_symbol_t G_TETROMINO_SYMBOLS[TOTAL_TETROMINO_NUM_OF_KINDS] = {
     // I
@@ -65,35 +62,15 @@ const tetromino_symbol_t G_TETROMINO_SYMBOLS[TOTAL_TETROMINO_NUM_OF_KINDS] = {
     },
 };
 
-void init_a_tetromino(tetromino_t* const out_tetro, symbol_id_t symbol_id, pos_t pos, velocity_t velocity, dir_t dir, wchar_t block_code)
+void init_a_tetromino(tetromino_t* const out_tetro, tetromino_id_t id, symbol_id_t symbol_id, pos_t pos, velocity_t velocity, dir_t dir, wchar_t block_code)
 {
     debug();
+    ewprintf("init tetromino.pos: (%lf, %lf)\n", pos.x, pos.y);
 
-    out_tetro->id = g_s_tetromino_spawned_cnt++;
+    out_tetro->id = id;
     out_tetro->symbol_id = symbol_id;
     out_tetro->pos = pos;
     out_tetro->velocity = velocity;
     out_tetro->dir = dir;
     out_tetro->block_code = block_code;
-}
-
-void init_tetromino_generator(void)
-{
-    debug();
-
-    init_rng((unsigned int)time(NULL));
-    g_s_tetromino_spawned_cnt = 1;
-}
-
-void spawn_a_tetromino(tetromino_t* const out_tetro, pos_t pos, velocity_t velocity)
-{
-    symbol_id_t symbol_id = (int)(rng() % TOTAL_TETROMINO_NUM_OF_KINDS);
-    const block_code_set_t* code_set = G_BLOCK_CODE_SET_DEFAULT;
-    init_a_tetromino(
-        out_tetro,
-        symbol_id,
-        pos,
-        velocity,
-        DIR_BOT,
-        code_set->codes[get_block_code_fixed(code_set, symbol_id)]);
 }

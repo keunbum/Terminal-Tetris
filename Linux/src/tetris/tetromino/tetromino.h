@@ -33,8 +33,6 @@ typedef struct {
 
 extern const tetromino_symbol_t G_TETROMINO_SYMBOLS[TOTAL_TETROMINO_NUM_OF_KINDS];
 
-void init_tetromino_generator(void);
-void init_a_tetromino(tetromino_t* const, symbol_id_t, pos_t, velocity_t, dir_t, wchar_t);
-void spawn_a_tetromino(tetromino_t* const, pos_t, velocity_t);
+void init_a_tetromino(tetromino_t* const, tetromino_id_t, symbol_id_t, pos_t, velocity_t, dir_t, wchar_t);
 
 #endif /* __TETROMINO__H */

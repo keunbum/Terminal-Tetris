@@ -11,11 +11,11 @@
 #include "error_handling.h"
 #include "game_main_loop.h"
 #include "signal_macro.h"
-#include "tetris/physics/tetris_play_board_frame.h"
 #include "tetris/scene/tetris_play_scene.h"
 #include "tetris/tetris_play_manager.h"
 #include "tetris/tetris_play_submodule.h"
 #include "tetris/timer/game_play_timer.h"
+#include "tetris_play_board_frame.h"
 #include "tetris_play_single_manager.h"
 
 static game_play_manager_module_arg_t g_s_play_manager = {

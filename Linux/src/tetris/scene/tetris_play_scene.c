@@ -4,7 +4,7 @@
 #include "draw/cursor.h"
 #include "draw/draw_tool.h"
 #include "error_handling.h"
-#include "tetris/physics/tetris_play_board_frame.h"
+#include "tetris/play/tetris_play_board_frame.h"
 #include "tetris/tetromino/block.h"
 #include "tetris_play_scene.h"
 #include "tetris_play_screen.h"

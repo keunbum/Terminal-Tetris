@@ -61,8 +61,7 @@ const block_code_set_t G_BLOCK_CODE_SET_EMOJI = {
     },
 };
 
-// const block_code_set_t* G_BLOCK_CODE_SET_DEFAULT = &G_BLOCK_CODE_SET_RAINBOW;
-const block_code_set_t* G_BLOCK_CODE_SET_DEFAULT = &G_BLOCK_CODE_SET_EMOJI;
+const block_code_set_t* G_BLOCK_CODE_SET = &G_BLOCK_CODE_SET_EMOJI;
 
 int get_block_code_random(const block_code_set_t* bcs)
 {
@@ -73,11 +72,11 @@ int get_block_code_random(const block_code_set_t* bcs)
     return ret;
 }
 
-int get_block_code_fixed(const block_code_set_t* bcs, int pos)
+int get_block_code_fixed(int pos, int size)
 {
     debug();
 
-    int ret = pos % bcs->size;
+    int ret = pos % size;
     my_assert(ret >= 0);
     return ret;
 }
