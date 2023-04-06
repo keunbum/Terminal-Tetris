@@ -11,7 +11,7 @@
 #include "tetris/play/tetris_play_single_manager.h"
 #include "tetris/tetris_play_manager.h"
 
-static const play_manager_t G_S_GAME_OBJECTS[] = {
+static const game_module_t G_S_GAME_OBJECTS[] = {
     {
         .name = "basic tetris",
         .module = run_tetris_play_single_mode,
@@ -75,7 +75,7 @@ static bool handle_game_selection_menu_cmd(int cmd)
         return false;
     }
     if (1 <= cmd && cmd <= G_S_GAME_SELECTION_MENU_TOTAL_OPTION_NUM - 1) {
-        const play_manager_t* g = G_S_GAME_OBJECTS + cmd_to_gamenum(cmd);
+        const game_module_t* g = G_S_GAME_OBJECTS + cmd_to_gamenum(cmd);
         g->module(g->module_arg);
         return true;
     }

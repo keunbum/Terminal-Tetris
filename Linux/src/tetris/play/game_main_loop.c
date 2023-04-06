@@ -22,7 +22,7 @@
 
 // static game_loop_manager_t g_s_loop_manager;
 
-// static void new_init_game_main_loop(game_play_manager_module_arg_t* const out_play_manager)
+// static void new_init_game_main_loop(tetris_play_manager_t* const out_play_manager)
 // {
 //     init_game_board(&out_play_manager->board);
 //     init_tetromino_generator();
@@ -30,7 +30,7 @@
 //     g_s_loop_manager.is_game_running = true;
 // }
 
-// static void update_tetris_world(game_play_manager_module_arg_t* const out_play_manager, double game_delta_time)
+// static void update_tetris_world(tetris_play_manager_t* const out_play_manager, double game_delta_time)
 // {
 //     tetromino_t* const tetromino = &g_s_loop_manager.tetromino;
 //     erase_a_tetromino_r(tetromino);
@@ -55,7 +55,7 @@
 
 // void* new_mainfunc_game_main_loop(void* arg)
 // {
-//     game_play_manager_module_arg_t* play_manager = (game_play_manager_module_arg_t*)arg;
+//     tetris_play_manager_t* play_manager = (tetris_play_manager_t*)arg;
 //     new_init_game_main_loop(play_manager);
 //     while (true) {
 //         // read_inputs();
@@ -71,7 +71,7 @@
 
 /* -------------------------------------------------------------------------------------------------------- */
 
-static void init_game_main_loop(game_play_manager_module_arg_t* const out_play_manager)
+static void init_game_main_loop(tetris_play_manager_t* const out_play_manager)
 {
     debug();
 
@@ -90,7 +90,7 @@ void* mainfunc_game_main_loop(void* arg)
 
     /* Not a good logic yet. There is a possibility of change,
        but first of all, I will write the code sequentially. */
-    game_play_manager_module_arg_t* play_manager = (game_play_manager_module_arg_t*)arg;
+    tetris_play_manager_t* play_manager = (tetris_play_manager_t*)arg;
     timer_drawer_t* timer_drawer = &play_manager->timer_drawer;
     game_board_t* board = &play_manager->board;
     init_game_main_loop(play_manager);

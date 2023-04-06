@@ -18,7 +18,7 @@
 #include "tetris_play_board_frame.h"
 #include "tetris_play_single_manager.h"
 
-static game_play_manager_module_arg_t g_s_play_manager = {
+static tetris_play_manager_t g_s_play_manager = {
     .mode = TETRIS_PLAY_MODE_SINGLE,
     .screen_start_pos_x_wprint = TETRIS_PLAY_SINGLE_SCREEN_START_POS_X_WPRINT,
     .screen_start_pos_y_wprint = TETRIS_PLAY_SINGLE_SCREEN_START_POS_Y_WPRINT,
