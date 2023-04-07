@@ -32,7 +32,7 @@ int main(int argc, char* argv[])
     (void) argv;
 
 #ifdef UNIT_TEST
-    test_module();
+    test_module(argc, argv);
 #else
     main2();
 #endif
