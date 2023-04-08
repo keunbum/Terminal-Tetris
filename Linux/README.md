@@ -2267,6 +2267,21 @@ CRT 이야기는 교양 삼아서 읽어 본 거지.
 
 [//]: # (End of 04.07)
 
+<details><summary>04.08(토)</summary>
+
+### Achievements of the day
+
+오늘 딱히 한 건 없고 termios.h 사용하는 예제 코드 좀 작성해봄.  
+termios 관련 man page 좀 읽어 보려고 했는데 쉽지 않네.  
+개발 공부는 정말 무궁무진 하구나.
+
+주말엔 아무 생각없이 좋아하는 거 하면서 푹 쉬는 걸로..  
+감당할 수 있는 만큼만 공부하자.  
+
+</details>
+
+[//]: # (End of 04.08)
+
 </blockquote></details>
 
 [//]: # (End of 2023.04)
