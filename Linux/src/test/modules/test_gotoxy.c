@@ -2,10 +2,12 @@
 #include <unistd.h>
 #include <locale.h>
 
-#include "draw_tool/cursor.h"
+#include "draw/cursor.h"
 
-static int test(char *argv[])
+int test_gotoxy(int argc, char *argv[])
 {
+    (void)argc;
+    (void)argv;
     {
         wclear();
         wprintf(
