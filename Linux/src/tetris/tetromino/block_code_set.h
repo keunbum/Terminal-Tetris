@@ -2,6 +2,7 @@
 #define __BLOCK_CODE_SET__H
 
 #include "block.h"
+#include "debug.h"
 
 /* normal order
  1. I
@@ -44,7 +45,19 @@ typedef struct {
 
 extern const block_code_set_t* G_BLOCK_CODE_SET;
 
-// int get_block_code_random(const block_code_set_t*);
-int get_block_code_fixed(int, int);
+// static inline int get_block_code_random(const block_code_set_t* bcs)
+// {
+
+//     int ret = (int)(rng() % bcs->size);
+//     my_assert(ret >= 0);
+//     return ret;
+// }
+
+static inline int get_block_code_fixed(int pos, int size)
+{
+    int ret = pos % size;
+    my_assert(ret >= 0);
+    return ret;
+}
 
 #endif /* __BLOCK_CODE_SET__H */

@@ -1,5 +1,4 @@
 #include "block_code_set.h"
-#include "debug.h"
 #include "tetris/tetromino/tetromino.h"
 
 const block_code_set_t G_BLOCK_CODE_SET_RAINBOW = {
@@ -29,21 +28,3 @@ const block_code_set_t G_BLOCK_CODE_SET_EMOJI = {
 };
 
 const block_code_set_t* G_BLOCK_CODE_SET = &G_BLOCK_CODE_SET_EMOJI;
-
-// int get_block_code_random(const block_code_set_t* bcs)
-// {
-//     debug();
-
-//     int ret = (int)(rng() % bcs->size);
-//     my_assert(ret >= 0);
-//     return ret;
-// }
-
-int get_block_code_fixed(int pos, int size)
-{
-    debug();
-
-    int ret = pos % size;
-    my_assert(ret >= 0);
-    return ret;
-}

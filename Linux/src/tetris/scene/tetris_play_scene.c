@@ -5,6 +5,7 @@
 #include "draw/draw_tool.h"
 #include "error_handling.h"
 #include "tetris/play/tetris_play_board_frame.h"
+#include "tetris/play/tetris_play_statistic.h"
 #include "tetris/tetromino/block.h"
 #include "tetris_play_scene.h"
 #include "tetris_play_screen.h"
@@ -67,6 +68,7 @@ static void draw_game_play_single_whole_screen_at(int sx, int sy)
     wdisable_cursor();
 
     draw_game_play_single_outside_area_at_r(sx, sy);
+    wdraw_tetris_play_statistics_frame();
     wdraw_game_play_inside_area_at_r(sx + TETRIS_PLAY_BOARD_FRAME_START_POS_X_WPRINT, sy + TETRIS_PLAY_BOARD_FRAME_START_POS_Y_WPRINT);
     fflush(stdout);
 }

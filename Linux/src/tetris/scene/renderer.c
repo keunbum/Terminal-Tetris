@@ -70,6 +70,27 @@ static void new_render_a_tetromino(const tetromino_t* tetro, wchar_t block_wprin
     }
 }
 
+static void render_a_tetromino_mainbody_at_wprint(const tetromino_t* tetro, wchar_t block_wprint, pos_t pos_wprint)
+{
+    debug();
+
+    my_assert(tetro != NULL);
+
+    polyomino_matrix_t symbol = get_tetromino_matrix(tetro->symbol_id, tetro->rotate_dir);
+    polyomino_matrix_n_t n = get_tetromino_matrix_n(tetro->symbol_id);
+    for (int pos = 0; pos < n * n; ++pos) {
+        if (is_empty_block(symbol, pos)) {
+            continue;
+        }
+        int i = pos / n;
+        int j = pos % n;
+        {
+            pos_t each_pos_wprint = { pos_wprint.x + i, pos_wprint.y + 2 * j };
+            wdraw_unit_matrix_at(block_wprint, (int)each_pos_wprint.x, (int)each_pos_wprint.y);
+        }
+    }
+}
+
 // static void render_a_tetromino_at(const tetromino_t* tetro, wchar_t block_wprint, pos_t pos)
 // {
 //     debug();
@@ -111,7 +132,6 @@ static inline void render_a_tetromino_r(const tetromino_t* tetro, wchar_t block_
     cursor_lock();
     render_a_tetromino(tetro, block_wprint);
     cursor_unlock();
-    // render_a_tetromino_at_r(tetro, block_wprint, tetro->pos);
 }
 
 static inline void new_render_a_tetromino_r(const tetromino_t* tetro, wchar_t block_wprint)
@@ -121,7 +141,15 @@ static inline void new_render_a_tetromino_r(const tetromino_t* tetro, wchar_t bl
     cursor_lock();
     new_render_a_tetromino(tetro, block_wprint);
     cursor_unlock();
-    // render_a_tetromino_at_r(tetro, block_wprint, tetro->pos);
+}
+
+static inline void render_a_tetromino_mainbody_at_wprint_r(const tetromino_t* tetro, wchar_t block_wprint, pos_t pos_wprint)
+{
+    debug();
+
+    cursor_lock();
+    render_a_tetromino_mainbody_at_wprint(tetro, block_wprint, pos_wprint);
+    cursor_unlock();
 }
 
 // static void erase_a_tetromino_at_r(const tetromino_t* tetro, pos_t pos)
@@ -178,4 +206,9 @@ void new_render_out(void)
     debug();
 
     fflush(stdout);
+}
+
+void draw_a_tetromino_mainbody_at_wprint_r(const tetromino_t* tetro, pos_t pos_wprint)
+{
+    render_a_tetromino_mainbody_at_wprint_r(tetro, tetro->block_code, pos_wprint);
 }

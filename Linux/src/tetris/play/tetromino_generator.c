@@ -3,6 +3,7 @@
 #include "debug.h"
 #include "mt19937.h"
 #include "tetromino_generator.h"
+#include "tetris_play_statistic.h"
 
 static tetromino_id_t g_s_tetromino_spawned_cnt;
 
@@ -68,4 +69,5 @@ void new_spawn_tetromino(const game_board_t* restrict board, tetromino_t* restri
     out_tetro->velocity = TETRIS_PLAY_TETROMINO_INIT_VELOCITY;
     out_tetro->rotate_dir = (dir_t)(rng() % TOTAL_DIR_NUM_OF_KINDS);
     out_tetro->block_code = G_BLOCK_CODE_SET->codes[get_block_code_fixed(out_tetro->symbol_id, G_BLOCK_CODE_SET->size)];
+    inc_tetromino_cnt_by_one(out_tetro->symbol_id);
 }
