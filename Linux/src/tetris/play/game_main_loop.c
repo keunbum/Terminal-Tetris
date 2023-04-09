@@ -11,7 +11,7 @@
 #include "tetris_play_board_frame.h"
 #include "tetris_play_fps.h"
 #include "tetromino_generator.h"
-#include "update.h"
+#include "tetris_play_update.h"
 
 // typedef struct {
 //     tetromino_t tetromino;
@@ -92,9 +92,8 @@ void* mainfunc_game_main_loop(void* arg)
         spawn_tetromino(&play_manager->board, &tetromino);        
         update_tetromino_ground_pos(&play_manager->board, &tetromino);
         while (true) {
-            // handle_user_input();
             erase_a_tetromino_r(&tetromino);
-            tetromino_status_t status = move_a_tetromino(&play_manager->board, &tetromino);
+            tetromino_status_t status = move_tetromino(&play_manager->board, &tetromino);
             draw_a_tetromino_r(&tetromino);
             render_out();
             if (status == TETROMINO_STATUS_ONTHEGROUND) {
@@ -105,6 +104,41 @@ void* mainfunc_game_main_loop(void* arg)
                 break;
             }
             usleep(TARGET_FRAME_TIME * 1e6);
+        }
+    }
+    set_realtime_timer(&play_manager->timer_drawer.timer, false);
+    wclear();
+
+    return (void*)TETRIS_PLAY_STATUS_GAME_OVER;
+}
+
+void* new_mainfunc_game_main_loop(void* arg)
+{
+    debug();
+
+    /* Not a good logic yet. There is a possibility of change,
+       but first of all, I will write the code sequentially. */
+    tetris_play_manager_t* play_manager = (tetris_play_manager_t*)arg;
+    init_game_main_loop(play_manager);
+    bool is_game_over = false;
+    while (!is_game_over) {
+        tetromino_t tetromino;
+        new_spawn_tetromino(&play_manager->board, &tetromino);        
+        new_update_tetromino_ground_pos(&play_manager->board, &tetromino);
+        while (true) {
+            new_erase_a_tetromino_r(&tetromino);
+            tetromino_status_t status = new_move_tetromino_down(&play_manager->board, &tetromino);
+            new_draw_a_tetromino_r(&tetromino);
+            new_render_out();
+            if (status == TETROMINO_STATUS_ONTHEGROUND) {
+                new_petrity_tetromino(&play_manager->board, &tetromino);
+                // clear_filled_lines(); --> maybe internally.
+                // reflect_them_visually();
+                is_game_over = new_is_at_skyline(&tetromino);
+                break;
+            }
+            usleep(TARGET_FRAME_TIME * 1e6);
+            // usleep(TARGET_FRAME_TIME * 2e6);
         }
     }
     set_realtime_timer(&play_manager->timer_drawer.timer, false);

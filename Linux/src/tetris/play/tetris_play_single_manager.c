@@ -87,8 +87,8 @@ static tetris_play_status_t run_game_play_modules_in_parallel(void)
 
     static game_play_submodule_t s_modules[] = {
         {
-            .main_func = mainfunc_game_main_loop,
-            // .main_func = new_mainfunc_game_main_loop,
+            // .main_func = mainfunc_game_main_loop,
+            .main_func = new_mainfunc_game_main_loop,
             .main_func_arg = (void*)&g_s_play_manager,
             .is_detached = false,
         },

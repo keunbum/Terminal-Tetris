@@ -8,4 +8,6 @@
 void init_tetromino_generator(void);
 void spawn_tetromino(const game_board_t* restrict, tetromino_t* restrict const);
 
+void new_spawn_tetromino(const game_board_t* restrict board, tetromino_t* restrict const out_tetro);
+
 #endif /* __TETROMINO_GENERATOR__H */
