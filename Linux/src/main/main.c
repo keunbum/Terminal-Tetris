@@ -1,20 +1,23 @@
 #include <locale.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <time.h>
 
 #include "debug.h"
 #include "draw/cursor.h"
 #include "error_handling.h"
 #include "game_system/game_system_manager.h"
 #include "localize/localize.h"
+#include "mt19937.h"
 #include "test/test.h"
 
 static void init(void)
 {
     debug();
-    
+
     localize();
     init_cursor();
+    init_rng((uint32_t)time(NULL));
 }
 
 static void cleanup(void)
@@ -37,8 +40,8 @@ int main(int argc, char* argv[])
 {
     debug();
 
-    (void) argc;
-    (void) argv;
+    (void)argc;
+    (void)argv;
 
 #ifdef UNIT_TEST
     test_module(argc, argv);

@@ -2,7 +2,6 @@
 
 #include "debug.h"
 #include "game_main_loop.h"
-#include "random.h"
 #include "tetris/scene/renderer.h"
 #include "tetris/scene/tetris_play_scene.h"
 #include "tetris/tetris_play_manager.h"

@@ -1,8 +1,7 @@
 #include <stdbool.h>
-#include <time.h>
 
 #include "debug.h"
-#include "random.h"
+#include "mt19937.h"
 #include "tetromino_generator.h"
 
 static tetromino_id_t g_s_tetromino_spawned_cnt;
@@ -33,7 +32,7 @@ static pos_e_t get_pos_y_random(const game_board_t* board, const tetromino_t* te
 
     pos_e_t pos_y;
     do {
-        pos_y = rng() % (board->width);
+        pos_y = (pos_e_t)(rng() % board->width);
     } while (!is_tetromino_y_in_board(board, tetro, pos_y));
     return pos_y;
 }
@@ -42,7 +41,6 @@ void init_tetromino_generator(void)
 {
     debug();
 
-    init_rng((unsigned int)time(NULL));
     g_s_tetromino_spawned_cnt = 1;
 }
 
@@ -51,7 +49,7 @@ void spawn_tetromino(const game_board_t* restrict board, tetromino_t* restrict c
     debug();
 
     out_tetro->id = g_s_tetromino_spawned_cnt++;
-    out_tetro->symbol_id = (int)(rng() % TOTAL_TETROMINO_NUM_OF_KINDS);
+    out_tetro->symbol_id = (symbol_id_t)(rng() % TOTAL_TETROMINO_NUM_OF_KINDS);
     out_tetro->pos.x = TETRIS_PLAY_TETROMINO_INIT_POS_X;
     out_tetro->pos.y = get_pos_y_random(board, out_tetro);
     out_tetro->velocity = TETRIS_PLAY_TETROMINO_INIT_VELOCITY;
