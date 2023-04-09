@@ -60,6 +60,17 @@ https://www.youtube.com/watch?v=mRXKvNAepy0
 
 </details>
 
+<details><summary>2023.04.10</summary>
+ 
+https://youtu.be/a-AEmpm-fSU
+
+- 테트로미노 분포 통계 제시 (for 의사 난수 테스트)  
+- 의사 난수 알고리즘으로 업그레이드(feat. mt19937)  
+  --> 근데 테스트 해보니까 rand()보다 더 말도 안되는 경우도 있는데;  
+      확률 분포가 골고루 나오게끔 예외 처리를 해야 하나..
+
+</details>
+
 
 ---
 
@@ -2300,6 +2311,17 @@ termios 관련 man page 좀 읽어 보려고 했는데 쉽지 않네.
 
 입력 객체는 일단 정의만 해놓았고,  
 회전 개념은 적용함. 
+
+</details>
+
+[//]: # (End of 04.09)
+
+<details><summary>04.10(월)</summary>
+
+### Achievements of the day
+
+의사 난수 생성 알고리즘 업그레이드. (잘한 건지는 모르겠음...)  
+게임 판 옆에 통계 제시.
 
 </details>
 
