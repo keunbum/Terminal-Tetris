@@ -52,6 +52,14 @@ https://youtu.be/fuThpI5kqPI
 
 </details>
 
+<details><summary>2023.04.09</summary>
+ 
+https://www.youtube.com/watch?v=mRXKvNAepy0
+
+- 회전 개념 적용 (아직 입력 못받음)
+
+</details>
+
 
 ---
 
@@ -202,8 +210,9 @@ https://youtu.be/fuThpI5kqPI
 
       [pthread 문서](https://man7.org/linux/man-pages/man7/pthreads.7.html#:~:text=Thread%2Dsafe%20functions,NULL%0A%20%20%20%20%20%20%20%20%20%20%20wcstombs()%0A%20%20%20%20%20%20%20%20%20%20%20wctomb())에 따르면 
       printf, write 모두 thread-safe한 것 같음.  
-      thread-safe한 줄 모르고 mutex로 해결했었는데, 그냥 printf 사용해도 될 듯. (검색할 때 더 꼼꼼하게 확인하기)  
-      --> 근데, wgotoxy랑 같이 쓰이면 mutex 필요하긴 할 듯.
+      ~~thread-safe한 줄 모르고 mutex로 해결했었는데, 그냥 printf 사용해도 될 듯. (검색할 때 더 꼼꼼하게 확인하기)  
+      --> 근데, wgotoxy랑 같이 쓰이면 mutex 필요하긴 할 듯.~~  
+      --> mutex 말고 spinlock 사용해도 충분.
 
   - [X] ~~리얼 타임 타이머가 fork일 때는 예상대로 잘 동작했었는데  
         pthread 돌리니까 예상밖의 행동(시그널 핸들러 호출 이후에 하던 일 계속 안하고 계속 블로킹 당하고 있음)을 함.  
@@ -2281,6 +2290,21 @@ termios 관련 man page 좀 읽어 보려고 했는데 쉽지 않네.
 </details>
 
 [//]: # (End of 04.08)
+
+
+<details><summary>04.09(일)</summary>
+
+### Achievements of the day
+
+입력 체계 어떻게 갖출지 대강 감 잡아서 구현 시도해보긴 했는데
+
+입력 객체는 일단 정의만 해놓았고,  
+회전 개념은 적용함. 
+
+</details>
+
+[//]: # (End of 04.09)
+
 
 </blockquote></details>
 
