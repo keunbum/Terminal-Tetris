@@ -14,6 +14,14 @@ static void init(void)
     debug();
     
     localize();
+    init_cursor();
+}
+
+static void cleanup(void)
+{
+    debug();
+
+    cleanup_cursor();
 }
 
 static void main2(void)
@@ -22,6 +30,7 @@ static void main2(void)
 
     init();
     run_game_system_manager();
+    cleanup();
 }
 
 int main(int argc, char* argv[])

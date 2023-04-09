@@ -13,13 +13,13 @@ static void draw_game_play_outside_area_at_r(int sx, int sy)
 {
     debug();
 
-    pthread_mutex_lock(&g_cursor_mtx);
+    cursor_lock();
     wdraw_boundary_at_with(UNIT_MATRIX_HOR_LINE_THIN, UNIT_MATRIX_VER_LINE_THIN, TETRIS_PLAY_SINGLE_SCREEN_HEIGHT_WPRINT, TETRIS_PLAY_SINGLE_SCREEN_WIDTH_WPRINT, sx, sy,
         UNIT_MATRIX_CORNER_TOP_LEFT_THIN,
         UNIT_MATRIX_CORNER_TOP_RIGHT_THIN,
         UNIT_MATRIX_CORNER_BOT_LEFT_THIN,
         UNIT_MATRIX_CORNER_BOT_RIGHT_THIN);
-    pthread_mutex_unlock(&g_cursor_mtx);
+    cursor_unlock();
 }
 
 static void wdraw_game_play_inside_area_at_r(int topleft_pos_x, int topleft_pos_y)
@@ -42,7 +42,7 @@ static void wdraw_game_play_inside_area_at_r(int topleft_pos_x, int topleft_pos_
     wset_row_line(S_MID_LINE, TETRIS_PLAY_BOARD_FRAME_WIDTH, game_board_unit_matrix_ver_line, game_board_unit_matrix_inner_block, game_board_unit_matrix_ver_line);
     wset_row_line(S_BOT_LINE, TETRIS_PLAY_BOARD_FRAME_WIDTH, game_board_unit_matrix_corner_bot_left, game_board_unit_matrix_hor_line, game_board_unit_matrix_corner_bot_right);
 
-    pthread_mutex_lock(&g_cursor_mtx);
+    cursor_lock();
     wgotoxy(topleft_pos_x, topleft_pos_y);
     const int cursor_move_length = 2 * TETRIS_PLAY_BOARD_FRAME_WIDTH;
     wdraw_row_newline(S_TOP_LINE, cursor_move_length);
@@ -50,7 +50,7 @@ static void wdraw_game_play_inside_area_at_r(int topleft_pos_x, int topleft_pos_
         wdraw_row_newline(S_MID_LINE, cursor_move_length);
     }
     wdraw_row_newline(S_BOT_LINE, cursor_move_length);
-    pthread_mutex_unlock(&g_cursor_mtx);
+    cursor_unlock();
 }
 
 static void draw_game_play_single_outside_area_at_r(int sx, int sy)

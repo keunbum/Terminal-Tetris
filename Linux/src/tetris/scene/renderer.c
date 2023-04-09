@@ -74,18 +74,18 @@ static void render_a_tetromino(const tetromino_t* tetro, wchar_t block_wprint)
 // {
 //     debug();
 
-//     pthread_mutex_lock(&g_cursor_mtx);
+//     cursor_lock();
 //     render_a_tetromino_at(tetro, block_wprint, pos);
-//     pthread_mutex_unlock(&g_cursor_mtx);
+//     cursor_unlock();
 // }
 
 static inline void render_a_tetromino_r(const tetromino_t* tetro, wchar_t block_wprint)
 {
     debug();
 
-    pthread_mutex_lock(&g_cursor_mtx);
+    cursor_lock();
     render_a_tetromino(tetro, block_wprint);
-    pthread_mutex_unlock(&g_cursor_mtx);
+    cursor_unlock();
     // render_a_tetromino_at_r(tetro, block_wprint, tetro->pos);
 }
 

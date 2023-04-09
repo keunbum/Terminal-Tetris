@@ -4,7 +4,7 @@
 #include <unistd.h>
 
 #include "debug.h"
-#include "draw/cursor.h"
+#include "draw/draw_tool.h"
 #include "game_play_timer.h"
 #include "timer_drawer.h"
 

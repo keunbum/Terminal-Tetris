@@ -23,6 +23,20 @@
 #define UNIT_MATRIX_HOR_LINE_THIN (0x2501)
 #define UNIT_MATRIX_VER_LINE_THIN (0x2503)
 
+#define wprintf_at(x, y, ...) \
+    do {                      \
+        wgotoxy(x, y);        \
+        wprintf(__VA_ARGS__); \
+    } while (false)
+
+#define wprintf_at_r(x, y, ...) \
+    do {                        \
+        cursor_lock();          \
+        wgotoxy(x, y);          \
+        wprintf(__VA_ARGS__);   \
+        cursor_unlock();        \
+    } while (false)
+
 #define wdraw_newline() wprintf(L"\n")
 
 static inline void wdraw_row_newline(const wchar_t* buf, int cursor_move_width)
@@ -40,11 +54,11 @@ static inline void wdraw_rows_newline_at(int height, const wchar_t** buf, int cu
     wdraw_newline();
 }
 
-#define wdraw_rows_newline_at_r(...)         \
-    do {                                     \
-        pthread_mutex_lock(&g_cursor_mtx);   \
-        wdraw_rows_newline_at(__VA_ARGS__);  \
-        pthread_mutex_unlock(&g_cursor_mtx); \
+#define wdraw_rows_newline_at_r(...)        \
+    do {                                    \
+        cursor_lock();                      \
+        wdraw_rows_newline_at(__VA_ARGS__); \
+        cursor_unlock();                    \
     } while (false)
 
 static inline void wdraw_unit_matrix(wchar_t wch)

@@ -4,6 +4,9 @@
 
 int test_termios(int argc, char* argv[])
 {
+    (void)argc;
+    (void)argv;
+    
     int c;
     static struct termios oldt, newt;
 
