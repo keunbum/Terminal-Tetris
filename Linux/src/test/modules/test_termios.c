@@ -8,18 +8,18 @@ int test_termios(int argc, char* argv[])
     (void)argv;
     
     int c;
-    static struct termios oldt, newt;
+    static struct termios old_termios, new_termios;
 
-    tcgetattr(STDIN_FILENO, &oldt);
-    newt = oldt;
-    cfmakeraw(&newt);
-    tcsetattr(STDIN_FILENO, TCSANOW, &newt);
+    tcgetattr(STDIN_FILENO, &old_termios);
+    new_termios = old_termios;
+    cfmakeraw(&new_termios);
+    tcsetattr(STDIN_FILENO, TCSANOW, &new_termios);
 
     while ((c = getchar()) != 27) {
         putchar(c);
     }
 
-    tcsetattr(STDIN_FILENO, TCSANOW, &oldt);
+    tcsetattr(STDIN_FILENO, TCSANOW, &old_termios);
 
     return 0;
 }

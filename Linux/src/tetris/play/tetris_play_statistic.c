@@ -18,7 +18,7 @@ static void wdraw_tetromino_spawned_cnt(symbol_id_t id)
 {
     const int pos_x_wprint = TETRIS_PLAY_STATISTIC_START_POS_X_WPRINT + (id + 1) * TETRIS_PLAY_STATISTIC_INTERVAL_HEIGHT - 2;
     const int pos_y_wprint = TETRIS_PLAY_STATISTIC_TETROMINO_START_POS_Y_WPRINT;
-    wprintf_at(pos_x_wprint + 1 + 0, pos_y_wprint + 11, L"%d", g_s_tetromino_spawned_cnt[id]);
+    wprintf_at_r(pos_x_wprint + 1 + 0, pos_y_wprint + 11, L"%d", g_s_tetromino_spawned_cnt[id]);
 }
 
 static void wdraw_tetris_play_statistics_tetrominos(void)
@@ -29,8 +29,9 @@ static void wdraw_tetris_play_statistics_tetrominos(void)
         t.symbol_id = s;
         t.rotate_dir = DIR_BOT;
         t.block_code = G_BLOCK_CODE_SET->codes[t.symbol_id];
+        const polyomino_matrix_n_t n = get_tetromino_matrix_n(t.symbol_id);
         const int pos_x_wprint = TETRIS_PLAY_STATISTIC_START_POS_X_WPRINT + (s + 1) * TETRIS_PLAY_STATISTIC_INTERVAL_HEIGHT - 2;
-        const int pos_y_wprint = TETRIS_PLAY_STATISTIC_TETROMINO_START_POS_Y_WPRINT;
+        const int pos_y_wprint = TETRIS_PLAY_STATISTIC_TETROMINO_START_POS_Y_WPRINT + 4 - n;
         pos_t pos_wprint = { pos_x_wprint, pos_y_wprint };
         draw_a_tetromino_mainbody_at_wprint_r(&t, pos_wprint);
         wdraw_tetromino_spawned_cnt(s);
