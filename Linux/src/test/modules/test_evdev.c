@@ -16,7 +16,7 @@ int test_evdev()
         return 1;
     }
 
-    printf("Press the 'Q' key to exit\n");
+    printf("Press the 'Esc' key to exit\n");
     while (1) {
         // 입력 이벤트 읽기
         if (read(event_fd, &ev, sizeof(struct input_event)) != sizeof(struct input_event)) {

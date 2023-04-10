@@ -5,10 +5,13 @@
 #include "test.h"
 
 extern int test_termios(int, char*[]);
+extern int test_evdev(void);
 
 int test_module(int argc, char* argv[])
 {
     localize();
-
-    return test_termios(argc, argv);
+    (void)argc;
+    (void)argv;
+    return test_evdev();
+    // return test_termios(argc, argv);
 }
