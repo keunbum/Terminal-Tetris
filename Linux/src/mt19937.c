@@ -17,7 +17,7 @@
 #define M (397)
 #define R (31)
 #define MATRIX_A (0x9908B0DF) /* constant vector a */
-#define LOWER_MASK ((1u << R) - 1)/* most significant w-r bits */
+#define LOWER_MASK ((1u << R) - 1) /* most significant w-r bits */
 #define UPPER_MASK (~LOWER_MASK) /* least significant r bits */
 /* Tempering parameters */
 #define TEMPERING_MASK_B (0x9D2C5680)
@@ -37,7 +37,7 @@ void mt19937_srand(uint32_t seed)
     /* setting initial seeds to mt[N] using */
     mt[0] = seed;
     for (mti = 1; mti < N; ++mti) {
-       mt[mti] = F * (mt[mti - 1] ^ (mt[mti - 1] >> (W - 2))) + mti;
+        mt[mti] = F * (mt[mti - 1] ^ (mt[mti - 1] >> (W - 2))) + mti;
     }
 }
 
