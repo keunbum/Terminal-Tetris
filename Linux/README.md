@@ -65,9 +65,9 @@ https://www.youtube.com/watch?v=mRXKvNAepy0
 https://youtu.be/a-AEmpm-fSU
 
 - 테트로미노 분포 통계 제시 (for 의사 난수 테스트)  
-- 의사 난수 알고리즘으로 업그레이드(feat. mt19937)  
+- 의사 난수 알고리즘 업그레이드(feat. mt19937)  
   --> 근데 테스트 해보니까 rand()보다 더 말도 안되는 경우도 있는데;  
-      확률 분포가 골고루 나오게끔 예외 처리를 해야 하나..
+      확률 분포가 골고루 나오게끔 조작을 가해야하나..
 
 </details>
 
@@ -254,6 +254,9 @@ https://youtu.be/a-AEmpm-fSU
     ~~그밖에 AWS 서버를 빌리는 방법도 있긴 한데.. 개발할 때는 좀 불편할 듯.~~
 
     일단 리눅스 프로젝트는 마무리 하는 게 맞는 것 같음 --> 가상 머신 사용
+
+  - [ ] evdev로 이벤트 기반 입력 처리 하려고 했는데, ssh로는 키보드 이벤트를 전달하지 못한다고 한다.  
+        그럼.. 버추얼 박스에 우분투 그래픽 버전 깔아야 함. (우분투 깔린 노트북 있긴 한데 코드 수정 반영이 넘 번거로움.)
 
 
 
@@ -2375,6 +2378,22 @@ test 폴더에 이것저것 예제 코드 작성해놨으니 참고할 것.
 
 [//]: # (End of 04.10)
 
+
+<details><summary>04.11(화)</summary>
+
+### Achievements of the day
+
+- evdev
+
+  ref  
+  - https://www.kernel.org/doc/html/v5.0/input/input.html  
+  - https://linux.die.net/man/4/evdev  
+  - https://www.freedesktop.org/software/libevdev/doc/latest/  
+
+
+</details>
+
+[//]: # (End of 04.09)
 
 </blockquote></details>
 
