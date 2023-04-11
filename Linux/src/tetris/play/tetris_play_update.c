@@ -8,6 +8,8 @@
 /* return tetromino's status when moving left, right, or down.
    implement the rotation operation separately. */
 
+update_lock_t g_update_lock;
+
 static tetromino_status_t check_tetromino_next_status(const game_board_t* board, const tetromino_t* tetro, pos_t npos)
 {
     debug();
@@ -64,25 +66,13 @@ static tetromino_status_t try_move_tetromino_mainbody(const game_board_t* board,
     return res;
 }
 
-// static void new_move_a_tetromino_expected(game_board_t* const board, tetromino_t* const out_tetro)
-// {
-// }
-
 tetromino_status_t try_move_tetromino(const game_board_t* board, tetromino_t* const out_tetro, dir_t dir)
 {
     debug();
 
     tetromino_status_t res = try_move_tetromino_mainbody(board, out_tetro, dir);
-    // new_move_a_tetromino_expected(board, out_tetro);
     return res;
 }
-
-// tetromino_status_t move_tetromino_down(const game_board_t* board, tetromino_t* const out_tetro)
-// {
-//     debug();
-
-//     return try_move_tetromino(board, out_tetro, DIR_BOT);
-// }
 
 void petrity_tetromino(game_board_t* const out_board, const tetromino_t* tetro)
 {
@@ -139,6 +129,29 @@ void update_tetromino_ground_pos(const game_board_t* restrict board, tetromino_t
         }
     }
     my_assert(false);
+}
+
+tetromino_status_t try_move_tetromino_r(const game_board_t* board, tetromino_t* const out_tetro, dir_t dir)
+{
+    tetris_play_update_lock();
+    tetromino_status_t res = try_move_tetromino(board, out_tetro, dir);
+    tetris_play_update_unlock();
+    return res;
+}
+
+void petrity_tetromino_r(game_board_t* const out_board, const tetromino_t* tetro)
+{
+    tetris_play_update_lock();
+    petrity_tetromino(out_board, tetro);
+    tetris_play_update_unlock();
+}
+
+bool is_at_skyline_r(const tetromino_t* tetro)
+{
+    tetris_play_update_lock();
+    bool res = is_at_skyline(tetro);
+    tetris_play_update_unlock();
+    return res;
 }
 
 // void try_rotate_tetromino_counterclockwise(game_board_t* const, tetromino_t* const)
