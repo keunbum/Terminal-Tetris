@@ -33,7 +33,7 @@ void* mainfunc_game_main_loop(void* arg)
         spawn_tetromino(&play_manager->board, &play_manager->tetromino);
         while (true) {
             tetromino_t prev_tetromino = play_manager->tetromino;
-            tetromino_status_t res = try_move_tetromino(&play_manager->board, &play_manager->tetromino, DIR_BOT);
+            tetromino_status_t res = try_move_tetromino_r(&play_manager->board, &play_manager->tetromino, DIR_BOT);
             if (!is_equal_pos(&play_manager->tetromino.pos, &prev_tetromino.pos)
                 || play_manager->tetromino.rotate_dir != prev_tetromino.rotate_dir) {
                 /* Due to flickering, I have no choice but to do it this way for now... */
@@ -43,11 +43,12 @@ void* mainfunc_game_main_loop(void* arg)
                 play_manager->tetromino = tmp_tetromino;
                 draw_a_tetromino_r(&play_manager->tetromino);
             }
+            /* Maybe race condition?? */
             if (res == TETROMINO_STATUS_ONTHEGROUND) {
-                petrity_tetromino(&play_manager->board, &play_manager->tetromino);
+                petrity_tetromino_r(&play_manager->board, &play_manager->tetromino);
                 // clear_filled_lines(); --> maybe internally.
                 // reflect_them_visually();
-                if (is_at_skyline(&play_manager->tetromino)) {
+                if (is_at_skyline_r(&play_manager->tetromino)) {
                     play_manager->status = TETRIS_PLAY_STATUS_GAMEOVER;
                 }
                 render_out();
@@ -55,11 +56,34 @@ void* mainfunc_game_main_loop(void* arg)
             }
             render_out();
             usleep(TARGET_FRAME_TIME * 1e6);
-            // usleep(TARGET_FRAME_TIME * 2e6);
+            // usleep(TARGET_FRAME_TIME * 4e7);
         }
+    }
+    int res = pthread_cancel(play_manager->sub_modules[2].pthread_id);
+    if (res != 0) {
+        handle_error_en("pthread_cancel() error", res);
     }
     set_realtime_timer(&play_manager->timer_drawer.timer, false);
     wclear();
+    return (void*)play_manager->status;
+}
 
+void* new_mainfunc_game_main_loop(void* arg)
+{
+    debug();
+
+    /* Not a delta time(concept of FPS) version */
+    tetris_play_manager_t* play_manager = (tetris_play_manager_t*)arg;
+    init_game_main_loop(play_manager);
+    while (play_manager->status == TETRIS_PLAY_STATUS_RUNNING) {
+        spawn_tetromino(&play_manager->board, &play_manager->tetromino);
+        // ...
+    }
+    int res = pthread_cancel(play_manager->sub_modules[2].pthread_id);
+    if (res != 0) {
+        handle_error_en("pthread_cancel() error", res);
+    }
+    set_realtime_timer(&play_manager->timer_drawer.timer, false);
+    wclear();
     return (void*)play_manager->status;
 }

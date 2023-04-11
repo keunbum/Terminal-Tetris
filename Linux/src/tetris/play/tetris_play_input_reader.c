@@ -3,6 +3,7 @@
 #include <stdlib.h>
 
 #include "debug.h"
+#include "tetris/scene/renderer.h"
 #include "tetris/tetris_play_manager.h"
 #include "tetris_play_input_reader.h"
 #include "tetris_play_update.h"
@@ -14,13 +15,13 @@ static void process_input_event(const struct input_event* ev, tetris_play_manage
     if (ev->type == EV_KEY && ev->value == 1) {
         switch (ev->code) {
         case KEY_DOWN:
-            try_move_tetromino(&out_play_manager->board, &out_play_manager->tetromino, DIR_BOT);
+            try_move_tetromino_r(&out_play_manager->board, &out_play_manager->tetromino, DIR_BOT);
             break;
         case KEY_LEFT:
-            try_move_tetromino(&out_play_manager->board, &out_play_manager->tetromino, DIR_LEFT);
+            try_move_tetromino_r(&out_play_manager->board, &out_play_manager->tetromino, DIR_LEFT);
             break;
         case KEY_RIGHT:
-            try_move_tetromino(&out_play_manager->board, &out_play_manager->tetromino, DIR_RIGHT);
+            try_move_tetromino_r(&out_play_manager->board, &out_play_manager->tetromino, DIR_RIGHT);
             break;
         case KEY_SPACE:
             /* Not yet implementted */
@@ -55,13 +56,17 @@ static void process_input_event(const struct input_event* ev, tetris_play_manage
 
 static void cleanup_input_reader_module(void* arg)
 {
+    my_assert(arg != NULL);
+
     input_reader_t* const input_reader = (input_reader_t*)arg;
     cleanup_input_reader(input_reader);
 }
 
-extern void __pthread_register_cancel(__pthread_unwind_buf_t* __buf) __cleanup_fct_attribute;
+#if defined(pthread_cleanup_push)
+#undef pthread_cleanup_push
+#undef pthread_cleanup_pop
 
-#define my_pthread_cleanup_push(routine, arg)                                    \
+#define pthread_cleanup_push(routine, arg)                                       \
     do {                                                                         \
         __pthread_unwind_buf_t __cancel_buf;                                     \
         void (*__cancel_routine)(void*) = (routine);                             \
@@ -75,21 +80,22 @@ extern void __pthread_register_cancel(__pthread_unwind_buf_t* __buf) __cleanup_f
         }                                                                        \
         __pthread_register_cancel(&__cancel_buf);                                \
     } while (0)
+extern void __pthread_register_cancel(__pthread_unwind_buf_t* __buf)
+    __cleanup_fct_attribute;
 
 /* Remove a cleanup handler installed by the matching pthread_cleanup_push.
    If EXECUTE is non-zero, the handler function is called. */
-#define my_pthread_cleanup_pop(execute)                                          \
-    do {                                                                         \
-        do {                                                                     \
-            do {                                                                 \
-            } while (0); /* Empty to allow label before pthread_cleanup_pop.  */ \
-        } while (0);                                                             \
-        __pthread_unregister_cancel(&__cancel_buf);                              \
-        if (execute)                                                             \
-            __cancel_routine(__cancel_arg);                                      \
+#define pthread_cleanup_pop(execute)                \
+    do {                                            \
+        __pthread_unregister_cancel(&__cancel_buf); \
+        if (execute) {                              \
+            __cancel_routine(__cancel_arg);         \
+        }                                           \
     } while (0)
+extern void __pthread_unregister_cancel(__pthread_unwind_buf_t* __buf)
+    __cleanup_fct_attribute;
 
-extern void __pthread_unregister_cancel(__pthread_unwind_buf_t* __buf) __cleanup_fct_attribute;
+#endif
 
 void* mainfunc_input_reader(void* arg)
 {
@@ -99,12 +105,13 @@ void* mainfunc_input_reader(void* arg)
 
     input_reader_t input_reader;
     init_input_reader(&input_reader);
-    my_pthread_cleanup_push(cleanup_input_reader_module, NULL);
+    pthread_cleanup_push(cleanup_input_reader_module, &input_reader);
 
     while (true) {
         read_input(&input_reader);
         process_input_event(&input_reader.event_curr, play_manager);
         input_reader.event_prev = input_reader.event_curr;
     }
+    my_assert(false);
     return NULL;
 }

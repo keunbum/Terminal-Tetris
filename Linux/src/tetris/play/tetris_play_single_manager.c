@@ -103,37 +103,18 @@ static tetris_play_status_t run_game_play_modules_in_parallel(void)
 {
     debug();
 
-    static game_play_submodule_t s_modules[] = {
-        {
-            .main_func = mainfunc_game_main_loop,
-            .main_func_arg = (void*)&g_s_play_manager,
-            .is_detached = false,
-        },
-        {
-            .main_func = mainfunc_game_play_timer,
-            .main_func_arg = (void*)&g_s_play_manager.timer_drawer,
-            .is_detached = false,
-        },
-        {
-            .main_func = mainfunc_input_reader,
-            .main_func_arg = (void*)&g_s_play_manager,
-            .is_detached = false,
-        },
-    };
-    static size_t s_module_num = (size_t)(sizeof(s_modules) / sizeof(s_modules[0]));
-
     timer_drawer_t* timer_drawer = &g_s_play_manager.timer_drawer;
     realtime_timer_t* timer = &timer_drawer->timer;
 
     /* Block REALTIME_TIMER_SIG */
     block_signal(timer->timersig);
 
-    for (size_t i = 0; i < s_module_num; ++i) {
-        run_game_play_module_in_parallel(s_modules + i);
+    for (size_t i = 0; i < TETRIS_PLAY_SUBMODULE_NUM; ++i) {
+        run_game_play_module_in_parallel(g_s_play_manager.sub_modules + i);
     }
 
-    for (size_t i = 0; i < s_module_num; ++i) {
-        game_play_submodule_t* const module = s_modules + i;
+    for (size_t i = 0; i < TETRIS_PLAY_SUBMODULE_NUM; ++i) {
+        game_play_submodule_t* const module = g_s_play_manager.sub_modules + i;
         if (module->is_detached) {
             continue;
         }
@@ -141,7 +122,7 @@ static tetris_play_status_t run_game_play_modules_in_parallel(void)
             handle_error("pthread_join() error");
         }
     }
-    const game_play_submodule_t* main_module = s_modules + 0;
+    const game_play_submodule_t* main_module = g_s_play_manager.sub_modules + 0;
     return (tetris_play_status_t)(long long)main_module->retval;
 }
 

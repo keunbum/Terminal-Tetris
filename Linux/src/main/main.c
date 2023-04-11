@@ -10,6 +10,7 @@
 #include "localize/localize.h"
 #include "mt19937.h"
 #include "test/test.h"
+#include "tetris/play/tetris_play_update.h"
 
 static void init(void)
 {
@@ -17,6 +18,7 @@ static void init(void)
 
     localize();
     init_cursor();
+    init_tetris_play_update();
     init_rng((uint32_t)time(NULL));
 }
 
@@ -24,6 +26,7 @@ static void cleanup(void)
 {
     debug();
 
+    cleanup_tetris_play_update();
     cleanup_cursor();
 }
 

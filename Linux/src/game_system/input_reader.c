@@ -40,7 +40,9 @@ void cleanup_input_reader(input_reader_t* const out_reader)
 {
     debug();
 
-    close(out_reader->fd);
+    if (close(out_reader->fd) == -1) {
+        handle_error("close() error");
+    }
     turn_off_input_reader_raw(out_reader);
 }
 

@@ -25,7 +25,8 @@ typedef struct {
 
 static inline void set_realtime_timer(realtime_timer_t* const out_timer, bool is_on)
 {
-    out_timer->is_running = ATOMIC_VAR_INIT(is_on);
+    atomic_store(&out_timer->is_running, is_on);
+    // out_timer->is_running = ATOMIC_VAR_INIT(is_on);
 }
 
 static inline bool is_realtime_timer_running(const realtime_timer_t* timer)
