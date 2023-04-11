@@ -2,7 +2,9 @@
 #define __TETRIS_PLAY_MANAGER__H
 
 #include "game_system/game_system_manager.h"
+#include "game_system/input_reader.h"
 #include "tetris/play/tetris_play_board.h"
+#include "tetris_play_submodule.h"
 #include "timer/timer_drawer.h"
 
 #define TETRIS_PLAY_TIMER_POS_X_WPRINT (TETRIS_PLAY_SINGLE_SCREEN_START_POS_X_WPRINT + 2)
@@ -18,7 +20,9 @@ typedef enum {
 
 typedef enum {
     TETRIS_PLAY_STATUS_ERROR = -1,
-    TETRIS_PLAY_STATUS_GAME_OVER = 2,
+    TETRIS_PLAY_STATUS_GAMEOVER,
+    TETRIS_PLAY_STATUS_RUNNING,
+    TETRIS_PLAY_STATUS_PAUSE,
 } tetris_play_status_t;
 
 typedef struct {
@@ -27,8 +31,11 @@ typedef struct {
     const int screen_start_pos_y_wprint;
     const int screen_height_wprint;
     const int ready_getset_go_sec;
+    tetris_play_status_t status;
+    tetromino_t tetromino;
     timer_drawer_t timer_drawer;
     game_board_t board;
+    game_play_submodule_t sub_modules[];
 } tetris_play_manager_t;
 
 #endif /* __TETRIS_PLAY_MANAGER__H */

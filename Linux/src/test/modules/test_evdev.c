@@ -3,9 +3,9 @@
 #include <stdio.h>
 #include <unistd.h>
 
-#define EVENT_DEV "/dev/input/event0"
+#define EVENT_DEV "/dev/input/event2"
 
-int test_evdev()
+int test_evdev(void)
 {
     int event_fd;
     struct input_event ev;
@@ -15,6 +15,9 @@ int test_evdev()
         perror("Could not open event device");
         return 1;
     }
+
+    // 논블로킹 모드 설정
+    // fcntl(event_fd, F_SETFL, O_NONBLOCK);
 
     printf("Press the 'Esc' key to exit\n");
     while (1) {

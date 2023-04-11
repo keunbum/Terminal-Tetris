@@ -4,6 +4,7 @@
 #include "mt19937.h"
 #include "tetromino_generator.h"
 #include "tetris_play_statistic.h"
+#include "tetris/play/tetris_play_update.h"
 
 static tetromino_id_t g_s_tetromino_spawned_cnt;
 
@@ -52,13 +53,16 @@ void spawn_tetromino(const game_board_t* restrict board, tetromino_t* restrict c
     out_tetro->id = g_s_tetromino_spawned_cnt++;
     out_tetro->symbol_id = (symbol_id_t)(rng() % TOTAL_TETROMINO_NUM_OF_KINDS);
     out_tetro->pos.x = TETRIS_PLAY_TETROMINO_INIT_POS_X;
-    out_tetro->pos.y = get_pos_y_random(board, out_tetro);
+    out_tetro->pos.y = TETRIS_PLAY_TETROMINO_INIT_POS_Y;
     out_tetro->velocity = TETRIS_PLAY_TETROMINO_INIT_VELOCITY;
     out_tetro->rotate_dir = DIR_BOT;
     out_tetro->block_code = G_BLOCK_CODE_SET->codes[get_block_code_fixed(out_tetro->symbol_id, G_BLOCK_CODE_SET->size)];
+    
+    update_tetromino_ground_pos(board, out_tetro);
+    inc_tetromino_cnt_by_one(out_tetro->symbol_id);
 }
 
-void new_spawn_tetromino(const game_board_t* restrict board, tetromino_t* restrict const out_tetro)
+void spawn_tetromino_random(const game_board_t* restrict board, tetromino_t* restrict const out_tetro)
 {
     debug();
 
@@ -69,5 +73,6 @@ void new_spawn_tetromino(const game_board_t* restrict board, tetromino_t* restri
     out_tetro->velocity = TETRIS_PLAY_TETROMINO_INIT_VELOCITY;
     out_tetro->rotate_dir = (dir_t)(rng() % TOTAL_DIR_NUM_OF_KINDS);
     out_tetro->block_code = G_BLOCK_CODE_SET->codes[get_block_code_fixed(out_tetro->symbol_id, G_BLOCK_CODE_SET->size)];
+
     inc_tetromino_cnt_by_one(out_tetro->symbol_id);
 }

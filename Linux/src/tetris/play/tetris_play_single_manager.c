@@ -16,6 +16,7 @@
 #include "tetris/tetris_play_submodule.h"
 #include "tetris/timer/game_play_timer.h"
 #include "tetris_play_board_frame.h"
+#include "tetris_play_input_reader.h"
 #include "tetris_play_single_manager.h"
 
 static tetris_play_manager_t g_s_play_manager = {
@@ -48,6 +49,23 @@ static tetris_play_manager_t g_s_play_manager = {
             .pos_x_wprint = TETRIS_PLAY_TIMER_POS_X_WPRINT,
             .pos_y_wprint = TETRIS_PLAY_TIMER_POS_Y_WPRINT,
             .draw_func = draw_game_play_timer_at_with_r,
+        },
+    },
+    .sub_modules = {
+        {
+            .main_func = mainfunc_game_main_loop,
+            .main_func_arg = (void*)&g_s_play_manager,
+            .is_detached = false,
+        },
+        {
+            .main_func = mainfunc_game_play_timer,
+            .main_func_arg = (void*)&g_s_play_manager.timer_drawer,
+            .is_detached = false,
+        },
+        {
+            .main_func = mainfunc_input_reader,
+            .main_func_arg = (void*)&g_s_play_manager,
+            .is_detached = false,
         },
     },
 };
@@ -87,14 +105,18 @@ static tetris_play_status_t run_game_play_modules_in_parallel(void)
 
     static game_play_submodule_t s_modules[] = {
         {
-            // .main_func = mainfunc_game_main_loop,
-            .main_func = new_mainfunc_game_main_loop,
+            .main_func = mainfunc_game_main_loop,
             .main_func_arg = (void*)&g_s_play_manager,
             .is_detached = false,
         },
         {
             .main_func = mainfunc_game_play_timer,
             .main_func_arg = (void*)&g_s_play_manager.timer_drawer,
+            .is_detached = false,
+        },
+        {
+            .main_func = mainfunc_input_reader,
+            .main_func_arg = (void*)&g_s_play_manager,
             .is_detached = false,
         },
     };

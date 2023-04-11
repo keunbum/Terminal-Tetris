@@ -29,8 +29,8 @@ static void draw_sec_in_hhmmss_at_r(int sec, int pos_x, int pos_y)
 
     int hh, mm, ss;
     decode_sec_to_hhmmss(sec, &hh, &mm, &ss);
-    // wprintf_at_r(pos_x, pos_y, L"%02d:%02d:%02d\n", hh, mm, ss);
-    wprintf_at_r(pos_x, pos_y, L"%02d:%02d:%02d", hh, mm, ss);
+    wprintf_at_r(pos_x, pos_y, L"%02d:%02d:%02d\n", hh, mm, ss);
+    // wprintf_at_r(pos_x, pos_y, L"%02d:%02d:%02d", hh, mm, ss);
 }
 
 void draw_game_play_timer_at_with_r(int x, int y, int sec)
