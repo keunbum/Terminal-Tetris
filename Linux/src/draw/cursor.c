@@ -1,3 +1,3 @@
 #include "cursor.h"
 
-pthread_spinlock_t g_cursor_lock;
+cursor_lock_t g_cursor_lock;

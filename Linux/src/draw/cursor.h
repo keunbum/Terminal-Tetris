@@ -7,6 +7,7 @@
 #include <wchar.h>
 
 #include "error_handling.h"
+#include "util.h"
 
 /* For all macro functions, it must be implemented as a wchar_t version. */
 
@@ -29,19 +30,6 @@
 typedef pthread_spinlock_t cursor_lock_t;
 
 extern cursor_lock_t g_cursor_lock;
-
-#ifdef TETRIS_DEBUG
-#define func_check_error(func, ...)               \
-    do {                                          \
-        int res;                                  \
-        if ((res = func(__VA_ARGS__)) != 0) {     \
-            handle_error_en(#func " error", res); \
-        }                                         \
-    } while (false)
-#else
-#define func_check_error(func, ...) \
-    func(__VA_ARGS__)
-#endif
 
 #define init_cursor() func_check_error(pthread_spin_init, &g_cursor_lock, PTHREAD_PROCESS_PRIVATE)
 #define cursor_lock() func_check_error(pthread_spin_lock, &g_cursor_lock)
