@@ -256,7 +256,8 @@ https://youtu.be/a-AEmpm-fSU
     일단 리눅스 프로젝트는 마무리 하는 게 맞는 것 같음 --> 가상 머신 사용
 
   - [ ] evdev로 이벤트 기반 입력 처리 하려고 했는데, ssh로는 키보드 이벤트를 전달하지 못한다고 한다.  
-        그럼.. 버추얼 박스에 우분투 그래픽 버전 깔아야 함. (우분투 깔린 노트북 있긴 한데 코드 수정 반영이 넘 번거로움.)
+        그럼.. 버추얼 박스에 우분투 데스크톱 버전 깔아야 함. (우분투 깔린 노트북 있긴 한데 코드 수정 반영이 넘 번거로움.)  
+        이제 보니 그 노트북에 ssh로 접속해서 개발하고, 실행은 노트북으로 하는 방법이 있긴 하네.
 
 
 
@@ -2381,14 +2382,24 @@ test 폴더에 이것저것 예제 코드 작성해놨으니 참고할 것.
 
 <details><summary>04.11(화)</summary>
 
-### Achievements of the day
-
 - evdev
 
   ref  
   - https://www.kernel.org/doc/html/v5.0/input/input.html  
   - https://linux.die.net/man/4/evdev  
   - https://www.freedesktop.org/software/libevdev/doc/latest/  
+
+### Achievements of the day
+
+키보드 이벤트 처리 문제 때문에 우분투 데스크톱 버전 설치함.  
+가상 머신 안에서 IDE 돌리는 건 오바라 개발은 윈도우즈에서 하고  
+실행은 가상 머신 속 우분투에서 하는 걸로.
+
+근데 리눅스에서 유니코드가 다르게 보여서.. 테트로미노 색이 내가 예상한 것과 다름.  
+
+오늘 입력 처리까지 할 수 있었는데, pthread_cleanup_push이 컴파일이 안될 줄이야..  
+아니 근데 이게 말이 돼? POSIX 코드에 오류가 있다고? 게다가 저건 흔하게 쓸 것 같은데..  
+일단 오늘 분량은 올리자.
 
 
 </details>

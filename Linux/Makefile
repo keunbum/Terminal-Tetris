@@ -46,11 +46,11 @@ clean:
 	rm -rf $(BINDIR)/* $(OBJDIR)/*
 
 run:
-	./$(BINDIR)/$(EXE)
+	sudo ./$(BINDIR)/$(EXE)
 
 rundebug:
 	code ./err.txt
-	./$(BINDIR)/$(EXE) 2> err.txt
+	sudo ./$(BINDIR)/$(EXE) 2> err.txt
 
 # I don't think it's necessary, but I write it down for now.
 depend:
