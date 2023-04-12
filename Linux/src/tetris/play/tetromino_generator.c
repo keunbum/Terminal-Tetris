@@ -2,13 +2,13 @@
 
 #include "debug.h"
 #include "mt19937.h"
-#include "tetris/play/tetris_play_update.h"
+#include "tetris/tetromino/block_code_set.h"
 #include "tetris_play_statistic.h"
 #include "tetromino_generator.h"
 
 static tetromino_id_t g_s_tetromino_spawned_cnt;
 
-// static bool is_tetromino_y_in_board(const game_board_t* board, const tetromino_t* tetro, pos_e_t pos_y)
+// static bool is_tetromino_y_in_board(const tetris_play_board_t* board, const tetromino_t* tetro, pos_e_t pos_y)
 // {
 //     debug();
 
@@ -28,7 +28,7 @@ static tetromino_id_t g_s_tetromino_spawned_cnt;
 //     return true;
 // }
 
-// static pos_e_t get_pos_y_random(const game_board_t* board, const tetromino_t* tetro)
+// static pos_e_t get_pos_y_random(const tetris_play_board_t* board, const tetromino_t* tetro)
 // {
 //     debug();
 
@@ -46,23 +46,21 @@ void init_tetromino_generator(void)
     g_s_tetromino_spawned_cnt = 1;
 }
 
-void spawn_tetromino(const game_board_t* restrict board, tetromino_t* restrict const out_tetro)
+void spawn_tetromino(tetromino_t* restrict const out_tetro, pos_t init_pos, velocity_t init_velocity)
 {
     debug();
 
     out_tetro->id = g_s_tetromino_spawned_cnt++;
     out_tetro->symbol_id = (symbol_id_t)(rng() % TOTAL_TETROMINO_NUM_OF_KINDS);
-    out_tetro->pos.x = TETRIS_PLAY_TETROMINO_INIT_POS_X;
-    out_tetro->pos.y = TETRIS_PLAY_TETROMINO_INIT_POS_Y;
-    out_tetro->velocity = TETRIS_PLAY_TETROMINO_INIT_VELOCITY;
+    out_tetro->pos = init_pos;
+    out_tetro->velocity = init_velocity;
     out_tetro->rotate_dir = DIR_BOT;
     out_tetro->block_code = G_BLOCK_CODE_SET->codes[get_block_code_fixed(out_tetro->symbol_id, G_BLOCK_CODE_SET->size)];
 
-    update_tetromino_ground_pos(board, out_tetro);
     inc_tetromino_cnt_by_one(out_tetro->symbol_id);
 }
 
-// void spawn_tetromino_random(const game_board_t* restrict board, tetromino_t* restrict const out_tetro)
+// void spawn_tetromino_random(const tetris_play_board_t* restrict board, tetromino_t* restrict const out_tetro)
 // {
 //     debug();
 

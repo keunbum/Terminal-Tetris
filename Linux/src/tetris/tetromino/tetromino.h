@@ -20,7 +20,7 @@ typedef enum {
 
 typedef int tetromino_id_t;
 typedef int symbol_id_t;
-typedef unsigned int velocity_t;
+typedef double velocity_t;
 
 typedef struct {
     tetromino_id_t id;

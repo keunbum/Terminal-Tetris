@@ -15,25 +15,25 @@ static void process_input_event(const struct input_event* ev, tetris_play_manage
     if (ev->type == EV_KEY && ev->value == 1) {
         switch (ev->code) {
         case KEY_DOWN:
-            try_move_tetromino_r(&out_play_manager->board, &out_play_manager->tetromino, DIR_BOT);
+            try_move_tetromino_byone_r(&out_play_manager->board, &out_play_manager->tetromino, DIR_BOT);
             break;
         case KEY_LEFT:
-            try_move_tetromino_r(&out_play_manager->board, &out_play_manager->tetromino, DIR_LEFT);
+            try_move_tetromino_byone_r(&out_play_manager->board, &out_play_manager->tetromino, DIR_LEFT);
             break;
         case KEY_RIGHT:
-            try_move_tetromino_r(&out_play_manager->board, &out_play_manager->tetromino, DIR_RIGHT);
+            try_move_tetromino_byone_r(&out_play_manager->board, &out_play_manager->tetromino, DIR_RIGHT);
+            break;
+        case KEY_UP:
+            try_rotate_tetromino_r(&out_play_manager->board, &out_play_manager->tetromino, 1);
             break;
         case KEY_SPACE:
-            /* Not yet implementted */
-            // jump_tetromino(...);
+            harddrop_tetromino_r(out_play_manager);
             break;
         case KEY_Z:
-            /* Not yet implementted */
-            // try_rotate_tetromino_counterclockwise(...);
+            try_rotate_tetromino_r(&out_play_manager->board, &out_play_manager->tetromino, -1);
             break;
         case KEY_X:
             /* Not yet implementted */
-            // try_rotate_tetromino_clockwise(...);
             break;
         case KEY_C:
             /* Not yet implementted */

@@ -33,7 +33,7 @@ static void wdraw_tetris_play_statistics_tetrominos(void)
         const int pos_x_wprint = TETRIS_PLAY_STATISTIC_START_POS_X_WPRINT + (s + 1) * TETRIS_PLAY_STATISTIC_INTERVAL_HEIGHT - 2;
         const int pos_y_wprint = TETRIS_PLAY_STATISTIC_TETROMINO_START_POS_Y_WPRINT + 4 - n;
         pos_t pos_wprint = { pos_x_wprint, pos_y_wprint };
-        draw_a_tetromino_mainbody_at_wprint_r(&t, pos_wprint);
+        draw_a_tetromino_at_wprint_r(&t, pos_wprint);
         wdraw_tetromino_spawned_cnt(s);
     }
 }

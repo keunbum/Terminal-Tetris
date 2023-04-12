@@ -6,7 +6,7 @@
 #include <unistd.h>
 
 #include "debug.h"
-#include "draw/cursor.h"
+// #include "draw/cursor.h"
 #include "draw/digital_digit.h"
 #include "error_handling.h"
 #include "game_main_loop.h"
@@ -53,7 +53,8 @@ static tetris_play_manager_t g_s_play_manager = {
     },
     .sub_modules = {
         {
-            .main_func = mainfunc_game_main_loop,
+            // .main_func = mainfunc_game_main_loop,
+            .main_func = new_mainfunc_game_main_loop,
             .main_func_arg = (void*)&g_s_play_manager,
             .is_detached = false,
         },
@@ -150,6 +151,7 @@ static tetris_play_cmd_t play_a_new_game(void)
         handle_error("run_game_play_modules_in_parallel() error");
     }
 
+    // cleanup_tetris_play_scene();
     /* UX after Game Over not implemented yet. */
     return TETRIS_PLAY_CMD_REGAME;
     // return selection_after_game_over();

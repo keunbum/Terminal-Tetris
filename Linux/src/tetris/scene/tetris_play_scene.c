@@ -94,3 +94,8 @@ int load_tetris_play_scene(tetris_play_mode_t game_mode, int screen_start_pos_x,
     }
     return res;
 }
+
+void cleanup_tetris_play_scene(void)
+{
+    wclear();
+}

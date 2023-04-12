@@ -1,7 +1,7 @@
 #include "tetris_play_board.h"
 #include "debug.h"
 
-void init_game_board(game_board_t* const board)
+void init_game_board(tetris_play_board_t* const board)
 {
     debug();
 

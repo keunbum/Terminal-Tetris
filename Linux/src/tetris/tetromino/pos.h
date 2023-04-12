@@ -9,9 +9,7 @@
         T y;             \
     } pos_t
 
-// DECLARE_POS_T(double);
-
-typedef int pos_e_t;
+typedef double pos_e_t;
 
 DECLARE_POS_T(pos_e_t);
 

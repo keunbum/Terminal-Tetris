@@ -12,6 +12,8 @@
 
 #define TETRIS_PLAY_TIMEINTERVAL_BEFORESTART_SEC (3)
 
+typedef double game_time_t;
+
 typedef enum {
     TETRIS_PLAY_CMD_ERROR = -1,
     TETRIS_PLAY_CMD_EXIT_GAME = 0,
@@ -34,9 +36,11 @@ typedef struct {
     const int screen_height_wprint;
     const int ready_getset_go_sec;
     tetris_play_status_t status;
+    game_time_t game_delta_time;
     tetromino_t tetromino;
+    tetromino_t prev_tetromino;
     timer_drawer_t timer_drawer;
-    game_board_t board;
+    tetris_play_board_t board;
     game_play_submodule_t sub_modules[TETRIS_PLAY_SUBMODULE_NUM];
 } tetris_play_manager_t;
 

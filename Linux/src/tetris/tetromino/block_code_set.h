@@ -1,7 +1,8 @@
 #ifndef __BLOCK_CODE_SET__H
 #define __BLOCK_CODE_SET__H
 
-#include "block.h"
+#include <wchar.h>
+
 #include "debug.h"
 
 /* normal order

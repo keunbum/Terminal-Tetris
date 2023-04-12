@@ -1,5 +1,4 @@
 #include "block_code_set.h"
-#include "tetris/tetromino/tetromino.h"
 
 const block_code_set_t G_BLOCK_CODE_SET_RAINBOW = {
     7,
