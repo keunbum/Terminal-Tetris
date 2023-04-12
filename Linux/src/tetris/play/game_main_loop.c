@@ -4,12 +4,8 @@
 #include "debug.h"
 #include "draw/cursor.h"
 #include "game_main_loop.h"
-// #include "game_system/input_reader.h"
 #include "tetris/scene/renderer.h"
-// #include "tetris/scene/tetris_play_scene.h"
 #include "tetris/tetris_play_manager.h"
-// #include "tetris/tetris_play_submodule.h"
-// #include "tetris_play_board_frame.h"
 #include "tetris_play_fps.h"
 #include "tetris_play_update.h"
 #include "tetromino_generator.h"
@@ -35,7 +31,7 @@ static void init_game_main_loop(tetris_play_manager_t* const out_play_manager)
 //     while (play_manager->status == TETRIS_PLAY_STATUS_RUNNING) {
 //         pos_t init_pos = { TETRIS_PLAY_TETROMINO_INIT_POS_X, TETRIS_PLAY_TETROMINO_INIT_POS_Y };
 //         spawn_tetromino(&play_manager->tetromino, init_pos, TETRIS_PLAY_TETROMINO_INIT_VELOCITY);
-//         new_update_tetromino_ground_pos(&play_manager->board, &play_manager->tetromino);
+//         update_tetromino_ground_pos(&play_manager->board, &play_manager->tetromino);
 //         while (true) {
 //             tetromino_t prev_tetromino = play_manager->tetromino;
 //             tetromino_status_t res = try_move_tetromino_r(&play_manager->board, &play_manager->tetromino, DIR_BOT);

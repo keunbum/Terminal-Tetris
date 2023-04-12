@@ -25,6 +25,13 @@ static tetris_play_manager_t g_s_play_manager = {
     .screen_start_pos_y_wprint = TETRIS_PLAY_SINGLE_SCREEN_START_POS_Y_WPRINT,
     .screen_height_wprint = TETRIS_PLAY_SINGLE_SCREEN_HEIGHT_WPRINT,
     .ready_getset_go_sec = TETRIS_PLAY_TIMEINTERVAL_BEFORESTART_SEC,
+    .game_delta_time = 0.0,
+    .tetromino = {
+        .id = -1,
+    },
+    .prev_tetromino = {
+        .id = -1,
+    },
     .board = {
         .height = TETRIS_PLAY_BOARD_HEIGHT,
         .width = TETRIS_PLAY_BOARD_WIDTH,

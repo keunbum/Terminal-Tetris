@@ -3,6 +3,7 @@
 #include <stdlib.h>
 
 #include "debug.h"
+#include "tetris/play/update_tetromino_status.h"
 #include "tetris/scene/renderer.h"
 #include "tetris/tetris_play_manager.h"
 #include "tetris_play_input_reader.h"
@@ -27,7 +28,7 @@ static void process_input_event(const struct input_event* ev, tetris_play_manage
             try_rotate_tetromino_r(&out_play_manager->board, &out_play_manager->tetromino, 1);
             break;
         case KEY_SPACE:
-            harddrop_tetromino_r(out_play_manager);
+            harddrop_tetromino_r(&out_play_manager->tetromino);
             break;
         case KEY_Z:
             try_rotate_tetromino_r(&out_play_manager->board, &out_play_manager->tetromino, -1);

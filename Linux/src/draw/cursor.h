@@ -31,9 +31,9 @@ typedef pthread_spinlock_t cursor_lock_t;
 
 extern cursor_lock_t g_cursor_lock;
 
-#define init_cursor() func_check_error(pthread_spin_init, &g_cursor_lock, PTHREAD_PROCESS_PRIVATE)
+#define init_cursor_lock() func_check_error(pthread_spin_init, &g_cursor_lock, PTHREAD_PROCESS_PRIVATE)
 #define cursor_lock() func_check_error(pthread_spin_lock, &g_cursor_lock)
 #define cursor_unlock() func_check_error(pthread_spin_unlock, &g_cursor_lock)
-#define cleanup_cursor() func_check_error(pthread_spin_destroy, &g_cursor_lock)
+#define cleanup_cursor_lock() func_check_error(pthread_spin_destroy, &g_cursor_lock)
 
 #endif /* __CURSOR__H */
