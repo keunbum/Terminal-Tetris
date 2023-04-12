@@ -76,6 +76,8 @@ const polyomino_matrix_t G_TETROMINO_MATRIXS[TOTAL_TETROMINO_NUM_OF_KINDS][TOTAL
     { 0x0198, 0x00B4, 0x0033, 0x005A }, // Z
 };
 
+tetromino_lock_t g_tetromino_lock;
+
 // void init_a_tetromino(tetromino_t* const out_tetro, tetromino_id_t id, symbol_id_t symbol_id, pos_t pos, velocity_t velocity, dir_t rotate_dir, wchar_t block_code)
 // {
 //     debug();

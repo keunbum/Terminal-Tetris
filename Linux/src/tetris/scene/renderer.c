@@ -59,8 +59,7 @@ static void render_a_tetromino_at(const tetromino_t* tetro, wchar_t block_wprint
         return;
     }
 
-    tetris_play_update_lock();
-
+    tetris_play_tetromino_lock();
     polyomino_matrix_t symbol = get_tetromino_matrix(tetro->symbol_id, tetro->rotate_dir);
     polyomino_matrix_n_t n = get_tetromino_matrix_n(tetro->symbol_id);
     for (int idx = 0; idx < n * n; ++idx) {
@@ -74,8 +73,7 @@ static void render_a_tetromino_at(const tetromino_t* tetro, wchar_t block_wprint
             render_a_block(each_pos, block_wprint);
         }
     }
-
-    tetris_play_update_unlock();
+    tetris_play_tetromino_unlock();
 }
 
 static void render_a_tetromino_at_r(const tetromino_t* tetro, wchar_t block_wprint, pos_t pos)

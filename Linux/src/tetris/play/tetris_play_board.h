@@ -2,6 +2,7 @@
 #define __TETRIS_PLAY_BOARD__H
 
 #include <wchar.h>
+#include <pthread.h>
 
 #include "tetris/scene/tetris_play_screen.h"
 #include "tetris/tetromino/tetromino.h"
@@ -36,6 +37,9 @@
 
 /* may be changed. */
 typedef tetromino_id_t tetris_play_board_grid_element_t;
+typedef pthread_spinlock_t tetris_play_board_lock_t;
+
+extern tetris_play_board_lock_t g_tetris_play_board_lock;
 
 typedef struct {
     int height;
@@ -44,6 +48,11 @@ typedef struct {
     int width_wprint;
     tetris_play_board_grid_element_t grid[TETRIS_PLAY_BOARD_HEIGHT][TETRIS_PLAY_BOARD_WIDTH];
 } tetris_play_board_t;
+
+#define init_tetris_play_board_lock() func_check_error(pthread_spin_init, &g_tetris_play_board_lock, PTHREAD_PROCESS_PRIVATE)
+#define tetris_play_board_lock() func_check_error(pthread_spin_lock, &g_tetris_play_board_lock)
+#define tetris_play_board_unlock() func_check_error(pthread_spin_unlock, &g_tetris_play_board_lock)
+#define cleanup_tetris_play_board_lock() func_check_error(pthread_spin_destroy, &g_tetris_play_board_lock)
 
 void init_game_board(tetris_play_board_t* const);
 

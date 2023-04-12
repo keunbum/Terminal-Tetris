@@ -1,6 +1,8 @@
 #include "tetris_play_board.h"
 #include "debug.h"
 
+tetris_play_board_lock_t g_tetris_play_board_lock;
+
 void init_game_board(tetris_play_board_t* const board)
 {
     debug();

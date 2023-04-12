@@ -10,15 +10,19 @@
 #include "localize/localize.h"
 #include "mt19937.h"
 #include "test/test.h"
-#include "tetris/play/tetris_play_update.h"
+#include "tetris/tetromino/tetromino.h"
+#include "tetris/play/tetris_play_board.h"
 
 static void init(void)
 {
     debug();
 
     localize();
-    init_cursor();
-    init_tetris_play_update();
+    
+    init_cursor_lock();
+    init_tetris_play_tetromino_lock();
+    init_tetris_play_board_lock();   
+
     init_rng((uint32_t)time(NULL));
 }
 
@@ -26,8 +30,9 @@ static void cleanup(void)
 {
     debug();
 
-    cleanup_tetris_play_update();
-    cleanup_cursor();
+    cleanup_tetris_play_board_lock();
+    cleanup_tetris_play_update_lock();
+    cleanup_cursor_lock();
 }
 
 static void main2(void)
