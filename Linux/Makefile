@@ -49,7 +49,7 @@ run:
 	sudo ./$(BINDIR)/$(EXE)
 
 rundebug:
-	code ./err.txt
+#	code ./err.txt
 	sudo ./$(BINDIR)/$(EXE) 2> err.txt
 
 # I don't think it's necessary, but I write it down for now.
