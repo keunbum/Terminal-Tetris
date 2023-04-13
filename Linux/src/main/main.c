@@ -4,44 +4,14 @@
 #include <time.h>
 
 #include "debug.h"
-#include "draw/cursor.h"
-#include "error_handling.h"
 #include "game_system/game_system_manager.h"
-#include "localize/localize.h"
-#include "mt19937.h"
 #include "test/test.h"
-#include "tetris/tetromino/tetromino.h"
-#include "tetris/play/tetris_play_board.h"
-
-static void init(void)
-{
-    debug();
-
-    localize();
-    
-    init_cursor_lock();
-    init_tetris_play_tetromino_lock();
-    init_tetris_play_board_lock();   
-
-    init_rng((uint32_t)time(NULL));
-}
-
-static void cleanup(void)
-{
-    debug();
-
-    cleanup_tetris_play_board_lock();
-    cleanup_tetris_play_update_lock();
-    cleanup_cursor_lock();
-}
 
 static void main2(void)
 {
     debug();
 
-    init();
     run_game_system_manager();
-    cleanup();
 }
 
 int main(int argc, char* argv[])
