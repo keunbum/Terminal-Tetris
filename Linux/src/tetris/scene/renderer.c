@@ -1,6 +1,7 @@
 #include <stdio.h>
 
 #include "debug.h"
+#include "draw/draw_tool.h"
 #include "renderer.h"
 #include "tetris/play/tetris_play_update.h"
 #include "tetris_play_scene.h"
@@ -22,11 +23,11 @@ static inline void render_a_block(pos_t pos, wchar_t block_wprint)
 
 static void render_a_tetromino_at_wprint(const tetromino_t* tetro, wchar_t block_wprint, pos_t pos_wprint)
 {
-    debug();
+    // debug();
 
     my_assert(tetro != NULL);
 
-    polyomino_matrix_t symbol = get_tetromino_matrix(tetro->symbol_id, tetro->rotate_dir);
+    polyomino_matrix_t symbol = get_tetromino_matrix(tetro->symbol_id, tetro->dir);
     polyomino_matrix_n_t n = get_tetromino_matrix_n(tetro->symbol_id);
     for (int idx = 0; idx < n * n; ++idx) {
         if (is_empty_block(symbol, idx)) {
@@ -50,7 +51,7 @@ static inline void render_a_tetromino_at_wprint_r(const tetromino_t* tetro, wcha
 
 static void render_a_tetromino_at(const tetromino_t* tetro, wchar_t block_wprint, pos_t pos)
 {
-    debug();
+    // debug();
 
     my_assert(tetro != NULL);
 
@@ -60,7 +61,7 @@ static void render_a_tetromino_at(const tetromino_t* tetro, wchar_t block_wprint
     }
 
     tetris_play_tetromino_lock();
-    polyomino_matrix_t symbol = get_tetromino_matrix(tetro->symbol_id, tetro->rotate_dir);
+    polyomino_matrix_t symbol = get_tetromino_matrix(tetro->symbol_id, tetro->dir);
     polyomino_matrix_n_t n = get_tetromino_matrix_n(tetro->symbol_id);
     for (int idx = 0; idx < n * n; ++idx) {
         if (is_empty_block(symbol, idx)) {
@@ -85,7 +86,8 @@ static void render_a_tetromino_at_r(const tetromino_t* tetro, wchar_t block_wpri
 
 static void render_a_tetromino_r(const tetromino_t* tetro, wchar_t pos_block_wprint, wchar_t ground_pos_wprint)
 {
-    render_a_tetromino_at_r(tetro, ground_pos_wprint, tetro->ground_pos);
+    (void)ground_pos_wprint;
+    // render_a_tetromino_at_r(tetro, ground_pos_wprint, tetro->ground_pos);
     render_a_tetromino_at_r(tetro, pos_block_wprint, tetro->pos);
 }
 

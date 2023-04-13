@@ -23,11 +23,10 @@ static void wdraw_tetromino_spawned_cnt(symbol_id_t id)
 
 static void wdraw_tetris_play_statistics_tetrominos(void)
 {
-
     for (symbol_id_t s = 0; s < TOTAL_TETROMINO_NUM_OF_KINDS; ++s) {
         tetromino_t t;
         t.symbol_id = s;
-        t.rotate_dir = DIR_BOT;
+        t.dir = DIR_BOT;
         t.block_code = G_BLOCK_CODE_SET->codes[t.symbol_id];
         const polyomino_matrix_n_t n = get_tetromino_matrix_n(t.symbol_id);
         const int pos_x_wprint = TETRIS_PLAY_STATISTIC_START_POS_X_WPRINT + (s + 1) * TETRIS_PLAY_STATISTIC_INTERVAL_HEIGHT - 2;
@@ -40,6 +39,8 @@ static void wdraw_tetris_play_statistics_tetrominos(void)
 
 static void init_tetris_play_statistics(void)
 {
+    debug();
+    
     for (int i = 0; i < TOTAL_TETROMINO_NUM_OF_KINDS; ++i) {
         g_s_tetromino_spawned_cnt[i] = 0;
     }

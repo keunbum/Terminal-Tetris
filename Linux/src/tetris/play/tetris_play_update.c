@@ -9,8 +9,8 @@ static inline void petrity_tetromino(tetris_play_board_t* const out_board, const
 {
     debug();
 
-    my_assert(tetro->id != -1);
-    polyomino_matrix_t matrix = get_tetromino_matrix(tetro->symbol_id, tetro->rotate_dir);
+    // my_assert(tetro->id != -1);
+    polyomino_matrix_t matrix = get_tetromino_matrix(tetro->symbol_id, tetro->dir);
     polyomino_matrix_n_t n = get_tetromino_matrix_n(tetro->symbol_id);
     for (int idx = 0; idx < n * n; ++idx) {
         if (is_empty_block(matrix, idx)) {
@@ -35,9 +35,9 @@ static inline bool is_at_skyline(const tetromino_t* tetro)
 {
     debug();
 
-    my_assert(tetro->id != -1);
+    // my_assert(tetro->id != -1);
     my_assert(0 <= tetro->symbol_id && tetro->symbol_id < TOTAL_TETROMINO_NUM_OF_KINDS);
-    polyomino_matrix_t matrix = get_tetromino_matrix(tetro->symbol_id, tetro->rotate_dir);
+    polyomino_matrix_t matrix = get_tetromino_matrix(tetro->symbol_id, tetro->dir);
     polyomino_matrix_n_t n = get_tetromino_matrix_n(tetro->symbol_id);
     tetris_play_tetromino_unlock();
     pos_e_t last_pos_x = TETRIS_PLAY_TETROMINO_POS_X_MIN - 1;
@@ -52,23 +52,25 @@ static inline bool is_at_skyline(const tetromino_t* tetro)
     return last_pos_x < 0;
 }
 
-static tetromino_status_t update_tetromino_r(tetris_play_board_t* const restrict out_board, tetromino_t* const restrict out_tetromino, game_time_t game_delta_time)
+static tetromino_try_status_t update_tetromino_r(tetris_play_board_t* const restrict out_board, tetromino_t* const restrict out_tetromino, game_time_t game_delta_time)
 {
     debug();
 
     tetris_play_tetromino_lock();
     if (out_tetromino->id == -1) {
         pos_t init_pos = { TETRIS_PLAY_TETROMINO_INIT_POS_X, TETRIS_PLAY_TETROMINO_INIT_POS_Y };
-        spawn_tetromino(out_tetromino, init_pos, NEW_TETRIS_PLAY_TETROMINO_INIT_VELOCITY);
-        update_tetromino_ground_pos(out_board, out_tetromino);
+        spawn_tetromino(out_tetromino, init_pos, TETRIS_PLAY_TETROMINO_INIT_VELOCITY);
+        // update_tetromino_ground_pos(out_board, out_tetromino);
     }
     tetris_play_tetromino_unlock();
-    tetromino_status_t res = new_try_move_tetromino_r(out_board, out_tetromino, DIR_BOT, game_delta_time);
+    tetromino_try_status_t res = try_move_tetromino_deltatime_r(out_board, out_tetromino, DIR_BOT, game_delta_time);
     return res;
 }
 
 static void process_tetromino_ontheground(tetris_play_manager_t* const out_play_manager)
 {
+    debug();
+    
     out_play_manager->tetromino.id = -1;
     out_play_manager->prev_tetromino.id = -1;
     petrity_tetromino(&out_play_manager->board, &out_play_manager->tetromino);
@@ -90,9 +92,9 @@ void update_gameworld(tetris_play_manager_t* const out_play_manager)
 {
     debug();
 
-    tetromino_status_t res = update_tetromino_r(&out_play_manager->board, &out_play_manager->tetromino, out_play_manager->game_delta_time);
+    tetromino_try_status_t res = update_tetromino_r(&out_play_manager->board, &out_play_manager->tetromino, out_play_manager->game_delta_time);
     /* Maybe race condition?? */
-    if (res == TETROMINO_STATUS_ONTHEGROUND) {
+    if (res == TETROMINO_TRY_STATUS_ONTHEGROUND) {
         process_tetromino_ontheground_r(out_play_manager);
     }
 }

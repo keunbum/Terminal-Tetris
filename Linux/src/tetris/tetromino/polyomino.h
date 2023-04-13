@@ -3,12 +3,6 @@
 
 #include "stdbool.h"
 
-#define DECLARE_POLYOMINO_SYMBOL_T(T) \
-    typedef struct {                  \
-        int height;                   \
-        block_t* block_matrix[T];     \
-    } polyomino_symbol_##T##_t
-
 typedef int polyomino_matrix_t;
 typedef int polyomino_matrix_n_t;
 

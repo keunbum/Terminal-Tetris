@@ -4,64 +4,6 @@
 #include "debug.h"
 #include "tetromino.h"
 
-const tetromino_symbol_t G_TETROMINO_SYMBOLS[TOTAL_TETROMINO_NUM_OF_KINDS] = {
-    // I
-    {
-        1,
-        {
-            "1111",
-        },
-    },
-    // O
-    {
-        2,
-        {
-            "11",
-            "11",
-        },
-    },
-    // T
-    {
-        2,
-        {
-            "010",
-            "111",
-        },
-    },
-    // J
-    {
-        2,
-        {
-            "100",
-            "111",
-        },
-    },
-    // L
-    {
-        2,
-        {
-            "001",
-            "111",
-        },
-    },
-    // S
-    {
-        2,
-        {
-            "011",
-            "110",
-        },
-    },
-    // Z
-    {
-        2,
-        {
-            "110",
-            "011",
-        },
-    },
-};
-
 const polyomino_matrix_n_t G_TETROMINO_MATRIX_NS[TOTAL_TETROMINO_NUM_OF_KINDS] = {
     4, 2, 3, 3, 3, 3, 3
 };
@@ -78,14 +20,18 @@ const polyomino_matrix_t G_TETROMINO_MATRIXS[TOTAL_TETROMINO_NUM_OF_KINDS][TOTAL
 
 tetromino_lock_t g_tetromino_lock;
 
-// void init_a_tetromino(tetromino_t* const out_tetro, tetromino_id_t id, symbol_id_t symbol_id, pos_t pos, velocity_t velocity, dir_t rotate_dir, wchar_t block_code)
-// {
-//     debug();
+void traverse_tetromino(const tetromino_t* tetro, tetromino_traverse_func_t func, void* arg)
+{
+    // debug();
 
-//     out_tetro->id = id;
-//     out_tetro->symbol_id = symbol_id;
-//     out_tetro->pos = pos;
-//     out_tetro->velocity = velocity;
-//     out_tetro->rotate_dir = rotate_dir;
-//     out_tetro->block_code = block_code;
-// }
+    polyomino_matrix_t matrix = get_tetromino_matrix(tetro->symbol_id, tetro->dir);
+    polyomino_matrix_n_t n = get_tetromino_matrix_n(tetro->symbol_id);
+    for (int pos = 0; pos < n * n; ++pos) {
+        if (is_empty_block(matrix, pos)) {
+            continue;
+        }
+        int i = pos / n;
+        int j = pos % n;
+        func(i, j, arg);
+    }
+}

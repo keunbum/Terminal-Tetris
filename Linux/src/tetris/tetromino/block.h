@@ -16,12 +16,6 @@
 
 #define BLOCK_WPRINT_LIGHT_LARGE_SQUARE (L'\U0001f3fb')
 
-typedef char block_t;
 
-#define BLOCK_T_TRUE ('1')
-#define BLOCK_T_FALSE ('0')
-
-#define NEW_BLOCK_T_TRUE (1)
-#define NEW_BLOCK_T_FALSE (0)
 
 #endif /* __BLOCK__H */
