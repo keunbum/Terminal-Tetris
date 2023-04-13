@@ -4,7 +4,6 @@
 #include <stdbool.h>
 
 #include "realtime_timer.h"
-#include "timer_frame.h"
 
 typedef void (*draw_func_t)(int, int, int);
 

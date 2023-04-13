@@ -1,17 +1,15 @@
 #include <signal.h>
-#include <stddef.h>
-#include <time.h>
-#include <unistd.h>
 
 #include "debug.h"
 #include "draw/draw_tool.h"
+#include "pthread_macro.h"
 #include "signal_macro.h"
 #include "timer_drawer.h"
 #include "timer_frame.h"
 
 static void wdraw_timer_frame_at(int pos_x_wprint, int pos_y_wprint)
 {
-    debug();
+    // debug();
 
     static wchar_t s_top_line[TIMER_FRAME_WIDTH + 1];
     static wchar_t s_mid_line[TIMER_FRAME_WIDTH + 1];
@@ -28,8 +26,8 @@ static void wdraw_timer_frame_at(int pos_x_wprint, int pos_y_wprint)
 
 static void doit_drawer_main_logic(const realtime_timer_t* timer, const draw_module_t* draw_module)
 {
-    debug();
-    
+    // debug();
+
     const int timer_pos_x_wprint = draw_module->pos_x_wprint + 1;
     const int timer_pos_y_wprint = draw_module->pos_y_wprint + 3;
 
@@ -37,7 +35,7 @@ static void doit_drawer_main_logic(const realtime_timer_t* timer, const draw_mod
     draw_module->draw_func(timer_pos_x_wprint, timer_pos_y_wprint, 0);
 
     int sec = 1;
-    while (is_realtime_timer_running(timer)) {
+    while (true) {
         int sig;
         int res = sigwait(&timer->sigset, &sig);
         if (res != 0) {
@@ -48,41 +46,56 @@ static void doit_drawer_main_logic(const realtime_timer_t* timer, const draw_mod
     }
 }
 
+static void cleanup_timer_drawer_module(void* arg)
+{
+    debug();
+
+    my_assert(arg != NULL);
+
+    const realtime_timer_t* timer = (const realtime_timer_t*)arg;
+    /* Delete timer */
+    if (timer_delete(timer->timerid) == -1) {
+        handle_error("timer_delete() error");
+    }
+}
+
+static void init_timer(realtime_timer_t* const out_timer)
+{
+    debug();
+
+    my_assert(out_timer->timersig == REALTIME_TIMER_SIG);
+
+    /* Set sigset */
+    sigemptyset(&out_timer->sigset);
+    sigaddset(&out_timer->sigset, out_timer->timersig);
+
+    /* Create timer */
+    sigevent_t sev;
+    sev.sigev_notify = SIGEV_SIGNAL;
+    sev.sigev_signo = out_timer->timersig;
+    sev.sigev_value.sival_int = 0;
+    sev._sigev_un._sigev_thread._function = NULL;
+    if (timer_create(out_timer->clockid, &sev, &out_timer->timerid) == -1) {
+        handle_error("timer_create() error");
+    }
+}
+
 void* run_timer_drawer_with(void* arg)
 {
     debug();
 
     timer_drawer_t* timer_drawer = (timer_drawer_t*)arg;
     realtime_timer_t* timer = (realtime_timer_t*)&timer_drawer->timer;
-    my_assert(timer->timersig == REALTIME_TIMER_SIG);
-    /* Set sigset */
-    sigemptyset(&timer->sigset);
-    sigaddset(&timer->sigset, timer->timersig);
 
-    ewprintf("my_sig: %d\n", timer->timersig);
-    /* Create timer */
-    sigevent_t sev;
-    sev.sigev_notify = SIGEV_SIGNAL;
-    sev.sigev_signo = timer->timersig;
-    sev.sigev_value.sival_int = 0;
-    sev._sigev_un._sigev_thread._function = NULL;
-    if (timer_create(timer->clockid, &sev, &timer->timerid) == -1) {
-        handle_error("timer_create() error");
-    }
+    init_timer(timer);
+    pthread_cleanup_push(cleanup_timer_drawer_module, timer);
 
     /* Start timer */
     if (timer_settime(timer->timerid, 0, &timer->its, NULL) == -1) {
         handle_error("timer_settime() error");
     }
 
-    /* Run main logic */
-    set_realtime_timer(timer, true);
     doit_drawer_main_logic(timer, &timer_drawer->draw_module);
 
-    /* Delete timer */
-    if (timer_delete(timer->timerid) == -1) {
-        handle_error("timer_delete() error");
-    }
-    // ewprintf("run_timer_drawer_with() return NULL\n");
     return NULL;
 }
