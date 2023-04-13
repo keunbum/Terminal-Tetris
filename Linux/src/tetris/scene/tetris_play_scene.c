@@ -12,7 +12,7 @@
 
 static void draw_game_play_outside_area_at_r(int sx, int sy)
 {
-    debug();
+    // debug();
 
     cursor_lock();
     wdraw_boundary_at_with(UNIT_MATRIX_HOR_LINE_THIN, UNIT_MATRIX_VER_LINE_THIN, TETRIS_PLAY_SINGLE_SCREEN_HEIGHT_WPRINT, TETRIS_PLAY_SINGLE_SCREEN_WIDTH_WPRINT, sx, sy,
@@ -25,7 +25,7 @@ static void draw_game_play_outside_area_at_r(int sx, int sy)
 
 static void wdraw_game_play_inside_area_at_r(int topleft_pos_x, int topleft_pos_y)
 {
-    debug();
+    // debug();
 
     static wchar_t S_TOP_LINE[TETRIS_PLAY_BOARD_FRAME_WIDTH + 1];
     static wchar_t S_MID_LINE[TETRIS_PLAY_BOARD_FRAME_WIDTH + 1];
@@ -56,14 +56,14 @@ static void wdraw_game_play_inside_area_at_r(int topleft_pos_x, int topleft_pos_
 
 static void draw_game_play_single_outside_area_at_r(int sx, int sy)
 {
-    debug();
+    // debug();
 
     draw_game_play_outside_area_at_r(sx, sy);
 }
 
 static void draw_game_play_single_whole_screen_at(int sx, int sy)
 {
-    debug();
+    // debug();
 
     wdisable_cursor();
 
@@ -93,9 +93,4 @@ int load_tetris_play_scene(tetris_play_mode_t game_mode, int screen_start_pos_x,
         break;
     }
     return res;
-}
-
-void cleanup_tetris_play_scene(void)
-{
-    wclear();
 }

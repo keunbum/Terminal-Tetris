@@ -19,5 +19,5 @@ int test_module(int argc, char* argv[])
     (void)argc;
     (void)argv;
 
-    return test_gettimeofday();
+    return test_evdev();
 }

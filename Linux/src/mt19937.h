@@ -6,7 +6,14 @@
 void mt19937_srand(uint32_t seed);
 uint32_t mt19937_rng(void);
 
-#define init_rng(seed) mt19937_srand(seed)
-#define rng() mt19937_rng()
+static inline void init_mt19937(uint32_t seed)
+{
+    mt19937_srand(seed);
+}
+
+static inline uint32_t rng(void)
+{
+    return mt19937_rng();
+}
 
 #endif /* __MT19937__H */

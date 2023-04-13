@@ -16,9 +16,6 @@ int test_evdev(void)
         return 1;
     }
 
-    // 논블로킹 모드 설정
-    // fcntl(event_fd, F_SETFL, O_NONBLOCK);
-
     printf("Press the 'Esc' key to exit\n");
     while (1) {
         // 입력 이벤트 읽기
@@ -28,7 +25,7 @@ int test_evdev(void)
         }
 
         // 키 입력 처리
-        if (ev.type == EV_KEY && ev.value == 1) {
+        if (ev.type == EV_KEY && (ev.value == 1 || ev.value == 2)) {
             if (ev.code == KEY_UP) {
                 printf("Up arrow key pressed\n");
             } else if (ev.code == KEY_DOWN) {

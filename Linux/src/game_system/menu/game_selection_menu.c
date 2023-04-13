@@ -54,7 +54,7 @@ static void cleanup_game_selection_menu(void)
     /* It might need some cleanup module later. */
 }
 
-static int cmd_to_gamenum(int cmd)
+static inline int cmd_to_gamenum(int cmd)
 {
     return cmd - 1;
 }

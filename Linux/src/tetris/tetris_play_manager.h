@@ -2,7 +2,6 @@
 #define __TETRIS_PLAY_MANAGER__H
 
 #include "game_system/game_system_manager.h"
-#include "game_system/input_reader.h"
 #include "tetris/play/tetris_play_board.h"
 #include "tetris_play_submodule.h"
 #include "timer/timer_drawer.h"
@@ -30,11 +29,12 @@ typedef enum {
 #define TETRIS_PLAY_SUBMODULE_NUM (3)
 
 typedef struct {
-    const tetris_play_mode_t mode;
     const int screen_start_pos_x_wprint;
     const int screen_start_pos_y_wprint;
     const int screen_height_wprint;
     const int ready_getset_go_sec;
+
+    tetris_play_mode_t mode;
     tetris_play_status_t status;
     game_time_t game_delta_time;
     tetromino_t tetromino;

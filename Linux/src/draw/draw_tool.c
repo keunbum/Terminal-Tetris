@@ -8,7 +8,7 @@
 // [sx, ex)
 static void wdraw_col_matrix_at(wchar_t ch, int sx, int ex, int sy)
 {
-    debug();
+    // debug();
 
     wgotoxy(sx, sy);
     for (int i = sx; i < ex; i += 1) {
@@ -17,9 +17,9 @@ static void wdraw_col_matrix_at(wchar_t ch, int sx, int ex, int sy)
 }
 
 // [sy, ey)
-void wdraw_row_matrix_at(wchar_t ch, int sx, int sy, int ey)
+static void wdraw_row_matrix_at(wchar_t ch, int sx, int sy, int ey)
 {
-    debug();
+    // debug();
 
     wgotoxy(sx, sy);
     for (int j = sy; j < ey; j += 1) {
@@ -27,9 +27,10 @@ void wdraw_row_matrix_at(wchar_t ch, int sx, int sy, int ey)
     }
 }
 
+/* height and width both means total length */
 void wdraw_boundary_at_with(wchar_t hor_block, wchar_t ver_block, int height, int width, int sx, int sy, wchar_t top_lft, wchar_t top_rgt, wchar_t bot_lft, wchar_t bot_rgt)
 {
-    debug();
+    // debug();
 
     int x0 = sx;
     int x1 = x0 + height - 1;
@@ -48,17 +49,9 @@ void wdraw_boundary_at_with(wchar_t hor_block, wchar_t ver_block, int height, in
     wdraw_col_matrix_at(ver_block, x0 + 1, x1, y1);
 }
 
-// height and width both means total length
-void wdraw_boundary_at(wchar_t hor_block, wchar_t ver_block, int height, int width, int sx, int sy)
-{
-    debug();
-
-    wdraw_boundary_at_with(hor_block, ver_block, height, width, sx, sy, UNIT_MATRIX_CORNER_TOP_LEFT, UNIT_MATRIX_CORNER_TOP_RIGHT, UNIT_MATRIX_CORNER_BOT_LEFT, UNIT_MATRIX_CORNER_BOT_RIGHT);
-}
-
 void wset_row_line(wchar_t* const buf, int length, wchar_t beg, wchar_t mid, wchar_t end)
 {
-    debug();
+    // debug();
 
     buf[0] = beg;
     for (int i = 1; i < length - 1; ++i) {

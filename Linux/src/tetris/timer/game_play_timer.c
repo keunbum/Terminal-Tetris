@@ -1,18 +1,13 @@
 #include <stdio.h>
-#include <stdlib.h>
-#include <time.h>
-#include <unistd.h>
 
 #include "debug.h"
 #include "draw/draw_tool.h"
-#include "game_play_timer.h"
 #include "timer_drawer.h"
 
 /* It will be printed a bit prettier. */
-
 static void decode_sec_to_hhmmss(int sec, int* const out_hh, int* const out_mm, int* const out_ss)
 {
-    debug();
+    // debug();
 
     my_assert(out_hh != NULL);
     my_assert(out_mm != NULL);
@@ -25,7 +20,7 @@ static void decode_sec_to_hhmmss(int sec, int* const out_hh, int* const out_mm, 
 
 static void draw_sec_in_hhmmss_at_r(int sec, int pos_x, int pos_y)
 {
-    debug();
+    // debug();
 
     int hh, mm, ss;
     decode_sec_to_hhmmss(sec, &hh, &mm, &ss);
@@ -35,7 +30,7 @@ static void draw_sec_in_hhmmss_at_r(int sec, int pos_x, int pos_y)
 
 void draw_game_play_timer_at_with_r(int x, int y, int sec)
 {
-    debug();
+    // debug();
 
     draw_sec_in_hhmmss_at_r(sec, x, y);
 }
@@ -43,5 +38,6 @@ void draw_game_play_timer_at_with_r(int x, int y, int sec)
 void* mainfunc_game_play_timer(void* arg)
 {
     debug();
+
     return run_timer_drawer_with(arg);
 }

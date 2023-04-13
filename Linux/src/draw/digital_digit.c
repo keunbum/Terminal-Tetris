@@ -86,7 +86,7 @@ const digital_digit_t G_DIGITAL_DIGIT_EMPTY = {
 
 void wdraw_digital_digit_at_r(const digital_digit_t digit, int pos_x, int pos_y)
 {
-    debug();
+    // debug();
 
     wdraw_rows_newline_at_r(DIGITAL_DIGIT_HEIGHT, (const wchar_t**) digit, DIGITAL_DIGIT_WIDTH, pos_x, pos_y);
 }
