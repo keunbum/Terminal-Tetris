@@ -18,7 +18,8 @@ tetromino_t get_tetromino_silhouette(const board_t* board, const tetromino_t* te
             ret.symbol_id = tetro->symbol_id;
             ret.pos = cground_pos;
             ret.dir = tetro->dir;
-            ret.block_code = TETRIS_PLAY_TETROMINO_BLOCK_SILHOUETTE_WPRINT;
+            ret.block.nature = BLOCK_NATURE_EMPTY;
+            ret.block.wprint = TETRIS_PLAY_TETROMINO_BLOCK_SILHOUETTE_WPRINT;
             ok = true;
             break;
         }

@@ -5,10 +5,10 @@
 #include "tetris/object/board.h"
 #include "tetris/object/screen.h"
 #include "tetris/object/tetromino.h"
-// #include "tetris_play_fps.h"
+#include "tetris/play/tetris_play_statistic.h"
+#include "tetris/play/tetris_play_tetromino_generator.h"
 #include "tetris_play_submodule.h"
 #include "timer/timer_drawer.h"
-#include "tetris/play/tetris_play_statistic.h"
 
 #define TETRIS_PLAY_TIMER_POS_X_WPRINT (TETRIS_PLAY_SINGLE_SCREEN_POS_X_WPRINT + 2)
 #define TETRIS_PLAY_TIMER_POS_Y_WPRINT (TETRIS_PLAY_BOARD_POS_Y_WPRINT + TETRIS_PLAY_BOARD_WIDTH / 2 - 2)
@@ -37,7 +37,8 @@ typedef struct {
 
     screen_t screen;
     board_t board;
-    tetris_play_statistic_t statistics;
+    tetris_play_statistic_t stat;
+    tetromino_generator_t gen;
     tetromino_t tetromino;
     tetromino_t prev_tetromino;
     timer_drawer_t timer_drawer;

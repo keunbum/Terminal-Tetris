@@ -4,8 +4,8 @@
 #include <pthread.h>
 #include <stdbool.h>
 
+#include "block.h"
 #include "block_wprint.h"
-#include "color.h"
 #include "debug.h"
 #include "pos.h"
 #include "tetris_play_object.h"
@@ -32,19 +32,20 @@ typedef double velocity_t;
 typedef pthread_spinlock_t tetromino_lock_t;
 
 typedef struct {
-    tetromino_id_t id;
-    symbol_id_t symbol_id;
+    tetromino_id_t id; // 0-based
+    symbol_id_t symbol_id; // 0-based
     pos_t pos;
     dir_t dir;
     velocity_t velocity;
-    block_wprint_t block_code;
+    block_t block;
 
-    updatable_func_t update;
-    drawable_func_t draw;
+    // updatable_func_t update;
+    // drawable_func_t draw;
 } tetromino_t;
 
 #define TOTAL_TETROMINO_NUM_OF_KINDS (7)
 #define TOTAL_DIR_NUM_OF_KINDS (4)
+#define TETROMINO_INIT_DIR (DIR_BOT)
 
 extern const tetromino_matrix_n_t G_TETROMINO_MATRIX_NS[TOTAL_TETROMINO_NUM_OF_KINDS];
 extern const tetromino_matrix_t G_TETROMINO_MATRIXS[TOTAL_TETROMINO_NUM_OF_KINDS][TOTAL_DIR_NUM_OF_KINDS];

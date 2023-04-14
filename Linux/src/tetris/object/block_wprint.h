@@ -50,11 +50,4 @@
 
 typedef wchar_t block_wprint_t;
 
-typedef struct {
-    const int size;
-    const block_wprint_t codes[];
-} block_code_set_t;
-
-extern const block_code_set_t* G_BLOCK_CODE_SET;
-
 #endif /* __BLOCK_CODE__H */

@@ -73,11 +73,13 @@
 
 static void new_draw_tetris_play_single_default_scene(const tetris_play_manager_t* play_manager)
 {
-    // debug();
-    // play_manager->screen.draw(NULL, 0.0);
+    debug();
+    
+    my_assert(play_manager != NULL);
+
     wdraw_screen(&play_manager->screen);
     wdraw_board(&play_manager->board);
-    wdraw_tetris_play_statistics(&play_manager->statistics);
+    wdraw_tetris_play_statistics(&play_manager->stat, get_block_wprint_set(&play_manager->gen));
     fflush(stdout);
     exit(0);
 }

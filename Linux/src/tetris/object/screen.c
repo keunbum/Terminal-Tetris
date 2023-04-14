@@ -1,11 +1,12 @@
 #include "debug.h"
 #include "screen.h"
 #include "tetris/scene/tetris_play_scene.h"
-#include "draw/draw_tool.h"
 
 void wdraw_screen(const screen_t* screen)
 {
     debug();
+
+    my_assert(screen != NULL);
 
     cursor_lock();
     wdraw_boundary_at_with(UNIT_MATRIX_HOR_LINE_THIN,

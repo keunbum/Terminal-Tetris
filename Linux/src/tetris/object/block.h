@@ -13,18 +13,23 @@ typedef struct {
     block_wprint_t wprint;
 } block_t;
 
-static inline void init_block(block_t* const out_block, block_nature_t nature, block_wprint_t wprint)
+static inline void set_block(block_t* const out_block, block_t block)
 {
-    out_block->nature;
-    out_block->wprint;
+    *out_block = block;
 }
 
-static inline void get_block_nature(const block_t* block)
+static inline void set_block_nature_each(block_t* const out_block, block_nature_t nature, block_wprint_t wprint)
+{
+    out_block->nature = nature;
+    out_block->wprint = wprint;
+}
+
+static inline block_nature_t get_block_nature(const block_t* block)
 {
     return block->nature;
 }
 
-static inline void get_block_wprint(const block_t* block)
+static inline block_wprint_t get_block_wprint(const block_t* block)
 {
     return block->wprint;
 }

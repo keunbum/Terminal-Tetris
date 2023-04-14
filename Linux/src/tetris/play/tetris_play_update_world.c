@@ -1,7 +1,7 @@
 #include <stdio.h>
 
 #include "debug.h"
-#include "tetris_play_tetromino_generator.h"
+// #include "tetris_play_tetromino_generator.h"
 #include "tetris_play_update_tetromino_status.h"
 #include "tetris_play_update_world.h"
 
@@ -26,7 +26,7 @@ static inline void petrify_tetromino(board_t* const out_board, const tetromino_t
         my_assert(each_pos.x < TETRIS_PLAY_BOARD_HEIGHT);
         my_assert(0 <= each_pos.y && each_pos.y < TETRIS_PLAY_BOARD_WIDTH);
         board_lock();
-        out_board->grid[(int)each_pos.x][(int)each_pos.y] = tetro->id;
+        set_board_grid_block(out_board, i, j, tetro->block);
         board_unlock();
     }
 }
@@ -74,7 +74,9 @@ static tetromino_try_status_t new_update_tetromino_r(tetris_play_manager_t* cons
     tetris_play_tetromino_lock();
     if (out_tetromino->id == -1) {
         pos_t init_pos = { TETRIS_PLAY_TETROMINO_INIT_POS_X, TETRIS_PLAY_TETROMINO_INIT_POS_Y };
-        new_spawn_tetromino(out_play_manager, out_tetromino, init_pos, TETRIS_PLAY_TETROMINO_INIT_VELOCITY);
+        // spawn_tetromino(out_play_manager, out_tetromino, init_pos, TETRIS_PLAY_TETROMINO_INIT_VELOCITY);
+        new_spawn_tetromino(&out_play_manager->gen, out_tetromino, init_pos, TETRIS_PLAY_TETROMINO_INIT_VELOCITY);
+        new_inc_tetromino_cnt_by_one(&out_play_manager->stat, out_tetromino->symbol_id);
         // update_tetromino_ground_pos(out_board, out_tetromino);
     }
     tetris_play_tetromino_unlock();
@@ -115,10 +117,13 @@ void update_gameworld(tetris_play_manager_t* const out_play_manager)
     }
 }
 
-void load_tetris_play_objects(tetris_play_manager_t* const out_play_manager)
+void init_tetris_play_objects(tetris_play_manager_t* const out_play_manager)
 {
     debug();
 
-    init_board(&out_play_manager->board, TETRIS_PLAY_BOARD_GRID_ELEMENT_DEFAULT);
-    new_init_tetris_play_statistics(&out_play_manager->statistics);
+    my_assert(out_play_manager != NULL);
+
+    new_init_tetromino_generator(&out_play_manager->gen);
+    init_board(&out_play_manager->board);
+    new_init_tetris_play_statistics(&out_play_manager->stat);
 }

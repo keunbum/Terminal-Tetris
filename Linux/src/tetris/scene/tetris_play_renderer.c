@@ -23,7 +23,7 @@ static inline void render_a_block(pos_t pos, wchar_t block_wprint)
 
 static void render_a_tetromino_at_wprint(const tetromino_t* tetro, wchar_t block_wprint, pos_t pos_wprint)
 {
-    // debug();
+    debug();
 
     my_assert(tetro != NULL);
 
@@ -84,11 +84,11 @@ static void render_a_tetromino_at_r(const tetromino_t* tetro, wchar_t block_wpri
     cursor_unlock();
 }
 
-static void render_a_tetromino_r(const tetromino_t* tetro, wchar_t pos_block_wprint, wchar_t ground_pos_wprint)
+static void render_a_tetromino_r(const tetromino_t* tetro, wchar_t block_wprint, wchar_t ground_pos_wprint)
 {
     (void)ground_pos_wprint;
     // render_a_tetromino_at_r(tetro, ground_pos_wprint, tetro->ground_pos);
-    render_a_tetromino_at_r(tetro, pos_block_wprint, tetro->pos);
+    render_a_tetromino_at_r(tetro, block_wprint, tetro->pos);
 }
 
 static void erase_a_tetromino_r(const tetromino_t* tetro)
@@ -98,7 +98,7 @@ static void erase_a_tetromino_r(const tetromino_t* tetro)
 
 static void draw_a_tetromino_r(const tetromino_t* tetro)
 {
-    render_a_tetromino_r(tetro, tetro->block_code, BLOCK_WPRINT_LIGHT_LARGE_SQUARE);
+    render_a_tetromino_r(tetro, (wchar_t)tetro->block.wprint, BLOCK_WPRINT_LIGHT_LARGE_SQUARE);
 }
 
 void render_out(tetris_play_manager_t* const out_play_manager)
@@ -113,5 +113,5 @@ void render_out(tetris_play_manager_t* const out_play_manager)
 
 void draw_a_tetromino_at_wprint_r(const tetromino_t* tetro, pos_t pos_wprint)
 {
-    render_a_tetromino_at_wprint_r(tetro, tetro->block_code, pos_wprint);
+    render_a_tetromino_at_wprint_r(tetro, (wchar_t)tetro->block.wprint, pos_wprint);
 }

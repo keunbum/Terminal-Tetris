@@ -22,7 +22,7 @@
 #define TETRIS_PLAY_BOARD_POS_X TETRIS_PLAY_BOARD_POS_X_WPRINT
 #define TETRIS_PLAY_BOARD_POS_Y (TETRIS_PLAY_BOARD_POS_Y_WPRINT / 2)
 
-#define TETRIS_PLAY_BOARD_GRID_ELEMENT_DEFAULT (0)
+// #define TETRIS_PLAY_BOARD_GRID_ELEMENT_DEFAULT (0)
 
 #define BOARD_FRAME_HEIGHT (TETRIS_PLAY_BOARD_HEIGHT + 2)
 #define BOARD_FRAME_WIDTH (TETRIS_PLAY_BOARD_WIDTH + 2)
@@ -33,10 +33,11 @@
 #define BOARD_FRAME_POS_Y_WPRINT (TETRIS_PLAY_BOARD_POS_Y_WPRINT - 2)
 
 /* may be changed. */
-typedef tetromino_id_t board_grid_element_t;
 typedef pthread_spinlock_t board_lock_t;
 
 extern board_lock_t g_board_lock;
+
+typedef block_t row_t[TETRIS_PLAY_BOARD_WIDTH];
 
 typedef struct {
     const wchar_t block_corner_top_left;
@@ -58,10 +59,10 @@ typedef struct {
     const pos_t pos_wprint;
     const pos_t frame_pos;
     const pos_t frame_pos_wprint;
-    block_t grid[TETRIS_PLAY_BOARD_HEIGHT][TETRIS_PLAY_BOARD_WIDTH];
-    // block_wprint_t code_grid[TETRIS_PLAY_BOARD_HEIGHT][TETRIS_PLAY_BOARD_WIDTH];
-    updatable_func_t update;
-    drawable_func_t draw;
+    row_t grid[TETRIS_PLAY_BOARD_HEIGHT];
+    // block_t grid[TETRIS_PLAY_BOARD_HEIGHT][TETRIS_PLAY_BOARD_WIDTH];
+    // updatable_func_t update;
+    // drawable_func_t draw;
 } board_t;
 
 typedef board_t board_t;
@@ -73,5 +74,25 @@ typedef board_t board_t;
 
 void init_board(board_t* const out_board);
 void wdraw_board(const board_t* board);
+
+static inline const row_t* get_grid(const board_t* board)
+{
+    return board->grid;
+}
+
+static inline const block_t* get_board_grid_block(const board_t* board, int i, int j)
+{
+    board_lock();
+    const block_t* ret = get_grid(board)[i] + j;
+    board_unlock();
+    return ret;
+}
+
+static inline void set_board_grid_block(board_t* const out_board, int i, int j, block_t block)
+{
+    board_lock();
+    set_block(out_board->grid[i] + j, block);
+    board_unlock();
+}
 
 #endif /* __TETRIS_PLAY_BOARD__H */

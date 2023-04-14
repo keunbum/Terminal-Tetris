@@ -27,16 +27,19 @@ tetromino_try_status_t try_tetromino_next_status(const board_t* board, const tet
         if (each_npos.x < 0) {
             continue;
         }
-        my_assert(each_npos.x >= 0);
-        my_assert(each_npos.x < board->height);
-        my_assert(0 <= each_npos.y && each_npos.y < board->width);
-        board_lock();
-        board_grid_element_t each_value = board->grid[(int)each_npos.x][(int)each_npos.y];
-        board_unlock();
-        if (each_value != TETRIS_PLAY_BOARD_GRID_ELEMENT_DEFAULT && each_value != tetro->id) {
+        my_assert((int)each_npos.x >= 0);
+        my_assert((int)each_npos.x < board->height);
+        my_assert(0 <= (int)each_npos.y && (int)each_npos.y < board->width);
+        const block_t* each_block = get_board_grid_block(board, i, j);
+        const block_nature_t each_nature = get_block_nature(each_block);
+        if (each_nature != BLOCK_NATURE_EMPTY) {
             ewprintf("hi3\n");
             return TETROMINO_TRY_STATUS_ONTHEGROUND;
         }
+        // if (each_block != TETRIS_PLAY_BOARD_GRID_ELEMENT_DEFAULT && each_block != tetro->id) {
+        //     ewprintf("hi3\n");
+        //     return TETROMINO_TRY_STATUS_ONTHEGROUND;
+        // }
     }
     ewprintf("hi4\n");
     return TETROMINO_TRY_STATUS_MOVED;

@@ -8,6 +8,7 @@
 #include "chronometry.h"
 #include "debug.h"
 #include "draw/digital_digit.h"
+#include "draw/draw_tool.h"
 #include "error_handling.h"
 #include "signal_macro.h"
 #include "tetris/object/board.h"
@@ -28,8 +29,18 @@ static tetris_play_manager_t g_s_play_manager = {
     .ready_getset_go_sec = TETRIS_PLAY_TIMEINTERVAL_BEFORESTART_SEC,
     .game_delta_time = 0.0,
     .screen = {
+        .hor_line = UNIT_MATRIX_HOR_LINE_THIN,
+        .ver_line = UNIT_MATRIX_VER_LINE_THIN,
+        .corner_top_left = UNIT_MATRIX_CORNER_TOP_LEFT_THIN,
+        .corner_top_right = UNIT_MATRIX_CORNER_TOP_RIGHT_THIN,
+        .corner_bot_left = UNIT_MATRIX_CORNER_BOT_LEFT_THIN,
+        .corner_bot_right = UNIT_MATRIX_CORNER_BOT_RIGHT_THIN,
         .pos = { TETRIS_PLAY_SINGLE_SCREEN_POS_X, TETRIS_PLAY_SINGLE_SCREEN_POS_Y },
         .pos_wprint = { TETRIS_PLAY_SINGLE_SCREEN_POS_X_WPRINT, TETRIS_PLAY_SINGLE_SCREEN_POS_Y_WPRINT },
+        .height = TETRIS_PLAY_SINGLE_SCREEN_HEIGHT,
+        .width = TETRIS_PLAY_SINGLE_SCREEN_WIDTH,
+        .height_wprint = TETRIS_PLAY_SINGLE_SCREEN_HEIGHT_WPRINT,
+        .width_wprint = TETRIS_PLAY_SINGLE_SCREEN_WIDTH_WPRINT,
     },
     .board = {
         .block_corner_top_left = BLOCK_WPRINT_BLACK_SQUARE_BUTTON,
@@ -51,7 +62,7 @@ static tetris_play_manager_t g_s_play_manager = {
         .frame_pos = { BOARD_FRAME_POS_X, BOARD_FRAME_POS_Y },
         .frame_pos_wprint = { BOARD_FRAME_POS_X_WPRINT, BOARD_FRAME_POS_Y_WPRINT },
     },
-    .statistics = {
+    .stat = {
         .pos = { TETRIS_PLAY_STATISTIC_POS_X, TETRIS_PLAY_STATISTIC_POS_Y },
         .pos_wprint = { TETRIS_PLAY_STATISTIC_POS_X_WPRINT, TETRIS_PLAY_STATISTIC_POS_Y_WPRINT },
         .tetromino_pos_wprint = { TETRIS_PLAY_STATISTIC_TETROMINO_POS_X_WPRINT, TETRIS_PLAY_STATISTIC_TETROMINO_POS_Y_WPRINT },
@@ -173,13 +184,19 @@ static int selection_after_game_over(void)
     return TETRIS_PLAY_CMD_EXIT_GAME;
 } */
 
+static void init_tetris_play_manager(tetris_play_manager_t* const out_play_manager)
+{
+    init_tetris_play_objects(out_play_manager);
+    new_load_tetris_play_scene(out_play_manager);
+    out_play_manager->timer_drawer.timer.timersig = REALTIME_TIMER_SIG;
+}
+
 static tetris_play_cmd_t play_a_new_game(void)
 {
     debug();
 
     // load_tetris_play_scene(g_s_play_manager.play_mode, g_s_play_manager.screen_start_pos_x_wprint, g_s_play_manager.screen_start_pos_y_wprint);
-    load_tetris_play_objects(&g_s_play_manager);
-    new_load_tetris_play_scene(&g_s_play_manager);
+    init_tetris_play_manager(&g_s_play_manager);
 
     ready_getset_go();
 
@@ -194,11 +211,6 @@ static tetris_play_cmd_t play_a_new_game(void)
     // return selection_after_game_over();
 }
 
-static void init_tetris_play_manager(tetris_play_manager_t* const out_play_manager)
-{
-    out_play_manager->timer_drawer.timer.timersig = REALTIME_TIMER_SIG;
-}
-
 /* --------------------------------------------------------------------------------------------------------- */
 
 void* run_tetris_play_single_mode(void* arg)
@@ -207,8 +219,6 @@ void* run_tetris_play_single_mode(void* arg)
 
     my_assert(arg == NULL);
     (void)arg;
-
-    init_tetris_play_manager(&g_s_play_manager);
 
     while (true) {
         tetris_play_cmd_t res = play_a_new_game();
