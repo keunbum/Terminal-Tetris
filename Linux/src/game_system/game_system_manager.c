@@ -1,13 +1,14 @@
 #include <stdlib.h>
 
-#include "game_system_manager.h"
 #include "debug.h"
 #include "draw/cursor.h"
+#include "game_system_manager.h"
 #include "localize/localize.h"
 #include "menu/title_menu.h"
 #include "mt19937.h"
 #include "tetris/play/tetris_play_board.h"
 #include "tetris/tetromino/tetromino.h"
+#include "tetris/scene/tetris_play_scene.h"
 
 static void init_game_system(void)
 {
@@ -29,10 +30,13 @@ static void cleanup_game_system(void)
     cleanup_tetris_play_board_lock();
     cleanup_tetris_play_update_lock();
     cleanup_cursor_lock();
+    cleanup_tetris_play_scene();
 }
 
 void exit_cleanup_game_system(int status)
 {
+    debug();
+    
     cleanup_game_system();
     exit(status);
 }
@@ -44,5 +48,4 @@ void run_game_system_manager(void)
     init_game_system();
     run_title_menu();
     cleanup_game_system();
-
 }

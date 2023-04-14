@@ -11,7 +11,7 @@
 #include "tetris/play/tetris_play_single_manager.h"
 #include "tetris/tetris_play_manager.h"
 
-static const game_module_t G_S_GAME_OBJECTS[] = {
+static const game_module_t G_S_GAME_OBJECTS[1] = {
     {
         .name = "basic tetris",
         .module = run_tetris_play_single_mode,

@@ -65,32 +65,35 @@ static void draw_game_play_single_whole_screen_at(int sx, int sy)
 {
     // debug();
 
-    wdisable_cursor();
-
     draw_game_play_single_outside_area_at_r(sx, sy);
     wdraw_tetris_play_statistics_frame();
     wdraw_game_play_inside_area_at_r(sx + TETRIS_PLAY_BOARD_FRAME_START_POS_X_WPRINT, sy + TETRIS_PLAY_BOARD_FRAME_START_POS_Y_WPRINT);
     fflush(stdout);
 }
 
-int load_tetris_play_scene(tetris_play_mode_t game_mode, int screen_start_pos_x, int screen_start_pos_y)
+void load_tetris_play_scene(tetris_play_mode_t game_mode, int screen_start_pos_x, int screen_start_pos_y)
 {
     debug();
 
     wclear();
+    wdisable_cursor();
 
-    int res = -1;
-    switch (game_mode) {
+        switch (game_mode) {
     case TETRIS_PLAY_MODE_SINGLE:
         draw_game_play_single_whole_screen_at(screen_start_pos_x, screen_start_pos_y);
-        res = 0;
         break;
-    /* Multiplayer mode is not yet developed. */
-    // case TETRIS_PLAY_MODE_MULTI:
-    //     break;
+    case TETRIS_PLAY_MODE_MULTI:
+        /* intentional fallthrough */
     default:
-        handle_error("Not a valid game mode");
+        handle_error("load_tetris_play_scene() Not a valid game mode");
         break;
     }
-    return res;
+}
+
+void cleanup_tetris_play_scene(void)
+{
+    debug();
+    
+    wenable_cursor();
+    wclear();
 }

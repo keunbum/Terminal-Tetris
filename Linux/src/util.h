@@ -1,6 +1,8 @@
 #ifndef __UTIL__H
 #define __UTIL__H
 
+#include "error_handling.h"
+
 #ifdef TETRIS_DEBUG
 #define func_check_error(func, ...)               \
     do {                                          \
