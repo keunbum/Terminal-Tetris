@@ -1,5 +1,5 @@
-#ifndef __BLOCK_CODE_SET__H
-#define __BLOCK_CODE_SET__H
+#ifndef __BLOCK_CODE__H
+#define __BLOCK_CODE__H
 
 #include <wchar.h>
 
@@ -61,4 +61,4 @@ static inline int get_block_code_fixed(int pos, int size)
     return ret;
 }
 
-#endif /* __BLOCK_CODE_SET__H */
+#endif /* __BLOCK_CODE__H */

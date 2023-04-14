@@ -1,4 +1,4 @@
-#include "update_tetromino_status.h"
+#include "tetris_play_update_tetromino_status.h"
 
 // /* return tetromino's status when moving left, right, or down.
 //    implement the rotation operation separately. */
@@ -6,8 +6,8 @@ tetromino_try_status_t try_tetromino_next_status(const tetris_play_board_t* boar
 {
     // debug();
 
-    polyomino_matrix_t matrix = get_tetromino_matrix(tetro->symbol_id, ndir);
-    polyomino_matrix_n_t n = get_tetromino_matrix_n(tetro->symbol_id);
+    tetromino_matrix_t matrix = get_tetromino_matrix(tetro->symbol_id, ndir);
+    tetromino_matrix_n_t n = get_tetromino_matrix_n(tetro->symbol_id);
     for (int pos = 0; pos < n * n; ++pos) {
         if (is_empty_block(matrix, pos)) {
             continue;
@@ -102,13 +102,13 @@ tetromino_try_status_t try_rotate_tetromino_r(const tetris_play_board_t* board, 
         out_tetro->dir = ndir;
     }
     tetris_play_tetromino_unlock();
-    return res;    
+    return res;
 }
 
 tetromino_try_status_t harddrop_tetromino_r(tetromino_t* const out_tetro)
 {
     debug();
-    
+
     tetris_play_tetromino_lock();
     (void)out_tetro;
     tetris_play_tetromino_unlock();

@@ -1,17 +1,17 @@
 #include <stdio.h>
 
 #include "debug.h"
-#include "tetris_play_update.h"
-#include "tetromino_generator.h"
-#include "update_tetromino_status.h"
+#include "tetris_play_tetromino_generator.h"
+#include "tetris_play_update_tetromino_status.h"
+#include "tetris_play_update_world.h"
 
-static inline void petrity_tetromino(tetris_play_board_t* const out_board, const tetromino_t* tetro)
+static inline void petrify_tetromino(tetris_play_board_t* const out_board, const tetromino_t* tetro)
 {
     debug();
 
     // my_assert(tetro->id != -1);
-    polyomino_matrix_t matrix = get_tetromino_matrix(tetro->symbol_id, tetro->dir);
-    polyomino_matrix_n_t n = get_tetromino_matrix_n(tetro->symbol_id);
+    tetromino_matrix_t matrix = get_tetromino_matrix(tetro->symbol_id, tetro->dir);
+    tetromino_matrix_n_t n = get_tetromino_matrix_n(tetro->symbol_id);
     for (int idx = 0; idx < n * n; ++idx) {
         if (is_empty_block(matrix, idx)) {
             continue;
@@ -37,8 +37,8 @@ static inline bool is_at_skyline(const tetromino_t* tetro)
 
     // my_assert(tetro->id != -1);
     my_assert(0 <= tetro->symbol_id && tetro->symbol_id < TOTAL_TETROMINO_NUM_OF_KINDS);
-    polyomino_matrix_t matrix = get_tetromino_matrix(tetro->symbol_id, tetro->dir);
-    polyomino_matrix_n_t n = get_tetromino_matrix_n(tetro->symbol_id);
+    tetromino_matrix_t matrix = get_tetromino_matrix(tetro->symbol_id, tetro->dir);
+    tetromino_matrix_n_t n = get_tetromino_matrix_n(tetro->symbol_id);
     tetris_play_tetromino_unlock();
     pos_e_t last_pos_x = TETRIS_PLAY_TETROMINO_POS_X_MIN - 1;
     for (int idx = 0; idx < n * n; ++idx) {
@@ -70,10 +70,10 @@ static tetromino_try_status_t update_tetromino_r(tetris_play_board_t* const rest
 static void process_tetromino_ontheground(tetris_play_manager_t* const out_play_manager)
 {
     debug();
-    
+
     out_play_manager->tetromino.id = -1;
     out_play_manager->prev_tetromino.id = -1;
-    petrity_tetromino(&out_play_manager->board, &out_play_manager->tetromino);
+    petrify_tetromino(&out_play_manager->board, &out_play_manager->tetromino);
     // clear_filled_lines(); --> maybe internally.
     // reflect_them_visually();
     if (is_at_skyline(&out_play_manager->tetromino)) {

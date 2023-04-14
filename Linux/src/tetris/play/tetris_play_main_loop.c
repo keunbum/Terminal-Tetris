@@ -3,11 +3,11 @@
 #include "chronometry.h"
 #include "debug.h"
 #include "draw/cursor.h"
-#include "game_main_loop.h"
-#include "tetris/scene/renderer.h"
-#include "tetris_play_fps.h"
-#include "tetris_play_update.h"
-#include "tetromino_generator.h"
+#include "tetris/scene/tetris_play_renderer.h"
+#include "tetris/tetris_play_fps.h"
+#include "tetris_play_main_loop.h"
+#include "tetris_play_tetromino_generator.h"
+#include "tetris_play_update_world.h"
 
 static void init_game_main_loop(tetris_play_manager_t* const out_play_manager)
 {
@@ -51,6 +51,6 @@ void* mainfunc_game_main_loop(void* arg)
     }
 
     wclear();
-    
+
     return (void*)play_manager->status;
 }

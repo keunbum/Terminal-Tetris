@@ -1,5 +1,5 @@
-#ifndef __UPDATE_TETROMINO_POS__H
-#define __UPDATE_TETROMINO_POS__H
+#ifndef __TETRIS_PLAY_UPDATE_TETROMINO_STATUS__H
+#define __TETRIS_PLAY_UPDATE_TETROMINO_STATUS__H
 
 #include "tetris/tetris_play_manager.h"
 #include "tetris_play_board.h"
@@ -34,5 +34,4 @@ tetromino_try_status_t harddrop_tetromino_r(tetromino_t* const out_tetro);
 
 // void update_tetromino_ground_pos(const tetris_play_board_t* restrict board, tetromino_t* restrict const out_tetro);
 
-
-#endif /* __UPDATE_TETROMINO_POS__H */
+#endif /* __TETRIS_PLAY_UPDATE_TETROMINO_STATUS__H */

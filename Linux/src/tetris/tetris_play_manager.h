@@ -2,7 +2,9 @@
 #define __TETRIS_PLAY_MANAGER__H
 
 #include "game_system/game_system_manager.h"
+#include "tetris/object/tetromino.h"
 #include "tetris/play/tetris_play_board.h"
+#include "tetris_play_fps.h"
 #include "tetris_play_submodule.h"
 #include "timer/timer_drawer.h"
 
@@ -11,14 +13,6 @@
 
 #define TETRIS_PLAY_TIMEINTERVAL_BEFORESTART_SEC (3)
 
-typedef double game_time_t;
-
-typedef enum {
-    TETRIS_PLAY_CMD_ERROR = -1,
-    TETRIS_PLAY_CMD_EXIT_GAME = 0,
-    TETRIS_PLAY_CMD_REGAME = 1,
-} tetris_play_cmd_t;
-
 typedef enum {
     TETRIS_PLAY_STATUS_ERROR = -1,
     TETRIS_PLAY_STATUS_GAMEOVER,
@@ -26,7 +20,11 @@ typedef enum {
     TETRIS_PLAY_STATUS_PAUSE,
 } tetris_play_status_t;
 
-#define TETRIS_PLAY_SUBMODULE_NUM (3)
+typedef void tetris_play_object;
+
+typedef struct {
+
+} tetris_play_world_t;
 
 typedef struct {
     const int screen_start_pos_x_wprint;
@@ -41,6 +39,7 @@ typedef struct {
     tetromino_t prev_tetromino;
     timer_drawer_t timer_drawer;
     tetris_play_board_t board;
+#define TETRIS_PLAY_SUBMODULE_NUM (3)
     game_play_submodule_t sub_modules[TETRIS_PLAY_SUBMODULE_NUM];
 } tetris_play_manager_t;
 

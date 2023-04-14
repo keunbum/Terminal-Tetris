@@ -4,7 +4,7 @@
 
 #include "debug.h"
 #include "pthread_macro.h"
-#include "tetris/play/update_tetromino_status.h"
+#include "tetris/play/tetris_play_update_tetromino_status.h"
 #include "tetris/tetris_play_manager.h"
 #include "tetris_play_input_reader.h"
 

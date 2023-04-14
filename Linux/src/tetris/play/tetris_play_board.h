@@ -1,11 +1,11 @@
 #ifndef __TETRIS_PLAY_BOARD__H
 #define __TETRIS_PLAY_BOARD__H
 
-#include <wchar.h>
 #include <pthread.h>
+#include <wchar.h>
 
+#include "tetris/object/tetromino.h"
 #include "tetris/scene/tetris_play_screen.h"
-#include "tetris/tetromino/tetromino.h"
 
 #define TETRIS_PLAY_BOARD_HEIGHT (20)
 #define TETRIS_PLAY_BOARD_WIDTH (10)

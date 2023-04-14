@@ -8,7 +8,7 @@
 #include "debug.h"
 #include "draw/digital_digit.h"
 #include "error_handling.h"
-#include "game_main_loop.h"
+#include "tetris_play_main_loop.h"
 #include "signal_macro.h"
 #include "tetris/scene/tetris_play_scene.h"
 #include "tetris/tetris_play_manager.h"

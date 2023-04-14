@@ -82,9 +82,9 @@
 // #define CRESET "\e[0m"
 // #define COLOR_RESET "\e[0m"
 
-typedef enum {
-    COLOR_BLACK,
-    COLOR_WHITE,
-} color_t;
+// typedef enum {
+//     COLOR_BLACK,
+//     COLOR_WHITE,
+// } color_t;
 
 #endif /* __COLOR__H */

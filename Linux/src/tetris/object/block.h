@@ -16,6 +16,4 @@
 
 #define BLOCK_WPRINT_LIGHT_LARGE_SQUARE (L'\U0001f3fb')
 
-
-
 #endif /* __BLOCK__H */

@@ -1,9 +1,9 @@
 #include "tetris_play_statistic.h"
 #include "draw/draw_tool.h"
-#include "tetris/scene/renderer.h"
+#include "tetris/object/block_code.h"
+#include "tetris/object/tetromino.h"
+#include "tetris/scene/tetris_play_renderer.h"
 #include "tetris/scene/tetris_play_screen.h"
-#include "tetris/tetromino/block_code_set.h"
-#include "tetris/tetromino/tetromino.h"
 
 #define TETRIS_PLAY_STATISTIC_START_POS_X_WPRINT (TETRIS_PLAY_SINGLE_SCREEN_START_POS_X_WPRINT + 9)
 #define TETRIS_PLAY_STATISTIC_START_POS_Y_WPRINT (TETRIS_PLAY_SINGLE_SCREEN_START_POS_Y_WPRINT + 5)
@@ -28,7 +28,7 @@ static void wdraw_tetris_play_statistics_tetrominos(void)
         t.symbol_id = s;
         t.dir = DIR_BOT;
         t.block_code = G_BLOCK_CODE_SET->codes[t.symbol_id];
-        const polyomino_matrix_n_t n = get_tetromino_matrix_n(t.symbol_id);
+        const tetromino_matrix_n_t n = get_tetromino_matrix_n(t.symbol_id);
         const int pos_x_wprint = TETRIS_PLAY_STATISTIC_START_POS_X_WPRINT + (s + 1) * TETRIS_PLAY_STATISTIC_INTERVAL_HEIGHT - 2;
         const int pos_y_wprint = TETRIS_PLAY_STATISTIC_TETROMINO_START_POS_Y_WPRINT + 4 - n;
         pos_t pos_wprint = { pos_x_wprint, pos_y_wprint };
@@ -40,7 +40,7 @@ static void wdraw_tetris_play_statistics_tetrominos(void)
 static void init_tetris_play_statistics(void)
 {
     debug();
-    
+
     for (int i = 0; i < TOTAL_TETROMINO_NUM_OF_KINDS; ++i) {
         g_s_tetromino_spawned_cnt[i] = 0;
     }

@@ -2,7 +2,7 @@
 #include <stdbool.h>
 
 #include "tetris_play_tetromino_silhouette.h"
-#include "update_tetromino_status.h"
+#include "tetris_play_update_tetromino_status.h"
 
 tetromino_t get_tetromino_silhouette(const tetris_play_board_t* board, const tetromino_t* tetro)
 {

@@ -6,7 +6,7 @@
 #include "error_handling.h"
 #include "tetris/play/tetris_play_board_frame.h"
 #include "tetris/play/tetris_play_statistic.h"
-#include "tetris/tetromino/block.h"
+#include "tetris/object/block.h"
 #include "tetris_play_scene.h"
 #include "tetris_play_screen.h"
 
