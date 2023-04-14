@@ -17,50 +17,50 @@
 #define M (397)
 #define R (31)
 #define MATRIX_A (0x9908B0DF) /* constant vector a */
-#define LOWER_MASK ((1u << R) - 1) /* most significant w-r bits */
-#define UPPER_MASK (~LOWER_MASK) /* least significant r bits */
+#define LOWER_MASK ((1u << (R)) - 1) /* most significant w-r bits */
+#define UPPER_MASK (~(LOWER_MASK)) /* least significant r bits */
 /* Tempering parameters */
 #define TEMPERING_MASK_B (0x9D2C5680)
 #define TEMPERING_MASK_C (0xEFC60000)
 #define F (1812433253)
-#define TEMPERING_SHIFT_U(y) (y >> 11)
-#define TEMPERING_SHIFT_S(y) (y << 7)
-#define TEMPERING_SHIFT_T(y) (y << 15)
-#define TEMPERING_SHIFT_L(y) (y >> 18)
+#define TEMPERING_SHIFT_U(y) ((y) >> 11)
+#define TEMPERING_SHIFT_S(y) ((y) << 7)
+#define TEMPERING_SHIFT_T(y) ((y) << 15)
+#define TEMPERING_SHIFT_L(y) ((y) >> 18)
 
-static uint32_t mt[N]; /* the array for the state vector */
-static size_t mti = N + 1;
+static uint32_t s_mt[N]; /* the array for the state vector */
+static size_t s_mti = N + 1;
 
 /* initializing the array with a NONZERO seed */
 void mt19937_srand(uint32_t seed)
 {
-    /* setting initial seeds to mt[N] using */
-    mt[0] = seed;
-    for (mti = 1; mti < N; ++mti) {
-        mt[mti] = F * (mt[mti - 1] ^ (mt[mti - 1] >> (W - 2))) + mti;
+    /* setting initial seeds to s_mt[N] using */
+    s_mt[0] = seed;
+    for (s_mti = 1; s_mti < N; ++s_mti) {
+        s_mt[s_mti] = F * (s_mt[s_mti - 1] ^ (s_mt[s_mti - 1] >> (W - 2))) + s_mti;
     }
 }
 
 uint32_t mt19937_rng(void)
 {
     uint32_t y;
-    if (mti >= N) {
+    if (s_mti >= N) {
         static uint32_t mag01[2] = { 0x0, MATRIX_A };
         size_t kk;
-        my_assert(mti != N + 1);
+        my_assert(s_mti != N + 1);
         for (kk = 0; kk < N - M; ++kk) {
-            y = (mt[kk] & UPPER_MASK) | (mt[kk + 1] & LOWER_MASK);
-            mt[kk] = mt[kk + M] ^ (y >> 1) ^ mag01[y & 0x1];
+            y = (s_mt[kk] & UPPER_MASK) | (s_mt[kk + 1] & LOWER_MASK);
+            s_mt[kk] = s_mt[kk + M] ^ (y >> 1) ^ mag01[y & 0x1];
         }
         for (; kk < N - 1; ++kk) {
-            y = (mt[kk] & UPPER_MASK) | (mt[kk + 1] & LOWER_MASK);
-            mt[kk] = mt[kk + (M - N)] ^ (y >> 1) ^ mag01[y & 0x1];
+            y = (s_mt[kk] & UPPER_MASK) | (s_mt[kk + 1] & LOWER_MASK);
+            s_mt[kk] = s_mt[kk + (M - N)] ^ (y >> 1) ^ mag01[y & 0x1];
         }
-        y = (mt[N - 1] & UPPER_MASK) | (mt[0] & LOWER_MASK);
-        mt[N - 1] = mt[M - 1] ^ (y >> 1) ^ mag01[y & 0x1];
-        mti = 0;
+        y = (s_mt[N - 1] & UPPER_MASK) | (s_mt[0] & LOWER_MASK);
+        s_mt[N - 1] = s_mt[M - 1] ^ (y >> 1) ^ mag01[y & 0x1];
+        s_mti = 0;
     }
-    y = mt[mti++];
+    y = s_mt[s_mti++];
     y ^= TEMPERING_SHIFT_U(y);
     y ^= TEMPERING_SHIFT_S(y) & TEMPERING_MASK_B;
     y ^= TEMPERING_SHIFT_T(y) & TEMPERING_MASK_C;

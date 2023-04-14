@@ -4,15 +4,6 @@
 #include "tetris/object/block_wprint.h"
 #include "tetris_play_statistic.h"
 
-// static tetromino_id_t g_s_tetromino_spawned_cnt;
-
-// void init_tetromino_generator(void)
-// {
-//     debug();
-
-//     g_s_tetromino_spawned_cnt = 1;
-// }
-
 // static const block_wprint_set_t G_S_BLOCK_WPRINT_SET_RAINBOW = {
 //     7,
 //     {
@@ -25,6 +16,7 @@
 //         L'\U0001f7e5', // red
 //     },
 // };
+
 static const block_wprint_set_t G_S_BLOCK_WPRINT_SET_EMOJI = {
     7,
     {
@@ -37,9 +29,10 @@ static const block_wprint_set_t G_S_BLOCK_WPRINT_SET_EMOJI = {
         L'\U0001f9e7', // 🧧
     },
 };
+
 static const block_wprint_set_t* G_S_BLOCK_WPRINT_SET = &G_S_BLOCK_WPRINT_SET_EMOJI;
 
-void new_init_tetromino_generator(tetromino_generator_t* const out_gen)
+void init_tetromino_generator(tetromino_generator_t* const out_gen)
 {
     debug();
 
@@ -49,21 +42,7 @@ void new_init_tetromino_generator(tetromino_generator_t* const out_gen)
     out_gen->block_wprint_set = G_S_BLOCK_WPRINT_SET;
 }
 
-// void spawn_tetromino(tetris_play_manager_t* const restrict play_manager, tetromino_t* const restrict out_tetro, pos_t init_pos, velocity_t init_velocity)
-// {
-//     debug();
-
-//     out_tetro->id = g_s_tetromino_spawned_cnt++;
-//     out_tetro->symbol_id = (symbol_id_t)(rng() % TOTAL_TETROMINO_NUM_OF_KINDS);
-//     out_tetro->pos = init_pos;
-//     out_tetro->velocity = init_velocity;
-//     out_tetro->dir = DIR_BOT;
-//     out_tetro->block = G_S_BLOCK_WPRINT_SET->wprint_values[out_tetro->symbol_id];
-
-//     new_inc_tetromino_cnt_by_one(&play_manager->stat, out_tetro->symbol_id);
-// }
-
-void new_spawn_tetromino(tetromino_generator_t* const restrict out_gen, tetromino_t* const restrict out_tetro, pos_t init_pos, velocity_t init_velocity)
+void spawn_tetromino(tetromino_generator_t* const restrict out_gen, tetromino_t* const restrict out_tetro, pos_t init_pos, velocity_t init_velocity)
 {
     debug();
 

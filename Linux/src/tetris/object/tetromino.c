@@ -1,6 +1,5 @@
 #include <time.h>
 
-#include "block_wprint.h"
 #include "debug.h"
 #include "tetromino.h"
 
@@ -20,21 +19,3 @@ const tetromino_matrix_t G_TETROMINO_MATRIXS[TOTAL_TETROMINO_NUM_OF_KINDS][TOTAL
 };
 
 tetromino_lock_t g_tetromino_lock;
-
-// /* Experimental work.. */
-// /* It doesn't seem easy to implement flexibly. */
-// void traverse_tetromino(const tetromino_t* tetro, tetromino_traverse_func_t func, void* arg)
-// {
-//     // debug();
-
-//     tetromino_matrix_t matrix = get_tetromino_matrix(tetro->symbol_id, tetro->dir);
-//     tetromino_matrix_n_t n = get_tetromino_matrix_n(tetro->symbol_id);
-//     for (int pos = 0; pos < n * n; ++pos) {
-//         if (is_empty_block(matrix, pos)) {
-//             continue;
-//         }
-//         int i = pos / n;
-//         int j = pos % n;
-//         func(i, j, arg);
-//     }
-// }

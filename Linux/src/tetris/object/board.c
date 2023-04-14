@@ -2,8 +2,6 @@
 #include "debug.h"
 #include "draw/draw_tool.h"
 
-board_lock_t g_board_lock;
-
 static inline void set_board_block(board_t* const out_board, int i, int j, block_t block)
 {
     set_block(out_board->grid[i] + j, block);
@@ -17,6 +15,8 @@ static inline void set_board_block_each(board_t* const out_board, int i, int j, 
 void init_board(board_t* const out_board)
 {
     debug();
+
+    init_board_lock(out_board);
 
     set_board_block_each(out_board, 0, 0, BLOCK_NATURE_FULL, out_board->block_corner_top_left);
     set_board_block_each(out_board, 0, out_board->width - 1, BLOCK_NATURE_FULL, out_board->block_corner_top_right);
@@ -40,12 +40,17 @@ void init_board(board_t* const out_board)
     }
 }
 
+void cleanup_board(board_t* const out_board)
+{
+    cleanup_board_lock(out_board);
+}
+
 void wdraw_board(const board_t* board)
 {
     debug();
 
     my_assert(board != NULL);
-    
+
     cursor_lock();
     wgotoxy((int)board->pos_wprint.x, (int)board->pos_wprint.y);
     for (int i = 0; i < board->height; ++i) {

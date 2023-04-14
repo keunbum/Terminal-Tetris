@@ -3,7 +3,6 @@
 
 #include "tetris/object/block_wprint_set.h"
 #include "tetris/object/tetromino.h"
-#include "tetris/play/tetris_play_tetromino_generator.h"
 
 typedef struct {
     const pos_t pos;
@@ -17,7 +16,7 @@ typedef struct {
     size_t tetromino_spawned_cnts[TOTAL_TETROMINO_NUM_OF_KINDS];
 } tetris_play_statistic_t;
 
-#define TETRIS_PLAY_STATISTIC_POS_X (TETRIS_PLAY_SINGLE_SCREEN_POS_X + 8)
+#define TETRIS_PLAY_STATISTIC_POS_X (TETRIS_PLAY_BOARD_POS_X + 5)
 #define TETRIS_PLAY_STATISTIC_POS_Y (TETRIS_PLAY_SINGLE_SCREEN_POS_Y + 5)
 
 #define TETRIS_PLAY_STATISTIC_POS_X_WPRINT TETRIS_PLAY_STATISTIC_POS_X
@@ -28,11 +27,7 @@ typedef struct {
 #define TETRIS_PLAY_STATISTIC_TETROMINO_POS_X_WPRINT (TETRIS_PLAY_STATISTIC_POS_X_WPRINT - TETRIS_PLAY_STATISTIC_INTERVAL_HEIGHT + 1)
 #define TETRIS_PLAY_STATISTIC_TETROMINO_POS_Y_WPRINT (TETRIS_PLAY_STATISTIC_POS_Y_WPRINT - 1)
 
-// void wdraw_tetris_play_statistics_frame(void);
-// void inc_tetromino_cnt_by_one(symbol_id_t);
-
 void new_init_tetris_play_statistics(tetris_play_statistic_t* const out_st);
-// void wdraw_tetris_play_statistics(const tetris_play_statistic_t* st);
 void wdraw_tetris_play_statistics(const tetris_play_statistic_t* st, const block_wprint_set_t* set);
 void new_inc_tetromino_cnt_by_one(tetris_play_statistic_t* const out_st, symbol_id_t id);
 

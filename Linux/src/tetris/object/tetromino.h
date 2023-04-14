@@ -56,7 +56,7 @@ extern tetromino_lock_t g_tetromino_lock;
 #define init_tetris_play_tetromino_lock() func_check_error(pthread_spin_init, &g_tetromino_lock, PTHREAD_PROCESS_PRIVATE)
 #define tetris_play_tetromino_lock() func_check_error(pthread_spin_lock, &g_tetromino_lock)
 #define tetris_play_tetromino_unlock() func_check_error(pthread_spin_unlock, &g_tetromino_lock)
-#define cleanup_tetris_play_update_lock() func_check_error(pthread_spin_destroy, &g_tetromino_lock)
+#define cleanup_tetris_play_tetromino_lock() func_check_error(pthread_spin_destroy, &g_tetromino_lock)
 
 static inline tetromino_matrix_n_t get_tetromino_matrix_n(symbol_id_t sid)
 {
@@ -100,8 +100,5 @@ static inline void set_tetromino_dir(tetromino_t* const out_tetro, dir_t dir)
     out_tetro->dir = dir;
     tetris_play_tetromino_unlock();
 }
-
-// typedef void (*tetromino_traverse_func_t)(int i, int j, void* arg);
-// void traverse_tetromino(const tetromino_t* tetro, tetromino_traverse_func_t func, void* arg);
 
 #endif /* __TETROMINO__H */

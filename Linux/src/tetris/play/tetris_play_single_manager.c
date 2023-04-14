@@ -113,16 +113,16 @@ static tetris_play_manager_t g_s_play_manager = {
     },
 };
 
-static void ready_getset_go(void)
+static void ready_getset_go(const tetris_play_manager_t* play_manager)
 {
     debug();
 
-    for (int cur_sec = g_s_play_manager.ready_getset_go_sec; cur_sec >= 0; --cur_sec) {
+    for (int cur_sec = play_manager->ready_getset_go_sec; cur_sec >= 0; --cur_sec) {
         struct timespec start_time;
         get_chrono_time(&start_time);
 
         const pos_t pos_wprint = {
-            g_s_play_manager.screen_start_pos_x_wprint + 2,
+            play_manager->screen_start_pos_x_wprint + 2,
             BOARD_FRAME_POS_Y_WPRINT + BOARD_FRAME_WIDTH - 2,
         };
         if (cur_sec == 0) {
@@ -131,7 +131,7 @@ static void ready_getset_go(void)
         }
         wdraw_digital_digit_at_r(G_DIGITAL_DIGITS[cur_sec], (int)pos_wprint.x, (int)pos_wprint.y);
         /* Of course, it's not exactly 1 second. */
-        /* However, it is a bit cumbersome to write a timer haha; */
+        /* However, it is a bit cumbersome to write a realtime timer haha; */
         nanosleep_chrono(TO_NSEC(1) - get_elapsed_time_nsec(&start_time));
     }
 }
@@ -146,22 +146,22 @@ static void run_game_play_module_in_parallel(game_play_submodule_t* const out_ga
     }
 }
 
-static tetris_play_status_t run_game_play_modules_in_parallel(void)
+static tetris_play_status_t run_game_play_modules_in_parallel(tetris_play_manager_t* const out_play_manager)
 {
     debug();
 
-    timer_drawer_t* timer_drawer = &g_s_play_manager.timer_drawer;
+    timer_drawer_t* timer_drawer = &out_play_manager->timer_drawer;
     realtime_timer_t* timer = &timer_drawer->timer;
 
     /* Block REALTIME_TIMER_SIG */
     block_signal(timer->timersig);
 
     for (size_t i = 0; i < TETRIS_PLAY_SUBMODULE_NUM; ++i) {
-        run_game_play_module_in_parallel(g_s_play_manager.sub_modules + i);
+        run_game_play_module_in_parallel(out_play_manager->sub_modules + i);
     }
 
     for (size_t i = 0; i < TETRIS_PLAY_SUBMODULE_NUM; ++i) {
-        game_play_submodule_t* const module = g_s_play_manager.sub_modules + i;
+        game_play_submodule_t* const module = out_play_manager->sub_modules + i;
         if (module->is_detached) {
             continue;
         }
@@ -170,7 +170,7 @@ static tetris_play_status_t run_game_play_modules_in_parallel(void)
         }
     }
 
-    const game_play_submodule_t* main_module = g_s_play_manager.sub_modules + 0;
+    const game_play_submodule_t* main_module = out_play_manager->sub_modules + 0;
     return (tetris_play_status_t)(long long)main_module->retval;
 }
 
@@ -184,27 +184,50 @@ static int selection_after_game_over(void)
     return TETRIS_PLAY_CMD_EXIT_GAME;
 } */
 
-static void init_tetris_play_manager(tetris_play_manager_t* const out_play_manager)
-{
-    init_tetris_play_objects(out_play_manager);
-    new_load_tetris_play_scene(out_play_manager);
-    out_play_manager->timer_drawer.timer.timersig = REALTIME_TIMER_SIG;
-}
-
-static tetris_play_cmd_t play_a_new_game(void)
+static void init_tetris_play_objects(tetris_play_manager_t* const out_play_manager)
 {
     debug();
 
-    // load_tetris_play_scene(g_s_play_manager.play_mode, g_s_play_manager.screen_start_pos_x_wprint, g_s_play_manager.screen_start_pos_y_wprint);
-    init_tetris_play_manager(&g_s_play_manager);
+    init_tetromino_generator(&out_play_manager->gen);
+    init_board(&out_play_manager->board);
+    new_init_tetris_play_statistics(&out_play_manager->stat);
+}
 
-    ready_getset_go();
+static void init_tetris_play_manager(tetris_play_manager_t* const out_play_manager)
+{
+    my_assert(out_play_manager != NULL);
 
-    if (run_game_play_modules_in_parallel() == TETRIS_PLAY_STATUS_ERROR) {
+    init_tetris_play_objects(out_play_manager);
+    load_tetris_play_scene(out_play_manager);
+    out_play_manager->timer_drawer.timer.timersig = REALTIME_TIMER_SIG;
+}
+
+static void cleanup_tetris_play_objects(tetris_play_manager_t* const out_play_manager)
+{
+    cleanup_board(&out_play_manager->board);
+}
+
+static void cleanup_tetris_play_manager(tetris_play_manager_t* const out_play_manager)
+{
+    my_assert(out_play_manager != NULL);
+
+    cleanup_tetris_play_scene();
+    cleanup_tetris_play_objects(out_play_manager);
+}
+
+static tetris_play_cmd_t play_a_new_game(tetris_play_manager_t* const out_play_manager)
+{
+    debug();
+
+    init_tetris_play_manager(out_play_manager);
+
+    ready_getset_go(out_play_manager);
+
+    if (run_game_play_modules_in_parallel(out_play_manager) == TETRIS_PLAY_STATUS_ERROR) {
         handle_error("run_game_play_modules_in_parallel() error");
     }
 
-    cleanup_tetris_play_scene();
+    cleanup_tetris_play_manager(out_play_manager);
 
     /* UX after Game Over not implemented yet. */
     return TETRIS_PLAY_CMD_REGAME;
@@ -221,7 +244,7 @@ void* run_tetris_play_single_mode(void* arg)
     (void)arg;
 
     while (true) {
-        tetris_play_cmd_t res = play_a_new_game();
+        tetris_play_cmd_t res = play_a_new_game(&g_s_play_manager);
         if (res == TETRIS_PLAY_CMD_EXIT_GAME) {
             break;
         }

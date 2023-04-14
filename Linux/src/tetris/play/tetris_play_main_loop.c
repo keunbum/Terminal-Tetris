@@ -13,7 +13,7 @@ static void init_game_main_loop(tetris_play_manager_t* const out_play_manager)
 {
     debug();
 
-    new_init_tetromino_generator(&out_play_manager->gen);
+    init_tetromino_generator(&out_play_manager->gen);
     out_play_manager->tetromino.id = -1;
     out_play_manager->prev_tetromino.id = -1;
     out_play_manager->status = TETRIS_PLAY_STATUS_RUNNING;
