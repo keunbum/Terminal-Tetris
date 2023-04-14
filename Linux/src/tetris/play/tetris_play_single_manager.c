@@ -5,38 +5,63 @@
 #include <stdlib.h>
 #include <unistd.h>
 
+#include "chronometry.h"
 #include "debug.h"
 #include "draw/digital_digit.h"
 #include "error_handling.h"
-#include "tetris_play_main_loop.h"
 #include "signal_macro.h"
+#include "tetris/object/board.h"
 #include "tetris/scene/tetris_play_scene.h"
 #include "tetris/tetris_play_manager.h"
 #include "tetris/tetris_play_submodule.h"
 #include "tetris/timer/game_play_timer.h"
-#include "tetris_play_board_frame.h"
 #include "tetris_play_input_reader.h"
+#include "tetris_play_main_loop.h"
 #include "tetris_play_single_manager.h"
-#include "chronometry.h"
+#include "tetris_play_update_world.h"
 
 static tetris_play_manager_t g_s_play_manager = {
-    .mode = TETRIS_PLAY_MODE_SINGLE,
-    .screen_start_pos_x_wprint = TETRIS_PLAY_SINGLE_SCREEN_START_POS_X_WPRINT,
-    .screen_start_pos_y_wprint = TETRIS_PLAY_SINGLE_SCREEN_START_POS_Y_WPRINT,
+    .play_mode = TETRIS_PLAY_MODE_SINGLE,
+    .screen_start_pos_x_wprint = TETRIS_PLAY_SINGLE_SCREEN_POS_X_WPRINT,
+    .screen_start_pos_y_wprint = TETRIS_PLAY_SINGLE_SCREEN_POS_Y_WPRINT,
     .screen_height_wprint = TETRIS_PLAY_SINGLE_SCREEN_HEIGHT_WPRINT,
     .ready_getset_go_sec = TETRIS_PLAY_TIMEINTERVAL_BEFORESTART_SEC,
     .game_delta_time = 0.0,
+    .screen = {
+        .pos = { TETRIS_PLAY_SINGLE_SCREEN_POS_X, TETRIS_PLAY_SINGLE_SCREEN_POS_Y },
+        .pos_wprint = { TETRIS_PLAY_SINGLE_SCREEN_POS_X_WPRINT, TETRIS_PLAY_SINGLE_SCREEN_POS_Y_WPRINT },
+    },
+    .board = {
+        .game_board_unit_matrix_corner_top_left = BLOCK_WPRINT_BLACK_SQUARE_BUTTON,
+        .game_board_unit_matrix_corner_top_right = BLOCK_WPRINT_BLACK_SQUARE_BUTTON,
+        .game_board_unit_matrix_corner_bot_left = BLOCK_WPRINT_BLACK_SQUARE_BUTTON,
+        .game_board_unit_matrix_corner_bot_right = BLOCK_WPRINT_BLACK_SQUARE_BUTTON,
+        .game_board_unit_matrix_ver_line = BLOCK_WPRINT_BLACK_SQUARE_BUTTON,
+        .game_board_unit_matrix_hor_line = BLOCK_WPRINT_BLACK_SQUARE_BUTTON,
+        .game_board_unit_matrix_inner = BLOCK_WPRINT_WHITE_LARGE_SQUARE,
+
+        .height = TETRIS_PLAY_BOARD_HEIGHT,
+        .width = TETRIS_PLAY_BOARD_WIDTH,
+        .height_wprint = TETRIS_PLAY_BOARD_HEIGHT_WPRINT,
+        .width_wprint = TETRIS_PLAY_BOARD_WIDTH_WPRINT,
+        .frame_height = BOARD_FRAME_HEIGHT,
+        .frame_width = BOARD_FRAME_WIDTH,
+        .pos = { TETRIS_PLAY_BOARD_POS_X, TETRIS_PLAY_BOARD_POS_Y },
+        .pos_wprint = { TETRIS_PLAY_BOARD_POS_X_WPRINT, TETRIS_PLAY_BOARD_POS_Y_WPRINT },
+        .frame_pos = { BOARD_FRAME_POS_X, BOARD_FRAME_POS_Y },
+        .frame_pos_wprint = { BOARD_FRAME_POS_X_WPRINT, BOARD_FRAME_POS_Y_WPRINT },
+    },
+    .statistics = {
+        .pos = { TETRIS_PLAY_STATISTIC_POS_X, TETRIS_PLAY_STATISTIC_POS_Y },
+        .pos_wprint = { TETRIS_PLAY_STATISTIC_POS_X_WPRINT, TETRIS_PLAY_STATISTIC_POS_Y_WPRINT },
+        .tetromino_pos_wprint = { TETRIS_PLAY_STATISTIC_TETROMINO_POS_X_WPRINT, TETRIS_PLAY_STATISTIC_TETROMINO_POS_Y_WPRINT },
+        .interval_height = TETRIS_PLAY_STATISTIC_INTERVAL_HEIGHT,
+    },
     .tetromino = {
         .id = -1,
     },
     .prev_tetromino = {
         .id = -1,
-    },
-    .board = {
-        .height = TETRIS_PLAY_BOARD_HEIGHT,
-        .width = TETRIS_PLAY_BOARD_WIDTH,
-        .height_wprint = TETRIS_PLAY_BOARD_HEIGHT_WPRINT,
-        .width_wprint = TETRIS_PLAY_BOARD_WIDTH_WPRINT,
     },
     .timer_drawer = {
         .timer = {
@@ -87,7 +112,7 @@ static void ready_getset_go(void)
 
         const pos_t pos_wprint = {
             g_s_play_manager.screen_start_pos_x_wprint + 2,
-            TETRIS_PLAY_BOARD_FRAME_START_POS_Y_WPRINT + TETRIS_PLAY_BOARD_FRAME_WIDTH - 2,
+            BOARD_FRAME_POS_Y_WPRINT + BOARD_FRAME_WIDTH - 2,
         };
         if (cur_sec == 0) {
             wdraw_digital_digit_at_r(G_DIGITAL_DIGIT_EMPTY, (int)pos_wprint.x, (int)pos_wprint.y);
@@ -133,7 +158,7 @@ static tetris_play_status_t run_game_play_modules_in_parallel(void)
             handle_error("pthread_join() error");
         }
     }
-    
+
     const game_play_submodule_t* main_module = g_s_play_manager.sub_modules + 0;
     return (tetris_play_status_t)(long long)main_module->retval;
 }
@@ -152,7 +177,9 @@ static tetris_play_cmd_t play_a_new_game(void)
 {
     debug();
 
-    load_tetris_play_scene(g_s_play_manager.mode, g_s_play_manager.screen_start_pos_x_wprint, g_s_play_manager.screen_start_pos_y_wprint);
+    // load_tetris_play_scene(g_s_play_manager.play_mode, g_s_play_manager.screen_start_pos_x_wprint, g_s_play_manager.screen_start_pos_y_wprint);
+    load_tetris_play_objects(&g_s_play_manager);
+    new_load_tetris_play_scene(&g_s_play_manager);
 
     ready_getset_go();
 

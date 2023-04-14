@@ -3,7 +3,8 @@
 
 #include "tetris/tetris_play_manager.h"
 
-void load_tetris_play_scene(tetris_play_mode_t, int, int);
+// void load_tetris_play_scene(tetris_play_mode_t, int, int);
+void new_load_tetris_play_scene(const tetris_play_manager_t* play_manager);
 void cleanup_tetris_play_scene(void);
 
 #endif /* __TETRIS_PLAY_SCENE__H */

@@ -9,7 +9,7 @@
 #include "error_handling.h"
 #include "game_selection_menu.h"
 #include "tetris/play/tetris_play_single_manager.h"
-#include "tetris/tetris_play_manager.h"
+#include "game_system_manager.h"
 
 static const game_module_t G_S_GAME_OBJECTS[1] = {
     {

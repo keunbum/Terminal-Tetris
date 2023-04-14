@@ -2,7 +2,7 @@
 
 // /* return tetromino's status when moving left, right, or down.
 //    implement the rotation operation separately. */
-tetromino_try_status_t try_tetromino_next_status(const tetris_play_board_t* board, const tetromino_t* tetro, pos_t npos, dir_t ndir)
+tetromino_try_status_t try_tetromino_next_status(const board_t* board, const tetromino_t* tetro, pos_t npos, dir_t ndir)
 {
     // debug();
 
@@ -30,9 +30,9 @@ tetromino_try_status_t try_tetromino_next_status(const tetris_play_board_t* boar
         my_assert(each_npos.x >= 0);
         my_assert(each_npos.x < board->height);
         my_assert(0 <= each_npos.y && each_npos.y < board->width);
-        tetris_play_board_lock();
-        tetris_play_board_grid_element_t each_value = board->grid[(int)each_npos.x][(int)each_npos.y];
-        tetris_play_board_unlock();
+        board_lock();
+        board_grid_element_t each_value = board->grid[(int)each_npos.x][(int)each_npos.y];
+        board_unlock();
         if (each_value != TETRIS_PLAY_BOARD_GRID_ELEMENT_DEFAULT && each_value != tetro->id) {
             ewprintf("hi3\n");
             return TETROMINO_TRY_STATUS_ONTHEGROUND;
@@ -42,7 +42,7 @@ tetromino_try_status_t try_tetromino_next_status(const tetris_play_board_t* boar
     return TETROMINO_TRY_STATUS_MOVED;
 }
 
-tetromino_try_status_t try_move_tetromino_deltatime_r(const tetris_play_board_t* board, tetromino_t* const out_tetro, dir_t dir, game_time_t game_delta_time)
+tetromino_try_status_t try_move_tetromino_deltatime_r(const board_t* board, tetromino_t* const out_tetro, dir_t dir, game_time_t game_delta_time)
 {
     debug();
 
@@ -65,7 +65,7 @@ tetromino_try_status_t try_move_tetromino_deltatime_r(const tetris_play_board_t*
     return res;
 }
 
-tetromino_try_status_t try_move_tetromino_byone_r(const tetris_play_board_t* board, tetromino_t* const out_tetro, dir_t dir)
+tetromino_try_status_t try_move_tetromino_byone_r(const board_t* board, tetromino_t* const out_tetro, dir_t dir)
 {
     debug();
 
@@ -87,7 +87,7 @@ tetromino_try_status_t try_move_tetromino_byone_r(const tetris_play_board_t* boa
     return res;
 }
 
-tetromino_try_status_t try_rotate_tetromino_r(const tetris_play_board_t* board, tetromino_t* const out_tetro, int by)
+tetromino_try_status_t try_rotate_tetromino_r(const board_t* board, tetromino_t* const out_tetro, int by)
 {
     debug();
 

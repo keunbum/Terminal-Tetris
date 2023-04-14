@@ -8,14 +8,14 @@
 
 static inline pos_t get_pos_wprint(pos_t pos)
 {
-    pos_t ret = { pos.x + TETRIS_PLAY_BOARD_START_POS_X_WPRINT, 2 * pos.y + TETRIS_PLAY_BOARD_START_POS_Y_WPRINT };
+    pos_t ret = { pos.x + TETRIS_PLAY_BOARD_POS_X_WPRINT, 2 * pos.y + TETRIS_PLAY_BOARD_POS_Y_WPRINT };
     return ret;
 }
 
 static inline void render_a_block(pos_t pos, wchar_t block_wprint)
 {
     pos_t pos_wprint = get_pos_wprint(pos);
-    if (pos_wprint.x < TETRIS_PLAY_BOARD_START_POS_X_WPRINT) {
+    if (pos_wprint.x < TETRIS_PLAY_BOARD_POS_X_WPRINT) {
         return;
     }
     wdraw_unit_matrix_at(block_wprint, (int)pos_wprint.x, (int)pos_wprint.y);

@@ -2,14 +2,16 @@
 #define __TETRIS_PLAY_MANAGER__H
 
 #include "game_system/game_system_manager.h"
+#include "tetris/object/board.h"
+#include "tetris/object/screen.h"
 #include "tetris/object/tetromino.h"
-#include "tetris/play/tetris_play_board.h"
-#include "tetris_play_fps.h"
+// #include "tetris_play_fps.h"
 #include "tetris_play_submodule.h"
 #include "timer/timer_drawer.h"
+#include "tetris/play/tetris_play_statistic.h"
 
-#define TETRIS_PLAY_TIMER_POS_X_WPRINT (TETRIS_PLAY_SINGLE_SCREEN_START_POS_X_WPRINT + 2)
-#define TETRIS_PLAY_TIMER_POS_Y_WPRINT (TETRIS_PLAY_BOARD_START_POS_Y_WPRINT + TETRIS_PLAY_BOARD_WIDTH / 2 - 2)
+#define TETRIS_PLAY_TIMER_POS_X_WPRINT (TETRIS_PLAY_SINGLE_SCREEN_POS_X_WPRINT + 2)
+#define TETRIS_PLAY_TIMER_POS_Y_WPRINT (TETRIS_PLAY_BOARD_POS_Y_WPRINT + TETRIS_PLAY_BOARD_WIDTH / 2 - 2)
 
 #define TETRIS_PLAY_TIMEINTERVAL_BEFORESTART_SEC (3)
 
@@ -20,10 +22,7 @@ typedef enum {
     TETRIS_PLAY_STATUS_PAUSE,
 } tetris_play_status_t;
 
-typedef void tetris_play_object;
-
 typedef struct {
-
 } tetris_play_world_t;
 
 typedef struct {
@@ -32,13 +31,16 @@ typedef struct {
     const int screen_height_wprint;
     const int ready_getset_go_sec;
 
-    tetris_play_mode_t mode;
+    tetris_play_mode_t play_mode;
     tetris_play_status_t status;
     game_time_t game_delta_time;
+
+    screen_t screen;
+    board_t board;
+    tetris_play_statistic_t statistics;
     tetromino_t tetromino;
     tetromino_t prev_tetromino;
     timer_drawer_t timer_drawer;
-    tetris_play_board_t board;
 #define TETRIS_PLAY_SUBMODULE_NUM (3)
     game_play_submodule_t sub_modules[TETRIS_PLAY_SUBMODULE_NUM];
 } tetris_play_manager_t;

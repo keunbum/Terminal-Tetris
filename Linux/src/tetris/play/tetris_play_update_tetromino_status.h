@@ -1,8 +1,8 @@
 #ifndef __TETRIS_PLAY_UPDATE_TETROMINO_STATUS__H
 #define __TETRIS_PLAY_UPDATE_TETROMINO_STATUS__H
 
-#include "tetris/tetris_play_manager.h"
-#include "tetris_play_board.h"
+// #include "tetris/tetris_play_manager.h"
+#include "tetris/object/board.h"
 
 #define TETRIS_PLAY_TETROMINO_INIT_POS_X (-2)
 #define TETRIS_PLAY_TETROMINO_INIT_POS_Y (TETRIS_PLAY_BOARD_WIDTH / 2 - 1)
@@ -25,13 +25,13 @@ typedef enum {
     TETROMINO_TRY_STATUS_ONTHEGROUND,
 } tetromino_try_status_t;
 
-tetromino_try_status_t try_tetromino_next_status(const tetris_play_board_t* board, const tetromino_t* tetro, pos_t npos, dir_t ndir);
+tetromino_try_status_t try_tetromino_next_status(const board_t* board, const tetromino_t* tetro, pos_t npos, dir_t ndir);
 
-tetromino_try_status_t try_move_tetromino_deltatime_r(const tetris_play_board_t* board, tetromino_t* const out_tetro, dir_t dir, game_time_t game_delta_time);
-tetromino_try_status_t try_move_tetromino_byone_r(const tetris_play_board_t* board, tetromino_t* const out_tetro, dir_t dir);
-tetromino_try_status_t try_rotate_tetromino_r(const tetris_play_board_t* board, tetromino_t* const out_tetro, int by);
+tetromino_try_status_t try_move_tetromino_deltatime_r(const board_t* board, tetromino_t* const out_tetro, dir_t dir, game_time_t game_delta_time);
+tetromino_try_status_t try_move_tetromino_byone_r(const board_t* board, tetromino_t* const out_tetro, dir_t dir);
+tetromino_try_status_t try_rotate_tetromino_r(const board_t* board, tetromino_t* const out_tetro, int by);
 tetromino_try_status_t harddrop_tetromino_r(tetromino_t* const out_tetro);
 
-// void update_tetromino_ground_pos(const tetris_play_board_t* restrict board, tetromino_t* restrict const out_tetro);
+// void update_tetromino_ground_pos(const board_t* restrict board, tetromino_t* restrict const out_tetro);
 
 #endif /* __TETRIS_PLAY_UPDATE_TETROMINO_STATUS__H */

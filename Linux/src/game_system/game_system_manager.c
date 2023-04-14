@@ -5,7 +5,7 @@
 #include "game_system_manager.h"
 #include "localize/localize.h"
 #include "mt19937.h"
-#include "tetris/play/tetris_play_board.h"
+#include "tetris/object/board.h"
 #include "tetris/scene/tetris_play_scene.h"
 #include "tetris/object/tetromino.h"
 #include "title_menu.h"
@@ -18,7 +18,7 @@ static void init_game_system(void)
 
     init_cursor_lock();
     init_tetris_play_tetromino_lock();
-    init_tetris_play_board_lock();
+    init_board_lock();
 
     init_mt19937((uint32_t)time(NULL));
 }
@@ -27,7 +27,7 @@ static void cleanup_game_system(void)
 {
     debug();
 
-    cleanup_tetris_play_board_lock();
+    cleanup_board_lock();
     cleanup_tetris_play_update_lock();
     cleanup_cursor_lock();
     cleanup_tetris_play_scene();

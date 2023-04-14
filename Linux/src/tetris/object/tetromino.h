@@ -4,7 +4,6 @@
 #include <pthread.h>
 #include <stdbool.h>
 
-#include "block.h"
 #include "block_code.h"
 #include "color.h"
 #include "debug.h"

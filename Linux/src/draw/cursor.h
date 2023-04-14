@@ -12,15 +12,33 @@
 /* For all macro functions, it must be implemented as a wchar_t version. */
 
 #define wclear() wprintf(L"\e[H\e[J")
-#define wgotoxy(x, y) wprintf(L"\e[%d;%df", (x) + 1, (y) + 1)
-
 #define wdisable_cursor() wprintf(L"\e[?25l")
 #define wenable_cursor() wprintf(L"\e[?25h")
 
-#define wmove_cursor_up_by(n) wprintf(L"\e[%dA", n)
-#define wmove_cursor_down_by(n) wprintf(L"\e[%dB", n)
-#define wmove_cursor_right_by(n) wprintf(L"\e[%dC", n)
-#define wmove_cursor_left_by(n) wprintf(L"\e[%dD", n)
+static inline void wgotoxy(int x, int y)
+{
+    wprintf(L"\e[%d;%df", x + 1, y + 1);
+}
+
+static inline void wmove_cursor_up_by(int n)
+{
+    wprintf(L"\e[%dA", n);
+}
+
+static inline void wmove_cursor_down_by(int n)
+{
+    wprintf(L"\e[%dB", n);
+}
+
+static inline void wmove_cursor_right_by(int n)
+{
+    wprintf(L"\e[%dC", n);
+}
+
+static inline void wmove_cursor_left_by(int n)
+{
+    wprintf(L"\e[%dD", n);
+}
 
 #define wmove_cursor_up() wmove_cursor_up_by(1)
 #define wmove_cursor_down() wmove_cursor_down_by(1)
