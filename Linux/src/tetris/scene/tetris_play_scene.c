@@ -31,17 +31,17 @@
 //     static wchar_t S_MID_LINE[BOARD_FRAME_WIDTH + 1];
 //     static wchar_t S_BOT_LINE[BOARD_FRAME_WIDTH + 1];
 
-//     const wchar_t game_board_unit_matrix_corner_top_left = BLOCK_WPRINT_BLACK_SQUARE_BUTTON;
-//     const wchar_t game_board_unit_matrix_corner_top_right = BLOCK_WPRINT_BLACK_SQUARE_BUTTON;
-//     const wchar_t game_board_unit_matrix_corner_bot_left = BLOCK_WPRINT_BLACK_SQUARE_BUTTON;
-//     const wchar_t game_board_unit_matrix_corner_bot_right = BLOCK_WPRINT_BLACK_SQUARE_BUTTON;
-//     const wchar_t game_board_unit_matrix_ver_line = BLOCK_WPRINT_BLACK_SQUARE_BUTTON;
-//     const wchar_t game_board_unit_matrix_hor_line = BLOCK_WPRINT_BLACK_SQUARE_BUTTON;
-//     const wchar_t game_board_unit_matrix_inner = BLOCK_WPRINT_WHITE_LARGE_SQUARE;
+//     const wchar_t block_corner_top_left = BLOCK_WPRINT_BLACK_SQUARE_BUTTON;
+//     const wchar_t block_corner_top_right = BLOCK_WPRINT_BLACK_SQUARE_BUTTON;
+//     const wchar_t block_corner_bot_left = BLOCK_WPRINT_BLACK_SQUARE_BUTTON;
+//     const wchar_t block_corner_bot_right = BLOCK_WPRINT_BLACK_SQUARE_BUTTON;
+//     const wchar_t block_ver_line = BLOCK_WPRINT_BLACK_SQUARE_BUTTON;
+//     const wchar_t block_hor_line = BLOCK_WPRINT_BLACK_SQUARE_BUTTON;
+//     const wchar_t block_inner = BLOCK_WPRINT_WHITE_LARGE_SQUARE;
 
-//     wset_row_line(S_TOP_LINE, BOARD_FRAME_WIDTH, game_board_unit_matrix_corner_top_left, game_board_unit_matrix_hor_line, game_board_unit_matrix_corner_top_right);
-//     wset_row_line(S_MID_LINE, BOARD_FRAME_WIDTH, game_board_unit_matrix_ver_line, game_board_unit_matrix_inner, game_board_unit_matrix_ver_line);
-//     wset_row_line(S_BOT_LINE, BOARD_FRAME_WIDTH, game_board_unit_matrix_corner_bot_left, game_board_unit_matrix_hor_line, game_board_unit_matrix_corner_bot_right);
+//     wset_row_line(S_TOP_LINE, BOARD_FRAME_WIDTH, block_corner_top_left, block_hor_line, block_corner_top_right);
+//     wset_row_line(S_MID_LINE, BOARD_FRAME_WIDTH, block_ver_line, block_inner, block_ver_line);
+//     wset_row_line(S_BOT_LINE, BOARD_FRAME_WIDTH, block_corner_bot_left, block_hor_line, block_corner_bot_right);
 
 //     cursor_lock();
 //     wgotoxy(topleft_pos_x, topleft_pos_y);

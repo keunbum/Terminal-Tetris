@@ -1,7 +1,7 @@
 #include "tetris_play_tetromino_generator.h"
 #include "debug.h"
 #include "mt19937.h"
-#include "tetris/object/block_code.h"
+#include "tetris/object/block_wprint.h"
 #include "tetris_play_statistic.h"
 
 static tetromino_id_t g_s_tetromino_spawned_cnt;

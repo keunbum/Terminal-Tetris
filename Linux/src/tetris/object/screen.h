@@ -1,13 +1,13 @@
 #ifndef __SCREEN__H
 #define __SCREEN__H
 
-#include "draw/draw_tool.h"
-#include "tetris_play_object.h"
+#include "pos.h"
+// #include "tetris_play_object.h"
 
 typedef struct {
     const pos_t pos;
     const pos_t pos_wprint;
-    drawable_func_t draw;
+    // drawable_func_t draw;
 
     const int height;
     const int width;

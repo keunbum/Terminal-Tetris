@@ -48,28 +48,13 @@
 #define BLOCK_WPRINT_BLACK_SQUARE_BUTTON (L'\U0001f532')
 #define BLOCK_WPRINT_LIGHT_LARGE_SQUARE (L'\U0001f3fb')
 
-typedef wchar_t block_code_t;
+typedef wchar_t block_wprint_t;
 
 typedef struct {
     const int size;
-    const block_code_t codes[];
+    const block_wprint_t codes[];
 } block_code_set_t;
 
 extern const block_code_set_t* G_BLOCK_CODE_SET;
-
-// static inline int get_block_code_random(const block_code_set_t* bcs)
-// {
-
-//     int ret = (int)(rng() % bcs->size);
-//     my_assert(ret >= 0);
-//     return ret;
-// }
-
-// static inline int get_block_code_fixed(int pos, int size)
-// {
-//     int ret = pos % size;
-//     my_assert(ret >= 0);
-//     return ret;
-// }
 
 #endif /* __BLOCK_CODE__H */

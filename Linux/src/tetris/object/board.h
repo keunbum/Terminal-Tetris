@@ -4,7 +4,7 @@
 #include <pthread.h>
 #include <wchar.h>
 
-#include "block_code.h"
+#include "block.h"
 #include "tetris/object/board.h"
 #include "tetris/object/tetromino.h"
 #include "tetris/scene/tetris_play_screen.h"
@@ -39,13 +39,13 @@ typedef pthread_spinlock_t board_lock_t;
 extern board_lock_t g_board_lock;
 
 typedef struct {
-    const wchar_t game_board_unit_matrix_corner_top_left;
-    const wchar_t game_board_unit_matrix_corner_top_right;
-    const wchar_t game_board_unit_matrix_corner_bot_left;
-    const wchar_t game_board_unit_matrix_corner_bot_right;
-    const wchar_t game_board_unit_matrix_ver_line;
-    const wchar_t game_board_unit_matrix_hor_line;
-    const wchar_t game_board_unit_matrix_inner;
+    const wchar_t block_corner_top_left;
+    const wchar_t block_corner_top_right;
+    const wchar_t block_corner_bot_left;
+    const wchar_t block_corner_bot_right;
+    const wchar_t block_ver_line;
+    const wchar_t block_hor_line;
+    const wchar_t block_inner;
 
     const int height;
     const int width;
@@ -58,8 +58,8 @@ typedef struct {
     const pos_t pos_wprint;
     const pos_t frame_pos;
     const pos_t frame_pos_wprint;
-    board_grid_element_t grid[TETRIS_PLAY_BOARD_HEIGHT][TETRIS_PLAY_BOARD_WIDTH];
-    block_code_t code_grid[TETRIS_PLAY_BOARD_HEIGHT][TETRIS_PLAY_BOARD_WIDTH];
+    block_t grid[TETRIS_PLAY_BOARD_HEIGHT][TETRIS_PLAY_BOARD_WIDTH];
+    // block_wprint_t code_grid[TETRIS_PLAY_BOARD_HEIGHT][TETRIS_PLAY_BOARD_WIDTH];
     updatable_func_t update;
     drawable_func_t draw;
 } board_t;
@@ -71,7 +71,7 @@ typedef board_t board_t;
 #define board_unlock() func_check_error(pthread_spin_unlock, &g_board_lock)
 #define cleanup_board_lock() func_check_error(pthread_spin_destroy, &g_board_lock)
 
-void init_board(board_t* const board, board_grid_element_t val);
+void init_board(board_t* const out_board);
 void wdraw_board(const board_t* board);
 
 #endif /* __TETRIS_PLAY_BOARD__H */

@@ -4,7 +4,7 @@
 #include <pthread.h>
 #include <stdbool.h>
 
-#include "block_code.h"
+#include "block_wprint.h"
 #include "color.h"
 #include "debug.h"
 #include "pos.h"
@@ -37,7 +37,7 @@ typedef struct {
     pos_t pos;
     dir_t dir;
     velocity_t velocity;
-    block_code_t block_code;
+    block_wprint_t block_code;
 
     updatable_func_t update;
     drawable_func_t draw;

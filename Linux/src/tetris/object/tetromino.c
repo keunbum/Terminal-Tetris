@@ -1,6 +1,6 @@
 #include <time.h>
 
-#include "block_code.h"
+#include "block_wprint.h"
 #include "debug.h"
 #include "tetromino.h"
 
