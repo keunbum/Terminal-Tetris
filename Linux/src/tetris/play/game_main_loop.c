@@ -30,17 +30,17 @@ void* mainfunc_game_main_loop(void* arg)
     init_game_main_loop(play_manager);
 
     while (play_manager->status == TETRIS_PLAY_STATUS_RUNNING) {
-        struct timeval start_time;
-        gettimeofday(&start_time, NULL);
+        struct timespec start_time;
+        get_chrono_time(&start_time);
 
         play_manager->game_delta_time = prev_frame_time * TETRIS_PLAY_GAME_DELTA_TIME_FACTOR;
 
         update_gameworld(play_manager);
         render_out(play_manager);
 
-        usleep(get_curr_time_usec(&start_time));
+        nanosleep_chrono(TO_NSEC(TETRIS_PLAY_FRAME_TIME) - get_elapsed_time_nsec(&start_time));
 
-        prev_frame_time = get_curr_time(&start_time);
+        prev_frame_time = get_elapsed_time_sec(&start_time);
     }
 
     for (int i = 1; i < TETRIS_PLAY_SUBMODULE_NUM; ++i) {

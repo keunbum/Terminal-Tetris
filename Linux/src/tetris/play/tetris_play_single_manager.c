@@ -17,6 +17,7 @@
 #include "tetris_play_board_frame.h"
 #include "tetris_play_input_reader.h"
 #include "tetris_play_single_manager.h"
+#include "chronometry.h"
 
 static tetris_play_manager_t g_s_play_manager = {
     .mode = TETRIS_PLAY_MODE_SINGLE,
@@ -59,7 +60,6 @@ static tetris_play_manager_t g_s_play_manager = {
     },
     .sub_modules = {
         {
-            // .main_func = mainfunc_game_main_loop,
             .main_func = mainfunc_game_main_loop,
             .main_func_arg = (void*)&g_s_play_manager,
             .is_detached = false,
@@ -82,6 +82,9 @@ static void ready_getset_go(void)
     debug();
 
     for (int cur_sec = g_s_play_manager.ready_getset_go_sec; cur_sec >= 0; --cur_sec) {
+        struct timespec start_time;
+        get_chrono_time(&start_time);
+
         const pos_t pos_wprint = {
             g_s_play_manager.screen_start_pos_x_wprint + 2,
             TETRIS_PLAY_BOARD_FRAME_START_POS_Y_WPRINT + TETRIS_PLAY_BOARD_FRAME_WIDTH - 2,
@@ -92,7 +95,8 @@ static void ready_getset_go(void)
         }
         wdraw_digital_digit_at_r(G_DIGITAL_DIGITS[cur_sec], (int)pos_wprint.x, (int)pos_wprint.y);
         /* Of course, it's not exactly 1 second. */
-        sleep(1);
+        /* However, it is a bit cumbersome to write a timer haha; */
+        nanosleep_chrono(TO_NSEC(1) - get_elapsed_time_nsec(&start_time));
     }
 }
 
@@ -148,15 +152,15 @@ static tetris_play_cmd_t play_a_new_game(void)
 {
     debug();
 
-    if (load_tetris_play_scene(g_s_play_manager.mode, g_s_play_manager.screen_start_pos_x_wprint, g_s_play_manager.screen_start_pos_y_wprint) == -1) {
-        handle_error("load_tetris_play_scene() error");
-    }
+    load_tetris_play_scene(g_s_play_manager.mode, g_s_play_manager.screen_start_pos_x_wprint, g_s_play_manager.screen_start_pos_y_wprint);
 
     ready_getset_go();
 
     if (run_game_play_modules_in_parallel() == TETRIS_PLAY_STATUS_ERROR) {
         handle_error("run_game_play_modules_in_parallel() error");
     }
+
+    cleanup_tetris_play_scene();
 
     /* UX after Game Over not implemented yet. */
     return TETRIS_PLAY_CMD_REGAME;
@@ -174,6 +178,7 @@ void* run_tetris_play_single_mode(void* arg)
 {
     debug();
 
+    my_assert(arg == NULL);
     (void)arg;
 
     init_tetris_play_manager(&g_s_play_manager);
@@ -191,5 +196,6 @@ void* run_tetris_play_single_mode(void* arg)
         }
         my_assert(false);
     }
+
     return NULL;
 }
