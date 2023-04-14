@@ -2428,7 +2428,7 @@ test 폴더에 이것저것 예제 코드 작성해놨으니 참고할 것.
 
 [//]: # (End of 04.12)
 
-<details><summary>04.13(수)</summary>
+<details><summary>04.13(목)</summary>
 
 ### Achievements of the day
 
@@ -2444,6 +2444,40 @@ test 폴더에 이것저것 예제 코드 작성해놨으니 참고할 것.
 </details>
 
 [//]: # (End of 04.13)
+
+<details><summary>04.14(금)</summary>
+
+### Achievements of the day
+
+~~테트로미노 순회 구현 시도. --> 에바~~
+
+게임 세계 상의 모든 객체는 위치를 가진다.  
+그리고, 그 객체를 화면 상에 지우는/그리는 draw 함수도 필요.
+
+객체화 시도.  
+C로 C++ 흉내내려고 하지는 말자..  
+객체지향적 코드가 나쁘다는 건 아닌데 C로는 한계가 있음.  
+`this`가 지원안되는 것부터 무리임.  
+
+`has-a` 관계랑 `void*`로 어떻게든 비빌 수 있기는 한데   
+그러면 코드에 손이 너무 많이 감. 일단은 융통성 있기 짜는 걸로..ㅠ
+
+코드 뒤집느라 힘들긴 한데 코드 가독성이나 유지 보수성은 올라가는 듯.
+
+</details>
+
+[//]: # (End of 04.14)
+
+<details><summary>04.15(토)</summary>
+
+아직 drawable, updatable 개념 적용하지 말 것.  
+게임 보드 크기 넉넉하게 잡을 것. (스카이 라인이 무조건 맨 위가 아니다.)
+
+### Achievements of the day
+
+</details>
+
+[//]: # (End of 04.15)
 
 </blockquote></details>
 
