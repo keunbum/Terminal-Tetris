@@ -111,7 +111,7 @@ void render_out(tetris_play_manager_t* const out_play_manager)
     fflush(stdout);
 }
 
-void draw_a_tetromino_at_wprint_r(const tetromino_t* tetro, pos_t pos_wprint)
+void wdraw_a_tetromino_at_wprint_r(const tetromino_t* tetro, pos_t pos_wprint)
 {
     render_a_tetromino_at_wprint_r(tetro, (wchar_t)tetro->block.wprint, pos_wprint);
 }

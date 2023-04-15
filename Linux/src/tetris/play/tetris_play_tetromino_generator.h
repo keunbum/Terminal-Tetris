@@ -9,11 +9,11 @@ typedef struct {
     const block_wprint_set_t* block_wprint_set;
 } tetromino_generator_t;
 
-static inline const block_wprint_set_t* get_block_wprint_set(const tetromino_generator_t* gen)
+static inline const block_wprint_set_t* get_block_wprint_set(const tetromino_generator_t* tetro_gen)
 {
-    my_assert(gen->block_wprint_set != NULL);
+    my_assert(tetro_gen->block_wprint_set != NULL);
 
-    return gen->block_wprint_set;
+    return tetro_gen->block_wprint_set;
 }
 
 void init_tetromino_generator(tetromino_generator_t* const out_gen);

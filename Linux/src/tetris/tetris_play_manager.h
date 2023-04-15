@@ -7,6 +7,7 @@
 #include "tetris/object/tetromino.h"
 #include "tetris/play/tetris_play_statistic.h"
 #include "tetris/play/tetris_play_tetromino_generator.h"
+#include "tetris/play/tetris_play_tetromino_manager.h"
 #include "tetris_play_submodule.h"
 #include "timer/timer_drawer.h"
 
@@ -30,6 +31,7 @@ typedef struct {
     const int screen_start_pos_y_wprint;
     const int screen_height_wprint;
     const int ready_getset_go_sec;
+    const int tetromino_queue_max_size;
 
     tetris_play_mode_t play_mode;
     tetris_play_status_t status;
@@ -38,12 +40,15 @@ typedef struct {
     screen_t screen;
     board_t board;
     tetris_play_statistic_t stat;
-    tetromino_generator_t gen;
+    tetromino_manager_t tetro_man;
+
+    timer_drawer_t timer_drawer;
+
     tetromino_t tetromino;
     tetromino_t prev_tetromino;
-    timer_drawer_t timer_drawer;
+
 #define TETRIS_PLAY_SUBMODULE_NUM (3)
-    game_play_submodule_t sub_modules[TETRIS_PLAY_SUBMODULE_NUM];
+    tetris_play_submodule_t sub_modules[TETRIS_PLAY_SUBMODULE_NUM];
 } tetris_play_manager_t;
 
 #endif /* __TETRIS_PLAY_MANAGER__H */

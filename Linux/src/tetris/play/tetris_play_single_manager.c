@@ -16,102 +16,11 @@
 #include "tetris/tetris_play_manager.h"
 #include "tetris/tetris_play_submodule.h"
 #include "tetris/timer/game_play_timer.h"
+#include "tetris/timer/timer_drawer.h"
 #include "tetris_play_input_reader.h"
 #include "tetris_play_main_loop.h"
 #include "tetris_play_single_manager.h"
 #include "tetris_play_update_world.h"
-
-static tetris_play_manager_t g_s_play_manager = {
-    .play_mode = TETRIS_PLAY_MODE_SINGLE,
-    .screen_start_pos_x_wprint = TETRIS_PLAY_SINGLE_SCREEN_POS_X_WPRINT,
-    .screen_start_pos_y_wprint = TETRIS_PLAY_SINGLE_SCREEN_POS_Y_WPRINT,
-    .screen_height_wprint = TETRIS_PLAY_SINGLE_SCREEN_HEIGHT_WPRINT,
-    .ready_getset_go_sec = TETRIS_PLAY_TIMEINTERVAL_BEFORESTART_SEC,
-    .game_delta_time = 0.0,
-    .screen = {
-        .hor_line = UNIT_MATRIX_HOR_LINE_THIN,
-        .ver_line = UNIT_MATRIX_VER_LINE_THIN,
-        .corner_top_left = UNIT_MATRIX_CORNER_TOP_LEFT_THIN,
-        .corner_top_right = UNIT_MATRIX_CORNER_TOP_RIGHT_THIN,
-        .corner_bot_left = UNIT_MATRIX_CORNER_BOT_LEFT_THIN,
-        .corner_bot_right = UNIT_MATRIX_CORNER_BOT_RIGHT_THIN,
-        .pos = { TETRIS_PLAY_SINGLE_SCREEN_POS_X, TETRIS_PLAY_SINGLE_SCREEN_POS_Y },
-        .pos_wprint = { TETRIS_PLAY_SINGLE_SCREEN_POS_X_WPRINT, TETRIS_PLAY_SINGLE_SCREEN_POS_Y_WPRINT },
-        .height = TETRIS_PLAY_SINGLE_SCREEN_HEIGHT,
-        .width = TETRIS_PLAY_SINGLE_SCREEN_WIDTH,
-        .height_wprint = TETRIS_PLAY_SINGLE_SCREEN_HEIGHT_WPRINT,
-        .width_wprint = TETRIS_PLAY_SINGLE_SCREEN_WIDTH_WPRINT,
-    },
-    .board = {
-        .block_corner_top_left = BLOCK_WPRINT_BLACK_SQUARE_BUTTON,
-        .block_corner_top_right = BLOCK_WPRINT_BLACK_SQUARE_BUTTON,
-        .block_corner_bot_left = BLOCK_WPRINT_BLACK_SQUARE_BUTTON,
-        .block_corner_bot_right = BLOCK_WPRINT_BLACK_SQUARE_BUTTON,
-        .block_ver_line = BLOCK_WPRINT_BLACK_SQUARE_BUTTON,
-        .block_hor_line = BLOCK_WPRINT_BLACK_SQUARE_BUTTON,
-        .block_inner = BLOCK_WPRINT_WHITE_LARGE_SQUARE,
-
-        .height = TETRIS_PLAY_BOARD_HEIGHT,
-        .width = TETRIS_PLAY_BOARD_WIDTH,
-        .height_wprint = TETRIS_PLAY_BOARD_HEIGHT_WPRINT,
-        .width_wprint = TETRIS_PLAY_BOARD_WIDTH_WPRINT,
-        .frame_height = BOARD_FRAME_HEIGHT,
-        .frame_width = BOARD_FRAME_WIDTH,
-        .pos = { TETRIS_PLAY_BOARD_POS_X, TETRIS_PLAY_BOARD_POS_Y },
-        .pos_wprint = { TETRIS_PLAY_BOARD_POS_X_WPRINT, TETRIS_PLAY_BOARD_POS_Y_WPRINT },
-        .frame_pos = { BOARD_FRAME_POS_X, BOARD_FRAME_POS_Y },
-        .frame_pos_wprint = { BOARD_FRAME_POS_X_WPRINT, BOARD_FRAME_POS_Y_WPRINT },
-    },
-    .stat = {
-        .pos = { TETRIS_PLAY_STATISTIC_POS_X, TETRIS_PLAY_STATISTIC_POS_Y },
-        .pos_wprint = { TETRIS_PLAY_STATISTIC_POS_X_WPRINT, TETRIS_PLAY_STATISTIC_POS_Y_WPRINT },
-        .tetromino_pos_wprint = { TETRIS_PLAY_STATISTIC_TETROMINO_POS_X_WPRINT, TETRIS_PLAY_STATISTIC_TETROMINO_POS_Y_WPRINT },
-        .interval_height = TETRIS_PLAY_STATISTIC_INTERVAL_HEIGHT,
-    },
-    .tetromino = {
-        .id = -1,
-    },
-    .prev_tetromino = {
-        .id = -1,
-    },
-    .timer_drawer = {
-        .timer = {
-            .clockid = REALTIME_TIMER_CLOCK_ID,
-            .its = {
-                .it_interval = {
-                    .tv_sec = GAME_PLAY_TIMER_IT_INTERVAL_SEC,
-                    .tv_nsec = GAME_PLAY_TIMER_IT_INTERVAL_NSEC,
-                },
-                .it_value = {
-                    .tv_sec = GAME_PLAY_TIMER_IT_VALUE_SEC,
-                    .tv_nsec = GAME_PLAY_TIMER_IT_VALUE_NSEC,
-                },
-            },
-        },
-        .draw_module = {
-            .pos_x_wprint = TETRIS_PLAY_TIMER_POS_X_WPRINT,
-            .pos_y_wprint = TETRIS_PLAY_TIMER_POS_Y_WPRINT,
-            .draw_func = draw_game_play_timer_at_with_r,
-        },
-    },
-    .sub_modules = {
-        {
-            .main_func = mainfunc_game_main_loop,
-            .main_func_arg = (void*)&g_s_play_manager,
-            .is_detached = false,
-        },
-        {
-            .main_func = mainfunc_game_play_timer,
-            .main_func_arg = (void*)&g_s_play_manager.timer_drawer,
-            .is_detached = false,
-        },
-        {
-            .main_func = mainfunc_input_reader,
-            .main_func_arg = (void*)&g_s_play_manager,
-            .is_detached = false,
-        },
-    },
-};
 
 static void ready_getset_go(const tetris_play_manager_t* play_manager)
 {
@@ -120,10 +29,9 @@ static void ready_getset_go(const tetris_play_manager_t* play_manager)
     for (int cur_sec = play_manager->ready_getset_go_sec; cur_sec >= 0; --cur_sec) {
         struct timespec start_time;
         get_chrono_time(&start_time);
-
         const pos_t pos_wprint = {
             play_manager->screen_start_pos_x_wprint + 2,
-            BOARD_FRAME_POS_Y_WPRINT + BOARD_FRAME_WIDTH - 2,
+            play_manager->board.pos_wprint.y + play_manager->board.width - 2,
         };
         if (cur_sec == 0) {
             wdraw_digital_digit_at_r(G_DIGITAL_DIGIT_EMPTY, (int)pos_wprint.x, (int)pos_wprint.y);
@@ -136,41 +44,25 @@ static void ready_getset_go(const tetris_play_manager_t* play_manager)
     }
 }
 
-static void run_game_play_module_in_parallel(game_play_submodule_t* const out_game_play_module)
+static tetris_play_status_t run_tetris_play_modules_in_parallel(tetris_play_manager_t* const out_play_manager)
 {
     debug();
 
-    pthread_create(&out_game_play_module->pthread_id, NULL, out_game_play_module->main_func, out_game_play_module->main_func_arg);
-    if (out_game_play_module->is_detached) {
-        pthread_detach(out_game_play_module->pthread_id);
-    }
-}
-
-static tetris_play_status_t run_game_play_modules_in_parallel(tetris_play_manager_t* const out_play_manager)
-{
-    debug();
-
-    timer_drawer_t* timer_drawer = &out_play_manager->timer_drawer;
-    realtime_timer_t* timer = &timer_drawer->timer;
+    realtime_timer_t* timer = &out_play_manager->timer_drawer.timer;
 
     /* Block REALTIME_TIMER_SIG */
     block_signal(timer->timersig);
 
     for (size_t i = 0; i < TETRIS_PLAY_SUBMODULE_NUM; ++i) {
-        run_game_play_module_in_parallel(out_play_manager->sub_modules + i);
+        run_tetris_play_module_in_parallel(out_play_manager->sub_modules + i);
     }
 
     for (size_t i = 0; i < TETRIS_PLAY_SUBMODULE_NUM; ++i) {
-        game_play_submodule_t* const module = out_play_manager->sub_modules + i;
-        if (module->is_detached) {
-            continue;
-        }
-        if (pthread_join(module->pthread_id, &module->retval) != 0) {
-            handle_error("pthread_join() error");
-        }
+        tetris_play_submodule_t* const module = out_play_manager->sub_modules + i;
+        join_tetris_play_module_in_parallel(module);
     }
 
-    const game_play_submodule_t* main_module = out_play_manager->sub_modules + 0;
+    const tetris_play_submodule_t* main_module = out_play_manager->sub_modules + 0;
     return (tetris_play_status_t)(long long)main_module->retval;
 }
 
@@ -188,22 +80,25 @@ static void init_tetris_play_objects(tetris_play_manager_t* const out_play_manag
 {
     debug();
 
-    init_tetromino_generator(&out_play_manager->gen);
     init_board(&out_play_manager->board);
-    new_init_tetris_play_statistics(&out_play_manager->stat);
+    init_tetris_play_statistics(&out_play_manager->stat);
+    init_tetromino_manager_malloc(&out_play_manager->tetro_man, out_play_manager->tetromino_queue_max_size);
+    init_timer_drawer(&out_play_manager->timer_drawer, REALTIME_TIMER_SIG);
 }
 
 static void init_tetris_play_manager(tetris_play_manager_t* const out_play_manager)
 {
+    debug();
+
     my_assert(out_play_manager != NULL);
 
     init_tetris_play_objects(out_play_manager);
     load_tetris_play_scene(out_play_manager);
-    out_play_manager->timer_drawer.timer.timersig = REALTIME_TIMER_SIG;
 }
 
 static void cleanup_tetris_play_objects(tetris_play_manager_t* const out_play_manager)
 {
+    cleanup_tetromino_manager_free(&out_play_manager->tetro_man);
     cleanup_board(&out_play_manager->board);
 }
 
@@ -223,8 +118,8 @@ static tetris_play_cmd_t play_a_new_game(tetris_play_manager_t* const out_play_m
 
     ready_getset_go(out_play_manager);
 
-    if (run_game_play_modules_in_parallel(out_play_manager) == TETRIS_PLAY_STATUS_ERROR) {
-        handle_error("run_game_play_modules_in_parallel() error");
+    if (run_tetris_play_modules_in_parallel(out_play_manager) == TETRIS_PLAY_STATUS_ERROR) {
+        handle_error("run_tetris_play_modules_in_parallel() error");
     }
 
     cleanup_tetris_play_manager(out_play_manager);
@@ -243,8 +138,112 @@ void* run_tetris_play_single_mode(void* arg)
     my_assert(arg == NULL);
     (void)arg;
 
+    static tetris_play_manager_t s_play_manager = {
+        .play_mode = TETRIS_PLAY_MODE_SINGLE,
+        .screen_start_pos_x_wprint = TETRIS_PLAY_SINGLE_SCREEN_POS_X_WPRINT,
+        .screen_start_pos_y_wprint = TETRIS_PLAY_SINGLE_SCREEN_POS_Y_WPRINT,
+        .screen_height_wprint = TETRIS_PLAY_SINGLE_SCREEN_HEIGHT_WPRINT,
+        .ready_getset_go_sec = TETRIS_PLAY_TIMEINTERVAL_BEFORESTART_SEC,
+        .game_delta_time = 0.0,
+        .tetromino_queue_max_size = TETROMINO_MANAGER_QUEUE_MAX_SIZE,
+        .screen = {
+            .hor_line = UNIT_MATRIX_HOR_LINE_THIN,
+            .ver_line = UNIT_MATRIX_VER_LINE_THIN,
+            .corner_top_left = UNIT_MATRIX_CORNER_TOP_LEFT_THIN,
+            .corner_top_right = UNIT_MATRIX_CORNER_TOP_RIGHT_THIN,
+            .corner_bot_left = UNIT_MATRIX_CORNER_BOT_LEFT_THIN,
+            .corner_bot_right = UNIT_MATRIX_CORNER_BOT_RIGHT_THIN,
+            .pos = { TETRIS_PLAY_SINGLE_SCREEN_POS_X, TETRIS_PLAY_SINGLE_SCREEN_POS_Y },
+            .pos_wprint = { TETRIS_PLAY_SINGLE_SCREEN_POS_X_WPRINT, TETRIS_PLAY_SINGLE_SCREEN_POS_Y_WPRINT },
+            .height = TETRIS_PLAY_SINGLE_SCREEN_HEIGHT,
+            .width = TETRIS_PLAY_SINGLE_SCREEN_WIDTH,
+            .height_wprint = TETRIS_PLAY_SINGLE_SCREEN_HEIGHT_WPRINT,
+            .width_wprint = TETRIS_PLAY_SINGLE_SCREEN_WIDTH_WPRINT,
+        },
+        .board = {
+            /* Also should be inited with init() */
+            .block_corner_top_left = BLOCK_WPRINT_BLACK_SQUARE_BUTTON,
+            .block_corner_top_right = BLOCK_WPRINT_BLACK_SQUARE_BUTTON,
+            .block_corner_bot_left = BLOCK_WPRINT_BLACK_SQUARE_BUTTON,
+            .block_corner_bot_right = BLOCK_WPRINT_BLACK_SQUARE_BUTTON,
+            .block_ver_line = BLOCK_WPRINT_BLACK_SQUARE_BUTTON,
+            .block_hor_line = BLOCK_WPRINT_BLACK_SQUARE_BUTTON,
+            .block_inner = BLOCK_WPRINT_WHITE_LARGE_SQUARE,
+
+            .height = TETRIS_PLAY_BOARD_HEIGHT,
+            .width = TETRIS_PLAY_BOARD_WIDTH,
+            .height_wprint = TETRIS_PLAY_BOARD_HEIGHT_WPRINT,
+            .width_wprint = TETRIS_PLAY_BOARD_WIDTH_WPRINT,
+            .frame_height = BOARD_FRAME_HEIGHT,
+            .frame_width = BOARD_FRAME_WIDTH,
+            .pos = { TETRIS_PLAY_BOARD_POS_X, TETRIS_PLAY_BOARD_POS_Y },
+            .pos_wprint = { TETRIS_PLAY_BOARD_POS_X_WPRINT, TETRIS_PLAY_BOARD_POS_Y_WPRINT },
+            .frame_pos = { BOARD_FRAME_POS_X, BOARD_FRAME_POS_Y },
+            .frame_pos_wprint = { BOARD_FRAME_POS_X_WPRINT, BOARD_FRAME_POS_Y_WPRINT },
+        },
+        .stat = {
+            /* Also should be inited with init() */
+            .pos = { TETRIS_PLAY_STATISTIC_POS_X, TETRIS_PLAY_STATISTIC_POS_Y },
+            .pos_wprint = { TETRIS_PLAY_STATISTIC_POS_X_WPRINT, TETRIS_PLAY_STATISTIC_POS_Y_WPRINT },
+            .tetromino_pos_wprint = { TETRIS_PLAY_STATISTIC_TETROMINO_POS_X_WPRINT, TETRIS_PLAY_STATISTIC_TETROMINO_POS_Y_WPRINT },
+            .interval_height = TETRIS_PLAY_STATISTIC_INTERVAL_HEIGHT,
+        },
+        .tetro_man = {
+            /* Also should be inited with init() */
+            // .que_pos = { TETRIS_PLAY_TETROMINO_MANAGER_POS_X, TETRIS_PLAY_TETROMINO_MANAGER_POS_Y },
+            .que_pos_wprint = { TETRIS_PLAY_TETROMINO_MANAGER_POS_X_WPRINT, TETRIS_PLAY_TETROMINO_MANAGER_POS_Y_WPRINT },
+            .tetro_gen = {
+                /* Should be inited with init() */
+            },
+        },
+        .timer_drawer = {
+            /* Also should be inited with init() */
+            .timer = {
+                .clockid = REALTIME_TIMER_CLOCK_ID,
+                .its = {
+                    .it_interval = {
+                        .tv_sec = GAME_PLAY_TIMER_IT_INTERVAL_SEC,
+                        .tv_nsec = GAME_PLAY_TIMER_IT_INTERVAL_NSEC,
+                    },
+                    .it_value = {
+                        .tv_sec = GAME_PLAY_TIMER_IT_VALUE_SEC,
+                        .tv_nsec = GAME_PLAY_TIMER_IT_VALUE_NSEC,
+                    },
+                },
+            },
+            .draw_module = {
+                .pos_x_wprint = TETRIS_PLAY_TIMER_POS_X_WPRINT,
+                .pos_y_wprint = TETRIS_PLAY_TIMER_POS_Y_WPRINT,
+                .draw_func = draw_game_play_timer_at_with_r,
+            },
+        },
+        .tetromino = {
+            .id = -1,
+        },
+        .prev_tetromino = {
+            .id = -1,
+        },
+        .sub_modules = {
+            {
+                .main_func = mainfunc_game_main_loop,
+                .main_func_arg = (void*)&s_play_manager,
+                .is_detached = false,
+            },
+            {
+                .main_func = mainfunc_game_play_timer,
+                .main_func_arg = (void*)&s_play_manager.timer_drawer,
+                .is_detached = false,
+            },
+            {
+                .main_func = mainfunc_input_reader,
+                .main_func_arg = (void*)&s_play_manager,
+                .is_detached = false,
+            },
+        },
+    };
+
     while (true) {
-        tetris_play_cmd_t res = play_a_new_game(&g_s_play_manager);
+        tetris_play_cmd_t res = play_a_new_game(&s_play_manager);
         if (res == TETRIS_PLAY_CMD_EXIT_GAME) {
             break;
         }
