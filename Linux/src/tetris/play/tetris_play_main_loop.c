@@ -13,21 +13,27 @@ static void init_game_main_loop(tetris_play_manager_t* const out_play_manager)
 {
     debug();
 
-    init_tetromino_generator(&out_play_manager->gen);
-    out_play_manager->tetromino.id = -1;
-    out_play_manager->prev_tetromino.id = -1;
+    // out_play_manager->tetromino.id = -1;
+    // out_play_manager->prev_tetromino.id = -1;
     out_play_manager->status = TETRIS_PLAY_STATUS_RUNNING;
+}
+
+static void cleanup_game_main_loop(tetris_play_manager_t* const out_play_manager)
+{
+    debug();
+
+    (void)(out_play_manager);
+    wclear();
 }
 
 void* mainfunc_game_main_loop(void* arg)
 {
     debug();
 
-    tetris_play_manager_t* play_manager = (tetris_play_manager_t*)arg;
-    game_time_t prev_frame_time = 0.0;
-
+    tetris_play_manager_t* const play_manager = (tetris_play_manager_t*)arg;
     init_game_main_loop(play_manager);
 
+    game_time_t prev_frame_time = 0.0;
     while (play_manager->status == TETRIS_PLAY_STATUS_RUNNING) {
         struct timespec start_time;
         get_chrono_time(&start_time);
@@ -49,7 +55,7 @@ void* mainfunc_game_main_loop(void* arg)
         }
     }
 
-    wclear();
+    cleanup_game_main_loop(play_manager);
 
     return (void*)play_manager->status;
 }

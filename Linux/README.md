@@ -2481,6 +2481,17 @@ tetromino_generator, manager 업데이트 해야 함. 특히 매니저.
 
 [//]: # (End of 04.15)
 
+<details><summary>04.16(일)</summary>
+
+생각해봤는데, 게임 오브젝트 반복문 돌리는 게 맞는 것 같음..  
+
+
+### Achievements of the day
+
+</details>
+
+[//]: # (End of 04.15)
+
 </blockquote></details>
 
 [//]: # (End of 2023.04)

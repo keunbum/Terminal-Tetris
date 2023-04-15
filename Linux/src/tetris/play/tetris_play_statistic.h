@@ -27,8 +27,8 @@ typedef struct {
 #define TETRIS_PLAY_STATISTIC_TETROMINO_POS_X_WPRINT (TETRIS_PLAY_STATISTIC_POS_X_WPRINT - TETRIS_PLAY_STATISTIC_INTERVAL_HEIGHT + 1)
 #define TETRIS_PLAY_STATISTIC_TETROMINO_POS_Y_WPRINT (TETRIS_PLAY_STATISTIC_POS_Y_WPRINT - 1)
 
-void new_init_tetris_play_statistics(tetris_play_statistic_t* const out_st);
+void init_tetris_play_statistics(tetris_play_statistic_t* const out_st);
 void wdraw_tetris_play_statistics(const tetris_play_statistic_t* st, const block_wprint_set_t* set);
-void new_inc_tetromino_cnt_by_one(tetris_play_statistic_t* const out_st, symbol_id_t id);
+void inc_tetromino_cnt_by_one(tetris_play_statistic_t* const out_st, symbol_id_t id);
 
 #endif /* __TETRIS_PLAY_STATISTIC__H */

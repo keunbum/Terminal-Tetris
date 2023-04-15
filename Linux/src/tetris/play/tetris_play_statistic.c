@@ -3,7 +3,7 @@
 #include "tetris/object/tetromino.h"
 #include "tetris/scene/tetris_play_renderer.h"
 
-static void new_wdraw_tetromino_spawned_cnt(const tetris_play_statistic_t* st, symbol_id_t id)
+static void wdraw_tetromino_spawned_cnt(const tetris_play_statistic_t* st, symbol_id_t id)
 {
     debug();
 
@@ -14,7 +14,7 @@ static void new_wdraw_tetromino_spawned_cnt(const tetris_play_statistic_t* st, s
     wprintf_at_r(pos_x_wprint + 1 + 0, pos_y_wprint + 11, L"%d", st->tetromino_spawned_cnts[id]);
 }
 
-static void new_wdraw_tetris_play_statistics_tetrominos(const tetris_play_statistic_t* st, const block_wprint_set_t* set)
+static void wdraw_tetris_play_statistics_tetrominos(const tetris_play_statistic_t* st, const block_wprint_set_t* set)
 {
     debug();
 
@@ -32,12 +32,12 @@ static void new_wdraw_tetris_play_statistics_tetrominos(const tetris_play_statis
         const int each_pos_x_wprint = (int)st->tetromino_pos_wprint.x + (s + 1) * st->interval_height;
         const int each_pos_y_wprint = (int)st->tetromino_pos_wprint.y + 4 - n;
         pos_t each_pos_wprint = { each_pos_x_wprint + S_TETRO_X_CORRECTION[s], each_pos_y_wprint };
-        draw_a_tetromino_at_wprint_r(&t, each_pos_wprint);
-        new_wdraw_tetromino_spawned_cnt(st, s);
+        wdraw_a_tetromino_at_wprint_r(&t, each_pos_wprint);
+        wdraw_tetromino_spawned_cnt(st, s);
     }
 }
 
-void new_init_tetris_play_statistics(tetris_play_statistic_t* const out_st)
+void init_tetris_play_statistics(tetris_play_statistic_t* const out_st)
 {
     debug();
 
@@ -54,11 +54,11 @@ void wdraw_tetris_play_statistics(const tetris_play_statistic_t* st, const block
     my_assert(set != NULL);
 
     wprintf_at_r((int)st->pos_wprint.x, (int)st->pos_wprint.y, L"STATISTICS");
-    new_wdraw_tetris_play_statistics_tetrominos(st, set);
+    wdraw_tetris_play_statistics_tetrominos(st, set);
 }
 
-void new_inc_tetromino_cnt_by_one(tetris_play_statistic_t* const out_st, symbol_id_t id)
+void inc_tetromino_cnt_by_one(tetris_play_statistic_t* const out_st, symbol_id_t id)
 {
     out_st->tetromino_spawned_cnts[id] += 1;
-    new_wdraw_tetromino_spawned_cnt(out_st, id);
+    wdraw_tetromino_spawned_cnt(out_st, id);
 }

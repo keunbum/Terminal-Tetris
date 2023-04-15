@@ -49,31 +49,15 @@ static inline bool is_at_skyline(const tetromino_t* tetro)
     return last_pos_x < 0;
 }
 
-// static tetromino_try_status_t update_tetromino_r(board_t* const restrict out_board, tetromino_t* const restrict out_tetromino, game_time_t game_delta_time)
-// {
-//     debug();
-
-//     tetris_play_tetromino_lock();
-//     if (out_tetromino->id == -1) {
-//         pos_t init_pos = { TETRIS_PLAY_TETROMINO_INIT_POS_X, TETRIS_PLAY_TETROMINO_INIT_POS_Y };
-//         spawn_tetromino(out_tetromino, init_pos, TETRIS_PLAY_TETROMINO_INIT_VELOCITY);
-//         // update_tetromino_ground_pos(out_board, out_tetromino);
-//     }
-//     tetris_play_tetromino_unlock();
-//     tetromino_try_status_t res = try_move_tetromino_deltatime_r(out_board, out_tetromino, DIR_BOT, game_delta_time);
-//     return res;
-// }
-
-static tetromino_try_status_t new_update_tetromino_r(tetris_play_manager_t* const out_play_manager, tetromino_t* const restrict out_tetromino, game_time_t game_delta_time)
+static tetromino_try_status_t new_update_main_tetromino_r(tetris_play_manager_t* const out_play_manager, tetromino_t* const restrict out_tetromino, game_time_t game_delta_time)
 {
     debug();
 
     tetris_play_tetromino_lock();
     if (out_tetromino->id == -1) {
         pos_t init_pos = { TETRIS_PLAY_TETROMINO_INIT_POS_X, TETRIS_PLAY_TETROMINO_INIT_POS_Y };
-        // spawn_tetromino(out_play_manager, out_tetromino, init_pos, TETRIS_PLAY_TETROMINO_INIT_VELOCITY);
-        spawn_tetromino(&out_play_manager->gen, out_tetromino, init_pos, TETRIS_PLAY_TETROMINO_INIT_VELOCITY);
-        new_inc_tetromino_cnt_by_one(&out_play_manager->stat, out_tetromino->symbol_id);
+        spawn_tetromino(&out_play_manager->tetro_man.tetro_gen, out_tetromino, init_pos, TETRIS_PLAY_TETROMINO_INIT_VELOCITY);
+        inc_tetromino_cnt_by_one(&out_play_manager->stat, out_tetromino->symbol_id);
         // update_tetromino_ground_pos(out_board, out_tetromino);
     }
     tetris_play_tetromino_unlock();
@@ -106,8 +90,7 @@ void update_gameworld(tetris_play_manager_t* const out_play_manager)
 {
     debug();
 
-    // tetromino_try_status_t res = update_tetromino_r(&out_play_manager->board, &out_play_manager->tetromino, out_play_manager->game_delta_time);
-    tetromino_try_status_t res = new_update_tetromino_r(out_play_manager, &out_play_manager->tetromino, out_play_manager->game_delta_time);
+    tetromino_try_status_t res = new_update_main_tetromino_r(out_play_manager, &out_play_manager->tetromino, out_play_manager->game_delta_time);
     /* Maybe race condition?? */
     if (res == TETROMINO_TRY_STATUS_ONTHEGROUND) {
         process_tetromino_ontheground_r(out_play_manager);
