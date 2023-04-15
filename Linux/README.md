@@ -2473,6 +2473,8 @@ C로 C++ 흉내내려고 하지는 말자..
 아직 drawable, updatable 개념 적용하지 말 것.  
 게임 보드 크기 넉넉하게 잡을 것. (스카이 라인이 무조건 맨 위가 아니다.)
 
+tetromino_generator, manager 업데이트 해야 함. 특히 매니저.
+
 ### Achievements of the day
 
 </details>
