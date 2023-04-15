@@ -80,6 +80,11 @@ static void init_timer(realtime_timer_t* const out_timer)
     }
 }
 
+void init_timer_drawer(timer_drawer_t* const out_timer_drawer, int timersig)
+{
+    out_timer_drawer->timer.timersig = timersig;
+}
+
 void* run_timer_drawer_with(void* arg)
 {
     debug();

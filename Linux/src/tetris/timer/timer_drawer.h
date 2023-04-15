@@ -18,6 +18,7 @@ typedef struct {
     draw_module_t draw_module;
 } timer_drawer_t;
 
+void init_timer_drawer(timer_drawer_t* const out_timer_drawer, int timersig);
 void* run_timer_drawer_with(void* arg);
 
 #endif /* __TIMER_DRAWER__H */
