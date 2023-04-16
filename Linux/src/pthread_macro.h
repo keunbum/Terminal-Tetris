@@ -41,9 +41,9 @@ extern void __pthread_unregister_cancel(__pthread_unwind_buf_t* __buf)
 
 #endif
 
+#define init_lock(lock) func_check_error(pthread_spin_init, &lock, PTHREAD_PROCESS_PRIVATE)
 #define check_lock(lock) func_check_error(pthread_spin_lock, &lock)
 #define check_unlock(lock) func_check_error(pthread_spin_unlock, &lock)
-#define init_lock(lock) func_check_error(pthread_spin_init, &lock, PTHREAD_PROCESS_PRIVATE)
 #define cleanup_lock(lock) func_check_error(pthread_spin_destroy, &lock)
 
 

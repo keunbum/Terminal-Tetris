@@ -99,13 +99,18 @@ static void draw_a_tetromino_r(const tetromino_t* tetro)
     render_a_tetromino_r(tetro, (wchar_t)tetro->block.wprint, BLOCK_WPRINT_LIGHT_LARGE_SQUARE);
 }
 
-void render_out(tetris_play_manager_t* const out_play_manager)
+static void render_tetromino_manager_out(tetromino_manager_t* const out_tetro_man)
+{
+    draw_a_tetromino_r(out_tetro_man->tetro_main);
+}
+
+void render_out(tetris_play_manager_t* const out_man)
 {
     debug();
 
     // erase_a_tetromino_r(&out_play_manager->prev_tetromino);
     // draw_a_tetromino_r(&out_play_manager->tetromino);
-    draw_a_tetromino_r(&out_play_manager->tetro_man.tetro_main);
+    render_tetromino_manager_out(&out_man->tetro_man);
     fflush(stdout);
 }
 

@@ -32,6 +32,6 @@ typedef struct {
 
 void init_tetris_play_statistics(tetris_play_statistic_t* const out_st);
 void wdraw_tetris_play_statistics(const tetris_play_statistic_t* st, const block_wprint_set_t* set);
-void inc_tetromino_cnt_by_one(tetris_play_statistic_t* const out_st, symbol_id_t id);
+void inc_tetromino_cnt(tetris_play_statistic_t* const out_st, symbol_id_t id);
 
 #endif /* __TETRIS_PLAY_TETROMINO_STATISTIC__H */

@@ -38,7 +38,6 @@ typedef struct {
 
     frame_t screen_frame;
     board_t board;
-    tetris_play_statistic_t stat;
     tetromino_manager_t tetro_man;
 
     timer_drawer_t timer_drawer;

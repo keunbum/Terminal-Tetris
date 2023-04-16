@@ -3,15 +3,12 @@
 
 #include <stdbool.h>
 
-#define DECLARE_POS_T(T) \
-    typedef struct {     \
-        T x;             \
-        T y;             \
-    } pos_t
-
 typedef float pos_e_t;
 
-DECLARE_POS_T(pos_e_t);
+typedef struct {
+    pos_e_t x;
+    pos_e_t y;
+} pos_t;
 
 static inline void set_pos(pos_t* const out_pos, pos_e_t pos_x, pos_e_t pos_y)
 {

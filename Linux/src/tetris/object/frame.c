@@ -10,6 +10,8 @@ void init_frame(
     block_wprint_t hor_block, block_wprint_t ver_block,
     block_wprint_t corner_top_lft, block_wprint_t corner_top_rgt, block_wprint_t corner_bot_lft, block_wprint_t corner_bot_rgt)
 {
+    debug();
+
     frame->height_wprint = height_wprint;
     frame->width_wprint = width_wprint;
 
@@ -23,6 +25,14 @@ void init_frame(
     frame->corner_top_rgt = corner_top_rgt;
     frame->corner_bot_lft = corner_bot_lft;
     frame->corner_bot_rgt = corner_bot_rgt;
+}
+
+void cleanup_frame(frame_t* const frame)
+{
+    debug();
+
+    /* do nothing */
+    (void)frame;
 }
 
 void wdraw_frame(const frame_t* frame, int title_pos_x_offset)

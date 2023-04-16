@@ -74,7 +74,7 @@ void wdraw_tetris_play_statistics(const tetris_play_statistic_t* st, const block
     wdraw_tetris_play_statistics_tetrominos(st, set);
 }
 
-void inc_tetromino_cnt_by_one(tetris_play_statistic_t* const out_stat, symbol_id_t id)
+void inc_tetromino_cnt(tetris_play_statistic_t* const out_stat, symbol_id_t id)
 {
     out_stat->tetromino_spawned_cnts[id] += 1;
     wdraw_tetromino_spawned_cnt(out_stat, id);

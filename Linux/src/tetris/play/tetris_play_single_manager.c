@@ -91,7 +91,6 @@ static void init_tetris_play_objects(tetris_play_manager_t* const out_play_manag
         UNIT_MATRIX_CORNER_BOT_LEFT,
         UNIT_MATRIX_CORNER_BOT_RIGHT);
     init_board(&out_play_manager->board);
-    init_tetris_play_statistics(&out_play_manager->stat);
     init_tetromino_manager_malloc(&out_play_manager->tetro_man, out_play_manager->tetromino_queue_max_size);
     init_timer_drawer(&out_play_manager->timer_drawer, REALTIME_TIMER_SIG);
 }
@@ -178,14 +177,8 @@ void* run_tetris_play_single_mode(void* arg)
             .frame_pos = { BOARD_FRAME_POS_X, BOARD_FRAME_POS_Y },
             .frame_pos_wprint = { BOARD_FRAME_POS_X_WPRINT, BOARD_FRAME_POS_Y_WPRINT },
         },
-        .stat = {
-            /* Should be inited with init() */
-        },
         .tetro_man = {
             /* Should be inited with init() */
-            .tetro_gen = {
-                /* Should be inited with init() */
-            },
         },
         .timer_drawer = {
             /* Also should be inited with init() */

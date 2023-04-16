@@ -9,6 +9,7 @@
 #include "tetris/object/tetromino.h"
 #include "tetris/scene/tetris_play_screen.h"
 #include "tetris_play_object.h"
+#include "pthread_macro.h"
 
 #define TETRIS_PLAY_BOARD_HEIGHT (30)
 #define TETRIS_PLAY_BOARD_WIDTH (12)
@@ -64,29 +65,25 @@ typedef struct {
 
 typedef board_t board_t;
 
-#define __init_board_lock(lock) func_check_error(pthread_spin_init, &lock, PTHREAD_PROCESS_PRIVATE)
-#define __board_lock(lock) func_check_error(pthread_spin_lock, &lock)
-#define __board_unlock(lock) func_check_error(pthread_spin_unlock, &lock)
-#define __cleanup_board_lock(lock) func_check_error(pthread_spin_destroy, &lock)
-
+#define __init_board
 static inline void init_board_lock(board_t* const out_board)
 {
-    __init_board_lock(out_board->lock);
+    init_lock(out_board->lock);
 }
 
-static inline void board_lock(board_t* const out_board)
-{
-    __board_lock(out_board->lock);
-}
+// static inline void board_lock(const board_t* out_board)
+// {
+//     __board_lock(out_board->lock);
+// }
 
-static inline void board_unlock(board_t* const out_board)
-{
-    __board_unlock(out_board->lock);
-}
+// static inline void board_unlock(board_t* const out_board)
+// {
+//     __board_unlock(out_board->lock);
+// }
 
 static inline void cleanup_board_lock(board_t* const out_board)
 {
-    __cleanup_board_lock(out_board->lock);
+    cleanup_lock(out_board->lock);
 }
 
 static inline const row_t* get_grid(const board_t* board)
@@ -94,19 +91,19 @@ static inline const row_t* get_grid(const board_t* board)
     return board->grid;
 }
 
-static inline const block_t* get_board_grid_block(board_t* const out_board, int i, int j)
+static inline const block_t* get_board_grid_block(const board_t* board, int i, int j)
 {
-    board_lock(out_board);
-    const block_t* ret = get_grid(out_board)[i] + j;
-    board_unlock(out_board);
+    // board_lock(out_board);
+    const block_t* ret = get_grid(board)[i] + j;
+    // board_unlock(out_board);
     return ret;
 }
 
 static inline void set_board_grid_block(board_t* const out_board, int i, int j, block_t block)
 {
-    board_lock(out_board);
+    // board_lock(out_board);
     set_block(out_board->grid[i] + j, block);
-    board_unlock(out_board);
+    // board_unlock(out_board);
 }
 
 void init_board(board_t* const out_board);

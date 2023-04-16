@@ -29,7 +29,7 @@ void init_frame(
     const title_t title,
     block_wprint_t hor_block, block_wprint_t ver_block,
     block_wprint_t corner_top_lft, block_wprint_t corner_top_rgt, block_wprint_t corner_bot_lft, block_wprint_t corner_bot_rgt);
-
+void cleanup_frame(frame_t* const frame);    
 void wdraw_frame(const frame_t* frame, int title_pos_x_offset);
 
 #endif /* __FRAME__H */

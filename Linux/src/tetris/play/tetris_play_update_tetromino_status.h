@@ -26,8 +26,8 @@ typedef enum {
     TETROMINO_TRY_STATUS_ONTHEGROUND,
 } tetromino_try_status_t;
 
-tetromino_try_status_t try_tetromino_next_status(board_t* const restrict out_board, const tetromino_t* restrict tetro, pos_t npos, dir_t ndir);
-tetromino_try_status_t try_move_tetromino_deltatime_r(board_t* const restrict out_board, tetromino_t* const restrict out_tetro, dir_t dir, game_time_t game_delta_time);
+tetromino_try_status_t try_tetromino_next_status(const board_t* restrict board, const tetromino_t* restrict tetro, pos_t npos, dir_t ndir);
+tetromino_try_status_t try_move_tetromino_deltatime_r(const board_t* restrict board, tetromino_t* const restrict out_tetro, dir_t dir, game_time_t game_delta_time);
 tetromino_try_status_t try_move_tetromino_byone_r(board_t* const restrict out_board, tetromino_t* const restrict out_tetro, dir_t dir);
 tetromino_try_status_t try_rotate_tetromino_r(board_t* const restrict out_board, tetromino_t* const restrict out_tetro, int by);
 tetromino_try_status_t harddrop_tetromino_r(tetromino_t* const out_tetro);

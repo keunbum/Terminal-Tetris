@@ -14,8 +14,7 @@ static void draw_tetris_play_single_default_scene(const tetris_play_manager_t* p
 
     wdraw_frame(&play_manager->screen_frame, 0);
     wdraw_board(&play_manager->board);
-    wdraw_tetris_play_statistics(&play_manager->stat, get_block_wprint_set(&play_manager->tetro_man.tetro_gen));
-    wdraw_tetromino_manager_queue(&play_manager->tetro_man);
+    wdraw_tetromino_manager(&play_manager->tetro_man);
     fflush(stdout);
 }
 

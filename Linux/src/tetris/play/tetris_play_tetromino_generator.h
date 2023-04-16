@@ -16,7 +16,6 @@ static inline const block_wprint_set_t* get_block_wprint_set(const tetromino_gen
 }
 
 void init_tetromino_generator(tetromino_generator_t* const out_gen);
-// void spawn_tetromino(tetromino_generator_t* const restrict out_gen, tetromino_t* const restrict out_tetro, pos_t init_pos, velocity_t init_velocity);
-tetromino_t new_spawn_tetromino(pos_t init_pos, velocity_t init_velocity);
+tetromino_t* spawn_tetromino_malloc(pos_t init_pos, velocity_t init_velocity);
 
 #endif /* __TETRIS_PLAY_TETROMINO_GENERATOR__H */
