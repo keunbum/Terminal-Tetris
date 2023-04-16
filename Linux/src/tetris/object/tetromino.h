@@ -30,19 +30,18 @@ typedef enum {
 typedef int symbol_id_t;
 typedef double velocity_t;
 
-typedef struct {
+typedef struct tetromino_t tetromino_t;
+struct tetromino_t {
     symbol_id_t symbol_id; // 0-based
     pos_t pos;
     dir_t dir;
     velocity_t velocity;
     block_t block;
 
-    pos_t prev_drawed_pos;
-    block_wprint_t erase_wprint;
-
+    tetromino_t* prev_drawn;
     // updatable_func_t update;
     // drawable_func_t draw;
-} tetromino_t;
+};
 #define TETROMINO_NUM_OF_KINDS (7)
 #define DIR_NUM_OF_KINDS (4)
 
@@ -50,6 +49,16 @@ extern const tetromino_matrix_n_t G_TETROMINO_MATRIX_NS[TETROMINO_NUM_OF_KINDS];
 extern const tetromino_matrix_t G_TETROMINO_MATRIXS[TETROMINO_NUM_OF_KINDS][DIR_NUM_OF_KINDS];
 
 /* -----------------------------------------------------------------------------------------*/
+
+static inline bool is_first_drawn_tetromino(const tetromino_t* tetro)
+{
+    return tetro->prev_drawn == NULL;
+}
+
+static inline bool is_valid_tetromino(const tetromino_t* tetro)
+{
+    return tetro != NULL;
+}
 
 static inline tetromino_matrix_n_t get_tetromino_matrix_n(symbol_id_t sid)
 {
@@ -84,9 +93,10 @@ static inline void set_tetromino_dir(tetromino_t* const out_tetro, dir_t dir)
     out_tetro->dir = dir;
 }
 
-static inline bool is_valid_tetromino(const tetromino_t* tetro)
-{
-    return tetro != NULL;
-}
+// void init_tetromino(tetromino_t* const out_tetro, symbol_id_t symbol_id, pos_t pos, dir_t dir, velocity_t velocity, block_t block, tetromino_t* prev_drawn);
+// void cleanup_tetromino(tetromino_t* const out_tetro);
+
+tetromino_t* init_tetromino_malloc(symbol_id_t symbol_id, pos_t pos, dir_t dir, velocity_t velocity, block_t block, tetromino_t* prev_drawn);
+void cleanup_tetromino_free(tetromino_t* tetro);
 
 #endif /* __TETROMINO__H */
