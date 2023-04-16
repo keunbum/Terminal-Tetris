@@ -55,12 +55,11 @@ static void render_a_tetromino_at(const tetromino_t* tetro, wchar_t block_wprint
 
     my_assert(tetro != NULL);
 
-    /* Invalid tetrominoes are not rendered. */
-    if (tetro->id == -1) {
-        return;
-    }
+    // /* Invalid tetrominoes are not rendered. */
+    // if (tetro->id == -1) {
+    //     return;
+    // }
 
-    tetris_play_tetromino_lock();
     tetromino_matrix_t symbol = get_tetromino_matrix(tetro->symbol_id, tetro->dir);
     tetromino_matrix_n_t n = get_tetromino_matrix_n(tetro->symbol_id);
     for (int idx = 0; idx < n * n; ++idx) {
@@ -74,7 +73,6 @@ static void render_a_tetromino_at(const tetromino_t* tetro, wchar_t block_wprint
             render_a_block(each_pos, block_wprint);
         }
     }
-    tetris_play_tetromino_unlock();
 }
 
 static void render_a_tetromino_at_r(const tetromino_t* tetro, wchar_t block_wprint, pos_t pos)
@@ -91,10 +89,10 @@ static void render_a_tetromino_r(const tetromino_t* tetro, wchar_t block_wprint,
     render_a_tetromino_at_r(tetro, block_wprint, tetro->pos);
 }
 
-static void erase_a_tetromino_r(const tetromino_t* tetro)
-{
-    render_a_tetromino_r(tetro, BLOCK_WPRINT_WHITE_LARGE_SQUARE, BLOCK_WPRINT_WHITE_LARGE_SQUARE);
-}
+// static void erase_a_tetromino_r(const tetromino_t* tetro)
+// {
+//     render_a_tetromino_r(tetro, BLOCK_WPRINT_WHITE_LARGE_SQUARE, BLOCK_WPRINT_WHITE_LARGE_SQUARE);
+// }
 
 static void draw_a_tetromino_r(const tetromino_t* tetro)
 {
@@ -105,9 +103,9 @@ void render_out(tetris_play_manager_t* const out_play_manager)
 {
     debug();
 
-    erase_a_tetromino_r(&out_play_manager->prev_tetromino);
-    draw_a_tetromino_r(&out_play_manager->tetromino);
-    out_play_manager->prev_tetromino = out_play_manager->tetromino;
+    // erase_a_tetromino_r(&out_play_manager->prev_tetromino);
+    // draw_a_tetromino_r(&out_play_manager->tetromino);
+    draw_a_tetromino_r(&out_play_manager->tetro_man.tetro_main);
     fflush(stdout);
 }
 

@@ -80,6 +80,8 @@ static void cleanup_input_reader_module(void* arg)
 
 void* mainfunc_input_reader(void* arg)
 {
+    return NULL;
+    
     debug();
 
     tetris_play_manager_t* const play_manager = (tetris_play_manager_t*)arg;

@@ -2,7 +2,7 @@
 #include "debug.h"
 #include "mt19937.h"
 #include "tetris/object/block_wprint.h"
-#include "tetris_play_statistic.h"
+#include "tetris_play_tetromino_statistic.h"
 
 // static const block_wprint_set_t G_S_BLOCK_WPRINT_SET_RAINBOW = {
 //     7,
@@ -38,19 +38,32 @@ void init_tetromino_generator(tetromino_generator_t* const out_gen)
 
     my_assert(out_gen != NULL);
 
-    out_gen->tetromino_spawned_cnt = 0;
     out_gen->block_wprint_set = G_S_BLOCK_WPRINT_SET;
 }
 
-void spawn_tetromino(tetromino_generator_t* const restrict out_gen, tetromino_t* const restrict out_tetro, pos_t init_pos, velocity_t init_velocity)
+// void spawn_tetromino(tetromino_generator_t* const restrict out_gen, tetromino_t* const restrict out_tetro, pos_t init_pos, velocity_t init_velocity)
+// {
+//     debug();
+
+//     out_tetro->id = out_gen->tetromino_spawned_cnt++;
+//     out_tetro->symbol_id = (symbol_id_t)(rng() % TETROMINO_NUM_OF_KINDS);
+//     out_tetro->pos = init_pos;
+//     out_tetro->velocity = init_velocity;
+//     out_tetro->dir = TETROMINO_INIT_DIR;
+//     out_tetro->block.nature = BLOCK_NATURE_FULL;
+//     out_tetro->block.wprint = G_S_BLOCK_WPRINT_SET->wprint_values[out_tetro->symbol_id];
+// }
+
+tetromino_t new_spawn_tetromino(pos_t init_pos, velocity_t init_velocity)
 {
     debug();
 
-    out_tetro->id = out_gen->tetromino_spawned_cnt++;
-    out_tetro->symbol_id = (symbol_id_t)(rng() % TOTAL_TETROMINO_NUM_OF_KINDS);
-    out_tetro->pos = init_pos;
-    out_tetro->velocity = init_velocity;
-    out_tetro->dir = TETROMINO_INIT_DIR;
-    out_tetro->block.nature = BLOCK_NATURE_FULL;
-    out_tetro->block.wprint = G_S_BLOCK_WPRINT_SET->wprint_values[out_tetro->symbol_id];
+    tetromino_t ret;
+    ret.symbol_id = (symbol_id_t)(rng() % TETROMINO_NUM_OF_KINDS);
+    ret.pos = init_pos;
+    ret.velocity = init_velocity;
+    ret.dir = TETROMINO_INIT_DIR;
+    ret.block.nature = BLOCK_NATURE_FULL;
+    ret.block.wprint = G_S_BLOCK_WPRINT_SET->wprint_values[ret.symbol_id];
+    return ret;
 }

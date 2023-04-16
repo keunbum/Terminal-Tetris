@@ -1,25 +1,15 @@
 #include "tetris_play_tetromino_manager.h"
+#include "pthread_macro.h"
 #include "tetris/scene/tetris_play_renderer.h"
-
-static void wdraw_tetromino_queue_frame(const tetromino_manager_t* man)
-{
-    wprintf_at_r((int)man->que_pos_wprint.x - 1, (int)man->que_pos_wprint.y + 6, L"NEXT");
-    wdraw_boundary_at_with(UNIT_MATRIX_HOR_LINE_THIN,
-        UNIT_MATRIX_VER_LINE_THIN,
-        TETRIS_PLAY_TETROMINO_MANAGER_QUEUE_FRAME_HEIGHT_WPRINT,
-        TETRIS_PLAY_TETROMINO_MANAGER_QUEUE_FRAME_WIDTH_WPRINT,
-        (int)man->que_pos_wprint.x, (int)man->que_pos_wprint.y,
-        UNIT_MATRIX_CORNER_TOP_LEFT_THIN,
-        UNIT_MATRIX_CORNER_TOP_RIGHT_THIN,
-        UNIT_MATRIX_CORNER_BOT_LEFT_THIN,
-        UNIT_MATRIX_CORNER_BOT_RIGHT_THIN);
-}
 
 void init_tetromino_manager_malloc(tetromino_manager_t* const out_man, int max_size)
 {
     debug();
 
     my_assert(out_man != NULL);
+
+    out_man->pos_wprint.x = TETRIS_PLAY_TETROMINO_MANAGER_POS_X_WPRINT;
+    out_man->pos_wprint.y = TETRIS_PLAY_TETROMINO_MANAGER_POS_Y_WPRINT;
 
     out_man->max_size = max_size;
     out_man->beg = 0;
@@ -28,19 +18,25 @@ void init_tetromino_manager_malloc(tetromino_manager_t* const out_man, int max_s
     out_man->que = (tetromino_t*)malloc(sizeof(tetromino_t) * out_man->max_size);
 
     init_tetromino_generator(&out_man->tetro_gen);
-
     for (int i = 0; i < out_man->max_size; ++i) {
-        tetromino_t t;
-        /* hmmm */
-        static const int S_POS_X_INTERVAL = 4;
-        static const int S_POS_Y_CORRECTION[TOTAL_TETROMINO_NUM_OF_KINDS] = { -2, 0, -1, -1, -1, -1, -1 };
         pos_t pos;
-        spawn_tetromino(&out_man->tetro_gen, &t, pos, 0);
-        pos.x = out_man->que_pos_wprint.x + (i + 1) * S_POS_X_INTERVAL - 2;
-        pos.y = out_man->que_pos_wprint.y + 6 + S_POS_Y_CORRECTION[t.symbol_id];
-        set_tetromino_pos(&t, pos);
-        push_tetromino(out_man, t);
+        tetromino_t t = new_spawn_tetromino(pos, 0);
+        push_queue(out_man, t);
     }
+
+    init_frame(&out_man->frame,
+        TETRIS_PLAY_TETROMINO_MANAGER_QUEUE_FRAME_HEIGHT_WPRINT,
+        TETRIS_PLAY_TETROMINO_MANAGER_QUEUE_FRAME_WIDTH_WPRINT,
+        out_man->pos_wprint,
+        L"NEXT",
+        UNIT_MATRIX_HOR_LINE,
+        UNIT_MATRIX_VER_LINE,
+        UNIT_MATRIX_CORNER_TOP_LEFT,
+        UNIT_MATRIX_CORNER_TOP_RIGHT,
+        UNIT_MATRIX_CORNER_BOT_LEFT,
+        UNIT_MATRIX_CORNER_BOT_RIGHT);        
+
+    init_lock(out_man->lock);
 }
 
 void cleanup_tetromino_manager_free(tetromino_manager_t* const out_man)
@@ -50,18 +46,35 @@ void cleanup_tetromino_manager_free(tetromino_manager_t* const out_man)
     my_assert(out_man != NULL);
     my_assert(out_man->que != NULL);
 
+    cleanup_lock(out_man->lock);
     free(out_man->que);
+    out_man->que = NULL;
 }
 
 void wdraw_tetromino_manager_queue(const tetromino_manager_t* man)
 {
-    wdraw_tetromino_queue_frame(man);
+    wdraw_frame(&man->frame, 6);
+
     int ptr = man->beg;
     for (int i = 0; i < man->cnt; ++i) {
+        static const int S_POS_X_INTERVAL = 4;
         tetromino_t* t = man->que + ptr;
-        wdraw_a_tetromino_at_wprint_r(t, t->pos);
+        const tetromino_matrix_n_t n = get_tetromino_matrix_n(t->symbol_id);
+        pos_t pos;
+        pos.x = man->pos_wprint.x + (i + 1) * S_POS_X_INTERVAL - 2;
+        pos.y = man->pos_wprint.y + 8 - n;
+        set_tetromino_pos(t, pos);
+        wdraw_a_tetromino_at_wprint_r(t, pos);
         if (++ptr == man->max_size) {
             ptr = 0;
         }
     }
+}
+
+void spawn_tetro_main(tetromino_manager_t* const out_man, pos_t init_pos, velocity_t init_velocity)
+{
+    out_man->tetro_main = pop_queue(out_man);
+    set_tetromino_pos(&out_man->tetro_main, init_pos);
+    pos_t empty_pos;
+    push_queue(out_man, new_spawn_tetromino(empty_pos, init_velocity));
 }

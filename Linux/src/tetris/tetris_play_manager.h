@@ -5,7 +5,8 @@
 #include "tetris/object/board.h"
 #include "tetris/object/screen.h"
 #include "tetris/object/tetromino.h"
-#include "tetris/play/tetris_play_statistic.h"
+#include "tetris/object/frame.h"
+#include "tetris/play/tetris_play_tetromino_statistic.h"
 #include "tetris/play/tetris_play_tetromino_generator.h"
 #include "tetris/play/tetris_play_tetromino_manager.h"
 #include "tetris_play_submodule.h"
@@ -27,17 +28,15 @@ typedef struct {
 } tetris_play_world_t;
 
 typedef struct {
-    const int screen_start_pos_x_wprint;
-    const int screen_start_pos_y_wprint;
-    const int screen_height_wprint;
     const int ready_getset_go_sec;
     const int tetromino_queue_max_size;
+    const pos_t pos_wprint;
 
     tetris_play_mode_t play_mode;
     tetris_play_status_t status;
     game_time_t game_delta_time;
 
-    screen_t screen;
+    frame_t screen_frame;
     board_t board;
     tetris_play_statistic_t stat;
     tetromino_manager_t tetro_man;

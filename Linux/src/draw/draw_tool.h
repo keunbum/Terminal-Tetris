@@ -72,7 +72,7 @@ static inline void wdraw_unit_matrix_at(wchar_t ch, int x, int y)
     wdraw_unit_matrix(ch);
 }
 
-void wdraw_boundary_at_with(wchar_t, wchar_t, int, int, int, int, wchar_t, wchar_t, wchar_t, wchar_t);
-void wset_row_line(wchar_t* const, int, wchar_t, wchar_t, wchar_t);
+void wdraw_boundary_at_with(wchar_t hor_block, wchar_t ver_block, int height, int width, int sx, int sy, wchar_t top_lft, wchar_t top_rgt, wchar_t bot_lft, wchar_t bot_rgt);
+void wset_row_line(wchar_t* const buf, int length, wchar_t beg, wchar_t mid, wchar_t end);
 
 #endif /* __DRAW_TOOL__H */

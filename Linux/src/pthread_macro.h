@@ -1,6 +1,10 @@
 #ifndef __PTHREAD_MACRO__H
 #define __PTHREAD_MACRO__H
 
+#include <pthread.h>
+
+#include "util.h"
+
 #if defined(pthread_cleanup_push)
 
 #undef pthread_cleanup_push
@@ -36,5 +40,11 @@ extern void __pthread_unregister_cancel(__pthread_unwind_buf_t* __buf)
     __cleanup_fct_attribute;
 
 #endif
+
+#define check_lock(lock) func_check_error(pthread_spin_lock, &lock)
+#define check_unlock(lock) func_check_error(pthread_spin_unlock, &lock)
+#define init_lock(lock) func_check_error(pthread_spin_init, &lock, PTHREAD_PROCESS_PRIVATE)
+#define cleanup_lock(lock) func_check_error(pthread_spin_destroy, &lock)
+
 
 #endif /* __PTHREAD_MACRO__H */

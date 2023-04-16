@@ -37,6 +37,8 @@ void draw_game_play_timer_at_with_r(int x, int y, int sec)
 
 void* mainfunc_game_play_timer(void* arg)
 {
+    return NULL;
+    
     debug();
 
     return run_timer_drawer_with(arg);

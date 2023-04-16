@@ -28,13 +28,13 @@ static void wdraw_row_matrix_at(wchar_t ch, int sx, int sy, int ey)
 }
 
 /* height and width both means total length */
-void wdraw_boundary_at_with(wchar_t hor_block, wchar_t ver_block, int height, int width, int sx, int sy, wchar_t top_lft, wchar_t top_rgt, wchar_t bot_lft, wchar_t bot_rgt)
+void wdraw_boundary_at_with(wchar_t hor_block, wchar_t ver_block, int height, int width, int start_pos_x, int start_pos_y, wchar_t top_lft, wchar_t top_rgt, wchar_t bot_lft, wchar_t bot_rgt)
 {
     debug();
 
-    int x0 = sx;
+    int x0 = start_pos_x;
     int x1 = x0 + height - 1;
-    int y0 = sy;
+    int y0 = start_pos_y;
     int y1 = y0 + width - 1;
 
     wdraw_unit_matrix_at(top_lft, x0, y0);

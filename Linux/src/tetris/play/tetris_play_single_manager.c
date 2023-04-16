@@ -30,7 +30,7 @@ static void ready_getset_go(const tetris_play_manager_t* play_manager)
         struct timespec start_time;
         get_chrono_time(&start_time);
         const pos_t pos_wprint = {
-            play_manager->screen_start_pos_x_wprint + 2,
+            play_manager->pos_wprint.x + 2,
             play_manager->board.pos_wprint.y + play_manager->board.width - 2,
         };
         if (cur_sec == 0) {
@@ -80,6 +80,16 @@ static void init_tetris_play_objects(tetris_play_manager_t* const out_play_manag
 {
     debug();
 
+    init_frame(&out_play_manager->screen_frame,
+        TETRIS_PLAY_SINGLE_SCREEN_HEIGHT_WPRINT, TETRIS_PLAY_SINGLE_SCREEN_WIDTH_WPRINT,
+        out_play_manager->pos_wprint,
+        NULL,
+        UNIT_MATRIX_HOR_LINE,
+        UNIT_MATRIX_VER_LINE,
+        UNIT_MATRIX_CORNER_TOP_LEFT,
+        UNIT_MATRIX_CORNER_TOP_RIGHT,
+        UNIT_MATRIX_CORNER_BOT_LEFT,
+        UNIT_MATRIX_CORNER_BOT_RIGHT);
     init_board(&out_play_manager->board);
     init_tetris_play_statistics(&out_play_manager->stat);
     init_tetromino_manager_malloc(&out_play_manager->tetro_man, out_play_manager->tetromino_queue_max_size);
@@ -139,26 +149,13 @@ void* run_tetris_play_single_mode(void* arg)
     (void)arg;
 
     static tetris_play_manager_t s_play_manager = {
-        .play_mode = TETRIS_PLAY_MODE_SINGLE,
-        .screen_start_pos_x_wprint = TETRIS_PLAY_SINGLE_SCREEN_POS_X_WPRINT,
-        .screen_start_pos_y_wprint = TETRIS_PLAY_SINGLE_SCREEN_POS_Y_WPRINT,
-        .screen_height_wprint = TETRIS_PLAY_SINGLE_SCREEN_HEIGHT_WPRINT,
         .ready_getset_go_sec = TETRIS_PLAY_TIMEINTERVAL_BEFORESTART_SEC,
-        .game_delta_time = 0.0,
         .tetromino_queue_max_size = TETROMINO_MANAGER_QUEUE_MAX_SIZE,
-        .screen = {
-            .hor_line = UNIT_MATRIX_HOR_LINE_THIN,
-            .ver_line = UNIT_MATRIX_VER_LINE_THIN,
-            .corner_top_left = UNIT_MATRIX_CORNER_TOP_LEFT_THIN,
-            .corner_top_right = UNIT_MATRIX_CORNER_TOP_RIGHT_THIN,
-            .corner_bot_left = UNIT_MATRIX_CORNER_BOT_LEFT_THIN,
-            .corner_bot_right = UNIT_MATRIX_CORNER_BOT_RIGHT_THIN,
-            .pos = { TETRIS_PLAY_SINGLE_SCREEN_POS_X, TETRIS_PLAY_SINGLE_SCREEN_POS_Y },
-            .pos_wprint = { TETRIS_PLAY_SINGLE_SCREEN_POS_X_WPRINT, TETRIS_PLAY_SINGLE_SCREEN_POS_Y_WPRINT },
-            .height = TETRIS_PLAY_SINGLE_SCREEN_HEIGHT,
-            .width = TETRIS_PLAY_SINGLE_SCREEN_WIDTH,
-            .height_wprint = TETRIS_PLAY_SINGLE_SCREEN_HEIGHT_WPRINT,
-            .width_wprint = TETRIS_PLAY_SINGLE_SCREEN_WIDTH_WPRINT,
+        .pos_wprint = { TETRIS_PLAY_SINGLE_SCREEN_POS_X_WPRINT, TETRIS_PLAY_SINGLE_SCREEN_POS_Y_WPRINT },
+        .play_mode = TETRIS_PLAY_MODE_SINGLE,
+        .game_delta_time = 0.0,
+        .screen_frame = {
+            /* Should be inited with init() */
         },
         .board = {
             /* Also should be inited with init() */
@@ -182,16 +179,10 @@ void* run_tetris_play_single_mode(void* arg)
             .frame_pos_wprint = { BOARD_FRAME_POS_X_WPRINT, BOARD_FRAME_POS_Y_WPRINT },
         },
         .stat = {
-            /* Also should be inited with init() */
-            .pos = { TETRIS_PLAY_STATISTIC_POS_X, TETRIS_PLAY_STATISTIC_POS_Y },
-            .pos_wprint = { TETRIS_PLAY_STATISTIC_POS_X_WPRINT, TETRIS_PLAY_STATISTIC_POS_Y_WPRINT },
-            .tetromino_pos_wprint = { TETRIS_PLAY_STATISTIC_TETROMINO_POS_X_WPRINT, TETRIS_PLAY_STATISTIC_TETROMINO_POS_Y_WPRINT },
-            .interval_height = TETRIS_PLAY_STATISTIC_INTERVAL_HEIGHT,
+            /* Should be inited with init() */
         },
         .tetro_man = {
-            /* Also should be inited with init() */
-            // .que_pos = { TETRIS_PLAY_TETROMINO_MANAGER_POS_X, TETRIS_PLAY_TETROMINO_MANAGER_POS_Y },
-            .que_pos_wprint = { TETRIS_PLAY_TETROMINO_MANAGER_POS_X_WPRINT, TETRIS_PLAY_TETROMINO_MANAGER_POS_Y_WPRINT },
+            /* Should be inited with init() */
             .tetro_gen = {
                 /* Should be inited with init() */
             },
@@ -217,12 +208,8 @@ void* run_tetris_play_single_mode(void* arg)
                 .draw_func = draw_game_play_timer_at_with_r,
             },
         },
-        .tetromino = {
-            .id = -1,
-        },
-        .prev_tetromino = {
-            .id = -1,
-        },
+        .tetromino = {},
+        .prev_tetromino = {},
         .sub_modules = {
             {
                 .main_func = mainfunc_game_main_loop,
