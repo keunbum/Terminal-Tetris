@@ -2498,6 +2498,18 @@ tetromino_generator, manager 업데이트 해야 함. 특히 매니저.
 
 [//]: # (End of 04.16)
 
+<details><summary>04.17(월)</summary>
+
+테트로미노 메모리 누수 조심!! 체계적으로 설계할 것. (이래서 C++이 편한데..)
+
+테트로미노 위치 디버깅해볼 것.. 뭔가 이상함;
+
+### Achievements of the day
+
+</details>
+
+[//]: # (End of 04.17)
+
 </blockquote></details>
 
 [//]: # (End of 2023.04)
