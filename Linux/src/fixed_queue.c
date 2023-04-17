@@ -2,7 +2,7 @@
 
 #include "fixed_queue.h"
 
-void traverse_tetromino_manager_queue(const fixed_queue_t* que, void (*func)(void* const, int, void*), void* arg)
+void traverse_queue(const fixed_queue_t* que, void (*func)(void* const, int, void*), void* arg)
 {
     size_t ptr = que->beg;
     for (int i = 0; i < (int)que->cnt; ++i) {
@@ -15,6 +15,8 @@ void traverse_tetromino_manager_queue(const fixed_queue_t* que, void (*func)(voi
 
 void init_queue(fixed_queue_t* const out_que, int max_size)
 {
+    debug();
+    
     out_que->max_size = max_size;
     out_que->beg = 0;
     out_que->end = 0;
@@ -22,9 +24,10 @@ void init_queue(fixed_queue_t* const out_que, int max_size)
     out_que->pa = (void**)malloc(sizeof(void*) * out_que->max_size);
 }
 
+/* Not A Good Logic */
 void cleanup_queue(fixed_queue_t* const out_que)
 {
-    while (!is_empty_queue(out_que)) {
+    while (!is_queue_empty(out_que)) {
         void* cur = pop_queue(out_que);
         free(cur);
         cur = NULL;

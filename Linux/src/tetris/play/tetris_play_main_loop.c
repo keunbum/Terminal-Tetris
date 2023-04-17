@@ -44,8 +44,12 @@ void* mainfunc_game_main_loop(void* arg)
         play_manager->game_delta_time = prev_frame_time * TETRIS_PLAY_GAME_DELTA_TIME_FACTOR;
 
         // update_gameworld(play_manager);
-        new_update_gameworld(play_manager);
+        tetromino_try_status_t res = new_update_gameworld(play_manager);
         render_out(play_manager);
+        if (res == TETROMINO_TRY_STATUS_ONTHEGROUND) {
+            cleanup_tetromino_free(&play_manager->tetro_man.tetro_main);
+        }
+
 
         nanosleep_chrono(TO_NSEC(TETRIS_PLAY_FRAME_TIME) - get_elapsed_time_nsec(&start_time));
 

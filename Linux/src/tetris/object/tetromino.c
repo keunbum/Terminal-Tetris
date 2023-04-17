@@ -1,4 +1,3 @@
-#include <stdlib.h>
 #include <time.h>
 
 #include "debug.h"
@@ -20,14 +19,20 @@ const tetromino_matrix_t G_TETROMINO_MATRIXS[TETROMINO_NUM_OF_KINDS][DIR_NUM_OF_
 };
 
 static void init_tetromino(tetromino_t* const out_tetro,
-    symbol_id_t symbol_id, pos_t pos, dir_t dir, velocity_t velocity, block_t block, tetromino_t* prev_drawn)
+    int id, symbol_id_t symbol_id, dir_t dir, pos_t pos, pos_t pos_wprint, velocity_t velocity, block_t block, tetromino_t* prev_drawn)
 {
+    debug();
+
+    out_tetro->id = id;
     out_tetro->symbol_id = symbol_id;
-    out_tetro->pos = pos;
     out_tetro->dir = dir;
+    out_tetro->pos = pos;
+    out_tetro->pos_wprint = pos_wprint;
     out_tetro->velocity = velocity;
     out_tetro->block = block;
     out_tetro->prev_drawn = prev_drawn;
+
+    ewprintf("tetro-%d has been spawned\n", out_tetro->id);
 }
 
 static void cleanup_tetromino(tetromino_t* const out_tetro)
@@ -38,18 +43,25 @@ static void cleanup_tetromino(tetromino_t* const out_tetro)
     }
 }
 
-tetromino_t* init_tetromino_malloc(symbol_id_t symbol_id, pos_t pos, dir_t dir, velocity_t velocity, block_t block, tetromino_t* prev_drawn)
+tetromino_t* init_tetromino_malloc(int id, symbol_id_t symbol_id, dir_t dir, pos_t pos, velocity_t velocity, block_t block, tetromino_t* prev_drawn)
 {
-    tetromino_t* pa_tetro = (tetromino_t*)malloc(sizeof(tetromino_t));
-    init_tetromino(pa_tetro, symbol_id, pos, dir, velocity, block, prev_drawn);
+    tetromino_t* pa_tetro = create_tetromino_empty_malloc();
+    init_tetromino(pa_tetro, id, symbol_id, dir, pos, create_pos_empty(), velocity, block, prev_drawn);
     return pa_tetro;
 }
 
-void cleanup_tetromino_free(tetromino_t* tetro)
+tetromino_t* init_tetromino_poswprint_malloc(int id, symbol_id_t symbol_id, dir_t dir, pos_t pos_wprint, velocity_t velocity, block_t block, tetromino_t* prev_drawn)
 {
-    cleanup_tetromino(tetro);
-    if (tetro != NULL) {
-        free(tetro);
-        tetro = NULL;
+    tetromino_t* pa_tetro = create_tetromino_empty_malloc();
+    init_tetromino(pa_tetro, id, symbol_id, dir, create_pos_empty(), pos_wprint, velocity, block, prev_drawn);
+    return pa_tetro;
+}
+
+void cleanup_tetromino_free(tetromino_t** const out_tetro)
+{
+    cleanup_tetromino(*out_tetro);
+    if (*out_tetro != NULL) {
+        free(*out_tetro);
+        *out_tetro = NULL;
     }
 }

@@ -10,10 +10,15 @@ typedef struct {
     pos_e_t y;
 } pos_t;
 
-static inline void set_pos(pos_t* const out_pos, pos_e_t pos_x, pos_e_t pos_y)
+static inline pos_t create_pos(pos_e_t x, pos_e_t y)
 {
-    out_pos->x = pos_x;
-    out_pos->y = pos_y;
+    pos_t ret = {x, y};
+    return ret;
+}
+
+static inline pos_t create_pos_empty()
+{
+    return create_pos(0, 0);
 }
 
 #endif /* __POS__H */

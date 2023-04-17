@@ -23,6 +23,8 @@
 #define TETRIS_PLAY_BOARD_POS_X TETRIS_PLAY_BOARD_POS_X_WPRINT
 #define TETRIS_PLAY_BOARD_POS_Y (TETRIS_PLAY_BOARD_POS_Y_WPRINT / 2)
 
+#define TETRIS_PLAY_SKY_LINE_POS_X (TETRIS_PLAY_BOARD_POS_X + 8)
+
 #define BOARD_FRAME_HEIGHT (TETRIS_PLAY_BOARD_HEIGHT + 2)
 #define BOARD_FRAME_WIDTH (TETRIS_PLAY_BOARD_WIDTH + 2)
 
@@ -42,6 +44,7 @@ typedef struct {
     const wchar_t block_ver_line;
     const wchar_t block_hor_line;
     const wchar_t block_inner;
+    const wchar_t block_skyline;
 
     const int height;
     const int width;

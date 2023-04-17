@@ -8,8 +8,6 @@
 // [sx, ex)
 static void wdraw_col_matrix_at(wchar_t ch, int sx, int ex, int sy)
 {
-    debug();
-
     wgotoxy(sx, sy);
     for (int i = sx; i < ex; i += 1) {
         wdraw_unit_matrix_at(ch, i, sy);
@@ -19,8 +17,6 @@ static void wdraw_col_matrix_at(wchar_t ch, int sx, int ex, int sy)
 // [sy, ey)
 static void wdraw_row_matrix_at(wchar_t ch, int sx, int sy, int ey)
 {
-    debug();
-
     wgotoxy(sx, sy);
     for (int j = sy; j < ey; j += 1) {
         wdraw_unit_matrix(ch);

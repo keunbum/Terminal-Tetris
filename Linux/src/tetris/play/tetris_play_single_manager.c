@@ -34,10 +34,10 @@ static void ready_getset_go(const tetris_play_manager_t* play_manager)
             play_manager->board.pos_wprint.y + play_manager->board.width - 2,
         };
         if (cur_sec == 0) {
-            wdraw_digital_digit_at_r(G_DIGITAL_DIGIT_EMPTY, (int)pos_wprint.x, (int)pos_wprint.y);
+            wdraw_digital_digit5_at_r(G_DIGITAL_DIGIT5_EMPTY, (int)pos_wprint.x, (int)pos_wprint.y);
             break;
         }
-        wdraw_digital_digit_at_r(G_DIGITAL_DIGITS[cur_sec], (int)pos_wprint.x, (int)pos_wprint.y);
+        wdraw_digital_digit5_at_r(G_DIGITAL_DIGIT5S[cur_sec], (int)pos_wprint.x, (int)pos_wprint.y);
         /* Of course, it's not exactly 1 second. */
         /* However, it is a bit cumbersome to write a realtime timer haha; */
         nanosleep_chrono(TO_NSEC(1) - get_elapsed_time_nsec(&start_time));
@@ -165,6 +165,7 @@ void* run_tetris_play_single_mode(void* arg)
             .block_ver_line = BLOCK_WPRINT_BLACK_SQUARE_BUTTON,
             .block_hor_line = BLOCK_WPRINT_BLACK_SQUARE_BUTTON,
             .block_inner = BLOCK_WPRINT_WHITE_LARGE_SQUARE,
+            .block_skyline = BLOCK_WPRINT_SKYLINE,
 
             .height = TETRIS_PLAY_BOARD_HEIGHT,
             .width = TETRIS_PLAY_BOARD_WIDTH,
@@ -201,8 +202,6 @@ void* run_tetris_play_single_mode(void* arg)
                 .draw_func = draw_game_play_timer_at_with_r,
             },
         },
-        .tetromino = {},
-        .prev_tetromino = {},
         .sub_modules = {
             {
                 .main_func = mainfunc_game_main_loop,

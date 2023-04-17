@@ -27,6 +27,8 @@ typedef enum {
 typedef struct {
 } tetris_play_world_t;
 
+#define TETRIS_PLAY_SUBMODULE_NUM (3)
+
 typedef struct {
     const int ready_getset_go_sec;
     const int tetromino_queue_max_size;
@@ -39,13 +41,8 @@ typedef struct {
     frame_t screen_frame;
     board_t board;
     tetromino_manager_t tetro_man;
-
+    
     timer_drawer_t timer_drawer;
-
-    tetromino_t tetromino;
-    tetromino_t prev_tetromino;
-
-#define TETRIS_PLAY_SUBMODULE_NUM (3)
     tetris_play_submodule_t sub_modules[TETRIS_PLAY_SUBMODULE_NUM];
 } tetris_play_manager_t;
 

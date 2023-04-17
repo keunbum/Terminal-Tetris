@@ -9,7 +9,7 @@ static inline void set_board_block(board_t* const out_board, int i, int j, block
 
 static inline void set_board_block_each(board_t* const out_board, int i, int j, block_nature_t nature, block_wprint_t wprint)
 {
-    set_block_nature_each(out_board->grid[i] + j, nature, wprint);
+    set_block_each(out_board->grid[i] + j, nature, wprint);
 }
 
 void init_board(board_t* const out_board)
@@ -31,13 +31,16 @@ void init_board(board_t* const out_board)
         } else {
             for (int j = 0; j < out_board->width; ++j) {
                 if (j == 0 || j == out_board->width - 1) {
-                    set_board_block_each(out_board, i, j, BLOCK_NATURE_FULL, out_board->block_ver_line);
+                    set_board_block_each(out_board, i, j, BLOCK_NATURE_FULL, 
+                    (i == TETRIS_PLAY_SKY_LINE_POS_X - TETRIS_PLAY_BOARD_POS_X) ? out_board->block_skyline : out_board->block_ver_line);
                 } else {
                     set_board_block_each(out_board, i, j, BLOCK_NATURE_EMPTY, out_board->block_inner);
                 }
             }
         }
     }
+
+    ewprintf("board's pos: (%d, %d), poswprint: (%d, %d)\n", (int)out_board->pos.x, (int)out_board->pos.y, (int)out_board->pos_wprint.x, (int)out_board->pos_wprint.y);
 }
 
 void cleanup_board(board_t* const out_board)

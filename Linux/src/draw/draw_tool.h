@@ -6,6 +6,7 @@
 #include <wchar.h>
 
 #include "cursor.h"
+#include "debug.h"
 
 #define UNIT_MATRIX_CORNER_TOP_LEFT (0x2554)
 #define UNIT_MATRIX_CORNER_TOP_RIGHT (0x2557)
@@ -39,6 +40,12 @@
 
 #define wdraw_newline() wprintf(L"\n")
 
+static inline void wdraw_row_at(const wchar_t* buf, int pos_x_wprint, int pos_y_wprint)
+{
+    wgotoxy(pos_x_wprint, pos_y_wprint);
+    wprintf(buf);
+}
+
 static inline void wdraw_row_newline(const wchar_t* buf, int cursor_move_width)
 {
     wprintf(buf);
@@ -54,12 +61,12 @@ static inline void wdraw_rows_newline_at(int height, const wchar_t** buf, int cu
     wdraw_newline();
 }
 
-#define wdraw_rows_newline_at_r(...)        \
-    do {                                    \
-        cursor_lock();                      \
-        wdraw_rows_newline_at(__VA_ARGS__); \
-        cursor_unlock();                    \
-    } while (false)
+static inline void wdraw_rows_newline_at_r(int height, const wchar_t** buf, int cursor_move_width, int pos_x_wprint, int pos_y_wprint)
+{
+    cursor_lock();
+    wdraw_rows_newline_at(height, buf, cursor_move_width, pos_x_wprint, pos_y_wprint);
+    cursor_unlock();
+}
 
 static inline void wdraw_unit_matrix(wchar_t wch)
 {

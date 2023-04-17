@@ -41,13 +41,14 @@
 // ref: https://en.wikipedia.org/wiki/Geometric_Shapes_(Unicode_block)
 // ref: https://en.wikipedia.org/wiki/Box-drawing_character
 // ref: https://www.compart.com/en/unicode/block/U+25A0
-// ref: https://emojiterra.com/geometric-symbols/
 
-#define BLOCK_WPRINT_BLACK_LARGE_SQUARE (0x2B1B)
-#define BLOCK_WPRINT_WHITE_LARGE_SQUARE (0x2B1C)
-#define BLOCK_WPRINT_BLACK_SQUARE_BUTTON (L'\U0001f532')
-#define BLOCK_WPRINT_LIGHT_LARGE_SQUARE (L'\U0001f3fb')
-
-typedef wchar_t block_wprint_t;
+typedef enum {
+    BLOCK_WPRINT_EMPTY = (int)(L' '),
+    BLOCK_WPRINT_BLACK_LARGE_SQUARE = (int)(0x2B1B),
+    BLOCK_WPRINT_WHITE_LARGE_SQUARE = (int)(0x2B1C),
+    BLOCK_WPRINT_BLACK_SQUARE_BUTTON = (int)(L'\U0001f532'),
+    BLOCK_WPRINT_LIGHT_LARGE_SQUARE = (int)(L'\U0001f3fb'),
+    BLOCK_WPRINT_SKYLINE = (int)(L'\U0001f3fc'),
+} block_wprint_t;
 
 #endif /* __BLOCK_CODE__H */

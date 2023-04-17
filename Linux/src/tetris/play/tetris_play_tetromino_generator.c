@@ -40,21 +40,37 @@ void init_tetromino_generator(tetromino_generator_t* const out_gen)
 
     my_assert(out_gen != NULL);
 
+    out_gen->spawnd_cnt = 0;
     out_gen->block_wprint_set = G_S_BLOCK_WPRINT_SET;
 }
 
-tetromino_t* spawn_tetromino_malloc(pos_t init_pos, velocity_t init_velocity)
+tetromino_t* create_tetromino_random_malloc(tetromino_generator_t* const out_gen, pos_t init_pos, velocity_t init_velocity)
 {
     debug();
 
     symbol_id_t init_symbol_id = (symbol_id_t)(rng() % TETROMINO_NUM_OF_KINDS);
     block_t init_block = { BLOCK_NATURE_FULL, G_S_BLOCK_WPRINT_SET->wprint_values[init_symbol_id] };
-    tetromino_t* pa_ret = init_tetromino_malloc(
+    tetromino_t* pa_ret = init_tetromino_malloc(out_gen->spawnd_cnt++,
         init_symbol_id,
-        init_pos,
         TETROMINO_INIT_DIR,
+        init_pos,
         init_velocity,
         init_block,
         NULL);
     return pa_ret;
+}
+
+tetromino_t* create_tetromino_symbol_poswprint_malloc(tetromino_generator_t* const out_gen, symbol_id_t init_symbol_id, pos_t init_pos_wprint)
+{
+    debug();
+
+    block_t init_block = { BLOCK_NATURE_FULL, G_S_BLOCK_WPRINT_SET->wprint_values[init_symbol_id] };
+    tetromino_t* pa_ret = init_tetromino_poswprint_malloc(out_gen->spawnd_cnt++,
+        init_symbol_id,
+        TETROMINO_INIT_DIR,
+        init_pos_wprint,
+        0,
+        init_block,
+        NULL);
+    return pa_ret;    
 }

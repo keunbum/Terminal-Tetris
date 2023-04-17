@@ -5,6 +5,7 @@
 #include "tetris/object/tetromino.h"
 
 typedef struct {
+    int spawnd_cnt;
     const block_wprint_set_t* block_wprint_set;
 } tetromino_generator_t;
 
@@ -16,6 +17,7 @@ static inline const block_wprint_set_t* get_block_wprint_set(const tetromino_gen
 }
 
 void init_tetromino_generator(tetromino_generator_t* const out_gen);
-tetromino_t* spawn_tetromino_malloc(pos_t init_pos, velocity_t init_velocity);
+tetromino_t* create_tetromino_random_malloc(tetromino_generator_t* const out_gen, pos_t init_pos, velocity_t init_velocity);
+tetromino_t* create_tetromino_symbol_poswprint_malloc(tetromino_generator_t* const out_gen, symbol_id_t init_symbol_id, pos_t init_pos_wprint);
 
 #endif /* __TETRIS_PLAY_TETROMINO_GENERATOR__H */

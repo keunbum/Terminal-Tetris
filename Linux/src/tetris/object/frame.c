@@ -37,6 +37,8 @@ void cleanup_frame(frame_t* const frame)
 
 void wdraw_frame(const frame_t* frame, int title_pos_x_offset)
 {
+    debug();
+    
     my_assert(frame != NULL);
 
     if (frame->title != NULL) {

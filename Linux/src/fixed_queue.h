@@ -6,7 +6,7 @@
 
 #include "debug.h"
 
-/* Implements an index-based circular queue. */
+/* Implements an array-based circular queue. */
 typedef struct {
     size_t max_size;
     size_t beg;
@@ -15,19 +15,19 @@ typedef struct {
     void** pa;
 } fixed_queue_t;
 
-static inline bool is_empty_queue(const fixed_queue_t* que)
+static inline bool is_queue_empty(const fixed_queue_t* que)
 {
     return que->cnt == 0;
 }
 
-static inline int get_max_size_queue(const fixed_queue_t* que)
+static inline bool is_queue_full(const fixed_queue_t* que)
 {
-    return que->max_size;
+    return que->cnt == que->max_size;
 }
 
-static inline const void* get_top_queue(const fixed_queue_t* que)
+static inline const void* get_queue_top(const fixed_queue_t* que)
 {
-    my_assert(!is_empty_queue(que));
+    my_assert(!is_queue_empty(que));
     return que->pa[que->beg];
 }
 
@@ -44,7 +44,7 @@ static inline void push_queue(fixed_queue_t* const que, void* tetro)
 
 static inline void* pop_queue(fixed_queue_t* const que)
 {
-    my_assert(!is_empty_queue(que));
+    my_assert(!is_queue_empty(que));
     void* ret = que->pa[que->beg];
     if (++que->beg == que->max_size) {
         que->beg = 0;
@@ -53,7 +53,7 @@ static inline void* pop_queue(fixed_queue_t* const que)
     return ret;
 }
 
-void traverse_tetromino_manager_queue(const fixed_queue_t* que, void (*func)(void* const, int, void*), void* arg);
+void traverse_queue(const fixed_queue_t* que, void (*func)(void* const, int, void*), void* arg);
 void init_queue(fixed_queue_t* const out_que, int max_size);
 void cleanup_queue(fixed_queue_t* const out_que);
 
