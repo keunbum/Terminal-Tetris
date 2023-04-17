@@ -1,6 +1,8 @@
 #ifndef __UTIL__H
 #define __UTIL__H
 
+#include <stdbool.h>
+
 #include "error_handling.h"
 
 #ifdef TETRIS_DEBUG

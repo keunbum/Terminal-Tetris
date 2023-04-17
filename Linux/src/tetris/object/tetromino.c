@@ -35,12 +35,16 @@ static void init_tetromino(tetromino_t* const out_tetro,
     ewprintf("tetro-%d has been spawned\n", out_tetro->id);
 }
 
-static void cleanup_tetromino(tetromino_t* const out_tetro)
+void cleanup_tetromino(tetromino_t* const out_tetro)
 {
+    if (out_tetro == NULL) {
+        return;
+    }
     if (out_tetro->prev_drawn != NULL) {
         free(out_tetro->prev_drawn);
         out_tetro->prev_drawn = NULL;
     }
+    free(out_tetro);
 }
 
 tetromino_t* init_tetromino_malloc(int id, symbol_id_t symbol_id, dir_t dir, pos_t pos, velocity_t velocity, block_t block, tetromino_t* prev_drawn)
@@ -55,13 +59,4 @@ tetromino_t* init_tetromino_poswprint_malloc(int id, symbol_id_t symbol_id, dir_
     tetromino_t* pa_tetro = create_tetromino_empty_malloc();
     init_tetromino(pa_tetro, id, symbol_id, dir, create_pos_empty(), pos_wprint, velocity, block, prev_drawn);
     return pa_tetro;
-}
-
-void cleanup_tetromino_free(tetromino_t** const out_tetro)
-{
-    cleanup_tetromino(*out_tetro);
-    if (*out_tetro != NULL) {
-        free(*out_tetro);
-        *out_tetro = NULL;
-    }
 }

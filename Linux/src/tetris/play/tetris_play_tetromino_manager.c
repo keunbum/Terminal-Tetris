@@ -42,17 +42,20 @@ static void callback_spawn_tetromino_manager_tetro_main(void* const out_void, in
     tetro->pos_wprint = pos_wprint;
 }
 
-static void spawn_tetromino_manager_tetro_main(tetromino_manager_t* const out_man, pos_t init_pos, pos_t init_pos_wprint, velocity_t init_velocity)
+static void spawn_tetromino_manager_tetro_main(tetromino_manager_t* const out_man, velocity_t init_velocity)
 {
     out_man->tetro_main = pop_queue(&out_man->que);
-    out_man->tetro_main->pos = init_pos;
-    out_man->tetro_main->pos_wprint = init_pos_wprint;
+    static const int S_TETROMINO_INIT_POS_X_OFFSET[TETROMINO_NUM_OF_KINDS] = { +2, +2, +2, +1, +1, +1, +1 };
+    out_man->tetro_main->pos = create_pos(
+        TETRIS_PLAY_TETROMINO_INIT_POS_X + S_TETROMINO_INIT_POS_X_OFFSET[out_man->tetro_main->symbol_id],
+        TETRIS_PLAY_TETROMINO_INIT_POS_Y);
+    out_man->tetro_main->pos_wprint = get_tetromino_poswprint(out_man->tetro_main->pos);
     out_man->tetro_main->velocity = init_velocity;
     push_queue(&out_man->que, create_tetromino_random_malloc(&out_man->tetro_gen, create_pos_empty(), 0));
     traverse_queue(&out_man->que, callback_spawn_tetromino_manager_tetro_main, (void*)&out_man->pos_wprint);
 }
 
-void init_tetromino_manager_malloc(tetromino_manager_t* const out_man, int que_max_size)
+void init_tetromino_manager(tetromino_manager_t* const out_man, int que_max_size)
 {
     debug();
 
@@ -64,14 +67,11 @@ void init_tetromino_manager_malloc(tetromino_manager_t* const out_man, int que_m
     out_man->tetro_hold = NULL;
 
     init_tetromino_generator(&out_man->tetro_gen);
-
     init_tetris_play_statistics(&out_man->stat, &out_man->tetro_gen);
-
-    init_queue(&out_man->que, que_max_size);
+    init_queue_malloc(&out_man->que, que_max_size);
     while (!is_queue_full(&out_man->que)) {
         push_queue(&out_man->que, (void*)create_tetromino_random_malloc(&out_man->tetro_gen, create_pos(0, 0), 0));
     }
-
     init_frame(&out_man->frame,
         TETRIS_PLAY_TETROMINO_MANAGER_QUEUE_FRAME_HEIGHT_WPRINT,
         TETRIS_PLAY_TETROMINO_MANAGER_QUEUE_FRAME_WIDTH_WPRINT,
@@ -98,19 +98,19 @@ void cleanup_tetromino_manager_free(tetromino_manager_t* const out_man)
     cleanup_queue(&out_man->que);
 }
 
-tetromino_try_status_t update_tetromino_manager(tetromino_manager_t* const out_man, const board_t* board, game_time_t delta_time)
+tetromino_try_status_t update_tetromino_manager(tetromino_manager_t* const out_man, board_t* const out_board, game_time_t delta_time)
 {
     debug();
 
+    my_assert(out_man != NULL);
+
     if (!is_valid_tetromino(out_man->tetro_main)) {
-        spawn_tetromino_manager_tetro_main(out_man, 
-        create_pos(TETRIS_PLAY_TETROMINO_INIT_POS_X, TETRIS_PLAY_TETROMINO_INIT_POS_Y), 
-        create_pos(TETRIS_PLAY_TETROMINO_INIT_POS_X_WPRINT, TETRIS_PLAY_TETROMINO_INIT_POS_Y_WPRINT),
-        TETRIS_PLAY_TETROMINO_INIT_VELOCITY);
+        spawn_tetromino_manager_tetro_main(out_man,
+            TETRIS_PLAY_TETROMINO_INIT_VELOCITY);
         inc_tetromino_cnt(&out_man->stat, out_man->tetro_main->symbol_id);
     }
     my_assert(out_man->tetro_main != NULL);
-    tetromino_try_status_t res = try_move_tetromino_deltatime_r(board, out_man->tetro_main, DIR_BOT, delta_time);
+    tetromino_try_status_t res = try_move_tetromino_deltatime_r(out_board, out_man->tetro_main, DIR_BOT, delta_time);
     return res;
 }
 

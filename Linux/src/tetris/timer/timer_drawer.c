@@ -22,6 +22,7 @@ static void wdraw_timer_frame_at(int pos_x_wprint, int pos_y_wprint)
     wset_row_line(s_bot_line, TIMER_FRAME_WIDTH, TIMER_FRAME_CORNER_BOT_LEFT, TIMER_FRAME_UNIT_HOR, TIMER_FRAME_CORNER_BOT_RIGHT);
 
     wdraw_rows_newline_at_r(S_STR_NUM, (const wchar_t**)s_strs, TIMER_FRAME_WIDTH, pos_x_wprint, pos_y_wprint);
+    wdraw_newline();
 }
 
 static void doit_drawer_main_logic(const realtime_timer_t* timer, const draw_module_t* draw_module)

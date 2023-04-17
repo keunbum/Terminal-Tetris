@@ -68,9 +68,9 @@ typedef struct {
 //     return ret;
 // }
 
-void init_tetromino_manager_malloc(tetromino_manager_t* const out_man, int max_size);
+void init_tetromino_manager(tetromino_manager_t* const out_man, int max_size);
 void cleanup_tetromino_manager_free(tetromino_manager_t* const out_man);
-tetromino_try_status_t update_tetromino_manager(tetromino_manager_t* const out_man, const board_t* board, game_time_t delta_time);
+tetromino_try_status_t update_tetromino_manager(tetromino_manager_t* const out_man, board_t* const out_board, game_time_t delta_time);
 void wdraw_tetromino_manager(const tetromino_manager_t* man);
 
 #endif /* __TETRIS_PLAY_TETROMINO_MANAGER__H */

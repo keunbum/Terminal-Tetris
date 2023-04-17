@@ -28,33 +28,36 @@ static inline bool is_queue_full(const fixed_queue_t* que)
 static inline const void* get_queue_top(const fixed_queue_t* que)
 {
     my_assert(!is_queue_empty(que));
+
     return que->pa[que->beg];
 }
 
-static inline void push_queue(fixed_queue_t* const que, void* tetro)
+static inline void push_queue(fixed_queue_t* const out_que, void* tetro)
 {
-    my_assert(que->cnt < que->max_size);
-    que->pa[que->end] = tetro;
+    my_assert(out_que->cnt < out_que->max_size);
+
+    out_que->pa[out_que->end] = tetro;
     /* I know this way to be faster than the remainder operator. */
-    if (++que->end == que->max_size) {
-        que->end = 0;
+    if (++out_que->end == out_que->max_size) {
+        out_que->end = 0;
     }
-    que->cnt += 1;
+    out_que->cnt += 1;
 }
 
-static inline void* pop_queue(fixed_queue_t* const que)
+static inline void* pop_queue(fixed_queue_t* const out_que)
 {
-    my_assert(!is_queue_empty(que));
-    void* ret = que->pa[que->beg];
-    if (++que->beg == que->max_size) {
-        que->beg = 0;
+    my_assert(!is_queue_empty(out_que));
+    
+    void* ret = out_que->pa[out_que->beg];
+    if (++out_que->beg == out_que->max_size) {
+        out_que->beg = 0;
     }
-    que->cnt -= 1;
+    out_que->cnt -= 1;
     return ret;
 }
 
 void traverse_queue(const fixed_queue_t* que, void (*func)(void* const, int, void*), void* arg);
-void init_queue(fixed_queue_t* const out_que, int max_size);
+void init_queue_malloc(fixed_queue_t* const out_que, int max_size);
 void cleanup_queue(fixed_queue_t* const out_que);
 
 #endif /* __STATIC_QUEUE__H */

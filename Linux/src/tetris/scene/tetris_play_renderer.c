@@ -77,9 +77,30 @@ void wdraw_a_tetromino_cleanblock(tetromino_t* const out_tetro, block_wprint_t c
 
 static void render_tetromino_manager_out(tetromino_manager_t* const out_man)
 {
-    out_man->tetro_main->pos_wprint = get_pos_wprint(out_man->tetro_main->pos);
+    if (out_man->tetro_main == NULL) {
+        return;
+    }
     wdraw_a_tetromino_cleanblock(out_man->tetro_main, BLOCK_WPRINT_WHITE_LARGE_SQUARE);
     traverse_queue(&out_man->que, callback_render_tetromino_manager_out, NULL);
+}
+
+static void render_a_skyline(const board_t* board)
+{
+    debug();
+
+    int i = TETRIS_PLAY_SKY_LINE_POS_X - TETRIS_PLAY_BOARD_POS_X;
+    my_assert(1 <= i && i <= board->height - 2);
+    cursor_lock();
+    wgotoxy((int)board->pos_wprint.x + i, (int)board->pos_wprint.y);
+    for (int step = 0; step < 1; ++step) {
+        static wchar_t buf[TETRIS_PLAY_BOARD_WIDTH + 1];
+        for (int j = 0; j < board->width; ++j) {
+            buf[j] = board->grid[i + step][j].wprint;
+        }
+        buf[board->width] = L'\0';
+        wdraw_row_newline(buf, board->width_wprint);
+    }
+    cursor_unlock();
 }
 
 void render_out(tetris_play_manager_t* const out_man)
@@ -88,6 +109,9 @@ void render_out(tetris_play_manager_t* const out_man)
 
     my_assert(out_man != NULL);
 
-    render_tetromino_manager_out(&out_man->tetro_man);
+    if (out_man->status != TETRIS_PLAY_STATUS_GAMEOVER) {
+        render_tetromino_manager_out(&out_man->tetro_man);
+        render_a_skyline(&out_man->board);
+    }
     fflush(stdout);
 }

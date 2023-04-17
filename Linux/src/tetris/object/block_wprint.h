@@ -48,7 +48,8 @@ typedef enum {
     BLOCK_WPRINT_WHITE_LARGE_SQUARE = (int)(0x2B1C),
     BLOCK_WPRINT_BLACK_SQUARE_BUTTON = (int)(L'\U0001f532'),
     BLOCK_WPRINT_LIGHT_LARGE_SQUARE = (int)(L'\U0001f3fb'),
-    BLOCK_WPRINT_SKYLINE = (int)(L'\U0001f3fc'),
+    BLOCK_WPRINT_SKYLINE = (int)(L'\u274E'),
+    BLOCK_WPRINT_NIGHTSKY = (int)(L'\U0001f386'),
 } block_wprint_t;
 
 #endif /* __BLOCK_CODE__H */

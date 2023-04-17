@@ -23,7 +23,7 @@
 #define TETRIS_PLAY_BOARD_POS_X TETRIS_PLAY_BOARD_POS_X_WPRINT
 #define TETRIS_PLAY_BOARD_POS_Y (TETRIS_PLAY_BOARD_POS_Y_WPRINT / 2)
 
-#define TETRIS_PLAY_SKY_LINE_POS_X (TETRIS_PLAY_BOARD_POS_X + 8)
+#define TETRIS_PLAY_SKY_LINE_POS_X (TETRIS_PLAY_BOARD_POS_X + (TETRIS_PLAY_BOARD_HEIGHT - 2 - 20))
 
 #define BOARD_FRAME_HEIGHT (TETRIS_PLAY_BOARD_HEIGHT + 2)
 #define BOARD_FRAME_WIDTH (TETRIS_PLAY_BOARD_WIDTH + 2)
@@ -45,6 +45,7 @@ typedef struct {
     const wchar_t block_hor_line;
     const wchar_t block_inner;
     const wchar_t block_skyline;
+    const wchar_t block_sky;
 
     const int height;
     const int width;
@@ -68,21 +69,24 @@ typedef struct {
 
 typedef board_t board_t;
 
-#define __init_board
 static inline void init_board_lock(board_t* const out_board)
 {
     init_lock(out_board->lock);
 }
 
-// static inline void board_lock(const board_t* out_board)
-// {
-//     __board_lock(out_board->lock);
-// }
+static inline void lock_board(board_t* const out_board)
+{
+    debug();
 
-// static inline void board_unlock(board_t* const out_board)
-// {
-//     __board_unlock(out_board->lock);
-// }
+    check_lock(out_board->lock);
+}
+
+static inline void unlock_board(board_t* const out_board)
+{
+    debug();
+    
+    check_unlock(out_board->lock);
+}
 
 static inline void cleanup_board_lock(board_t* const out_board)
 {
@@ -96,17 +100,13 @@ static inline const row_t* get_grid(const board_t* board)
 
 static inline const block_t* get_board_grid_block(const board_t* board, int i, int j)
 {
-    // board_lock(out_board);
     const block_t* ret = get_grid(board)[i] + j;
-    // board_unlock(out_board);
     return ret;
 }
 
 static inline void set_board_grid_block(board_t* const out_board, int i, int j, block_t block)
 {
-    // board_lock(out_board);
     set_block(out_board->grid[i] + j, block);
-    // board_unlock(out_board);
 }
 
 void init_board(board_t* const out_board);

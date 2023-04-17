@@ -91,7 +91,7 @@ static void init_tetris_play_objects(tetris_play_manager_t* const out_play_manag
         UNIT_MATRIX_CORNER_BOT_LEFT,
         UNIT_MATRIX_CORNER_BOT_RIGHT);
     init_board(&out_play_manager->board);
-    init_tetromino_manager_malloc(&out_play_manager->tetro_man, out_play_manager->tetromino_queue_max_size);
+    init_tetromino_manager(&out_play_manager->tetro_man, out_play_manager->tetromino_queue_max_size);
     init_timer_drawer(&out_play_manager->timer_drawer, REALTIME_TIMER_SIG);
 }
 
@@ -101,6 +101,7 @@ static void init_tetris_play_manager(tetris_play_manager_t* const out_play_manag
 
     my_assert(out_play_manager != NULL);
 
+    out_play_manager->status = TETRIS_PLAY_STATUS_RUNNING;
     init_tetris_play_objects(out_play_manager);
     load_tetris_play_scene(out_play_manager);
 }
@@ -152,6 +153,7 @@ void* run_tetris_play_single_mode(void* arg)
         .tetromino_queue_max_size = TETROMINO_MANAGER_QUEUE_MAX_SIZE,
         .pos_wprint = { TETRIS_PLAY_SINGLE_SCREEN_POS_X_WPRINT, TETRIS_PLAY_SINGLE_SCREEN_POS_Y_WPRINT },
         .play_mode = TETRIS_PLAY_MODE_SINGLE,
+        .status = TETRIS_PLAY_STATUS_RUNNING, /* Should be inited with init() */
         .game_delta_time = 0.0,
         .screen_frame = {
             /* Should be inited with init() */
@@ -166,6 +168,7 @@ void* run_tetris_play_single_mode(void* arg)
             .block_hor_line = BLOCK_WPRINT_BLACK_SQUARE_BUTTON,
             .block_inner = BLOCK_WPRINT_WHITE_LARGE_SQUARE,
             .block_skyline = BLOCK_WPRINT_SKYLINE,
+            .block_sky = BLOCK_WPRINT_NIGHTSKY,
 
             .height = TETRIS_PLAY_BOARD_HEIGHT,
             .width = TETRIS_PLAY_BOARD_WIDTH,

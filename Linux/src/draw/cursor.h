@@ -6,6 +6,7 @@
 #include <stdbool.h>
 #include <wchar.h>
 
+#include "debug.h"
 #include "error_handling.h"
 #include "pthread_macro.h"
 #include "util.h"
@@ -51,8 +52,20 @@ typedef pthread_spinlock_t cursor_lock_t;
 extern cursor_lock_t g_cursor_lock;
 
 #define init_cursor_lock() init_lock(g_cursor_lock)
-#define cursor_lock() check_lock(g_cursor_lock)
-#define cursor_unlock() check_unlock(g_cursor_lock)
+static inline void cursor_lock(void)
+{
+    // debug();
+
+    check_lock(g_cursor_lock);
+}
+// #define cursor_lock() check_lock(g_cursor_lock)
+static inline void cursor_unlock(void)
+{
+    // debug();
+
+    check_unlock(g_cursor_lock);
+}
+// #define cursor_unlock() check_unlock(g_cursor_lock)
 #define cleanup_cursor_lock() cleanup_lock(g_cursor_lock)
 
 #endif /* __CURSOR__H */

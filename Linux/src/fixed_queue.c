@@ -13,7 +13,7 @@ void traverse_queue(const fixed_queue_t* que, void (*func)(void* const, int, voi
     }
 }
 
-void init_queue(fixed_queue_t* const out_que, int max_size)
+void init_queue_malloc(fixed_queue_t* const out_que, int max_size)
 {
     debug();
     
