@@ -110,8 +110,16 @@ void render_out(tetris_play_manager_t* const out_man)
     my_assert(out_man != NULL);
 
     if (out_man->status != TETRIS_PLAY_STATUS_GAMEOVER) {
+        pos_int_t cpos = get_tetromino_pos_int(out_man->tetro_man.tetro_main->pos);
+        ewprintf("render_out(): cur pos: (%d, %d)\n", cpos.x, cpos.y);
+        if (!is_first_drawn_tetromino(out_man->tetro_man.tetro_main)) {
+        pos_int_t ppos = get_tetromino_pos_int(out_man->tetro_man.tetro_main->prev_drawn->pos);
+        ewprintf("render_out(): prev pos: (%d, %d)\n", ppos.x, ppos.y);
+        }
         render_tetromino_manager_out(&out_man->tetro_man);
         render_a_skyline(&out_man->board);
+    } else {
+        ewprintf("render_out(): out_man->status = TETRIS_PLAY_STATUS_GAMEOVER, so do nothing.\n");
     }
     fflush(stdout);
 }

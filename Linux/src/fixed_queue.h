@@ -58,6 +58,6 @@ static inline void* pop_queue(fixed_queue_t* const out_que)
 
 void traverse_queue(const fixed_queue_t* que, void (*func)(void* const, int, void*), void* arg);
 void init_queue_malloc(fixed_queue_t* const out_que, int max_size);
-void cleanup_queue(fixed_queue_t* const out_que);
+void cleanup_queue_free(fixed_queue_t* const out_que);
 
 #endif /* __STATIC_QUEUE__H */

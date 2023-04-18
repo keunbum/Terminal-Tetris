@@ -35,7 +35,7 @@ static void init_tetromino(tetromino_t* const out_tetro,
     ewprintf("tetro-%d has been spawned\n", out_tetro->id);
 }
 
-void cleanup_tetromino(tetromino_t* const out_tetro)
+void cleanup_tetromino_free(tetromino_t* const out_tetro)
 {
     if (out_tetro == NULL) {
         return;

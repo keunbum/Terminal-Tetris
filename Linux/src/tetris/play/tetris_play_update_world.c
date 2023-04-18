@@ -1,6 +1,7 @@
 #include <stdio.h>
 
 #include "debug.h"
+#include "tetris/scene/tetris_play_renderer.h"
 #include "tetris_play_tetromino_manager.h"
 #include "tetris_play_update_tetromino_status.h"
 #include "tetris_play_update_world.h"
@@ -58,22 +59,41 @@ static inline bool is_at_skyline(const tetromino_t* tetro)
 void process_tetromino_try_status(tetromino_try_status_t status, tetris_play_manager_t* const out_play_manager)
 {
     /* As long as you run the input processing thread separately, you need to take care of the critical section problem. */
-    if (status == TETROMINO_TRY_STATUS_ONTHEGROUND) {
+    switch (status) {
+    case TETROMINO_TRY_STATUS_ONTHEGROUND:
         petrify_tetromino(&out_play_manager->board, out_play_manager->tetro_man.tetro_main);
         // clear_filled_lines(); --> maybe internally.
         // reflect_them_visually();
+        render_out(out_play_manager);
         if (is_at_skyline(out_play_manager->tetro_man.tetro_main)) {
             out_play_manager->status = TETRIS_PLAY_STATUS_GAMEOVER;
         }
+        cleanup_tetromino_free(out_play_manager->tetro_man.tetro_main);
+        out_play_manager->tetro_man.tetro_main = NULL;
+        break;
+    case TETROMINO_TRY_STATUS_MOVE:
+        /* intentional fallthrough */
+    case TETROMINO_TRY_STATUS_ROTATE:
+        render_out(out_play_manager);
+        break;
+#ifdef TETRIS_DEBUG
+    case TETROMINO_TRY_STATUS_INPLACE:
+        /* intentional fallthrough */
+    case TETROMINO_TRY_STATUS_NULL:
+        /* Do Nothing */
+        break;
+    default:
+        my_assert(false);
+#endif
     }
 }
 
-tetromino_try_status_t new_update_gameworld(tetris_play_manager_t* const out_play_manager)
+void update_gameworld(tetris_play_manager_t* const out_play_manager)
 {
     debug();
 
+    lock_board(&out_play_manager->board);
     tetromino_try_status_t ret = update_tetromino_manager(&out_play_manager->tetro_man, &out_play_manager->board, out_play_manager->game_delta_time);
     process_tetromino_try_status(ret, out_play_manager);
-
-    return ret;
+    unlock_board(&out_play_manager->board);
 }

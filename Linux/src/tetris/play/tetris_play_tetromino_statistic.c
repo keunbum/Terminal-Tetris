@@ -29,7 +29,7 @@ static void wdraw_tetris_play_statistics_tetrominos(const tetris_play_statistic_
     }
 }
 
-void init_tetris_play_statistics(tetris_play_statistic_t* const out_stat, tetromino_generator_t* const out_gen)
+void init_tetris_play_statistics_malloc(tetris_play_statistic_t* const out_stat, tetromino_generator_t* const out_gen)
 {
     debug();
     
@@ -60,6 +60,16 @@ void init_tetris_play_statistics(tetris_play_statistic_t* const out_stat, tetrom
         UNIT_MATRIX_CORNER_TOP_RIGHT,
         UNIT_MATRIX_CORNER_BOT_LEFT,
         UNIT_MATRIX_CORNER_BOT_RIGHT);
+}
+
+void cleanup_tetris_play_statistics_free(tetris_play_statistic_t* const out_stat)
+{
+    debug();
+
+    cleanup_frame(&out_stat->frame);
+    for (symbol_id_t symbol_id = 0; symbol_id < TETROMINO_NUM_OF_KINDS; ++symbol_id) {
+        cleanup_tetromino_free(out_stat->tetrominos[symbol_id]);
+    }    
 }
 
 void wdraw_tetris_play_statistics(const tetris_play_statistic_t* st)

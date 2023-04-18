@@ -3,7 +3,6 @@
 #include "chronometry.h"
 #include "debug.h"
 #include "draw/cursor.h"
-#include "tetris/scene/tetris_play_renderer.h"
 #include "tetris/tetris_play_fps.h"
 #include "tetris_play_main_loop.h"
 #include "tetris_play_tetromino_generator.h"
@@ -38,14 +37,7 @@ void* mainfunc_game_main_loop(void* arg)
 
         play_manager->game_delta_time = prev_frame_time * TETRIS_PLAY_GAME_DELTA_TIME_FACTOR;
 
-        lock_board(&play_manager->board);
-        tetromino_try_status_t res = new_update_gameworld(play_manager);
-        render_out(play_manager);
-        if (res == TETROMINO_TRY_STATUS_ONTHEGROUND) {
-            cleanup_tetromino(play_manager->tetro_man.tetro_main);
-            play_manager->tetro_man.tetro_main = NULL;
-        }
-        unlock_board(&play_manager->board);
+        update_gameworld(play_manager);
 
         nanosleep_chrono(TO_NSEC(TETRIS_PLAY_FRAME_TIME) - get_elapsed_time_nsec(&start_time));
 

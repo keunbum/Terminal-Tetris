@@ -44,6 +44,15 @@ void init_tetromino_generator(tetromino_generator_t* const out_gen)
     out_gen->block_wprint_set = G_S_BLOCK_WPRINT_SET;
 }
 
+void cleanup_tetromino_generator(tetromino_generator_t* const out_gen)
+{
+    debug();
+
+    my_assert(out_gen != NULL);
+
+    /* Do Nothing */
+}
+
 tetromino_t* create_tetromino_random_malloc(tetromino_generator_t* const out_gen, pos_t init_pos, velocity_t init_velocity)
 {
     debug();

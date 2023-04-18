@@ -35,39 +35,6 @@ typedef struct {
     tetromino_manager_lock_t lock;
 } tetromino_manager_t;
 
-// static inline bool is_queue_empty(tetromino_manager_t* const out_man)
-// {
-//     return out_man->cnt == 0;
-// }
-
-// static inline const tetromino_t* get_queue_top(const tetromino_manager_t* man)
-// {
-//     my_assert(!is_queue_empty(man));
-//     return man->pa_que[man->beg];
-// }
-
-// static inline void push_queue(tetromino_manager_t* const out_man, tetromino_t* tetro)
-// {
-//     my_assert(out_man->cnt < out_man->max_size);
-//     out_man->pa_que[out_man->end] = tetro;
-//     /* I know this way to be faster than the remainder operator. */
-//     if (++out_man->end == out_man->max_size) {
-//         out_man->end = 0;
-//     }
-//     out_man->cnt += 1;
-// }
-
-// static inline tetromino_t* pop_queue(tetromino_manager_t* const out_man)
-// {
-//     my_assert(!is_queue_empty(out_man));
-//     tetromino_t* ret = out_man->pa_que[out_man->beg];
-//     if (++out_man->beg == out_man->max_size) {
-//         out_man->beg = 0;
-//     }
-//     out_man->cnt -= 1;
-//     return ret;
-// }
-
 void init_tetromino_manager(tetromino_manager_t* const out_man, int max_size);
 void cleanup_tetromino_manager_free(tetromino_manager_t* const out_man);
 tetromino_try_status_t update_tetromino_manager(tetromino_manager_t* const out_man, board_t* const out_board, game_time_t delta_time);

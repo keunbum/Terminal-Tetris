@@ -31,13 +31,13 @@ static tetromino_try_status_t process_input_event(const struct input_event* ev, 
             case KEY_UP:
                 /* intentional fallthrough */
             case KEY_X:
-                ret = try_rotate_tetromino_r(board, tetro, 1);
+                ret = try_rotate_tetromino_r(board, tetro, -1);
                 break;
             case KEY_SPACE:
-                ret = harddrop_tetromino_r(tetro);
+                ret = harddrop_tetromino_r(board, tetro);
                 break;
             case KEY_Z:
-                ret = try_rotate_tetromino_r(board, tetro, -1);
+                ret = try_rotate_tetromino_r(board, tetro, +1);
                 break;
             case KEY_C:
                 /* Not yet implemented */
@@ -88,12 +88,11 @@ void* mainfunc_input_reader(void* arg)
 
     while (true) {
         read_input_event(&input_reader);
-        // lock_input_reader(&input_reader);
+        // hmm.. locking board looks inappropriate
         lock_board(&play_manager->board);
         tetromino_try_status_t res = process_input_event(&input_reader.event, play_manager);
         process_tetromino_try_status(res, play_manager);
         unlock_board(&play_manager->board);
-        // unlock_input_reader(&input_reader);
     }
 
     return NULL;

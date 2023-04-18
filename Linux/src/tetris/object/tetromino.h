@@ -69,6 +69,7 @@ static inline wchar_t get_symbol_wstr(symbol_id_t symbol_id)
     return S_ID2SYMBOL[symbol_id];
 }
 
+#ifdef TETRIS_DEBUG
 static inline void debug_tetromino(const tetromino_t* tetro)
 {
     ewprintf("For tetro-%d\n", tetro->id);
@@ -76,6 +77,7 @@ static inline void debug_tetromino(const tetromino_t* tetro)
     ewprintf("dir: %ls\n", get_dir_wstr(tetro->dir));
     ewprintf("pos: (%d, %d)\n", (int)tetro->pos.x, (int)tetro->pos.y);
 }
+#endif
 
 extern const tetromino_matrix_n_t G_TETROMINO_MATRIX_NS[TETROMINO_NUM_OF_KINDS];
 extern const tetromino_matrix_t G_TETROMINO_MATRIXS[TETROMINO_NUM_OF_KINDS][DIR_NUM_OF_KINDS];
@@ -129,7 +131,7 @@ static inline void save_tetromino_tobedrawn(tetromino_t* const out_tetro, block_
     out_tetro->prev_drawn->block = create_block(BLOCK_NATURE_EMPTY, clean_wprint);
 }
 
-void cleanup_tetromino(tetromino_t* const out_tetro);
+void cleanup_tetromino_free(tetromino_t* const out_tetro);
 
 tetromino_t* init_tetromino_malloc(int id, symbol_id_t symbol_id, dir_t dir, pos_t pos, velocity_t velocity, block_t block, tetromino_t* prev_drawn);
 tetromino_t* init_tetromino_poswprint_malloc(int id, symbol_id_t symbol_id, dir_t dir, pos_t pos_wprint, velocity_t velocity, block_t block, tetromino_t* prev_drawn);

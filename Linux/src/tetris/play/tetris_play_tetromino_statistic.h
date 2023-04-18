@@ -26,7 +26,8 @@ typedef struct {
 #define TETRIS_PLAY_STATISTIC_TETROMINO_POS_X_WPRINT (TETRIS_PLAY_STATISTIC_POS_X_WPRINT - TETRIS_PLAY_STATISTIC_INTERVAL_HEIGHT + 1)
 #define TETRIS_PLAY_STATISTIC_TETROMINO_POS_Y_WPRINT (TETRIS_PLAY_STATISTIC_POS_Y_WPRINT + 2)
 
-void init_tetris_play_statistics(tetris_play_statistic_t* const out_stat, tetromino_generator_t* const out_gen);
+void init_tetris_play_statistics_malloc(tetris_play_statistic_t* const out_stat, tetromino_generator_t* const out_gen);
+void cleanup_tetris_play_statistics_free(tetris_play_statistic_t* const out_stat);
 void wdraw_tetris_play_statistics(const tetris_play_statistic_t* st);
 void inc_tetromino_cnt(tetris_play_statistic_t* const out_st, symbol_id_t id);
 

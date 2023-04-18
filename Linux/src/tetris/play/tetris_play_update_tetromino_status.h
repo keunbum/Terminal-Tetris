@@ -18,36 +18,47 @@
 typedef enum {
     TETROMINO_TRY_STATUS_NULL,
     TETROMINO_TRY_STATUS_INPLACE,
-    TETROMINO_TRY_STATUS_MOVED,
+    TETROMINO_TRY_STATUS_MOVE,
+    TETROMINO_TRY_STATUS_ROTATE,
     TETROMINO_TRY_STATUS_ONTHEGROUND,
 } tetromino_try_status_t;
 
 static inline const wchar_t* get_tetomino_try_status_wstr(tetromino_try_status_t status)
 {
-    if (status == TETROMINO_TRY_STATUS_NULL) {
+    switch (status) {
+    case TETROMINO_TRY_STATUS_NULL:
         return L"TETROMINO_TRY_STATUS_NULL";
-    }
-    if (status == TETROMINO_TRY_STATUS_INPLACE) {
+    case TETROMINO_TRY_STATUS_INPLACE:
         return L"TETROMINO_TRY_STATUS_INPLACE";
-    }
-    if (status == TETROMINO_TRY_STATUS_MOVED) {
-        return L"TETROMINO_TRY_STATUS_MOVED";
-    }
-    if (status == TETROMINO_TRY_STATUS_ONTHEGROUND) {
+    case TETROMINO_TRY_STATUS_MOVE:
+        return L"TETROMINO_TRY_STATUS_MOVE";
+    case TETROMINO_TRY_STATUS_ROTATE:
+        return L"TETROMINO_TRY_STATUS_ROTATE";
+    case TETROMINO_TRY_STATUS_ONTHEGROUND:
         return L"TETROMINO_TRY_STATUS_ONTHEGROUND";
     }
     my_assert(false);
 }
 
-static inline pos_t get_tetromino_poswprint(pos_t pos)
+static inline pos_t get_tetromino_pos_to_wprint(pos_t pos)
 {
     return create_pos(pos.x + __FLT_EPSILON__, 2 * (pos.y + __FLT_EPSILON__));
+}
+
+static inline pos_t get_tetromino_wprint_to_pos(pos_t pos)
+{
+    return create_pos(pos.x + __FLT_EPSILON__, 2 * (pos.y + __FLT_EPSILON__));
+}
+
+static inline pos_int_t get_tetromino_pos_int(pos_t pos)
+{
+    return create_pos_int((int)(pos.x + __FLT_EPSILON__), (int)(pos.y + __FLT_EPSILON__));
 }
 
 tetromino_try_status_t try_tetromino_next_status(const board_t* restrict board, const tetromino_t* restrict tetro, pos_t npos, dir_t ndir);
 tetromino_try_status_t try_move_tetromino_deltatime_r(board_t* const restrict out_board, tetromino_t* const restrict out_tetro, dir_t dir, game_time_t delta_time);
 tetromino_try_status_t try_move_tetromino_byone_r(board_t* const restrict out_board, tetromino_t* const restrict out_tetro, dir_t dir);
 tetromino_try_status_t try_rotate_tetromino_r(board_t* const restrict out_board, tetromino_t* const restrict out_tetro, int by);
-tetromino_try_status_t harddrop_tetromino_r(tetromino_t* const out_tetro);
+tetromino_try_status_t harddrop_tetromino_r(board_t* const restrict out_board, tetromino_t* const out_tetro);
 
 #endif /* __TETRIS_PLAY_UPDATE_TETROMINO_STATUS__H */

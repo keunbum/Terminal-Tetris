@@ -49,7 +49,6 @@ static void spawn_tetromino_manager_tetro_main(tetromino_manager_t* const out_ma
     out_man->tetro_main->pos = create_pos(
         TETRIS_PLAY_TETROMINO_INIT_POS_X + S_TETROMINO_INIT_POS_X_OFFSET[out_man->tetro_main->symbol_id],
         TETRIS_PLAY_TETROMINO_INIT_POS_Y);
-    out_man->tetro_main->pos_wprint = get_tetromino_poswprint(out_man->tetro_main->pos);
     out_man->tetro_main->velocity = init_velocity;
     push_queue(&out_man->que, create_tetromino_random_malloc(&out_man->tetro_gen, create_pos_empty(), 0));
     traverse_queue(&out_man->que, callback_spawn_tetromino_manager_tetro_main, (void*)&out_man->pos_wprint);
@@ -67,7 +66,7 @@ void init_tetromino_manager(tetromino_manager_t* const out_man, int que_max_size
     out_man->tetro_hold = NULL;
 
     init_tetromino_generator(&out_man->tetro_gen);
-    init_tetris_play_statistics(&out_man->stat, &out_man->tetro_gen);
+    init_tetris_play_statistics_malloc(&out_man->stat, &out_man->tetro_gen);
     init_queue_malloc(&out_man->que, que_max_size);
     while (!is_queue_full(&out_man->que)) {
         push_queue(&out_man->que, (void*)create_tetromino_random_malloc(&out_man->tetro_gen, create_pos(0, 0), 0));
@@ -95,7 +94,14 @@ void cleanup_tetromino_manager_free(tetromino_manager_t* const out_man)
 
     cleanup_lock(out_man->lock);
     cleanup_frame(&out_man->frame);
-    cleanup_queue(&out_man->que);
+    while (!is_queue_empty(&out_man->que)) {
+        tetromino_t* tetro = (tetromino_t*)pop_queue(&out_man->que);
+        cleanup_tetromino_free(tetro);
+        tetro = NULL;
+    }
+    cleanup_queue_free(&out_man->que);
+    cleanup_tetris_play_statistics_free(&out_man->stat);
+    cleanup_tetromino_generator(&out_man->tetro_gen);
 }
 
 tetromino_try_status_t update_tetromino_manager(tetromino_manager_t* const out_man, board_t* const out_board, game_time_t delta_time)

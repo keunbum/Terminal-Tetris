@@ -31,14 +31,14 @@ void init_input_reader(input_reader_t* const out_reader)
     }
     tcgetattr(STDIN_FILENO, &out_reader->old_termios);
     turn_on_input_reader_raw(out_reader);
-    init_input_reader_lock(out_reader);
+    // init_input_reader_lock(out_reader);
 }
 
 void cleanup_input_reader(input_reader_t* const out_reader)
 {
     debug();
 
-    cleanup_input_reader_lock(out_reader);
+    // cleanup_input_reader_lock(out_reader);
     if (close(out_reader->fd) == -1) {
         handle_error("close() error");
     }
