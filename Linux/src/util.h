@@ -18,4 +18,6 @@
     func(__VA_ARGS__)
 #endif
 
+#define max(x, y) ((x) > (y) ? (x) : (y))
+
 #endif /* __UTIL__H */

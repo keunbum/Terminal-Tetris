@@ -3,7 +3,7 @@
 
 #include "tetris/object/board.h"
 
-#define TETRIS_PLAY_TETROMINO_INIT_POS_X (TETRIS_PLAY_SKY_LINE_POS_X - 3)
+#define TETRIS_PLAY_TETROMINO_INIT_POS_X (TETRIS_PLAY_SKYLINE_POS_X - 3)
 #define TETRIS_PLAY_TETROMINO_INIT_POS_Y (TETRIS_PLAY_BOARD_POS_Y + TETRIS_PLAY_BOARD_WIDTH / 2 - 1)
 
 #define TETRIS_PLAY_TETROMINO_POS_X_MIN (TETRIS_PLAY_TETROMINO_INIT_POS_X)
@@ -38,21 +38,6 @@ static inline const wchar_t* get_tetomino_try_status_wstr(tetromino_try_status_t
         return L"TETROMINO_TRY_STATUS_ONTHEGROUND";
     }
     my_assert(false);
-}
-
-static inline pos_t get_tetromino_pos_to_wprint(pos_t pos)
-{
-    return create_pos(pos.x + __FLT_EPSILON__, 2 * (pos.y + __FLT_EPSILON__));
-}
-
-static inline pos_t get_tetromino_wprint_to_pos(pos_t pos)
-{
-    return create_pos(pos.x + __FLT_EPSILON__, 2 * (pos.y + __FLT_EPSILON__));
-}
-
-static inline pos_int_t get_tetromino_pos_int(pos_t pos)
-{
-    return create_pos_int((int)(pos.x + __FLT_EPSILON__), (int)(pos.y + __FLT_EPSILON__));
 }
 
 tetromino_try_status_t try_tetromino_next_status(const board_t* restrict board, const tetromino_t* restrict tetro, pos_t npos, dir_t ndir);

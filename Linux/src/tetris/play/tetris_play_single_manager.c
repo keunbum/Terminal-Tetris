@@ -170,16 +170,19 @@ void* run_tetris_play_single_mode(void* arg)
             .block_skyline = BLOCK_WPRINT_SKYLINE,
             .block_sky = BLOCK_WPRINT_NIGHTSKY,
 
+            .pos = { TETRIS_PLAY_BOARD_POS_X, TETRIS_PLAY_BOARD_POS_Y },
+            .pos_wprint = { TETRIS_PLAY_BOARD_POS_X_WPRINT, TETRIS_PLAY_BOARD_POS_Y_WPRINT },
+            .frame_pos = { BOARD_FRAME_POS_X, BOARD_FRAME_POS_Y },
+            .frame_pos_wprint = { BOARD_FRAME_POS_X_WPRINT, BOARD_FRAME_POS_Y_WPRINT },
+            .skyline_pos = { TETRIS_PLAY_SKYLINE_POS_X, BOARD_FRAME_POS_Y},
+
             .height = TETRIS_PLAY_BOARD_HEIGHT,
             .width = TETRIS_PLAY_BOARD_WIDTH,
             .height_wprint = TETRIS_PLAY_BOARD_HEIGHT_WPRINT,
             .width_wprint = TETRIS_PLAY_BOARD_WIDTH_WPRINT,
             .frame_height = BOARD_FRAME_HEIGHT,
             .frame_width = BOARD_FRAME_WIDTH,
-            .pos = { TETRIS_PLAY_BOARD_POS_X, TETRIS_PLAY_BOARD_POS_Y },
-            .pos_wprint = { TETRIS_PLAY_BOARD_POS_X_WPRINT, TETRIS_PLAY_BOARD_POS_Y_WPRINT },
-            .frame_pos = { BOARD_FRAME_POS_X, BOARD_FRAME_POS_Y },
-            .frame_pos_wprint = { BOARD_FRAME_POS_X_WPRINT, BOARD_FRAME_POS_Y_WPRINT },
+            .skyline = TETRIS_PLAY_BOARD_POS_X - TETRIS_PLAY_SKYLINE_POS_X,
         },
         .tetro_man = {
             /* Should be inited with init() */

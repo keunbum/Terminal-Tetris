@@ -40,35 +40,35 @@
 
 #define wdraw_newline() wprintf(L"\n")
 
-static inline void wdraw_row_at(const wchar_t* buf, int pos_x_wprint, int pos_y_wprint)
+static inline void wdraw_row_at(const wchar_t* wbuf, int pos_x_wprint, int pos_y_wprint)
 {
-    my_assert(buf != NULL);
+    my_assert(wbuf != NULL);
     wgotoxy(pos_x_wprint, pos_y_wprint);
-    wprintf(buf);
+    wprintf(wbuf);
 }
 
-static inline void wdraw_row_newline(const wchar_t* buf, int cursor_move_width)
+static inline void wdraw_row_newline(const wchar_t* wbuf, int cursor_move_width)
 {
     debug();
-    my_assert(buf != NULL);
-    wprintf(buf);
+    my_assert(wbuf != NULL);
+    wprintf(wbuf);
     wprintf(L"\e[1B\e[%dD", cursor_move_width);
 }
 
-static inline void wdraw_rows_newline_at(int height, const wchar_t** buf, int cursor_move_width, int pos_x_wprint, int pos_y_wprint)
+static inline void wdraw_rows_newline_at(int height, const wchar_t** wbuf, int cursor_move_width, int pos_x_wprint, int pos_y_wprint)
 {
-    my_assert(buf != NULL);
+    my_assert(wbuf != NULL);
     wgotoxy(pos_x_wprint, pos_y_wprint);
     for (int i = 0; i < height; ++i) {
-        wdraw_row_newline(buf[i], cursor_move_width);
+        wdraw_row_newline(wbuf[i], cursor_move_width);
     }
     // wdraw_newline();
 }
 
-static inline void wdraw_rows_newline_at_r(int height, const wchar_t** buf, int cursor_move_width, int pos_x_wprint, int pos_y_wprint)
+static inline void wdraw_rows_newline_at_r(int height, const wchar_t** wbuf, int cursor_move_width, int pos_x_wprint, int pos_y_wprint)
 {
     cursor_lock();
-    wdraw_rows_newline_at(height, buf, cursor_move_width, pos_x_wprint, pos_y_wprint);
+    wdraw_rows_newline_at(height, wbuf, cursor_move_width, pos_x_wprint, pos_y_wprint);
     cursor_unlock();
 }
 
@@ -77,10 +77,17 @@ static inline void wdraw_unit_matrix(wchar_t wch)
     putwc(wch, stdout);
 }
 
-static inline void wdraw_unit_matrix_at(wchar_t ch, int x, int y)
+static inline void wdraw_unit_matrix_at(wchar_t wch, int x, int y)
 {
     wgotoxy(x, y);
-    wdraw_unit_matrix(ch);
+    wdraw_unit_matrix(wch);
+}
+
+static inline void wdraw_unit_matrix_at_r(wchar_t wch, int x, int y)
+{
+    cursor_lock();
+    wdraw_unit_matrix_at(wch, x, y);
+    cursor_unlock();
 }
 
 void wdraw_boundary_at_with(wchar_t hor_block, wchar_t ver_block, int height, int width, int sx, int sy, wchar_t top_lft, wchar_t top_rgt, wchar_t bot_lft, wchar_t bot_rgt);

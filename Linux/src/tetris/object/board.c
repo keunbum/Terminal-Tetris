@@ -34,7 +34,7 @@ void init_board(board_t* const out_board)
     //         for (int j = 0; j < out_board->width; ++j) {
     //             if (j == 0 || j == out_board->width - 1) {
     //                 set_board_block_each(out_board, i, j, BLOCK_NATURE_FULL,
-    //                 (i == TETRIS_PLAY_SKY_LINE_POS_X - TETRIS_PLAY_BOARD_POS_X) ? out_board->block_skyline : out_board->block_ver_line);
+    //                 (i == out_board->skyline_pos.x - TETRIS_PLAY_BOARD_POS_X) ? out_board->block_skyline : out_board->block_ver_line);
     //             } else {
     //                 set_board_block_each(out_board, i, j, BLOCK_NATURE_EMPTY, out_board->block_inner);
     //             }
@@ -52,7 +52,7 @@ void init_board(board_t* const out_board)
                 if (j == 0 || j == out_board->width - 1) {
                     set_board_block_each(out_board, i, j, BLOCK_NATURE_FULL, out_board->block_ver_line);
                 } else {
-                    int sky_line_i = TETRIS_PLAY_SKY_LINE_POS_X - TETRIS_PLAY_BOARD_POS_X;
+                    int sky_line_i = out_board->skyline_pos.x - TETRIS_PLAY_BOARD_POS_X;
                     block_wprint_t block_wprint;
                     if (i == sky_line_i) {
                         block_wprint = out_board->block_skyline;

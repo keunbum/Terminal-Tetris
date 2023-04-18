@@ -11,8 +11,11 @@
 #include "tetris_play_object.h"
 #include "pthread_macro.h"
 
-#define TETRIS_PLAY_BOARD_HEIGHT (30)
-#define TETRIS_PLAY_BOARD_WIDTH (12)
+#define TETRIS_PLAY_BOARD_INNER_HEIGHT (20)
+#define TETRIS_PLAY_BOARD_INNER_WIDTH (10)
+
+#define TETRIS_PLAY_BOARD_HEIGHT (TETRIS_PLAY_BOARD_INNER_HEIGHT + 10)
+#define TETRIS_PLAY_BOARD_WIDTH (TETRIS_PLAY_BOARD_INNER_WIDTH + 2)
 #define TETRIS_PLAY_BOARD_HEIGHT_WPRINT (TETRIS_PLAY_BOARD_HEIGHT)
 #define TETRIS_PLAY_BOARD_WIDTH_WPRINT (2 * TETRIS_PLAY_BOARD_WIDTH)
 
@@ -23,7 +26,7 @@
 #define TETRIS_PLAY_BOARD_POS_X TETRIS_PLAY_BOARD_POS_X_WPRINT
 #define TETRIS_PLAY_BOARD_POS_Y (TETRIS_PLAY_BOARD_POS_Y_WPRINT / 2)
 
-#define TETRIS_PLAY_SKY_LINE_POS_X (TETRIS_PLAY_BOARD_POS_X + (TETRIS_PLAY_BOARD_HEIGHT - 2 - 20))
+#define TETRIS_PLAY_SKYLINE_POS_X (TETRIS_PLAY_BOARD_POS_X + (TETRIS_PLAY_BOARD_HEIGHT - 2 - 20))
 
 #define BOARD_FRAME_HEIGHT (TETRIS_PLAY_BOARD_HEIGHT + 2)
 #define BOARD_FRAME_WIDTH (TETRIS_PLAY_BOARD_WIDTH + 2)
@@ -47,27 +50,29 @@ typedef struct {
     const wchar_t block_skyline;
     const wchar_t block_sky;
 
+    const pos_int_t pos;
+    const pos_int_t pos_wprint;
+    const pos_int_t frame_pos;
+    const pos_int_t frame_pos_wprint;
+    const pos_int_t skyline_pos;
+
     const int height;
     const int width;
     const int height_wprint;
     const int width_wprint;
     const int frame_height;
     const int frame_width;
-
-    const pos_t pos;
-    const pos_t pos_wprint;
-    const pos_t frame_pos;
-    const pos_t frame_pos_wprint;
+    const int skyline;
 
     row_t grid[TETRIS_PLAY_BOARD_HEIGHT];
-
-    // updatable_func_t update;
-    // drawable_func_t draw;
 
     board_lock_t lock;
 } board_t;
 
 typedef board_t board_t;
+
+#define traverse_inner_row(i, board) for (int i = board->height - 2; i > board->skyline_pos.x - board->pos.x; --i)
+#define traverse_inner_col(j, board) for (int j = 1; j <= board->width - 2; ++j)
 
 static inline void init_board_lock(board_t* const out_board)
 {

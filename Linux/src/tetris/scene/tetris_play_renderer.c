@@ -3,6 +3,7 @@
 #include "debug.h"
 #include "draw/draw_tool.h"
 #include "fixed_queue.h"
+#include "tetris/object/pos.h"
 #include "tetris/play/tetris_play_update_world.h"
 #include "tetris_play_renderer.h"
 #include "tetris_play_scene.h"
@@ -88,7 +89,7 @@ static void render_a_skyline(const board_t* board)
 {
     debug();
 
-    int i = TETRIS_PLAY_SKY_LINE_POS_X - TETRIS_PLAY_BOARD_POS_X;
+    int i = TETRIS_PLAY_SKYLINE_POS_X - TETRIS_PLAY_BOARD_POS_X;
     my_assert(1 <= i && i <= board->height - 2);
     cursor_lock();
     wgotoxy((int)board->pos_wprint.x + i, (int)board->pos_wprint.y);
@@ -110,11 +111,11 @@ void render_out(tetris_play_manager_t* const out_man)
     my_assert(out_man != NULL);
 
     if (out_man->status != TETRIS_PLAY_STATUS_GAMEOVER) {
-        pos_int_t cpos = get_tetromino_pos_int(out_man->tetro_man.tetro_main->pos);
+        pos_int_t cpos = get_pos_int(out_man->tetro_man.tetro_main->pos);
         ewprintf("render_out(): cur pos: (%d, %d)\n", cpos.x, cpos.y);
         if (!is_first_drawn_tetromino(out_man->tetro_man.tetro_main)) {
-        pos_int_t ppos = get_tetromino_pos_int(out_man->tetro_man.tetro_main->prev_drawn->pos);
-        ewprintf("render_out(): prev pos: (%d, %d)\n", ppos.x, ppos.y);
+            pos_int_t ppos = get_pos_int(out_man->tetro_man.tetro_main->prev_drawn->pos);
+            ewprintf("render_out(): prev pos: (%d, %d)\n", ppos.x, ppos.y);
         }
         render_tetromino_manager_out(&out_man->tetro_man);
         render_a_skyline(&out_man->board);

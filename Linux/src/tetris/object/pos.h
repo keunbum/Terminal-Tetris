@@ -37,4 +37,26 @@ static inline pos_int_t create_pos_int_empty()
     return create_pos_int(0, 0);
 }
 
+static inline pos_t get_pos_to_wprint(pos_t pos)
+{
+    return create_pos(pos.x + __FLT_EPSILON__, 2 * (pos.y + __FLT_EPSILON__));
+}
+
+// static inline pos_t get_wprint_to_pos(pos_t pos)
+// {
+//     return create_pos(pos.x + __FLT_EPSILON__, 2 * (pos.y + __FLT_EPSILON__));
+// }
+
+static inline pos_int_t get_intpos_to_intwprint(pos_int_t pos)
+{
+    return create_pos_int(pos.x, 2 * pos.y);
+}
+
+static inline pos_int_t get_pos_int(pos_t pos)
+{
+    return create_pos_int((int)(pos.x + __FLT_EPSILON__), (int)(pos.y + __FLT_EPSILON__));
+}
+
+
+
 #endif /* __POS__H */
