@@ -51,6 +51,7 @@ void cleanup_tetromino_generator(tetromino_generator_t* const out_gen)
     my_assert(out_gen != NULL);
 
     /* Do Nothing */
+    (void)out_gen;
 }
 
 tetromino_t* create_tetromino_random_malloc(tetromino_generator_t* const out_gen, pos_t init_pos, velocity_t init_velocity)

@@ -126,12 +126,13 @@ void process_tetromino_try_status(tetromino_try_status_t status, tetris_play_man
     case TETROMINO_TRY_STATUS_ROTATE:
         render_out(out_play_manager);
         break;
-#ifdef TETRIS_DEBUG
     case TETROMINO_TRY_STATUS_INPLACE:
-        /* intentional fallthrough */
+        /* Do Nothing */
+        break;
     case TETROMINO_TRY_STATUS_NULL:
         /* Do Nothing */
         break;
+#ifdef TETRIS_DEBUG
     default:
         my_assert(false);
 #endif
