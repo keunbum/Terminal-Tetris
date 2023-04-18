@@ -71,6 +71,15 @@ https://youtu.be/a-AEmpm-fSU
 
 </details>
 
+<details><summary>2023.04.18</summary>
+
+https://youtu.be/gPueVyOEVMs     
+
+기본 조작 및 라인 클리어만 구현..  
+(라인 클리어 후 블록 이동X)
+
+</details>
+
 
 ---
 
@@ -2509,6 +2518,33 @@ tetromino_generator, manager 업데이트 해야 함. 특히 매니저.
 </details>
 
 [//]: # (End of 04.17)
+
+<details><summary>04.18(화)</summary>
+
+
+### Achievements of the day
+
+- 사용자 입력 구현..
+
+  - [X] Move L, R, D 구현.  
+  - [X] Roate L, R 구현.  
+  - [X] 하드 드롭 구현.  
+  - [X] 출력하는 로직 변경. (바로바로 렌더러에게 출력 정보를 보내는 방향으로) 
+  - [X] 라인 클리어만 구현.
+  - [ ] 게임 시작 안했을 때도 입력 처리 해야함.
+  - [ ] 위에 있는 블록 낙하.
+  - [ ] race condition.. 지금은 약간 어거지. 좀 더 융통성 있는 방식으로. 
+  - [ ] 타이머 오차 있나 확인.  
+  - [ ] 실루엣 구현.
+  - [ ] 벽에 붙어 있어도 회전할 수 있게끔 만들기.
+  - [ ] 테트로미노 keep 구현.
+  - [ ] 원인 모를 렉 있음.
+  - [ ] 회전할 때 뭔가 어색함..
+  - [ ] 그밖에 버그 있나 확인.
+
+</details>
+
+[//]: # (End of 04.18)
 
 </blockquote></details>
 

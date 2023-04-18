@@ -143,10 +143,14 @@
 나 혼자 수행하는 프로젝트이므로 나에게 가장 편한 방식을 정하면 됨.  
 결국엔 실수 덜하고 가독성 높이기 위한 방편이니까.
 
-* `#define`은 상수 말고도 매크로 함수를 정의하기 위해 쓰이기도 하는데  
+* `#define`은 [상수](https://docs.popekim.com/ko/coding-standards/pocu-c#:~:text=%EC%83%81%EC%88%98%20%EB%98%90%EB%8A%94%20%23define%20%EC%9C%BC%EB%A1%9C%20%EC%A0%95%EC%9D%98%EB%90%9C%20%EC%83%81%EC%88%98%EC%9D%98%20%EC%9D%B4%EB%A6%84%EC%9D%80%20%EB%AA%A8%EB%91%90%20%EB%8C%80%EB%AC%B8%EC%9E%90%EB%A1%9C%20%ED%95%98%EB%90%98%20%EB%B0%91%EC%A4%84%EB%A1%9C%20%EA%B0%81%20%EB%8B%A8%EC%96%B4%EB%A5%BC%20%EB%B6%84%EB%A6%AC%ED%95%9C%EB%8B%A4.) 말고도 `매크로 함수`를 정의하기 위해 쓰이기도 하는데  
   이때도 대문자로 작성? or 소문자?  
   더 근본적으론 `#define`으로 함수를 정의할 필요가 있는가? 어차피 컴파일러가 알아서 인라인 최적화 해주지 않을까?  
   물론 일반 함수로는 대체될 수 없는 것도 있을 순 있음. 구조체 선언 같은 거. 이거는 그래서 대문자로 작성하긴 함.
+
+* 가급적이면 `#define` 보다는 `static inline` 함수를 사용한다.  
+  잘못된 타입을 넘겨주는 것을 방지하기 위함.  
+  가변 인자와 같이 다루기 까다로운 것만 `매크로 함수` 사용하는 걸로.
 
 * ~~포인터형 변수에는 뒤에 `_ptr`을 붙인다. (아직 시험 운행 중)~~
 
@@ -155,32 +159,10 @@
 
 * `thread-safe`한 함수는 뒤에 `_r`을 붙인다.
 
-* `mutex`나 `semaphore`를 사용할 때 `lock`, `unlock` 사이를 중괄호로 감싼다.  
-   가독성을 높이기 위한 하나의 시도인데, 해보고 별로면 사용X.  
-   (근데 이런 식의 논리면 `FILEIO`도 다 이런 식으로 작성해야 하는 거 아닌가..  
-   아니면 이 코드가 포함된 함수는 뒤에 `_r`이 붙을 테니 중괄호 대신에 `_r`이 안붙은 버전의 함수를 넣는 걸로?  
-   약간 래퍼 함수 느낌으로. 근데 아마 그렇게 하기 애매한 로직도 있을 거임. 그때그때 상황 봐서.  
-   결국 핵심은 lock, unlock 사이의 거리가 너무 멀면 코드 가독성이 떨어진다.)  
+* [동적 할당 컨벤션](https://docs.popekim.com/ko/coding-standards/pocu-c#:~:text=%EB%82%B4%EB%B6%80%EC%97%90%EC%84%9C%20%EB%8F%99%EC%A0%81%EC%9C%BC%EB%A1%9C%20%EB%A9%94%EB%AA%A8%EB%A6%AC%EB%A5%BC%20%ED%95%A0%EB%8B%B9%ED%95%98%EB%8A%94%20%ED%95%A8%EC%88%98%EC%9D%98%20%EC%9D%B4%EB%A6%84%EC%9D%80%20%EB%B0%98%EB%93%9C%EC%8B%9C%20_malloc%EC%9C%BC%EB%A1%9C%20%EB%82%9C%EB%8B%A4.)에 대응하여 내부적으로 동적 메모리 해제를 하는 함수는 뒤에 `_free`를 붙인다.
 
-  예시  
-  ```c
-  void funcname_r(void)
-  {
-    pthread_mutex_lock(&g_mutex);
-    {
-        /* critical section */ 
-    }
-    pthread_mutex_unlock(&g_mutex);
-  }
-
-  /* Or maybe like this? */
-  void funcname_r(void)
-  {
-    pthread_mutex_lock(&g_mutex);
-    funcname();
-    pthread_mutex_unlock(&g_mutex);
-  }  
-  ```
+* 구조체의 `init` 함수가 정의되었다면 반드시 그에 상응하는 `cleanup` 함수를 정의한다.  
+  내부적으로 정리할 요소가 없는 구조체라도 빈 `cleanup` 함수를 정의하여 호출한다. (코드 가독성이나 추후에 확장성을 위함.)
 
 ---
 
