@@ -127,6 +127,8 @@ void process_tetromino_try_status(tetromino_try_status_t status, tetris_play_man
         }
         cleanup_tetromino_free(out_play_manager->tetro_man.tetro_main);
         out_play_manager->tetro_man.tetro_main = NULL;
+        out_play_manager->tetro_man.is_swaped = false;
+        out_play_manager->tetro_man.tetromino_init_velocity += out_play_manager->tetro_man.unit_velocity;
         break;
     case TETROMINO_TRY_STATUS_MOVE:
         /* intentional fallthrough */

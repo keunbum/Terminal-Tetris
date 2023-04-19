@@ -35,6 +35,23 @@ static void init_tetromino(tetromino_t* const out_tetro,
     ewprintf("tetro-%d has been spawned\n", out_tetro->id);
 }
 
+void save_tetromino_tobedrawn(tetromino_t* const out_tetro, block_wprint_t clean_wprint)
+{
+    debug();
+    
+    my_assert(out_tetro != NULL);
+
+    if (out_tetro->prev_drawn == NULL) {
+        out_tetro->prev_drawn = create_tetromino_empty_malloc();
+    }
+    out_tetro->prev_drawn->id = out_tetro->id;
+    out_tetro->prev_drawn->symbol_id = out_tetro->symbol_id;
+    out_tetro->prev_drawn->dir = out_tetro->dir;
+    out_tetro->prev_drawn->pos = out_tetro->pos;
+    out_tetro->prev_drawn->pos_wprint = out_tetro->pos_wprint;
+    out_tetro->prev_drawn->block = create_block(BLOCK_NATURE_EMPTY, clean_wprint);
+}
+
 void cleanup_tetromino_free(tetromino_t* const out_tetro)
 {
     if (out_tetro == NULL) {

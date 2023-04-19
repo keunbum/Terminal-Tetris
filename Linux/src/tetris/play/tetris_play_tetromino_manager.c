@@ -4,20 +4,23 @@
 #include "tetris/scene/tetris_play_renderer.h"
 #include "tetris_play_update_tetromino_status.h"
 
+static void set_tetro_queue_default(tetromino_t* const out_tetro, int i, pos_int_t start_pos_wprint)
+{
+    static const int S_POS_X_INTERVAL = 4;
+    const tetromino_matrix_n_t n = get_tetromino_matrix_n(out_tetro->symbol_id);
+    
+    pos_int_t pos_wprint;
+    pos_wprint.x = start_pos_wprint.x + (i + 1) * S_POS_X_INTERVAL - 2;
+    pos_wprint.y = start_pos_wprint.y + 8 - n;
+    out_tetro->pos_wprint = get_pos(pos_wprint);    
+}
+
 static void callback_wdraw_tetromino_manager_queue(void* const out_void, int i, void* arg)
 {
     debug();
 
-    static const int S_POS_X_INTERVAL = 4;
-
-    tetromino_t* const tetro = (tetromino_t*)out_void;
-    const tetromino_matrix_n_t n = get_tetromino_matrix_n(tetro->symbol_id);
-    pos_t start_pos_wprint = *(pos_t*)arg;
-    pos_t pos_wprint;
-    pos_wprint.x = start_pos_wprint.x + (i + 1) * S_POS_X_INTERVAL - 2;
-    pos_wprint.y = start_pos_wprint.y + 8 - n;
-    tetro->pos_wprint = pos_wprint;
-
+    tetromino_t* tetro = (tetromino_t*)out_void;
+    set_tetro_queue_default(tetro, i, *(pos_int_t*)arg);
     wdraw_a_tetromino_cleanblock(tetro, BLOCK_WPRINT_EMPTY);
 }
 
@@ -31,15 +34,7 @@ static void wdraw_tetromino_manager_queue(const tetromino_manager_t* man)
 
 static void callback_spawn_tetromino_manager_tetro_main(void* const out_void, int i, void* arg)
 {
-    static const int S_POS_X_INTERVAL = 4;
-
-    tetromino_t* const tetro = (tetromino_t*)out_void;
-    const tetromino_matrix_n_t n = get_tetromino_matrix_n(tetro->symbol_id);
-    pos_t start_pos_wprint = *(pos_t*)arg;
-    pos_t pos_wprint;
-    pos_wprint.x = start_pos_wprint.x + (i + 1) * S_POS_X_INTERVAL - 2;
-    pos_wprint.y = start_pos_wprint.y + 8 - n;
-    tetro->pos_wprint = pos_wprint;
+    set_tetro_queue_default((tetromino_t*)out_void, i, *(pos_int_t*)arg);
 }
 
 static void spawn_tetromino_manager_tetro_main(tetromino_manager_t* const out_man, velocity_t init_velocity)
@@ -62,6 +57,10 @@ void init_tetromino_manager(tetromino_manager_t* const out_man, int que_max_size
 
     out_man->pos_wprint.x = TETRIS_PLAY_TETROMINO_MANAGER_POS_X_WPRINT;
     out_man->pos_wprint.y = TETRIS_PLAY_TETROMINO_MANAGER_POS_Y_WPRINT;
+
+    out_man->is_swaped = false;
+    out_man->unit_velocity = (game_time_t)TETRIS_PLAY_UNIT_VELOCITY;
+    out_man->tetromino_init_velocity = TETRIS_PLAY_TETROMINO_INIT_VELOCITY;
     out_man->tetro_main = NULL;
     out_man->tetro_hold = NULL;
 
@@ -112,7 +111,7 @@ tetromino_try_status_t update_tetromino_manager(tetromino_manager_t* const out_m
 
     if (!is_valid_tetromino(out_man->tetro_main)) {
         spawn_tetromino_manager_tetro_main(out_man,
-            TETRIS_PLAY_TETROMINO_INIT_VELOCITY);
+            out_man->tetromino_init_velocity);
         inc_tetromino_cnt(&out_man->stat, out_man->tetro_main->symbol_id);
     }
     my_assert(out_man->tetro_main != NULL);
@@ -127,3 +126,23 @@ void wdraw_tetromino_manager(const tetromino_manager_t* man)
     wdraw_tetromino_manager_queue(man);
     wdraw_tetris_play_statistics(&man->stat);
 }
+
+// static move_main_to_hold(tetromino_t* const restrict out_main, tetromino_t* const restrict out_hold)
+// {
+    
+// }
+
+// static swap_tetromino_position(tetromino_t* const restrict out_main, tetromino_t* const restrict out_hold)
+// {
+//     tetromino_t temp = *out_hold;
+
+// }
+
+// void swap_tetromino_hold(tetromino_manager_t* const out_man)
+// {
+//     if (out_man->tetro_hold == NULL) {
+//         move_main_to_hold(out_man->tetro_main, out_man->tetro_hold);
+//     } else {
+//         swap_tetromino_position(out_man->tetro_main, out_man->tetro_hold);
+//     }
+// }

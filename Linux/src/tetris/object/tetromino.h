@@ -114,23 +114,7 @@ static inline tetromino_t* create_tetromino_empty_malloc(void)
     return (tetromino_t*)malloc(sizeof(tetromino_t));
 }
 
-static inline void save_tetromino_tobedrawn(tetromino_t* const out_tetro, block_wprint_t clean_wprint)
-{
-    debug();
-    
-    my_assert(out_tetro != NULL);
-
-    if (out_tetro->prev_drawn == NULL) {
-        out_tetro->prev_drawn = create_tetromino_empty_malloc();
-    }
-    out_tetro->prev_drawn->id = out_tetro->id;
-    out_tetro->prev_drawn->symbol_id = out_tetro->symbol_id;
-    out_tetro->prev_drawn->dir = out_tetro->dir;
-    out_tetro->prev_drawn->pos = out_tetro->pos;
-    out_tetro->prev_drawn->pos_wprint = out_tetro->pos_wprint;
-    out_tetro->prev_drawn->block = create_block(BLOCK_NATURE_EMPTY, clean_wprint);
-}
-
+void save_tetromino_tobedrawn(tetromino_t* const out_tetro, block_wprint_t clean_wprint);
 void cleanup_tetromino_free(tetromino_t* const out_tetro);
 
 tetromino_t* init_tetromino_malloc(int id, symbol_id_t symbol_id, dir_t dir, pos_t pos, velocity_t velocity, block_t block, tetromino_t* prev_drawn);

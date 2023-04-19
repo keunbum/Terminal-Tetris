@@ -8,7 +8,7 @@
 #include "tetris_play_renderer.h"
 #include "tetris_play_scene.h"
 
-static void render_a_tetromino_poswprint(const tetromino_t* tetro, pos_t pos_wprint)
+static void render_a_tetromino_poswprint(const tetromino_t* tetro, pos_int_t pos_wprint)
 {
     debug();
 
@@ -30,7 +30,7 @@ static void render_a_tetromino_poswprint(const tetromino_t* tetro, pos_t pos_wpr
                 static wchar_t buf[3];
                 buf[0] = buf[1] = tetro->block.wprint;
                 buf[2] = L'\0';
-                pos_t each_pos_wprint = { pos_wprint.x + i, pos_wprint.y + 2 * j };
+                pos_int_t each_pos_wprint = { pos_wprint.x + i, pos_wprint.y + 2 * j };
                 wdraw_row_at(buf, each_pos_wprint.x, each_pos_wprint.y);
             }
         }
@@ -42,8 +42,8 @@ static void render_a_tetromino_poswprint(const tetromino_t* tetro, pos_t pos_wpr
             int i = idx / n;
             int j = idx % n;
             {
-                pos_t each_pos_wprint = { pos_wprint.x + i, pos_wprint.y + 2 * j };
-                wdraw_unit_matrix_at(tetro->block.wprint, (int)each_pos_wprint.x, (int)each_pos_wprint.y);
+                pos_int_t each_pos_wprint = { pos_wprint.x + i, pos_wprint.y + 2 * j };
+                wdraw_unit_matrix_at(tetro->block.wprint, each_pos_wprint.x, each_pos_wprint.y);
             }
         }
     }
@@ -64,9 +64,9 @@ void wdraw_a_tetromino_cleanblock(tetromino_t* const out_tetro, block_wprint_t c
     debug();
 
     if (!is_first_drawn_tetromino(out_tetro)) {
-        render_a_tetromino_poswprint(out_tetro->prev_drawn, out_tetro->prev_drawn->pos_wprint);
+        render_a_tetromino_poswprint(out_tetro->prev_drawn, get_posint(out_tetro->prev_drawn->pos_wprint));
     }
-    render_a_tetromino_poswprint(out_tetro, out_tetro->pos_wprint);
+    render_a_tetromino_poswprint(out_tetro, get_posint(out_tetro->pos_wprint));
     save_tetromino_tobedrawn(out_tetro, cleanblock);
 }
 

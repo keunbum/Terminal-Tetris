@@ -14,6 +14,7 @@ static tetromino_try_status_t process_input_event(const struct input_event* ev, 
 
     board_t* board = &out_play_manager->board;
     tetromino_t* tetro = out_play_manager->tetro_man.tetro_main;
+    // tetromino_manager_t* tetro_man = &out_play_manager->tetro_man;
     tetromino_try_status_t ret = TETROMINO_TRY_STATUS_NULL;
     if (ev->type == EV_KEY) {
         if (ev->value == 1) {
@@ -41,7 +42,7 @@ static tetromino_try_status_t process_input_event(const struct input_event* ev, 
                 break;
             case KEY_C:
                 /* Not yet implemented */
-                // keep_tetromino(...);
+                // swap_tetromino_hold(tetro_man);
                 break;
             case KEY_ESC:
                 /* Not a good logic */

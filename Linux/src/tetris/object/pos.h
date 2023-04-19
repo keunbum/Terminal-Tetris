@@ -52,4 +52,9 @@ static inline pos_int_t get_posint(pos_t pos)
     return create_posint((int)(pos.x + __FLT_EPSILON__), (int)(pos.y + __FLT_EPSILON__));
 }
 
+static inline pos_t get_pos(pos_int_t pos)
+{
+    return create_pos((pos_e_t)pos.x, (pos_e_t)pos.y);
+}
+
 #endif /* __POS__H */

@@ -102,6 +102,9 @@ tetromino_try_status_t try_rotate_tetromino_r(board_t* const restrict out_board,
     if (res == TETROMINO_TRY_STATUS_MOVE) {
         res = TETROMINO_TRY_STATUS_ROTATE;
         out_tetro->dir = ndir;
+    } else
+    if (res == TETROMINO_TRY_STATUS_ONTHEGROUND) {
+        res = TETROMINO_TRY_STATUS_INPLACE;
     }
     return res;
 }
