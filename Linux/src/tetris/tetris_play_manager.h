@@ -11,6 +11,7 @@
 #include "tetris/play/tetris_play_tetromino_manager.h"
 #include "tetris_play_submodule.h"
 #include "timer/timer_drawer.h"
+#include "terminal.h"
 
 #define TETRIS_PLAY_TIMER_POS_X_WPRINT (TETRIS_PLAY_SINGLE_SCREEN_POS_X_WPRINT + 2)
 #define TETRIS_PLAY_TIMER_POS_Y_WPRINT (TETRIS_PLAY_BOARD_POS_Y_WPRINT + TETRIS_PLAY_BOARD_WIDTH / 2 - 2)
@@ -41,6 +42,7 @@ typedef struct {
     frame_t screen_frame;
     board_t board;
     tetromino_manager_t tetro_man;
+    terminal_t terminal;
     
     timer_drawer_t timer_drawer;
     tetris_play_submodule_t sub_modules[TETRIS_PLAY_SUBMODULE_NUM];

@@ -92,6 +92,7 @@ static void init_tetris_play_objects(tetris_play_manager_t* const out_play_manag
         UNIT_MATRIX_CORNER_BOT_RIGHT);
     init_board(&out_play_manager->board);
     init_tetromino_manager(&out_play_manager->tetro_man, out_play_manager->tetromino_queue_max_size);
+    init_terminal(&out_play_manager->terminal);
     init_timer_drawer(&out_play_manager->timer_drawer, REALTIME_TIMER_SIG);
 }
 
@@ -108,6 +109,7 @@ static void init_tetris_play_manager(tetris_play_manager_t* const out_play_manag
 
 static void cleanup_tetris_play_objects(tetris_play_manager_t* const out_play_manager)
 {
+    cleanup_terminal(&out_play_manager->terminal);
     cleanup_tetromino_manager_free(&out_play_manager->tetro_man);
     cleanup_board(&out_play_manager->board);
 }

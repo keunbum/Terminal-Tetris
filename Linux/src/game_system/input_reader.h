@@ -21,8 +21,6 @@ typedef struct {
     int fd;
     struct input_event event;
     reader_mode_t play_mode;
-    struct termios old_termios;
-    struct termios new_termios;
 
     // input_reader_lock_t lock;
 } input_reader_t;
