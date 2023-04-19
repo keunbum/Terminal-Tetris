@@ -37,54 +37,62 @@ static inline void petrify_tetromino(board_t* const out_board, const tetromino_t
     }
 }
 
-static inline bool is_row_all(const board_t* board, int i, block_nature_t nature)
+static void clear_filled_lines(board_t* const out_board)
 {
-    bool is_all = true;
-    traverse_inner_col(j, board) {
-        is_all &= board->grid[i][j].nature == nature;
-    }
-    return is_all;
-}
-
-static void clear_board_filled_lines(board_t* const out_board)
-{
-    static const float S_CLEAR_BOARD_INTERVAL_SEC = 0.05f;
-    static int s_stk[TETRIS_PLAY_BOARD_INNER_HEIGHT];
-    int top = 0;
+    static const double S_CLEAR_BOARD_INTERVAL_SEC = 0.05;
+    static int s_que[4];
+    int end = 0;
     /* Check full lines */
-    traverse_inner_row(i, out_board) {
-        if (is_row_all(out_board, i, BLOCK_NATURE_FULL)) {
-            s_stk[top++] = i;
+    traverse_inner_row_reverse(i, out_board) {
+        if (is_all_of_row(out_board, i, BLOCK_NATURE_FULL)) {
+            s_que[end++] = i;
+            my_assert(end <= 4);
         }
     }
-    if (top == 0) {
+    if (end == 0) {
         return;
     }
     /* Reflect them visually */
     traverse_inner_col(j, out_board) {
-        for (int ptr = 0; ptr < top; ++ptr) {
-            int i = s_stk[ptr];
+        ewprintf("j: %d, i:", j);
+        for (int ptr = 0; ptr < end; ++ptr) {
+            int i = s_que[ptr];
+            ewprintf("%s%d", ptr == 0 ? " " : ", ", i);
             set_block_each(&out_board->grid[i][j], BLOCK_NATURE_EMPTY, BLOCK_WPRINT_WHITE_LARGE_SQUARE);
-            pos_int_t pos_wprint = get_intpos_to_intwprint(create_pos_int(out_board->pos.x + i, out_board->pos.y + j));
+            pos_int_t pos_wprint = get_intpos_intwprint(create_posint(out_board->pos.x + i, out_board->pos.y + j));
             wdraw_unit_matrix_at_r(out_board->grid[i][j].wprint, pos_wprint.x, pos_wprint.y);
-            fflush(stdout);
         }
+        ewprintf("\n");
+        fflush(stdout);
         nanosleep_chrono(TO_NSEC(S_CLEAR_BOARD_INTERVAL_SEC));
     }
-    /* Fill board empty lines */
-    const int min_x = out_board->skyline - 3;
-    int L = s_stk[0];
-    int R = L + 1;
-    while (L < out_board->skyline) {
-        while (R <= min_x && is_row_all(out_board, L, BLOCK_NATURE_EMPTY)) {
-            R += 1;
+    /* Fill empty lines */
+    const int filled_min_x = out_board->skyline - 3;
+    my_assert(filled_min_x >= 0);
+    for (int ptr = 0; ptr < end; ++ptr) {
+        int L = s_que[ptr];
+        int R;
+        if (ptr == end - 1) {
+            R = s_que[ptr] - 1;
+            while (R >= filled_min_x && !is_all_of_row(out_board, R, BLOCK_NATURE_EMPTY)) {
+                R -= 1;
+            }
+        } else {
+            R = s_que[ptr + 1];
         }
-        if (R == min_x - 1) {
-            break;
+        ewprintf("L: %d, R: %d\n", L, R);
+        int move_dist = ptr + 1;
+        for (int i = L - 1; i > R; --i) {
+            traverse_inner_col(j, out_board) {
+                ewprintf("(%d, %d) --> (%d, %d)\n", i, j, i + move_dist, j);
+                out_board->grid[i + move_dist][j] = out_board->grid[i][j]; 
+                set_block_each(&out_board->grid[i][j], BLOCK_NATURE_EMPTY, BLOCK_WPRINT_WHITE_LARGE_SQUARE);
+            }
+            ewprintf("\n");
         }
-        /* Implement from here. */
-        L += 1;
     }
+    wdraw_board(out_board);
+    fflush(stdout);
 }
 
 static inline bool is_at_skyline(const board_t* board, const tetromino_t* tetro)
@@ -109,12 +117,11 @@ static inline bool is_at_skyline(const board_t* board, const tetromino_t* tetro)
 
 void process_tetromino_try_status(tetromino_try_status_t status, tetris_play_manager_t* const out_play_manager)
 {
-    /* As long as you run the input processing thread separately, you need to take care of the critical section problem. */
     switch (status) {
     case TETROMINO_TRY_STATUS_ONTHEGROUND:
         petrify_tetromino(&out_play_manager->board, out_play_manager->tetro_man.tetro_main);
         render_out(out_play_manager);
-        clear_board_filled_lines(&out_play_manager->board);
+        clear_filled_lines(&out_play_manager->board);
         if (is_at_skyline(&out_play_manager->board, out_play_manager->tetro_man.tetro_main)) {
             out_play_manager->status = TETRIS_PLAY_STATUS_GAMEOVER;
         }
@@ -143,6 +150,8 @@ void update_gameworld(tetris_play_manager_t* const out_play_manager)
 {
     debug();
 
+    /* As long as you run the input processing thread separately,
+       you need to take care of the critical section problem. */
     lock_board(&out_play_manager->board);
     tetromino_try_status_t ret = update_tetromino_manager(&out_play_manager->tetro_man, &out_play_manager->board, out_play_manager->game_delta_time);
     process_tetromino_try_status(ret, out_play_manager);

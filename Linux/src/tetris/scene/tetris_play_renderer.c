@@ -8,12 +8,6 @@
 #include "tetris_play_renderer.h"
 #include "tetris_play_scene.h"
 
-static inline pos_t get_pos_wprint(pos_t pos)
-{
-    pos_t ret = { pos.x + 0, 2 * pos.y + 1 };
-    return ret;
-}
-
 static void render_a_tetromino_poswprint(const tetromino_t* tetro, pos_t pos_wprint)
 {
     debug();

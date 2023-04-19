@@ -8,7 +8,7 @@
 #include <unistd.h>
 #include <assert.h>
 
-typedef double __sseconds_t;
+typedef float __sseconds_t;
 typedef __syscall_slong_t __snseconds_t;
 
 #define NSEC_VAL ((__snseconds_t)1e9)

@@ -63,7 +63,7 @@ tetromino_try_status_t try_move_tetromino_deltatime_r(board_t* const restrict ou
     tetromino_try_status_t res = try_tetromino_next_status(out_board, out_tetro, npos, out_tetro->dir);
     if (res == TETROMINO_TRY_STATUS_MOVE) {
         out_tetro->pos = npos;
-        out_tetro->pos_wprint = get_pos_to_wprint(out_tetro->pos);
+        out_tetro->pos_wprint = get_pos_wprint(out_tetro->pos);
     }
     return res;
 }
@@ -82,7 +82,10 @@ tetromino_try_status_t try_move_tetromino_byone_r(board_t* const restrict out_bo
     tetromino_try_status_t res = try_tetromino_next_status(out_board, out_tetro, npos, out_tetro->dir);
     if (res == TETROMINO_TRY_STATUS_MOVE) {
         out_tetro->pos = npos;
-        out_tetro->pos_wprint = get_pos_to_wprint(out_tetro->pos);
+        out_tetro->pos_wprint = get_pos_wprint(out_tetro->pos);
+    } else
+    if (dir != DIR_BOT && res == TETROMINO_TRY_STATUS_ONTHEGROUND) {
+        res = TETROMINO_TRY_STATUS_INPLACE;
     }
     return res;
 }
@@ -111,6 +114,6 @@ tetromino_try_status_t harddrop_tetromino_r(board_t* const restrict out_board, t
         return TETROMINO_TRY_STATUS_NULL;
     }
     out_tetro->pos = get_tetromino_silhouette_pos(out_board, out_tetro);
-    out_tetro->pos_wprint = get_pos_to_wprint(out_tetro->pos);
+    out_tetro->pos_wprint = get_pos_wprint(out_tetro->pos);
     return TETROMINO_TRY_STATUS_ONTHEGROUND;
 }

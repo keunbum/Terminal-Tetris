@@ -182,7 +182,7 @@ void* run_tetris_play_single_mode(void* arg)
             .width_wprint = TETRIS_PLAY_BOARD_WIDTH_WPRINT,
             .frame_height = BOARD_FRAME_HEIGHT,
             .frame_width = BOARD_FRAME_WIDTH,
-            .skyline = TETRIS_PLAY_BOARD_POS_X - TETRIS_PLAY_SKYLINE_POS_X,
+            .skyline = TETRIS_PLAY_SKYLINE_POS_X - TETRIS_PLAY_BOARD_POS_X,
         },
         .tetro_man = {
             /* Should be inited with init() */

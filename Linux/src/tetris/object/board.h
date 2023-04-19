@@ -71,8 +71,17 @@ typedef struct {
 
 typedef board_t board_t;
 
-#define traverse_inner_row(i, board) for (int i = board->height - 2; i > board->skyline_pos.x - board->pos.x; --i)
+#define traverse_inner_row_reverse(i, board) for (int i = board->height - 2; i > board->skyline_pos.x - board->pos.x; --i)
 #define traverse_inner_col(j, board) for (int j = 1; j <= board->width - 2; ++j)
+
+static inline bool is_all_of_row(const board_t* board, int i, block_nature_t nature)
+{
+    bool is_all = true;
+    traverse_inner_col(j, board) {
+        is_all &= (board->grid[i][j].nature == nature);
+    }
+    return is_all;
+}
 
 static inline void init_board_lock(board_t* const out_board)
 {
@@ -111,11 +120,12 @@ static inline const block_t* get_board_grid_block(const board_t* board, int i, i
 
 static inline void set_board_grid_block(board_t* const out_board, int i, int j, block_t block)
 {
-    set_block(out_board->grid[i] + j, block);
+    out_board->grid[i][j] = block;
 }
 
 void init_board(board_t* const out_board);
 void cleanup_board(board_t* const out_board);
 void wdraw_board(const board_t* board);
+void wdraw_board_range(const board_t* board, int si, int ei, int sj, int ej);
 
 #endif /* __TETRIS_PLAY_BOARD__H */
