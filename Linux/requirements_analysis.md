@@ -161,8 +161,10 @@
 
 * [동적 할당 컨벤션](https://docs.popekim.com/ko/coding-standards/pocu-c#:~:text=%EB%82%B4%EB%B6%80%EC%97%90%EC%84%9C%20%EB%8F%99%EC%A0%81%EC%9C%BC%EB%A1%9C%20%EB%A9%94%EB%AA%A8%EB%A6%AC%EB%A5%BC%20%ED%95%A0%EB%8B%B9%ED%95%98%EB%8A%94%20%ED%95%A8%EC%88%98%EC%9D%98%20%EC%9D%B4%EB%A6%84%EC%9D%80%20%EB%B0%98%EB%93%9C%EC%8B%9C%20_malloc%EC%9C%BC%EB%A1%9C%20%EB%82%9C%EB%8B%A4.)에 대응하여 내부적으로 동적 메모리 해제를 하는 함수는 뒤에 `_free`를 붙인다.
 
-* 구조체의 `init` 함수가 정의되었다면 반드시 그에 상응하는 `cleanup` 함수를 정의한다.  
+* 구조체를 비롯한 객체의 `init` 함수가 정의되었다면 반드시 그에 상응하는 `cleanup` 함수를 정의한다.  
   내부적으로 정리할 요소가 없는 구조체라도 빈 `cleanup` 함수를 정의하여 호출한다. (코드 가독성이나 추후에 확장성을 위함.)
+
+* 배열 인덱싱 변수에는 반드시 i, j, k, ...가 포함되어야 한다.
 
 ---
 
