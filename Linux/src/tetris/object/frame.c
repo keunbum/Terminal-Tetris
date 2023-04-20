@@ -35,14 +35,14 @@ void cleanup_frame(frame_t* const frame)
     (void)frame;
 }
 
-void wdraw_frame(const frame_t* frame, int title_pos_x_offset)
+void wdraw_frame(const frame_t* frame, int title_pos_y_offset)
 {
     debug();
     
     my_assert(frame != NULL);
 
     if (frame->title != NULL) {
-        wprintf_at_r(frame->pos_wprint.x - 1, frame->pos_wprint.y + title_pos_x_offset, frame->title);
+        wprintf_at_r(frame->pos_wprint.x - 1, frame->pos_wprint.y + title_pos_y_offset, frame->title);
     }
 
     wdraw_boundary_at_with(frame->hor_block,

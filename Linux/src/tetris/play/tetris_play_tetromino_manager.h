@@ -21,12 +21,19 @@
 #define TETRIS_PLAY_TETROMINO_MANAGER_QUEUE_FRAME_HEIGHT_WPRINT (4 * TETROMINO_MANAGER_QUEUE_MAX_SIZE + 2)
 #define TETRIS_PLAY_TETROMINO_MANAGER_QUEUE_FRAME_WIDTH_WPRINT ((TETRIS_PLAY_SINGLE_SCREEN_WIDTH_WPRINT - TETRIS_PLAY_BOARD_WIDTH_WPRINT) / 2 - 5)
 
+#define TETRIS_PLAY_TETROMINO_MANAGER_HOLD_FRAME_POS_X (TETRIS_PLAY_SINGLE_SCREEN_POS_X + 3)
+#define TETRIS_PLAY_TETROMINO_MANAGER_HOLD_FRAME_POS_Y (TETRIS_PLAY_SINGLE_SCREEN_POS_Y + 5)
+
+#define TETRIS_PLAY_TETROMINO_MANAGER_HOLD_FRAME_HEIGHT_WPRINT (6)
+#define TETRIS_PLAY_TETROMINO_MANAGER_HOLD_FRAME_WIDTH_WPRINT (6 * 2)
+
 typedef pthread_spinlock_t tetromino_manager_lock_t;
 
 typedef struct {
     pos_int_t pos_wprint;
+    pos_int_t hold_pos;
 
-    bool is_swaped;
+    bool is_swaped_once;
     game_time_t unit_velocity;
     game_time_t tetromino_init_velocity;
     tetromino_t* tetro_main;
@@ -36,6 +43,7 @@ typedef struct {
     tetris_play_statistic_t stat;
     fixed_queue_t que;
     frame_t frame;
+    frame_t hold_frame;
 
     tetromino_manager_lock_t lock;
 } tetromino_manager_t;
@@ -44,6 +52,6 @@ void init_tetromino_manager(tetromino_manager_t* const out_man, int max_size);
 void cleanup_tetromino_manager_free(tetromino_manager_t* const out_man);
 tetromino_try_status_t update_tetromino_manager(tetromino_manager_t* const out_man, board_t* const out_board, game_time_t delta_time);
 void wdraw_tetromino_manager(const tetromino_manager_t* man);
-// void swap_tetromino_hold(tetromino_manager_t* const out_man);
+tetromino_try_status_t try_swap_tetromino_hold(tetromino_manager_t* const out_man);
 
 #endif /* __TETRIS_PLAY_TETROMINO_MANAGER__H */

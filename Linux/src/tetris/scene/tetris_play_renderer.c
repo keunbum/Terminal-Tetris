@@ -63,6 +63,9 @@ void wdraw_a_tetromino_cleanblock(tetromino_t* const out_tetro, block_wprint_t c
 {
     debug();
 
+    if (!is_valid_tetromino(out_tetro)) {
+        return;
+    }
     if (!is_first_drawn_tetromino(out_tetro)) {
         render_a_tetromino_poswprint(out_tetro->prev_drawn, get_posint(out_tetro->prev_drawn->pos_wprint));
     }
@@ -72,10 +75,11 @@ void wdraw_a_tetromino_cleanblock(tetromino_t* const out_tetro, block_wprint_t c
 
 static void render_tetromino_manager_out(tetromino_manager_t* const out_man)
 {
-    if (out_man->tetro_main == NULL) {
-        return;
-    }
+    // if (!is_valid_tetromino(out_man->tetro_main)) {
+    //     return;
+    // }
     wdraw_a_tetromino_cleanblock(out_man->tetro_main, BLOCK_WPRINT_WHITE_LARGE_SQUARE);
+    wdraw_a_tetromino_cleanblock(out_man->tetro_hold, BLOCK_WPRINT_EMPTY);
     traverse_queue(&out_man->que, callback_render_tetromino_manager_out, NULL);
 }
 
@@ -102,7 +106,7 @@ void render_out(tetris_play_manager_t* const out_man)
 {
     debug();
 
-    my_assert(out_man != NULL);
+    my_assert(is_valid_tetromino(out_man));
 
     if (out_man->status != TETRIS_PLAY_STATUS_GAMEOVER) {
         render_tetromino_manager_out(&out_man->tetro_man);

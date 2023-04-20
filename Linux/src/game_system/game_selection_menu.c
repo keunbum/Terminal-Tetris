@@ -11,7 +11,7 @@
 #include "tetris/play/tetris_play_single_manager.h"
 #include "game_system_manager.h"
 
-static const game_module_t G_S_GAME_OBJECTS[1] = {
+static const game_module_t GS_GAME_OBJECTS[1] = {
     {
         .name = "basic tetris",
         .module = run_tetris_play_single_mode,
@@ -19,9 +19,9 @@ static const game_module_t G_S_GAME_OBJECTS[1] = {
     },
 };
 
-static const char* G_S_GAME_SELECTION_MENU_OPTIONS_TEXT[] = { G_S_GAME_OBJECTS[0].name, "back" };
+static const char* GS_GAME_SELECTION_MENU_OPTIONS_TEXT[] = { GS_GAME_OBJECTS[0].name, "back" };
 
-static const int G_S_GAME_SELECTION_MENU_TOTAL_OPTION_NUM = (int)(sizeof(G_S_GAME_SELECTION_MENU_OPTIONS_TEXT) / sizeof(G_S_GAME_SELECTION_MENU_OPTIONS_TEXT[0]));
+static const int GS_GAME_SELECTION_MENU_TOTAL_OPTION_NUM = (int)(sizeof(GS_GAME_SELECTION_MENU_OPTIONS_TEXT) / sizeof(GS_GAME_SELECTION_MENU_OPTIONS_TEXT[0]));
 
 static void draw_game_selection_menu_screen(void)
 {
@@ -29,11 +29,11 @@ static void draw_game_selection_menu_screen(void)
 
     wclear();
     wprintf(L"SELECT GAME\n");
-    for (int i = 0; i < G_S_GAME_SELECTION_MENU_TOTAL_OPTION_NUM; ++i) {
+    for (int i = 0; i < GS_GAME_SELECTION_MENU_TOTAL_OPTION_NUM; ++i) {
         if (i > 0) {
             wprintf(L"  ");
         }
-        wprintf(L"%d) %s", i + 1, G_S_GAME_SELECTION_MENU_OPTIONS_TEXT[i]);
+        wprintf(L"%d) %s", i + 1, GS_GAME_SELECTION_MENU_OPTIONS_TEXT[i]);
     }
     wprintf(L"\n");
 }
@@ -70,12 +70,12 @@ static bool handle_game_selection_menu_cmd(int cmd)
     if (cmd == GAME_SELECTION_MENU_CMD_INVAL) {
         handle_error("Reading input failed.");
     }
-    if (cmd == G_S_GAME_SELECTION_MENU_TOTAL_OPTION_NUM) {
+    if (cmd == GS_GAME_SELECTION_MENU_TOTAL_OPTION_NUM) {
         cleanup_game_selection_menu();
         return false;
     }
-    if (1 <= cmd && cmd <= G_S_GAME_SELECTION_MENU_TOTAL_OPTION_NUM - 1) {
-        const game_module_t* g = G_S_GAME_OBJECTS + cmd_to_gamenum(cmd);
+    if (1 <= cmd && cmd <= GS_GAME_SELECTION_MENU_TOTAL_OPTION_NUM - 1) {
+        const game_module_t* g = GS_GAME_OBJECTS + cmd_to_gamenum(cmd);
         g->module(g->module_arg);
         return true;
     }

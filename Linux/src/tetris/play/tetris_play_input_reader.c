@@ -14,10 +14,11 @@ static tetromino_try_status_t process_input_event(const struct input_event* ev, 
 
     board_t* board = &out_play_manager->board;
     tetromino_t* tetro = out_play_manager->tetro_man.tetro_main;
-    // tetromino_manager_t* tetro_man = &out_play_manager->tetro_man;
+    tetromino_manager_t* tetro_man = &out_play_manager->tetro_man;
     tetromino_try_status_t ret = TETROMINO_TRY_STATUS_NULL;
     if (ev->type == EV_KEY) {
-        if (ev->value == 1) {
+        switch (ev->value) {
+        case 1:
             switch (ev->code) {
             case KEY_DOWN:
                 ret = try_move_tetromino_byone_r(board, tetro, DIR_BOT);
@@ -41,8 +42,7 @@ static tetromino_try_status_t process_input_event(const struct input_event* ev, 
                 ret = try_rotate_tetromino_r(board, tetro, +1);
                 break;
             case KEY_C:
-                /* Not yet implemented */
-                // swap_tetromino_hold(tetro_man);
+                ret = try_swap_tetromino_hold(tetro_man);
                 break;
             case KEY_ESC:
                 /* Not a good logic */
@@ -50,7 +50,8 @@ static tetromino_try_status_t process_input_event(const struct input_event* ev, 
                 exit_cleanup_game_system(EXIT_SUCCESS);
                 break;
             }
-        } else if (ev->value == 2) {
+            break;
+        case 2:
             switch (ev->code) {
             case KEY_DOWN:
                 try_move_tetromino_byone_r(board, tetro, DIR_BOT);
@@ -62,6 +63,7 @@ static tetromino_try_status_t process_input_event(const struct input_event* ev, 
                 try_move_tetromino_byone_r(board, tetro, DIR_RIGHT);
                 break;
             }
+            break;
         }
     }
     return ret;

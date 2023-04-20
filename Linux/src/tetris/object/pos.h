@@ -57,4 +57,11 @@ static inline pos_t get_pos(pos_int_t pos)
     return create_pos((pos_e_t)pos.x, (pos_e_t)pos.y);
 }
 
+static inline void swap_pos(pos_t* const restrict pi, pos_t* const restrict pj)
+{
+    pos_t tmp_pos = *pi;
+    *pi = *pj;
+    *pj = tmp_pos;
+}
+
 #endif /* __POS__H */
