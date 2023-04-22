@@ -24,7 +24,7 @@ static void wdraw_tetris_play_statistics_tetrominos(const tetris_play_statistic_
     my_assert(st != NULL);
 
     for (symbol_id_t i = 0; i < TETROMINO_NUM_OF_KINDS; ++i) {
-        wdraw_a_tetromino_cleanblock(st->tetrominos[i], BLOCK_WPRINT_EMPTY);
+        wdraw_a_tetromino(st->tetrominos[i]);
         wdraw_tetromino_spawned_cnt(st, i);
     }
 }
@@ -43,7 +43,7 @@ void init_tetris_play_statistics_malloc(tetris_play_statistic_t* const out_stat,
         const int each_pos_x_wprint = out_stat->tetromino_pos_wprint.x + (symbol_id + 1) * out_stat->interval_height;
         const int each_pos_y_wprint = out_stat->tetromino_pos_wprint.y + 4 - n;
         pos_t pos_wprint = { (pos_e_t)(each_pos_x_wprint + S_TETRO_X_CORRECTION[symbol_id]), (pos_e_t)each_pos_y_wprint };
-        out_stat->tetrominos[symbol_id] = create_tetromino_symbol_poswprint_malloc(out_gen, symbol_id, pos_wprint);
+        out_stat->tetrominos[symbol_id] = create_tetromino_symbol_poswprint_malloc(out_gen, symbol_id, pos_wprint, BLOCK_WPRINT_EMPTY);
     }
 
     for (int i = 0; i < TETROMINO_NUM_OF_KINDS; ++i) {

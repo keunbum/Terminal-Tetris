@@ -58,6 +58,7 @@ struct tetromino_t {
     pos_t pos_wprint;
     velocity_t velocity;
     block_t block;
+    block_wprint_t clean_wprint;
     tetromino_t* prev_drawn;
 };
 #define TETROMINO_NUM_OF_KINDS (7)
@@ -114,10 +115,10 @@ static inline tetromino_t* create_tetromino_empty_malloc(void)
     return (tetromino_t*)malloc(sizeof(tetromino_t));
 }
 
-void save_tetromino_tobedrawn(tetromino_t* const out_tetro, block_wprint_t clean_wprint);
+void save_tetromino_tobedrawn(tetromino_t* const out_tetro);
 void cleanup_tetromino_free(tetromino_t* const out_tetro);
 
-tetromino_t* init_tetromino_malloc(int id, symbol_id_t symbol_id, dir_t dir, pos_t pos, velocity_t velocity, block_t block, tetromino_t* prev_drawn);
-tetromino_t* init_tetromino_poswprint_malloc(int id, symbol_id_t symbol_id, dir_t dir, pos_t pos_wprint, velocity_t velocity, block_t block, tetromino_t* prev_drawn);
+tetromino_t* init_tetromino_malloc(int id, symbol_id_t symbol_id, dir_t dir, pos_t pos, velocity_t velocity, block_t block, block_wprint_t clean_wprint, tetromino_t* prev_drawn);
+tetromino_t* init_tetromino_poswprint_malloc(int id, symbol_id_t symbol_id, dir_t dir, pos_t pos_wprint, velocity_t velocity, block_t block, block_wprint_t clean_wprint, tetromino_t* prev_drawn);
 
 #endif /* __TETROMINO__H */

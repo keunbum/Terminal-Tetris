@@ -24,7 +24,6 @@ static tetromino_try_status_t process_input_event(const struct input_event* ev, 
                 ret = try_move_tetromino_byone_r(board, tetro, DIR_BOT);
                 break;
             case KEY_LEFT:
-                // hhmm.. may be implemented reversed??
                 ret = try_move_tetromino_byone_r(board, tetro, DIR_LEFT);
                 break;
             case KEY_RIGHT:

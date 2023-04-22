@@ -55,7 +55,7 @@ void cleanup_tetromino_generator(tetromino_generator_t* const out_gen)
     (void)out_gen;
 }
 
-tetromino_t* create_tetromino_random_malloc(tetromino_generator_t* const out_gen, pos_t init_pos, velocity_t init_velocity)
+tetromino_t* create_tetromino_random_malloc(tetromino_generator_t* const out_gen, pos_t init_pos, velocity_t init_velocity, block_wprint_t init_clean_block)
 {
     debug();
 
@@ -67,11 +67,12 @@ tetromino_t* create_tetromino_random_malloc(tetromino_generator_t* const out_gen
         init_pos,
         init_velocity,
         init_block,
+        init_clean_block,
         NULL);
     return pa_ret;
 }
 
-tetromino_t* create_tetromino_symbol_poswprint_malloc(tetromino_generator_t* const out_gen, symbol_id_t init_symbol_id, pos_t init_pos_wprint)
+tetromino_t* create_tetromino_symbol_poswprint_malloc(tetromino_generator_t* const out_gen, symbol_id_t init_symbol_id, pos_t init_pos_wprint, block_wprint_t init_clean_block)
 {
     debug();
 
@@ -82,6 +83,7 @@ tetromino_t* create_tetromino_symbol_poswprint_malloc(tetromino_generator_t* con
         init_pos_wprint,
         0,
         init_block,
+        init_clean_block,
         NULL);
     return pa_ret;    
 }

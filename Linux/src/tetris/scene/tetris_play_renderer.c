@@ -55,11 +55,10 @@ static void callback_render_tetromino_manager_out(void* const out_void, int i, v
 {
     (void)i;
     (void)arg;
-    tetromino_t* tetro = (tetromino_t*)out_void;
-    wdraw_a_tetromino_cleanblock(tetro, BLOCK_WPRINT_EMPTY);
+    wdraw_a_tetromino((tetromino_t*)out_void);
 }
 
-void wdraw_a_tetromino_cleanblock(tetromino_t* const out_tetro, block_wprint_t cleanblock)
+void wdraw_a_tetromino(tetromino_t* const out_tetro)
 {
     debug();
 
@@ -70,7 +69,7 @@ void wdraw_a_tetromino_cleanblock(tetromino_t* const out_tetro, block_wprint_t c
         render_a_tetromino_poswprint(out_tetro->prev_drawn, get_posint(out_tetro->prev_drawn->pos_wprint));
     }
     render_a_tetromino_poswprint(out_tetro, get_posint(out_tetro->pos_wprint));
-    save_tetromino_tobedrawn(out_tetro, cleanblock);
+    save_tetromino_tobedrawn(out_tetro);
 }
 
 static void render_tetromino_manager_out(tetromino_manager_t* const out_man)
@@ -78,8 +77,8 @@ static void render_tetromino_manager_out(tetromino_manager_t* const out_man)
     // if (!is_valid_tetromino(out_man->tetro_main)) {
     //     return;
     // }
-    wdraw_a_tetromino_cleanblock(out_man->tetro_main, BLOCK_WPRINT_WHITE_LARGE_SQUARE);
-    wdraw_a_tetromino_cleanblock(out_man->tetro_hold, BLOCK_WPRINT_EMPTY);
+    wdraw_a_tetromino(out_man->tetro_main);
+    wdraw_a_tetromino(out_man->tetro_hold);
     traverse_queue(&out_man->que, callback_render_tetromino_manager_out, NULL);
 }
 
