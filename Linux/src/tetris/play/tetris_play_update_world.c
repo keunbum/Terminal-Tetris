@@ -40,6 +40,7 @@ static void clear_filled_lines(board_t* const out_board)
         if (is_all_of_row(out_board, i, BLOCK_NATURE_FULL)) {
             s_que[end++] = i;
             my_assert(end <= 4);
+            assert(end <= 4);
         }
     }
     if (end == 0) {
@@ -60,21 +61,25 @@ static void clear_filled_lines(board_t* const out_board)
         nanosleep_chrono(TO_NSEC(S_CLEAR_BOARD_INTERVAL_SEC));
     }
     /* Fill empty lines */
-    const int filled_min_x = out_board->skyline - 3;
-    my_assert(filled_min_x >= 0);
     for (int ptr = 0; ptr < end; ++ptr) {
         int L = s_que[ptr];
         int R;
         if (ptr == end - 1) {
-            R = s_que[ptr] - 1;
-            while (R >= filled_min_x && !is_all_of_row(out_board, R, BLOCK_NATURE_EMPTY)) {
-                R -= 1;
-            }
+            // R = s_que[ptr] - 1;
+            // while (R >= filled_min_x && !is_all_of_row(out_board, R, BLOCK_NATURE_EMPTY)) {
+            //     R -= 1;
+            // }
+            // hmm...
+            R = out_board->skyline;
         } else {
             R = s_que[ptr + 1];
         }
-        ewprintf("L: %d, R: %d\n", L, R);
         int move_dist = ptr + 1;
+        ewprintf("out_board->height: %d\n", out_board->height);
+        ewprintf("L: %d, R: %d, move_dist: %d\n", L, R, move_dist);
+        my_assert(L - 1 < out_board->height - 1);
+        my_assert(L - 1 + move_dist < out_board->height - 1);
+        my_assert(R + 1 > 0);
         for (int i = L - 1; i > R; --i) {
             traverse_inner_col(j, out_board) {
                 ewprintf("(%d, %d) --> (%d, %d)\n", i, j, i + move_dist, j);

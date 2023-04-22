@@ -61,12 +61,15 @@ void wdraw_board(const board_t* board)
     my_assert(board != NULL);
 
     cursor_lock();
-    wgotoxy((int)board->pos_wprint.x, (int)board->pos_wprint.y);
+    wgotoxy(board->pos_wprint.x, board->pos_wprint.y);
     for (int i = 0; i < board->height; ++i) {
+        static wchar_t wbuf[TETRIS_PLAY_BOARD_WIDTH + 1];
         for (int j = 0; j < board->width; ++j) {
-            wdraw_unit_matrix(board->grid[i][j].wprint);
+            wbuf[j] = board->grid[i][j].wprint;
+            // wdraw_unit_matrix(board->grid[i][j].wprint;
         }
-        wprintf(L"\e[1B\e[%dD", board->width_wprint);
+        wbuf[board->width] = L'\0';
+        wdraw_row_newline(wbuf, board->width_wprint);
     }
     cursor_unlock();
 }

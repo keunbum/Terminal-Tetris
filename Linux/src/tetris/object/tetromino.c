@@ -13,8 +13,7 @@ const tetromino_symbol_t G_TETROMINO_SYMBOLS[TETROMINO_NUM_OF_KINDS][DIR_NUM_OF_
     { 0x0063, 0x0264, 0x0630, 0x0132 }, // Z
 };
 
-static void init_tetromino(tetromino_t* const out_tetro,
-    int id, symbol_id_t symbol_id, dir_t dir, pos_t pos, pos_t pos_wprint, velocity_t velocity, block_t block, block_wprint_t clean_wprint, tetromino_t* prev_drawn)
+static void init_tetromino(tetromino_t* const out_tetro, int id, symbol_id_t symbol_id, dir_t dir, pos_t pos, pos_t pos_wprint, velocity_t velocity, block_t block, block_wprint_t clean_wprint, tetromino_t* prev_drawn)
 {
     debug();
 

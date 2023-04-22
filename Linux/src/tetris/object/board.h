@@ -36,7 +36,8 @@
 #define BOARD_FRAME_POS_X_WPRINT (TETRIS_PLAY_BOARD_POS_X_WPRINT - 1)
 #define BOARD_FRAME_POS_Y_WPRINT (TETRIS_PLAY_BOARD_POS_Y_WPRINT - 2)
 
-typedef pthread_spinlock_t board_lock_t;
+// typedef pthread_spinlock_t board_lock_t;
+typedef pthread_mutex_t board_lock_t;
 
 typedef block_t row_t[TETRIS_PLAY_BOARD_WIDTH];
 typedef struct {
@@ -85,26 +86,30 @@ static inline bool is_all_of_row(const board_t* board, int i, block_nature_t nat
 
 static inline void init_board_lock(board_t* const out_board)
 {
-    init_lock(out_board->lock);
+    pthread_mutex_init(&out_board->lock, NULL);
+    // init_lock(out_board->lock);
 }
 
 static inline void lock_board(board_t* const out_board)
 {
     debug();
 
-    check_lock(out_board->lock);
+    pthread_mutex_lock(&out_board->lock);
+    // check_lock(out_board->lock);
 }
 
 static inline void unlock_board(board_t* const out_board)
 {
     debug();
     
-    check_unlock(out_board->lock);
+    pthread_mutex_unlock(&out_board->lock);
+    // check_unlock(out_board->lock);
 }
 
 static inline void cleanup_board_lock(board_t* const out_board)
 {
-    cleanup_lock(out_board->lock);
+    pthread_mutex_destroy(&out_board->lock);
+    // cleanup_lock(out_board->lock);
 }
 
 static inline const row_t* get_grid(const board_t* board)

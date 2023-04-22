@@ -39,7 +39,8 @@ void* mainfunc_game_main_loop(void* arg)
 
         update_gameworld(play_manager);
 
-        nanosleep_chrono(TO_NSEC(TETRIS_PLAY_FRAME_TIME) - get_elapsed_time_nsec(&start_time));
+        __snseconds_t sleep_time = max(0, TO_NSEC(TETRIS_PLAY_FRAME_TIME) - get_elapsed_time_nsec(&start_time));
+        nanosleep_chrono(sleep_time);
 
         prev_frame_time = get_elapsed_time_sec(&start_time);
     }

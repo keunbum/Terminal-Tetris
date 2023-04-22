@@ -81,7 +81,7 @@ void render_out(tetris_play_manager_t* const out_man)
 {
     debug();
 
-    my_assert(is_valid_tetromino(out_man));
+    my_assert(out_man != NULL);
 
     if (out_man->status != TETRIS_PLAY_STATUS_GAMEOVER) {
         render_tetromino_manager_out(&out_man->tetro_man);
