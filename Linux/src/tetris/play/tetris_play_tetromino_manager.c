@@ -103,7 +103,7 @@ void init_tetromino_manager(tetromino_manager_t* const out_man, int que_max_size
         UNIT_MATRIX_CORNER_TOP_RIGHT,
         UNIT_MATRIX_CORNER_BOT_LEFT,
         UNIT_MATRIX_CORNER_BOT_RIGHT);
-    init_lock(out_man->lock);
+    init_tetromino_manager_lock(out_man);
 }
 
 void cleanup_tetromino_manager_free(tetromino_manager_t* const out_man)
@@ -112,7 +112,7 @@ void cleanup_tetromino_manager_free(tetromino_manager_t* const out_man)
 
     my_assert(out_man != NULL);
 
-    cleanup_lock(out_man->lock);
+    cleanup_tetromino_manager_lock(out_man);
     cleanup_frame(&out_man->hold_frame);
     cleanup_frame(&out_man->frame);
     while (!is_queue_empty(&out_man->que)) {

@@ -2,11 +2,6 @@
 #include "debug.h"
 #include "draw/draw_tool.h"
 
-// static inline void set_board_block(board_t* const out_board, int i, int j, block_t block)
-// {
-//     out_board->grid[i][j] = block;
-// }
-
 static inline void set_board_block_each(board_t* const out_board, int i, int j, block_nature_t nature, block_wprint_t wprint)
 {
     set_block_each(out_board->grid[i] + j, nature, wprint);
@@ -18,7 +13,7 @@ void init_board(board_t* const out_board)
 
     // my_assert(out_board != NULL);
 
-    init_board_lock(out_board);
+    // init_board_lock(out_board);
 
     set_board_block_each(out_board, 0, 0, BLOCK_NATURE_FULL, out_board->block_corner_top_left);
     set_board_block_each(out_board, 0, out_board->width - 1, BLOCK_NATURE_FULL, out_board->block_corner_top_right);
@@ -51,7 +46,8 @@ void init_board(board_t* const out_board)
 
 void cleanup_board(board_t* const out_board)
 {
-    cleanup_board_lock(out_board);
+    (void)out_board;
+    // cleanup_board_lock(out_board);
 }
 
 void wdraw_board(const board_t* board)

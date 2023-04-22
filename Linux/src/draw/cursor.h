@@ -47,7 +47,7 @@ static inline void wmove_cursor_left_by(int n)
 #define wmove_cursor_right() wmove_cursor_right_by(1)
 #define wmove_cursor_left() wmove_cursor_left_by(1)
 
-typedef pthread_spinlock_t cursor_lock_t;
+typedef pthread_mutex_t cursor_lock_t;
 
 extern cursor_lock_t g_cursor_lock;
 

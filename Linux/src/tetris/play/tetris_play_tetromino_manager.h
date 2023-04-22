@@ -27,7 +27,7 @@
 #define TETRIS_PLAY_TETROMINO_MANAGER_HOLD_FRAME_HEIGHT_WPRINT (6)
 #define TETRIS_PLAY_TETROMINO_MANAGER_HOLD_FRAME_WIDTH_WPRINT (6 * 2)
 
-typedef pthread_spinlock_t tetromino_manager_lock_t;
+typedef pthread_mutex_t tetromino_manager_lock_t;
 
 typedef struct {
     pos_int_t pos_wprint;
@@ -47,6 +47,30 @@ typedef struct {
 
     tetromino_manager_lock_t lock;
 } tetromino_manager_t;
+
+static inline void init_tetromino_manager_lock(tetromino_manager_t* const out_tetromino_manager)
+{
+    init_lock(out_tetromino_manager->lock);
+}
+
+static inline void lock_tetromino_manager(tetromino_manager_t* const out_tetromino_manager)
+{
+    debug();
+
+    check_lock(out_tetromino_manager->lock);
+}
+
+static inline void unlock_tetromino_manager(tetromino_manager_t* const out_tetromino_manager)
+{
+    debug();
+    
+    check_unlock(out_tetromino_manager->lock);
+}
+
+static inline void cleanup_tetromino_manager_lock(tetromino_manager_t* const out_tetromino_manager)
+{
+    cleanup_lock(out_tetromino_manager->lock);
+}
 
 void init_tetromino_manager(tetromino_manager_t* const out_man, int max_size);
 void cleanup_tetromino_manager_free(tetromino_manager_t* const out_man);

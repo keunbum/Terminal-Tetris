@@ -91,10 +91,10 @@ void* mainfunc_input_reader(void* arg)
     while (true) {
         read_input_event(&input_reader);
         // hmm.. locking board looks inappropriate
-        lock_board(&play_manager->board);
+        lock_tetromino_manager(&play_manager->tetro_man);
         tetromino_try_status_t res = process_input_event(&input_reader.event, play_manager);
         process_tetromino_try_status(res, play_manager);
-        unlock_board(&play_manager->board);
+        unlock_tetromino_manager(&play_manager->tetro_man);
     }
 
     return NULL;
