@@ -13,41 +13,20 @@ static void render_a_tetromino_poswprint(const tetromino_t* tetro, pos_int_t pos
     debug();
 
     cursor_lock();
-
     my_assert(tetro != NULL);
-
-    tetromino_matrix_t symbol = get_tetromino_matrix(tetro->symbol_id, tetro->dir);
-    tetromino_matrix_n_t n = get_tetromino_matrix_n(tetro->symbol_id);
-
+    tetromino_symbol_t symbol = get_tetromino_symbol(tetro->symbol_id, tetro->dir);
     if (tetro->block.wprint == BLOCK_WPRINT_EMPTY) {
-        for (int idx = 0; idx < n * n; ++idx) {
-            if (is_empty_block(symbol, idx)) {
-                continue;
-            }
-            int i = idx / n;
-            int j = idx % n;
-            {
-                static wchar_t buf[3];
-                buf[0] = buf[1] = tetro->block.wprint;
-                buf[2] = L'\0';
-                pos_int_t each_pos_wprint = { pos_wprint.x + i, pos_wprint.y + 2 * j };
-                wdraw_row_at(buf, each_pos_wprint.x, each_pos_wprint.y);
-            }
+        traverse_symbol(i, j, symbol) {
+            static wchar_t buf[3];
+            buf[0] = buf[1] = tetro->block.wprint;
+            buf[2] = L'\0';
+            wdraw_row_at(buf, pos_wprint.x + i, pos_wprint.y + 2 * j);
         }
     } else {
-        for (int idx = 0; idx < n * n; ++idx) {
-            if (is_empty_block(symbol, idx)) {
-                continue;
-            }
-            int i = idx / n;
-            int j = idx % n;
-            {
-                pos_int_t each_pos_wprint = { pos_wprint.x + i, pos_wprint.y + 2 * j };
-                wdraw_unit_matrix_at(tetro->block.wprint, each_pos_wprint.x, each_pos_wprint.y);
-            }
+        traverse_symbol(i, j, symbol) {
+            wdraw_unit_matrix_at(tetro->block.wprint, pos_wprint.x + i, pos_wprint.y + 2 * j);
         }
     }
-
     cursor_unlock();
 }
 
@@ -74,9 +53,6 @@ void wdraw_a_tetromino(tetromino_t* const out_tetro)
 
 static void render_tetromino_manager_out(tetromino_manager_t* const out_man)
 {
-    // if (!is_valid_tetromino(out_man->tetro_main)) {
-    //     return;
-    // }
     wdraw_a_tetromino(out_man->tetro_main);
     wdraw_a_tetromino(out_man->tetro_hold);
     traverse_queue(&out_man->que, callback_render_tetromino_manager_out, NULL);

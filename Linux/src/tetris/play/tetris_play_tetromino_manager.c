@@ -9,11 +9,10 @@ static const int GS_TETROMINO_INIT_POS_X_OFFSET[TETROMINO_NUM_OF_KINDS] = { +2, 
 static void set_tetro_queue_default(tetromino_t* const out_tetro, int i, pos_int_t start_pos_wprint)
 {
     static const int S_POS_X_INTERVAL = 4;
-    const tetromino_matrix_n_t n = get_tetromino_matrix_n(out_tetro->symbol_id);
 
     pos_int_t pos_wprint;
     pos_wprint.x = start_pos_wprint.x + (i + 1) * S_POS_X_INTERVAL - 2;
-    pos_wprint.y = start_pos_wprint.y + 8 - n;
+    pos_wprint.y = start_pos_wprint.y + 5;
     out_tetro->pos_wprint = get_pos(pos_wprint);
 }
 

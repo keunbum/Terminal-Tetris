@@ -1,7 +1,6 @@
 #ifndef __TETROMINO__H
 #define __TETROMINO__H
 
-#include <pthread.h>
 #include <stdbool.h>
 #include <stdlib.h>
 
@@ -12,13 +11,7 @@
 #include "tetris_play_object.h"
 #include "util.h"
 
-typedef int tetromino_matrix_t;
-typedef int tetromino_matrix_n_t;
-
-static inline bool is_empty_block(tetromino_matrix_t m, int pos)
-{
-    return ((m >> pos) & 1) == 0;
-}
+typedef int tetromino_symbol_t;
 
 typedef enum {
     DIR_BOT,
@@ -30,26 +23,14 @@ typedef enum {
 
 static inline const wchar_t* get_dir_wstr(dir_t status)
 {
-    if (status == DIR_BOT) {
-        return L"DIR_BOT";
-    }
-    if (status == DIR_RIGHT) {
-        return L"DIR_RIGHT";
-    }
-    if (status == DIR_TOP) {
-        return L"DIR_TOP";
-    }
-    if (status == DIR_LEFT) {
-        return L"DIR_LEFT";
-    }
-    my_assert(false);
+    static const wchar_t* S_STRS[] = {L"DIR_BOT", L"DIR_RIGHT", L"DIR_TOP", L"DIR_LEFT"};
+    return S_STRS[status];
 }
 
 typedef int symbol_id_t;
-
 typedef float velocity_t;
-
 typedef struct tetromino_t tetromino_t;
+
 struct tetromino_t {
     int id; // for debug
     symbol_id_t symbol_id;
@@ -80,10 +61,16 @@ static inline void debug_tetromino(const tetromino_t* tetro)
 }
 #endif
 
-extern const tetromino_matrix_n_t G_TETROMINO_MATRIX_NS[TETROMINO_NUM_OF_KINDS];
-extern const tetromino_matrix_t G_TETROMINO_MATRIXS[TETROMINO_NUM_OF_KINDS][DIR_NUM_OF_KINDS];
+extern const tetromino_symbol_t G_TETROMINO_SYMBOLS[TETROMINO_NUM_OF_KINDS][DIR_NUM_OF_KINDS];
 
 /* -----------------------------------------------------------------------------------------*/
+
+static inline bool is_empty_block(tetromino_symbol_t m, int pos)
+{
+    return ((m >> pos) & 1) == 0;
+}
+
+#define traverse_symbol(i, j, symbol) for (int i = 0; i < 4; ++i) for (int j = 0; j < 4; ++j) if (!is_empty_block(symbol, i * 4 + j)) 
 
 static inline bool is_first_drawn_tetromino(const tetromino_t* tetro)
 {
@@ -97,17 +84,12 @@ static inline bool is_valid_tetromino(const tetromino_t* tetro)
     return tetro != NULL;
 }
 
-static inline tetromino_matrix_n_t get_tetromino_matrix_n(symbol_id_t sid)
-{
-    return G_TETROMINO_MATRIX_NS[(int)sid];
-}
-
-static inline tetromino_matrix_t get_tetromino_matrix(symbol_id_t sid, dir_t dir)
+static inline tetromino_symbol_t get_tetromino_symbol(symbol_id_t sid, dir_t dir)
 {
     my_assert(0 <= sid && sid < TETROMINO_NUM_OF_KINDS);
     my_assert(0 <= dir && dir < DIR_NUM_OF_KINDS);
 
-    return G_TETROMINO_MATRIXS[(int)sid][(int)dir];
+    return G_TETROMINO_SYMBOLS[sid][dir];
 }
 
 static inline tetromino_t* create_tetromino_empty_malloc(void)

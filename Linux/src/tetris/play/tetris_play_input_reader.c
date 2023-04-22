@@ -32,13 +32,13 @@ static tetromino_try_status_t process_input_event(const struct input_event* ev, 
             case KEY_UP:
                 /* intentional fallthrough */
             case KEY_X:
-                ret = try_rotate_tetromino_r(board, tetro, -1);
+                ret = try_rotate_tetromino_r(board, tetro, +1);
                 break;
             case KEY_SPACE:
                 ret = harddrop_tetromino_r(board, tetro);
                 break;
             case KEY_Z:
-                ret = try_rotate_tetromino_r(board, tetro, +1);
+                ret = try_rotate_tetromino_r(board, tetro, -1);
                 break;
             case KEY_C:
                 ret = try_swap_tetromino_hold(tetro_man);

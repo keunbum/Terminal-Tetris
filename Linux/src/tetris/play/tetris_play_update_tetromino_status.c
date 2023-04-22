@@ -5,26 +5,19 @@
 static const int GS_DX[] = { 1, 0, -1, 0 };
 static const int GS_DY[] = { 0, 1, 0, -1 };
 
-// /* return tetromino's status when moving left, right, or down.
-//    implement the rotation operation separately. */
 tetromino_try_status_t try_tetromino_next_status(const board_t* restrict board, const tetromino_t* restrict tetro, pos_int_t npos, dir_t ndir)
 {
     debug();
 
     my_assert(tetro != NULL);
 
-    tetromino_matrix_t matrix = get_tetromino_matrix(tetro->symbol_id, ndir);
-    tetromino_matrix_n_t n = get_tetromino_matrix_n(tetro->symbol_id);
+    tetromino_symbol_t symbol = get_tetromino_symbol(tetro->symbol_id, ndir);
 
-    for (int idx = 0; idx < n * n; ++idx) {
-        if (is_empty_block(matrix, idx)) {
-            continue;
-        }
-        int i = idx / n;
-        int j = idx % n;
+    traverse_symbol(i, j, symbol)
+    {
         pos_int_t each_npos = { npos.x + i, npos.y + j };
         my_assert(TETRIS_PLAY_TETROMINO_POS_X_MIN <= each_npos.x);
-        if ( each_npos.y < TETRIS_PLAY_TETROMINO_POS_Y_MIN || each_npos.y > TETRIS_PLAY_TETROMINO_POS_Y_MAX) {
+        if (each_npos.y < TETRIS_PLAY_TETROMINO_POS_Y_MIN || each_npos.y > TETRIS_PLAY_TETROMINO_POS_Y_MAX) {
             ewprintf("hi1\n");
             return TETROMINO_TRY_STATUS_INPLACE;
         }
@@ -34,8 +27,8 @@ tetromino_try_status_t try_tetromino_next_status(const board_t* restrict board, 
         }
         my_assert(each_npos.x <= TETRIS_PLAY_TETROMINO_POS_X_MAX);
         my_assert(TETRIS_PLAY_TETROMINO_POS_Y_MIN <= each_npos.y && each_npos.y <= TETRIS_PLAY_TETROMINO_POS_Y_MAX);
-        int ni = each_npos.x - (int)board->pos.x;
-        int nj = each_npos.y - (int)board->pos.y;
+        int ni = each_npos.x - board->pos.x;
+        int nj = each_npos.y - board->pos.y;
         my_assert(1 <= ni && ni <= board->height - 2);
         my_assert(1 <= nj && nj <= board->width - 2);
         if (board->grid[ni][nj].nature != BLOCK_NATURE_EMPTY) {
@@ -57,7 +50,6 @@ tetromino_try_status_t try_move_tetromino_deltatime_r(board_t* const restrict ou
         out_tetro->pos.x + GS_DX[dir] * (out_tetro->velocity * delta_time),
         out_tetro->pos.y + GS_DY[dir] * (out_tetro->velocity * delta_time)
     };
-
     tetromino_try_status_t res = try_tetromino_next_status(out_board, out_tetro, get_posint(npos), out_tetro->dir);
     if (res == TETROMINO_TRY_STATUS_MOVE) {
         out_tetro->pos = npos;
@@ -81,8 +73,7 @@ tetromino_try_status_t try_move_tetromino_byone_r(board_t* const restrict out_bo
     if (res == TETROMINO_TRY_STATUS_MOVE) {
         out_tetro->pos = npos;
         out_tetro->pos_wprint = get_pos_wprint(out_tetro->pos);
-    } else
-    if (dir != DIR_BOT && res == TETROMINO_TRY_STATUS_ONTHEGROUND) {
+    } else if (dir != DIR_BOT && res == TETROMINO_TRY_STATUS_ONTHEGROUND) {
         res = TETROMINO_TRY_STATUS_INPLACE;
     }
     return res;
@@ -100,8 +91,7 @@ tetromino_try_status_t try_rotate_tetromino_r(board_t* const restrict out_board,
     if (res == TETROMINO_TRY_STATUS_MOVE) {
         res = TETROMINO_TRY_STATUS_ROTATE;
         out_tetro->dir = ndir;
-    } else
-    if (res == TETROMINO_TRY_STATUS_ONTHEGROUND) {
+    } else if (res == TETROMINO_TRY_STATUS_ONTHEGROUND) {
         res = TETROMINO_TRY_STATUS_INPLACE;
     }
     return res;
