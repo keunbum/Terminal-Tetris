@@ -241,7 +241,8 @@ https://youtu.be/7kN9u0RXD_s
       printf, write 모두 thread-safe한 것 같음.  
       ~~thread-safe한 줄 모르고 mutex로 해결했었는데, 그냥 printf 사용해도 될 듯. (검색할 때 더 꼼꼼하게 확인하기)  
       --> 근데, wgotoxy랑 같이 쓰이면 mutex 필요하긴 할 듯.~~  
-      --> mutex 말고 spinlock 사용해도 충분.
+      --> ~~mutex 말고 spinlock 사용해도 충분.~~  
+      --> 스핀 락 스레드 우선순위 문제 때문에 잘 사용해야 함... 안 그럼 무한루프 도는 것 같음;
 
   - [X] ~~리얼 타임 타이머가 fork일 때는 예상대로 잘 동작했었는데  
         pthread 돌리니까 예상밖의 행동(시그널 핸들러 호출 이후에 하던 일 계속 안하고 계속 블로킹 당하고 있음)을 함.  
@@ -2591,6 +2592,38 @@ tetromino_status 판별 로직 좀 더 정교하게 설계할 필요.
 </details>
 
 [//]: # (End of 04.20)
+
+<details><summary>04.21(금)</summary>
+
+
+### Achievements of the day
+
+Didn't do anything.
+
+</details>
+
+[//]: # (End of 04.21)
+
+<details><summary>04.22(토)</summary>
+
+
+### Achievements of the day
+
+  - [X] 테트로미노 keep 구현. --> 지우기 과정에서 버그 있음. --> 버그 수정!
+  - [X] 테트로미노 모델링 통일화.
+  - [X] 하다드롭 시 가끔씩 원인 모를 렉 있음.   
+    --> 테스트 결과 스핀락 걸어서 생긴 문제 같음. 다시 뮤텍스로 바뀌니 그런 렉은 없음..  
+        맨 페이지에 스레드 우선순위 어쩌구 했던 것 같은데 진짜 그게 관련이 있는 거였던 듯...
+  - [ ] 벽에 붙어 있어도 회전할 수 있게끔 만들기.
+  - [ ] race condition.. 지금은 약간 어거지. 좀 더 융통성 있는 방식으로. 
+  - [ ] 타이머 오차 있나 확인.  
+  - [ ] 실루엣 구현.
+  - [ ] 회전할 때 뭔가 어색함..
+  - [ ] 그밖에 버그 있나 확인.
+
+</details>
+
+[//]: # (End of 04.22)
 
 </blockquote></details>
 
