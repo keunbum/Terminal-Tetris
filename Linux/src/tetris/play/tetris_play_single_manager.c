@@ -155,7 +155,7 @@ void* run_tetris_play_single_mode(void* arg)
         .tetromino_queue_max_size = TETROMINO_MANAGER_QUEUE_MAX_SIZE,
         .pos_wprint = { TETRIS_PLAY_SINGLE_SCREEN_POS_X_WPRINT, TETRIS_PLAY_SINGLE_SCREEN_POS_Y_WPRINT },
         .play_mode = TETRIS_PLAY_MODE_SINGLE,
-        .status = TETRIS_PLAY_STATUS_RUNNING, /* Should be inited with init() */
+        .status = TETRIS_PLAY_STATUS_RUNNING,
         .game_delta_time = 0.0,
         .screen_frame = {
             /* Should be inited with init() */

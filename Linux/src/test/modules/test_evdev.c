@@ -2,6 +2,7 @@
 #include <linux/input.h>
 #include <stdio.h>
 #include <unistd.h>
+#include <assert.h>
 
 #define EVENT_DEV "/dev/input/event2"
 
@@ -23,6 +24,8 @@ int test_evdev(void)
             perror("Could not read event");
             return 1;
         }
+
+        assert(ev.type != EV_ABS);
 
         // 키 입력 처리
         if (ev.type == EV_KEY && (ev.value == 1 || ev.value == 2)) {

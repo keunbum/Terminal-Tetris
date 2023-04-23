@@ -138,6 +138,9 @@ tetromino_status_t update_tetromino_manager(tetromino_manager_t* const out_man, 
     if (!is_valid_tetromino(out_man->tetro_main)) {
         spawn_tetromino(out_man, &out_man->tetro_main, out_man->tetromino_init_velocity);
         inc_tetromino_cnt(&out_man->stat, out_man->tetro_main->symbol_id);
+        if (!is_ok_tetromino_next_status(out_board, out_man->tetro_main, get_posint(out_man->tetro_main->pos), out_man->tetro_main->dir)) {
+            return TETROMINO_STATUS_ONTHEGROUND;
+        }
     }
     return try_move_down_tetromino_deltatime_r(out_board, out_man->tetro_main, delta_time);
 }

@@ -12,6 +12,7 @@ extern int test_termios(int, char*[]);
 extern int test_evdev(void);
 extern int test_joy_input(void);
 extern int test_chronometry(void);
+extern int test_evdev_arr(void);
 
 int test_module(int argc, char* argv[])
 {
@@ -19,5 +20,5 @@ int test_module(int argc, char* argv[])
     (void)argc;
     (void)argv;
 
-    return test_chronometry();
+    return test_evdev();
 }

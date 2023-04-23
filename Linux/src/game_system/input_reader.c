@@ -4,15 +4,17 @@
 #include "debug.h"
 #include "input_reader.h"
 
-#define EVENT_KEY_DEV "/dev/input/event2"
-
-void init_input_reader(input_reader_t* const out_reader)
+void init_input_reader(input_reader_t* const out_reader, const char* device_path)
 {
     debug();
 
-    if ((out_reader->fd = open(EVENT_KEY_DEV, O_RDONLY)) == -1) {
+    // if ((out_reader->fd = open(EVENT_KEY_DEV, O_RDONLY)) == -1) {
+    //     handle_error("open() error");
+    // }
+    if ((out_reader->fd = open(device_path, O_RDONLY)) == -1) {
         handle_error("open() error");
-    }
+    }    
+    // out_reader->device_mode = DEVICE_MODE_KEYBOARD;
 }
 
 void cleanup_input_reader(input_reader_t* const out_reader)
@@ -26,7 +28,8 @@ void cleanup_input_reader(input_reader_t* const out_reader)
 
 void read_input_event(input_reader_t* const out_reader)
 {
-    if (read(out_reader->fd, &out_reader->event, sizeof(struct input_event)) != sizeof(struct input_event)) {
+    const ssize_t expected_read_size = (ssize_t)sizeof(struct input_event);
+    if (read(out_reader->fd, &out_reader->event, expected_read_size) != expected_read_size) {
         handle_error("read() error");
     }
 }

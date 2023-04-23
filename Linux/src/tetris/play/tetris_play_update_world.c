@@ -50,10 +50,8 @@ static void clear_filled_lines(board_t* const out_board)
     }
     /* Reflect them visually */
     traverse_inner_col(j, out_board) {
-        ewprintf("j: %d, i:", j);
         for (int ptr = 0; ptr < end; ++ptr) {
             int i = s_que[ptr];
-            ewprintf("%s%d", ptr == 0 ? " " : ", ", i);
             set_block_each(&out_board->grid[i][j], BLOCK_NATURE_EMPTY, BLOCK_WPRINT_WHITE_LARGE_SQUARE);
             pos_int_t pos_wprint = get_intpos_intwprint(create_posint(out_board->pos.x + i, out_board->pos.y + j));
             wdraw_unit_matrix_at_r(out_board->grid[i][j].wprint, pos_wprint.x, pos_wprint.y);
@@ -77,11 +75,6 @@ static void clear_filled_lines(board_t* const out_board)
             R = s_que[ptr + 1];
         }
         int move_dist = ptr + 1;
-        ewprintf("out_board->height: %d\n", out_board->height);
-        ewprintf("L: %d, R: %d, move_dist: %d\n", L, R, move_dist);
-        my_assert(L - 1 < out_board->height - 1);
-        my_assert(L - 1 + move_dist < out_board->height - 1);
-        my_assert(R + 1 > 0);
         for (int i = L - 1; i > R; --i) {
             traverse_inner_col(j, out_board) {
                 ewprintf("(%d, %d) --> (%d, %d)\n", i, j, i + move_dist, j);
@@ -103,14 +96,14 @@ static inline bool is_at_skyline(const board_t* board, const tetromino_t* tetro)
 
     tetromino_symbol_t symbol = get_tetromino_symbol(tetro->symbol_id, tetro->dir);
 
-    int last_pos_x = TETRIS_PLAY_TETROMINO_POS_X_MIN - 1;
+    int first_pos_x = TETRIS_PLAY_TETROMINO_POS_X_MIN;
 
     traverse_symbol(i, _, symbol) {
-        last_pos_x = (int)tetro->pos.x + i;
+        first_pos_x = (int)tetro->pos.x + i;
+        goto skyline_return_line;
     }
-
-    my_assert(TETRIS_PLAY_TETROMINO_POS_X_MIN <= last_pos_x);
-    return last_pos_x <= board->skyline_pos.x;
+skyline_return_line:
+    return first_pos_x <= board->skyline_pos.x;
 }
 
 void process_tetromino_try_status(tetromino_status_t status, tetris_play_manager_t* const out_play_manager)

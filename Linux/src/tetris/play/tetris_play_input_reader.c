@@ -1,6 +1,7 @@
 #include <pthread.h>
 #include <stdbool.h>
 #include <stdlib.h>
+#include <assert.h>
 
 #include "debug.h"
 #include "pthread_macro.h"
@@ -8,65 +9,130 @@
 #include "tetris/tetris_play_manager.h"
 #include "tetris_play_input_reader.h"
 
-static tetromino_status_t process_input_event(const struct input_event* ev, tetris_play_manager_t* const out_play_manager)
+static tetromino_status_t process_ns_event(input_reader_t* const out_reader, tetris_play_manager_t* const out_play_manager)
 {
     // debug();
 
+    const struct input_event* ev = &out_reader->event;
     board_t* board = &out_play_manager->board;
     tetromino_t* tetro = out_play_manager->tetro_man.tetro_main;
     tetromino_manager_t* tetro_man = &out_play_manager->tetro_man;
     tetromino_status_t ret = TETROMINO_STATUS_NULL;
-    if (ev->type == EV_KEY) {
+
+    switch (ev->type) {
+    case EV_ABS:
+        switch (ev->code) {
+        case ABS_HAT0X:
+            switch (ev->value) {
+                case -1:
+                    ret = try_move_tetromino_byone_r(board, tetro, DIR_LEFT);
+                    break;
+                case +1:
+                    ret = try_move_tetromino_byone_r(board, tetro, DIR_RIGHT);
+                    break;
+            }
+            break;
+        case ABS_HAT0Y:
+            switch (ev->value) {
+            case 1:
+                ret = try_move_tetromino_byone_r(board, tetro, DIR_BOT);
+                break;
+            }
+        }
+        break;
+    case EV_KEY:
         switch (ev->value) {
         case 1:
             switch (ev->code) {
-            case KEY_DOWN:
-                ret = try_move_tetromino_byone_r(board, tetro, DIR_BOT);
-                break;
-            case KEY_LEFT:
-                ret = try_move_tetromino_byone_r(board, tetro, DIR_LEFT);
-                break;
-            case KEY_RIGHT:
-                ret = try_move_tetromino_byone_r(board, tetro, DIR_RIGHT);
-                break;
-            case KEY_UP:
-                /* intentional fallthrough */
-            case KEY_X:
-                ret = try_rotate_tetromino_r(board, tetro, +1);
-                break;
-            case KEY_SPACE:
+            case BTN_SOUTH:
                 ret = harddrop_tetromino_r(board, tetro);
                 break;
-            case KEY_Z:
-                ret = try_rotate_tetromino_r(board, tetro, -1);
-                break;
-            case KEY_C:
+            case BTN_WEST:
                 ret = try_swap_tetromino_hold(tetro_man);
                 break;
-            case KEY_ESC:
+            case BTN_TL:
+                ret = try_rotate_tetromino_r(board, tetro, -1);
+                break;
+            case BTN_TR:
+                ret = try_rotate_tetromino_r(board, tetro, +1);
+                break;
+            case BTN_MODE:
                 /* Not a good logic */
                 /* A pause is ideal */
                 exit_cleanup_game_system(EXIT_SUCCESS);
                 break;
             }
             break;
-        case 2:
-            switch (ev->code) {
-            case KEY_DOWN:
-                try_move_tetromino_byone_r(board, tetro, DIR_BOT);
-                break;
-            case KEY_LEFT:
-                try_move_tetromino_byone_r(board, tetro, DIR_LEFT);
-                break;
-            case KEY_RIGHT:
-                try_move_tetromino_byone_r(board, tetro, DIR_RIGHT);
-                break;
-            }
-            break;
         }
+        break;
     }
     return ret;
 }
+
+// static tetromino_status_t process_input_event(input_reader_t* const out_reader, tetris_play_manager_t* const out_play_manager)
+// {
+//     // debug();
+
+//     const struct input_event* ev = &out_reader->event;
+//     board_t* board = &out_play_manager->board;
+//     tetromino_t* tetro = out_play_manager->tetro_man.tetro_main;
+//     tetromino_manager_t* tetro_man = &out_play_manager->tetro_man;
+//     tetromino_status_t ret = TETROMINO_STATUS_NULL;
+
+//     switch (ev->type) {
+//     case EV_KEY:
+//         // out_reader->device_mode = DEVICE_MODE_KEYBOARD;
+//         switch (ev->value) {
+//         case 1:
+//             switch (ev->code) {
+//             case KEY_DOWN:
+//                 ret = try_move_tetromino_byone_r(board, tetro, DIR_BOT);
+//                 break;
+//             case KEY_LEFT:
+//                 ret = try_move_tetromino_byone_r(board, tetro, DIR_LEFT);
+//                 break;
+//             case KEY_RIGHT:
+//                 ret = try_move_tetromino_byone_r(board, tetro, DIR_RIGHT);
+//                 break;
+//             case KEY_UP:
+//                 /* intentional fallthrough */
+//             case KEY_X:
+//                 ret = try_rotate_tetromino_r(board, tetro, +1);
+//                 break;
+//             case KEY_SPACE:
+//                 ret = harddrop_tetromino_r(board, tetro);
+//                 break;
+//             case KEY_Z:
+//                 ret = try_rotate_tetromino_r(board, tetro, -1);
+//                 break;
+//             case KEY_C:
+//                 ret = try_swap_tetromino_hold(tetro_man);
+//                 break;
+//             case KEY_ESC:
+//                 /* Not a good logic */
+//                 /* A pause is ideal */
+//                 exit_cleanup_game_system(EXIT_SUCCESS);
+//                 break;
+//             }
+//             break;
+//         case 2:
+//             switch (ev->code) {
+//             case KEY_DOWN:
+//                 try_move_tetromino_byone_r(board, tetro, DIR_BOT);
+//                 break;
+//             case KEY_LEFT:
+//                 try_move_tetromino_byone_r(board, tetro, DIR_LEFT);
+//                 break;
+//             case KEY_RIGHT:
+//                 try_move_tetromino_byone_r(board, tetro, DIR_RIGHT);
+//                 break;
+//             }
+//             break;
+//         }
+//         break;
+//     }
+//     return ret;
+// }
 
 static void cleanup_input_reader_module(void* arg)
 {
@@ -85,14 +151,15 @@ void* mainfunc_input_reader(void* arg)
     tetris_play_manager_t* const play_manager = (tetris_play_manager_t*)arg;
 
     input_reader_t input_reader;
-    init_input_reader(&input_reader);
+    // init_input_reader(&input_reader, EVENT_KEY_DEV);
+    init_input_reader(&input_reader, EVENT_NS_DEV);
     pthread_cleanup_push(cleanup_input_reader_module, &input_reader);
 
     while (true) {
         read_input_event(&input_reader);
-        // hmm.. locking board looks inappropriate
         lock_tetromino_manager(&play_manager->tetro_man);
-        tetromino_status_t res = process_input_event(&input_reader.event, play_manager);
+        // tetromino_status_t res = process_input_event(&input_reader, play_manager);
+        tetromino_status_t res = process_ns_event(&input_reader, play_manager);
         process_tetromino_try_status(res, play_manager);
         unlock_tetromino_manager(&play_manager->tetro_man);
     }

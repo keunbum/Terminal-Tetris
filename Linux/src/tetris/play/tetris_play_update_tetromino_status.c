@@ -19,18 +19,15 @@ bool is_ok_tetromino_next_status(const board_t* restrict board, const tetromino_
 
     tetromino_symbol_t nsymbol = get_tetromino_symbol(tetro->symbol_id, nrotate_dir);
 
-    traverse_symbol(i, j, nsymbol)
-    {
+    traverse_symbol(i, j, nsymbol) {
         pos_int_t each_npos = { npos.x + i, npos.y + j };
         my_assert(TETRIS_PLAY_TETROMINO_POS_X_MIN <= each_npos.x);
-        if (each_npos.x > TETRIS_PLAY_TETROMINO_POS_X_MAX
-            || each_npos.y < TETRIS_PLAY_TETROMINO_POS_Y_MIN
-            || each_npos.y > TETRIS_PLAY_TETROMINO_POS_Y_MAX) {
-            return false;
-        }
         int ni = each_npos.x - board->pos.x;
         int nj = each_npos.y - board->pos.y;
-        if (board->grid[ni][nj].nature != BLOCK_NATURE_EMPTY) {
+        if (each_npos.x > TETRIS_PLAY_TETROMINO_POS_X_MAX
+            || each_npos.y < TETRIS_PLAY_TETROMINO_POS_Y_MIN
+            || each_npos.y > TETRIS_PLAY_TETROMINO_POS_Y_MAX
+            || board->grid[ni][nj].nature != BLOCK_NATURE_EMPTY) {
             return false;
         }
     }
@@ -72,8 +69,7 @@ tetromino_status_t try_move_tetromino_byone_r(board_t* const restrict out_board,
         update_tetromino_pos(out_tetro, npos);
         return TETROMINO_STATUS_MOVE;
     }
-    tetromino_status_t ret = dir == DIR_BOT ? TETROMINO_STATUS_ONTHEGROUND : TETROMINO_STATUS_ONTHEWALL;
-    return ret;
+    return dir == DIR_BOT ? TETROMINO_STATUS_ONTHEGROUND : TETROMINO_STATUS_ONTHEWALL;
 }
 
 tetromino_status_t try_rotate_tetromino_r(board_t* const restrict out_board, tetromino_t* const restrict out_tetro, int by)
@@ -87,7 +83,7 @@ tetromino_status_t try_rotate_tetromino_r(board_t* const restrict out_board, tet
     static const int S_DX[] = { 0, 0, 0 };
     static const int S_DY[] = { 0, 1, -1 };
     for (int i = 0; i < 3; ++i) {
-        for (int scalar = 1; scalar <=3; scalar++) {
+        for (int scalar = 1; scalar <= 3; scalar++) {
             pos_t npos = {
                 out_tetro->pos.x + scalar * S_DX[i],
                 out_tetro->pos.y + scalar * S_DY[i]
