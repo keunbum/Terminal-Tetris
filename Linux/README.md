@@ -2625,6 +2625,21 @@ Didn't do anything.
 
 [//]: # (End of 04.22)
 
+<details><summary>04.23(일)</summary>
+
+
+### Achievements of the day
+
+  - [X] 벽에 붙어 있어도 회전할 수 있게끔 만들기.
+  - [X] 회전할 때 뭔가 어색함..
+  - [ ] 실루엣 구현.
+  - [ ] 그밖에 버그 있나 확인.
+  - [ ] race condition.. 지금은 약간 어거지. 좀 더 융통성 있는 방식으로. 
+  - [ ] 타이머 오차 있나 확인.  
+
+</details>
+
+[//]: # (End of 04.23)
 </blockquote></details>
 
 [//]: # (End of 2023.04)
