@@ -12,8 +12,7 @@ pos_t get_tetromino_silhouette_pos(board_t* const restrict out_board, const tetr
 
     for (pos_int_t cpos = get_posint(tetro->pos); cpos.x < out_board->pos.x + out_board->height; ++cpos.x) {
         pos_int_t npos = { cpos.x + 1, cpos.y };
-        tetromino_try_status_t res = try_tetromino_next_status(out_board, tetro, npos, tetro->dir);
-        if (res == TETROMINO_TRY_STATUS_ONTHEGROUND) {
+        if (!is_ok_tetromino_next_status(out_board, tetro, npos, tetro->dir)) {
             return get_pos(cpos);
         }
     }

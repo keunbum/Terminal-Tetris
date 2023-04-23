@@ -13,14 +13,12 @@ void init_input_reader(input_reader_t* const out_reader)
     if ((out_reader->fd = open(EVENT_KEY_DEV, O_RDONLY)) == -1) {
         handle_error("open() error");
     }
-    // init_input_reader_lock(out_reader);
 }
 
 void cleanup_input_reader(input_reader_t* const out_reader)
 {
     debug();
 
-    // cleanup_input_reader_lock(out_reader);
     if (close(out_reader->fd) == -1) {
         handle_error("close() error");
     }
@@ -29,6 +27,6 @@ void cleanup_input_reader(input_reader_t* const out_reader)
 void read_input_event(input_reader_t* const out_reader)
 {
     if (read(out_reader->fd, &out_reader->event, sizeof(struct input_event)) != sizeof(struct input_event)) {
-        handle_error("in read_input_event() read() error");
+        handle_error("read() error");
     }
 }

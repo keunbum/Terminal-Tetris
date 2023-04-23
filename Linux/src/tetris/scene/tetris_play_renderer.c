@@ -10,7 +10,7 @@
 
 static void render_a_tetromino_poswprint(const tetromino_t* tetro, pos_int_t pos_wprint)
 {
-    debug();
+    // debug();
 
     cursor_lock();
     my_assert(tetro != NULL);
@@ -39,7 +39,7 @@ static void callback_render_tetromino_manager_out(void* const out_void, int i, v
 
 void wdraw_a_tetromino(tetromino_t* const out_tetro)
 {
-    debug();
+    // debug();
 
     if (!is_valid_tetromino(out_tetro)) {
         return;
@@ -60,7 +60,7 @@ static void render_tetromino_manager_out(tetromino_manager_t* const out_man)
 
 static void render_a_skyline(const board_t* board)
 {
-    debug();
+    // debug();
 
     int i = TETRIS_PLAY_SKYLINE_POS_X - TETRIS_PLAY_BOARD_POS_X;
     my_assert(1 <= i && i <= board->height - 2);
@@ -79,7 +79,7 @@ static void render_a_skyline(const board_t* board)
 
 void render_out(tetris_play_manager_t* const out_man)
 {
-    debug();
+    // debug();
 
     my_assert(out_man != NULL);
 

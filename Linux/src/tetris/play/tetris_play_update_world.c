@@ -32,6 +32,8 @@ static inline void petrify_tetromino(board_t* const out_board, const tetromino_t
 
 static void clear_filled_lines(board_t* const out_board)
 {
+    debug();
+
     static const double S_CLEAR_BOARD_INTERVAL_SEC = 0.05;
     static int s_que[4];
     int end = 0;
@@ -111,12 +113,12 @@ static inline bool is_at_skyline(const board_t* board, const tetromino_t* tetro)
     return last_pos_x <= board->skyline_pos.x;
 }
 
-void process_tetromino_try_status(tetromino_try_status_t status, tetris_play_manager_t* const out_play_manager)
+void process_tetromino_try_status(tetromino_status_t status, tetris_play_manager_t* const out_play_manager)
 {
-    debug();
+    // debug();
 
     switch (status) {
-    case TETROMINO_TRY_STATUS_ONTHEGROUND:
+    case TETROMINO_STATUS_ONTHEGROUND:
         petrify_tetromino(&out_play_manager->board, out_play_manager->tetro_man.tetro_main);
         render_out(out_play_manager);
         clear_filled_lines(&out_play_manager->board);
@@ -128,15 +130,15 @@ void process_tetromino_try_status(tetromino_try_status_t status, tetris_play_man
         out_play_manager->tetro_man.tetromino_init_velocity += out_play_manager->tetro_man.unit_velocity;
         out_play_manager->tetro_man.tetro_main = NULL;
         break;
-    case TETROMINO_TRY_STATUS_MOVE:
+    case TETROMINO_STATUS_MOVE:
         /* intentional fallthrough */
-    case TETROMINO_TRY_STATUS_ROTATE:
+    case TETROMINO_STATUS_ROTATE:
         render_out(out_play_manager);
         break;
-    case TETROMINO_TRY_STATUS_INPLACE:
+    case TETROMINO_STATUS_ONTHEWALL:
         /* Do Nothing */
         break;
-    case TETROMINO_TRY_STATUS_NULL:
+    case TETROMINO_STATUS_NULL:
         /* Do Nothing */
         break;
 #ifdef TETRIS_DEBUG
@@ -153,7 +155,7 @@ void update_gameworld(tetris_play_manager_t* const out_play_manager)
     /* As long as you run the input processing thread separately,
        you need to take care of the critical section problem. */
     lock_tetromino_manager(&out_play_manager->tetro_man);
-    tetromino_try_status_t ret = update_tetromino_manager(&out_play_manager->tetro_man, &out_play_manager->board, out_play_manager->game_delta_time);
+    tetromino_status_t ret = update_tetromino_manager(&out_play_manager->tetro_man, &out_play_manager->board, out_play_manager->game_delta_time);
     process_tetromino_try_status(ret, out_play_manager);
     unlock_tetromino_manager(&out_play_manager->tetro_man);
 }

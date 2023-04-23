@@ -49,7 +49,7 @@ static inline void wdraw_row_at(const wchar_t* wbuf, int pos_x_wprint, int pos_y
 
 static inline void wdraw_row_newline(const wchar_t* wbuf, int cursor_move_width)
 {
-    debug();
+    // debug();
     my_assert(wbuf != NULL);
     wprintf(wbuf);
     wprintf(L"\e[1B\e[%dD", cursor_move_width);

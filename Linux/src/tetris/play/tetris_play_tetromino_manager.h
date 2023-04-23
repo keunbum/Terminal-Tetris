@@ -24,7 +24,7 @@
 #define TETRIS_PLAY_TETROMINO_MANAGER_HOLD_FRAME_POS_X (TETRIS_PLAY_SINGLE_SCREEN_POS_X + 3)
 #define TETRIS_PLAY_TETROMINO_MANAGER_HOLD_FRAME_POS_Y (TETRIS_PLAY_SINGLE_SCREEN_POS_Y + 5)
 
-#define TETRIS_PLAY_TETROMINO_MANAGER_HOLD_FRAME_HEIGHT_WPRINT (6)
+#define TETRIS_PLAY_TETROMINO_MANAGER_HOLD_FRAME_HEIGHT_WPRINT (4)
 #define TETRIS_PLAY_TETROMINO_MANAGER_HOLD_FRAME_WIDTH_WPRINT (6 * 2)
 
 typedef pthread_mutex_t tetromino_manager_lock_t;
@@ -74,8 +74,8 @@ static inline void cleanup_tetromino_manager_lock(tetromino_manager_t* const out
 
 void init_tetromino_manager(tetromino_manager_t* const out_man, int max_size);
 void cleanup_tetromino_manager_free(tetromino_manager_t* const out_man);
-tetromino_try_status_t update_tetromino_manager(tetromino_manager_t* const out_man, board_t* const out_board, game_time_t delta_time);
+tetromino_status_t update_tetromino_manager(tetromino_manager_t* const out_man, board_t* const out_board, game_time_t delta_time);
 void wdraw_tetromino_manager(const tetromino_manager_t* man);
-tetromino_try_status_t try_swap_tetromino_hold(tetromino_manager_t* const out_man);
+tetromino_status_t try_swap_tetromino_hold(tetromino_manager_t* const out_man);
 
 #endif /* __TETRIS_PLAY_TETROMINO_MANAGER__H */

@@ -8,14 +8,14 @@
 #include "tetris/tetris_play_manager.h"
 #include "tetris_play_input_reader.h"
 
-static tetromino_try_status_t process_input_event(const struct input_event* ev, tetris_play_manager_t* const out_play_manager)
+static tetromino_status_t process_input_event(const struct input_event* ev, tetris_play_manager_t* const out_play_manager)
 {
-    debug();
+    // debug();
 
     board_t* board = &out_play_manager->board;
     tetromino_t* tetro = out_play_manager->tetro_man.tetro_main;
     tetromino_manager_t* tetro_man = &out_play_manager->tetro_man;
-    tetromino_try_status_t ret = TETROMINO_TRY_STATUS_NULL;
+    tetromino_status_t ret = TETROMINO_STATUS_NULL;
     if (ev->type == EV_KEY) {
         switch (ev->value) {
         case 1:
@@ -92,7 +92,7 @@ void* mainfunc_input_reader(void* arg)
         read_input_event(&input_reader);
         // hmm.. locking board looks inappropriate
         lock_tetromino_manager(&play_manager->tetro_man);
-        tetromino_try_status_t res = process_input_event(&input_reader.event, play_manager);
+        tetromino_status_t res = process_input_event(&input_reader.event, play_manager);
         process_tetromino_try_status(res, play_manager);
         unlock_tetromino_manager(&play_manager->tetro_man);
     }

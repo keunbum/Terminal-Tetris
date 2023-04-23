@@ -30,9 +30,21 @@ static void init_tetromino(tetromino_t* const out_tetro, int id, symbol_id_t sym
     ewprintf("tetro-%d has been spawned\n", out_tetro->id);
 }
 
+const wchar_t* get_dir_wstr(dir_t dir)
+{
+    static const wchar_t* S_STRS[DIR_NUM_OF_KINDS] = {L"DIR_BOT", L"DIR_RIGHT", L"DIR_TOP", L"DIR_LEFT"};
+    return S_STRS[dir];
+}
+
+wchar_t get_symbol_wch(symbol_id_t symbol_id)
+{
+    static const wchar_t S_ID2SYMBOL[TETROMINO_NUM_OF_KINDS] = { L'I', L'O', L'T', L'J', L'L', L'S', L'Z'};
+    return S_ID2SYMBOL[symbol_id];
+}
+
 void save_tetromino_tobedrawn(tetromino_t* const out_tetro)
 {
-    debug();
+    // debug();
     
     my_assert(out_tetro != NULL);
 
@@ -49,6 +61,8 @@ void save_tetromino_tobedrawn(tetromino_t* const out_tetro)
 
 void cleanup_tetromino_free(tetromino_t* const out_tetro)
 {
+    debug();
+    
     if (out_tetro == NULL) {
         return;
     }

@@ -4,8 +4,6 @@
 #include "tetris/scene/tetris_play_renderer.h"
 #include "tetris_play_update_tetromino_status.h"
 
-static const int GS_TETROMINO_INIT_POS_X_OFFSET[TETROMINO_NUM_OF_KINDS] = { +2, +2, +2, +1, +1, +1, +1 };
-
 static void set_tetro_queue_default(tetromino_t* const out_tetro, int i, pos_int_t start_pos_wprint)
 {
     static const int S_POS_X_INTERVAL = 4;
@@ -47,9 +45,11 @@ static void callback_spawn_tetromino_manager_tetro_main(void* const out_void, in
 
 static void spawn_tetromino(tetromino_manager_t* const out_man, tetromino_t** const target_tetro, velocity_t init_velocity)
 {
+    debug();
+    
     *target_tetro = pop_queue(&out_man->que);
     (*target_tetro)->pos = create_pos(
-        TETRIS_PLAY_TETROMINO_INIT_POS_X + GS_TETROMINO_INIT_POS_X_OFFSET[(*target_tetro)->symbol_id],
+        TETRIS_PLAY_TETROMINO_INIT_POS_X,
         TETRIS_PLAY_TETROMINO_INIT_POS_Y);
     (*target_tetro)->velocity = init_velocity;
     (*target_tetro)->clean_wprint = BLOCK_WPRINT_WHITE_LARGE_SQUARE;
@@ -129,7 +129,7 @@ void cleanup_tetromino_manager_free(tetromino_manager_t* const out_man)
     out_man->tetro_main = NULL;
 }
 
-tetromino_try_status_t update_tetromino_manager(tetromino_manager_t* const out_man, board_t* const out_board, game_time_t delta_time)
+tetromino_status_t update_tetromino_manager(tetromino_manager_t* const out_man, board_t* const out_board, game_time_t delta_time)
 {
     debug();
 
@@ -139,8 +139,7 @@ tetromino_try_status_t update_tetromino_manager(tetromino_manager_t* const out_m
         spawn_tetromino(out_man, &out_man->tetro_main, out_man->tetromino_init_velocity);
         inc_tetromino_cnt(&out_man->stat, out_man->tetro_main->symbol_id);
     }
-    tetromino_try_status_t res = try_move_tetromino_deltatime_r(out_board, out_man->tetro_main, DIR_BOT, delta_time);
-    return res;
+    return try_move_down_tetromino_deltatime_r(out_board, out_man->tetro_main, delta_time);
 }
 
 void wdraw_tetromino_manager(const tetromino_manager_t* man)
@@ -159,12 +158,12 @@ static void swap_main_hold(tetromino_manager_t* const out_man)
     out_man->tetro_main = tmp_tpr;
 }
 
-tetromino_try_status_t try_swap_tetromino_hold(tetromino_manager_t* const out_man)
+tetromino_status_t try_swap_tetromino_hold(tetromino_manager_t* const out_man)
 {
     debug();
 
     if (!is_valid_tetromino(out_man->tetro_main) || out_man->is_swaped_once) {
-        return TETROMINO_TRY_STATUS_NULL;
+        return TETROMINO_STATUS_NULL;
     }
     if (!is_valid_tetromino(out_man->tetro_hold)) {
         spawn_tetromino(out_man, &out_man->tetro_hold, out_man->tetromino_init_velocity);
@@ -172,8 +171,9 @@ tetromino_try_status_t try_swap_tetromino_hold(tetromino_manager_t* const out_ma
         /* Hmm you should check position.. */
     }
     swap_main_hold(out_man);
-
-    out_man->tetro_hold->pos = get_pos(out_man->hold_pos);
+    static const int S_X_OFFSET[] = {-1, -1, 0, 0, 0, 0, 0};
+    static const int S_Y_OFFSET[] = {0, 0, 1, 1, 1, 1, 1};
+    out_man->tetro_hold->pos = create_pos(out_man->hold_pos.x + S_X_OFFSET[out_man->tetro_hold->symbol_id], out_man->hold_pos.y + S_Y_OFFSET[out_man->tetro_hold->symbol_id]);
     out_man->tetro_hold->pos_wprint = out_man->tetro_hold->pos;
     out_man->tetro_hold->dir = TETROMINO_INIT_DIR;
     out_man->tetro_hold->clean_wprint = BLOCK_WPRINT_EMPTY;
@@ -181,12 +181,12 @@ tetromino_try_status_t try_swap_tetromino_hold(tetromino_manager_t* const out_ma
     out_man->is_swaped_once = true;
 
     out_man->tetro_main->pos = create_pos(
-        TETRIS_PLAY_TETROMINO_INIT_POS_X + GS_TETROMINO_INIT_POS_X_OFFSET[out_man->tetro_main->symbol_id],
+        TETRIS_PLAY_TETROMINO_INIT_POS_X,
         TETRIS_PLAY_TETROMINO_INIT_POS_Y);
     out_man->tetro_main->pos_wprint = get_pos_wprint(out_man->tetro_main->pos);
     out_man->tetro_main->clean_wprint = BLOCK_WPRINT_EMPTY;
     wdraw_a_tetromino(out_man->tetro_main);
     out_man->tetro_main->clean_wprint = BLOCK_WPRINT_WHITE_LARGE_SQUARE;
 
-    return TETROMINO_TRY_STATUS_MOVE;
+    return TETROMINO_STATUS_MOVE;
 }
