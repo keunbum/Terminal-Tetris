@@ -9,7 +9,8 @@
 #include "pthread_macro.h"
 
 #define DEVICE_INPUT_KEYBOARD (2)
-#define DEVICE_INPUT_CONTROLLER (6)
+#define DEVICE_INPUT_CONTROLLER_NS (6)
+#define DEVICE_INPUT_CONTROLLER_XBOX (7)
 
 typedef struct {
     int fd;

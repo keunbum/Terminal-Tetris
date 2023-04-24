@@ -53,7 +53,10 @@ static tetromino_status_t process_controller_event(device_input_t* const out_in,
             case BTN_SOUTH:
                 ret = harddrop_tetromino_r(board, tetro);
                 break;
-            case BTN_WEST:
+            // case BTN_WEST:
+            //     ret = try_swap_tetromino_hold(out_tetro_man);
+            //     break;
+            case BTN_NORTH:
                 ret = try_swap_tetromino_hold(out_tetro_man);
                 break;
             case BTN_TL:
@@ -81,7 +84,7 @@ void* mainfunc_device_input_controller(void* arg)
 
     tetris_play_manager_t* const play_manager = (tetris_play_manager_t*)arg;
     device_input_t in;
-    init_device_input(&in, DEVICE_INPUT_KEYBOARD);
+    init_device_input(&in, DEVICE_INPUT_CONTROLLER_XBOX);
     pthread_cleanup_push(callback_cleanup_device_input, &in);
 
     while (true) {
