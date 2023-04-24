@@ -7,7 +7,7 @@ typedef struct {
     const char* name;
     const game_module_func_t module;
     void* module_arg;
-} game_module_t;
+} game_system_module_t;
 
 typedef enum {
     TETRIS_PLAY_MODE_SINGLE,

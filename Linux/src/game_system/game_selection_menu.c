@@ -8,10 +8,10 @@
 #include "draw/cursor.h"
 #include "error_handling.h"
 #include "game_selection_menu.h"
-#include "tetris/play/tetris_play_single_manager.h"
+#include "tetris/play/tetris_play_manager_single.h"
 #include "game_system_manager.h"
 
-static const game_module_t GS_GAME_OBJECTS[1] = {
+static const game_system_module_t GS_GAME_OBJECTS[1] = {
     {
         .name = "basic tetris",
         .module = run_tetris_play_single_mode,
@@ -43,7 +43,8 @@ static int read_game_selection_menu_option(void)
     debug();
 
     int cmd;
-    scanf("%d", &cmd);
+    int res = scanf("%d", &cmd);
+    (void)res;
     return cmd;
 }
 
@@ -75,7 +76,7 @@ static bool handle_game_selection_menu_cmd(int cmd)
         return false;
     }
     if (1 <= cmd && cmd <= GS_GAME_SELECTION_MENU_TOTAL_OPTION_NUM - 1) {
-        const game_module_t* g = GS_GAME_OBJECTS + cmd_to_gamenum(cmd);
+        const game_system_module_t* g = GS_GAME_OBJECTS + cmd_to_gamenum(cmd);
         g->module(g->module_arg);
         return true;
     }

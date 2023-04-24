@@ -85,7 +85,7 @@ void render_out(tetris_play_manager_t* const out_man)
 
     if (out_man->status != TETRIS_PLAY_STATUS_GAMEOVER) {
         render_tetromino_manager_out(&out_man->tetro_man);
-        render_a_skyline(&out_man->board);
+        render_a_skyline(&out_man->tetro_man.board);
     } else {
         ewprintf("render_out(): out_man->status = TETRIS_PLAY_STATUS_GAMEOVER, so do nothing.\n");
     }

@@ -46,7 +46,7 @@ void* mainfunc_game_main_loop(void* arg)
     }
 
     for (int i = 1; i < TETRIS_PLAY_SUBMODULE_NUM; ++i) {
-        int res = pthread_cancel(play_manager->sub_modules[i].pthread_id);
+        int res = pthread_cancel(play_manager->sub_modules[i].thread_id);
         if (res != 0) {
             handle_error_en("pthread_cancel() error", res);
         }

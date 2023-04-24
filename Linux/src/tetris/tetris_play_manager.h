@@ -9,7 +9,7 @@
 #include "tetris/play/tetris_play_tetromino_statistic.h"
 #include "tetris/play/tetris_play_tetromino_generator.h"
 #include "tetris/play/tetris_play_tetromino_manager.h"
-#include "tetris_play_submodule.h"
+#include "thread_module.h"
 #include "timer/timer_drawer.h"
 #include "terminal.h"
 
@@ -25,9 +25,6 @@ typedef enum {
     TETRIS_PLAY_STATUS_PAUSE,
 } tetris_play_status_t;
 
-typedef struct {
-} tetris_play_world_t;
-
 #define TETRIS_PLAY_SUBMODULE_NUM (3)
 
 typedef struct {
@@ -40,12 +37,11 @@ typedef struct {
     game_time_t game_delta_time;
 
     frame_t screen_frame;
-    board_t board;
     tetromino_manager_t tetro_man;
     terminal_t terminal;
     
     timer_drawer_t timer_drawer;
-    tetris_play_submodule_t sub_modules[TETRIS_PLAY_SUBMODULE_NUM];
+    thread_module_t sub_modules[TETRIS_PLAY_SUBMODULE_NUM];
 } tetris_play_manager_t;
 
 #endif /* __TETRIS_PLAY_MANAGER__H */

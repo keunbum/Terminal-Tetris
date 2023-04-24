@@ -47,17 +47,23 @@ static void doit_drawer_main_logic(const realtime_timer_t* timer, const draw_mod
     }
 }
 
-static void cleanup_timer_drawer_module(void* arg)
+static void cleanup_timer_drawer_module(realtime_timer_t* const out_timer)
 {
     debug();
 
     my_assert(arg != NULL);
 
-    const realtime_timer_t* timer = (const realtime_timer_t*)arg;
-    /* Delete timer */
-    if (timer_delete(timer->timerid) == -1) {
+    if (timer_delete(out_timer->timerid) == -1) {
         handle_error("timer_delete() error");
     }
+}
+
+static void callback_cleanup_timer_drawer_module(void* arg)
+{
+    debug();
+
+    realtime_timer_t* timer = (realtime_timer_t*)arg;
+    cleanup_timer_drawer_module(timer);
 }
 
 static void init_timer(realtime_timer_t* const out_timer)
@@ -94,7 +100,7 @@ void* run_timer_drawer_with(void* arg)
     realtime_timer_t* timer = (realtime_timer_t*)&timer_drawer->timer;
 
     init_timer(timer);
-    pthread_cleanup_push(cleanup_timer_drawer_module, timer);
+    pthread_cleanup_push(callback_cleanup_timer_drawer_module, timer);
 
     /* Start timer */
     if (timer_settime(timer->timerid, 0, &timer->its, NULL) == -1) {
@@ -103,5 +109,7 @@ void* run_timer_drawer_with(void* arg)
 
     doit_drawer_main_logic(timer, &timer_drawer->draw_module);
 
+    cleanup_timer_drawer_module(timer);
+    
     return NULL;
 }

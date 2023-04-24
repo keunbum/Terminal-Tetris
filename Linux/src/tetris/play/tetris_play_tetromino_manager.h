@@ -38,6 +38,7 @@ typedef struct {
     game_time_t tetromino_init_velocity;
     tetromino_t* tetro_main;
     tetromino_t* tetro_hold;
+    board_t board;
 
     tetromino_generator_t tetro_gen;
     tetris_play_statistic_t stat;

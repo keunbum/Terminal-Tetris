@@ -75,6 +75,7 @@ void init_tetromino_manager(tetromino_manager_t* const out_man, int que_max_size
     out_man->tetro_main = NULL;
     out_man->tetro_hold = NULL;
 
+    init_board(&out_man->board);
     init_tetromino_generator(&out_man->tetro_gen);
     init_tetris_play_statistics_malloc(&out_man->stat, &out_man->tetro_gen);
     init_queue_malloc(&out_man->que, que_max_size);
@@ -123,6 +124,8 @@ void cleanup_tetromino_manager_free(tetromino_manager_t* const out_man)
     cleanup_queue_free(&out_man->que);
     cleanup_tetris_play_statistics_free(&out_man->stat);
     cleanup_tetromino_generator(&out_man->tetro_gen);
+    cleanup_board(&out_man->board);
+
     cleanup_tetromino_free(out_man->tetro_hold);
     out_man->tetro_hold = NULL;
     cleanup_tetromino_free(out_man->tetro_main);
