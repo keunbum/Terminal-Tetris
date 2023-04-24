@@ -24,6 +24,7 @@ dev: all
 
 release: CFLAGS+=-Werror
 release: CFLAGS+=-Wextra
+release: CFLAGS+=-O2
 release: dev
 
 debug: CFLAGS+=-g
