@@ -1,12 +1,13 @@
-#include <stdio.h>
 #include <math.h>
+#include <stdio.h>
 
+#include "chronometry.h"
 #include "debug.h"
 #include "tetris/scene/tetris_play_renderer.h"
 #include "tetris_play_tetromino_manager.h"
+#include "tetris_play_tetromino_silhouette.h"
 #include "tetris_play_update_tetromino_status.h"
 #include "tetris_play_update_world.h"
-#include "chronometry.h"
 
 static inline void petrify_tetromino(board_t* const out_board, const tetromino_t* tetro)
 {
@@ -14,7 +15,8 @@ static inline void petrify_tetromino(board_t* const out_board, const tetromino_t
 
     tetromino_symbol_t symbol = get_tetromino_symbol(tetro->symbol_id, tetro->dir);
 
-    traverse_symbol(i, j, symbol) {
+    traverse_symbol(i, j, symbol)
+    {
         int ex = (int)tetro->pos.x + i;
         int ey = (int)tetro->pos.y + j;
         my_assert(TETRIS_PLAY_TETROMINO_POS_X_MIN <= ex && ex <= TETRIS_PLAY_TETROMINO_POS_X_MAX);
@@ -26,7 +28,7 @@ static inline void petrify_tetromino(board_t* const out_board, const tetromino_t
         out_board->grid[ei][ej].nature = tetro->block.nature;
         if (ei > out_board->skyline) {
             out_board->grid[ei][ej].wprint = tetro->block.wprint;
-        }        
+        }
     }
 }
 
@@ -38,7 +40,8 @@ static void clear_filled_lines(board_t* const out_board)
     static int s_que[4];
     int end = 0;
     /* Check full lines */
-    traverse_inner_row_reverse(i, out_board) {
+    traverse_inner_row_reverse(i, out_board)
+    {
         if (is_all_of_row(out_board, i, BLOCK_NATURE_FULL)) {
             s_que[end++] = i;
             my_assert(end <= 4);
@@ -49,7 +52,8 @@ static void clear_filled_lines(board_t* const out_board)
         return;
     }
     /* Reflect them visually */
-    traverse_inner_col(j, out_board) {
+    traverse_inner_col(j, out_board)
+    {
         for (int ptr = 0; ptr < end; ++ptr) {
             int i = s_que[ptr];
             set_block_each(&out_board->grid[i][j], BLOCK_NATURE_EMPTY, BLOCK_WPRINT_WHITE_LARGE_SQUARE);
@@ -76,9 +80,10 @@ static void clear_filled_lines(board_t* const out_board)
         }
         int move_dist = ptr + 1;
         for (int i = L - 1; i > R; --i) {
-            traverse_inner_col(j, out_board) {
+            traverse_inner_col(j, out_board)
+            {
                 ewprintf("(%d, %d) --> (%d, %d)\n", i, j, i + move_dist, j);
-                out_board->grid[i + move_dist][j] = out_board->grid[i][j]; 
+                out_board->grid[i + move_dist][j] = out_board->grid[i][j];
                 set_block_each(&out_board->grid[i][j], BLOCK_NATURE_EMPTY, BLOCK_WPRINT_WHITE_LARGE_SQUARE);
             }
             ewprintf("\n");
@@ -98,7 +103,8 @@ static inline bool is_at_skyline(const board_t* board, const tetromino_t* tetro)
 
     int first_pos_x = TETRIS_PLAY_TETROMINO_POS_X_MIN;
 
-    traverse_symbol(i, _, symbol) {
+    traverse_symbol(i, _, symbol)
+    {
         first_pos_x = (int)tetro->pos.x + i;
         goto skyline_return_line;
     }
@@ -126,7 +132,7 @@ void process_tetromino_try_status(tetromino_status_t status, tetris_play_manager
     case TETROMINO_STATUS_MOVE:
         /* intentional fallthrough */
     case TETROMINO_STATUS_ROTATE:
-        render_out(out_play_manager);
+            render_out(out_play_manager);
         break;
     case TETROMINO_STATUS_ONTHEWALL:
         /* Do Nothing */
@@ -148,7 +154,7 @@ void update_gameworld(tetris_play_manager_t* const out_play_manager)
     /* As long as you run the input processing thread separately,
        you need to take care of the critical section problem. */
     lock_tetromino_manager(&out_play_manager->tetro_man);
-    tetromino_status_t ret = update_tetromino_manager(&out_play_manager->tetro_man, &out_play_manager->tetro_man.board, out_play_manager->game_delta_time);
+    tetromino_status_t ret = update_tetromino_manager(&out_play_manager->tetro_man, out_play_manager->game_delta_time);
     process_tetromino_try_status(ret, out_play_manager);
     unlock_tetromino_manager(&out_play_manager->tetro_man);
 }

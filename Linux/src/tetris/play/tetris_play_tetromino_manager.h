@@ -38,6 +38,7 @@ typedef struct {
     game_time_t tetromino_init_velocity;
     tetromino_t* tetro_main;
     tetromino_t* tetro_hold;
+    tetromino_t tetro_silhou;
     board_t board;
 
     tetromino_generator_t tetro_gen;
@@ -75,7 +76,7 @@ static inline void cleanup_tetromino_manager_lock(tetromino_manager_t* const out
 
 void init_tetromino_manager(tetromino_manager_t* const out_man, int max_size);
 void cleanup_tetromino_manager_free(tetromino_manager_t* const out_man);
-tetromino_status_t update_tetromino_manager(tetromino_manager_t* const out_man, board_t* const out_board, game_time_t delta_time);
+tetromino_status_t update_tetromino_manager(tetromino_manager_t* const out_man, game_time_t delta_time);
 void wdraw_tetromino_manager(const tetromino_manager_t* man);
 tetromino_status_t try_swap_tetromino_hold(tetromino_manager_t* const out_man);
 

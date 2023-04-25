@@ -51,7 +51,7 @@ static void cleanup_timer_drawer_module(realtime_timer_t* const out_timer)
 {
     debug();
 
-    my_assert(arg != NULL);
+    my_assert(out_timer != NULL);
 
     if (timer_delete(out_timer->timerid) == -1) {
         handle_error("timer_delete() error");

@@ -3,7 +3,7 @@
 #include "tetris_play_device_input_module_keyboard.h"
 #include "tetris_play_device_input_module_controller.h"
 
-#define THREAD_MODULE_NUM (2)
+#define THREAD_MODULE_NUM (1)
 
 static void cleanup_device_input_modules(void* arg)
 {
@@ -33,11 +33,11 @@ void* mainfunc_device_input_modules(void* arg)
             .main_func = mainfunc_device_input_module_keyboard,
             .retval = NULL,
         },
-        {
-            .is_detached = false,
-            .main_func = mainfunc_device_input_controller,
-            .retval = NULL,
-        }
+        // {
+        //     .is_detached = false,
+        //     .main_func = mainfunc_device_input_controller,
+        //     .retval = NULL,
+        // }
     };
 
     pthread_cleanup_push(callback_cleanup_device_input_modules_free, s_modules);

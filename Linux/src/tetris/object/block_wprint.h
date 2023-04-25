@@ -5,16 +5,6 @@
 
 #include "debug.h"
 
-/* normal order
- 1. I
- 2. O
- 3. T
- 4. J
- 5. L
- 6. S
- 7. Z
- */
-
 /* <useful emojis>
  * L'\U0001f338', // 🌸
  * L'\U0001f5ff', // 🗿

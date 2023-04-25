@@ -7,6 +7,7 @@
 #include "tetris/play/tetris_play_update_world.h"
 #include "tetris_play_renderer.h"
 #include "tetris_play_scene.h"
+#include "tetris/play/tetris_play_tetromino_silhouette.h"
 
 static void render_a_tetromino_poswprint(const tetromino_t* tetro, pos_int_t pos_wprint)
 {
@@ -37,22 +38,9 @@ static void callback_render_tetromino_manager_out(void* const out_void, int i, v
     wdraw_a_tetromino((tetromino_t*)out_void);
 }
 
-void wdraw_a_tetromino(tetromino_t* const out_tetro)
-{
-    // debug();
-
-    if (!is_valid_tetromino(out_tetro)) {
-        return;
-    }
-    if (!is_first_drawn_tetromino(out_tetro)) {
-        render_a_tetromino_poswprint(out_tetro->prev_drawn, get_posint(out_tetro->prev_drawn->pos_wprint));
-    }
-    render_a_tetromino_poswprint(out_tetro, get_posint(out_tetro->pos_wprint));
-    save_tetromino_tobedrawn(out_tetro);
-}
-
 static void render_tetromino_manager_out(tetromino_manager_t* const out_man)
 {
+    wdraw_a_tetromino_with_silhouette(out_man->tetro_main, &out_man->tetro_silhou, &out_man->board);
     wdraw_a_tetromino(out_man->tetro_main);
     wdraw_a_tetromino(out_man->tetro_hold);
     traverse_queue(&out_man->que, callback_render_tetromino_manager_out, NULL);
@@ -75,6 +63,29 @@ static void render_a_skyline(const board_t* board)
         wdraw_row_newline(buf, board->width_wprint);
     }
     cursor_unlock();
+}
+
+void wdraw_a_tetromino(tetromino_t* const out_tetro)
+{
+    // debug();
+
+    if (!is_valid_tetromino(out_tetro)) {
+        return;
+    }
+    if (!is_first_drawn_tetromino(out_tetro)) {
+        render_a_tetromino_poswprint(out_tetro->prev_drawn, get_posint(out_tetro->prev_drawn->pos_wprint));
+    }
+    render_a_tetromino_poswprint(out_tetro, get_posint(out_tetro->pos_wprint));
+    save_tetromino_tobedrawn(out_tetro);
+}
+
+void wdraw_a_tetromino_with_silhouette(tetromino_t* const out_tetro, tetromino_t* const out_tetro_silhou, const board_t* board)
+{
+    debug();
+
+    update_tetromino_silhouette(out_tetro_silhou, out_tetro, board);
+    wdraw_a_tetromino(out_tetro_silhou);
+    wdraw_a_tetromino(out_tetro);
 }
 
 void render_out(tetris_play_manager_t* const out_man)

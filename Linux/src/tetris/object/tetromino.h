@@ -24,9 +24,9 @@ typedef enum {
 
 typedef int symbol_id_t;
 typedef float velocity_t;
-typedef struct tetromino_t tetromino_t;
+typedef struct tetromino tetromino_t;
 
-struct tetromino_t {
+struct tetromino {
     int id; // for debug
     symbol_id_t symbol_id;
     dir_t dir;
