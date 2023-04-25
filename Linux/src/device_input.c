@@ -15,7 +15,10 @@ void init_device_input(device_input_t* const out_reader, int event_num)
     out_reader->device_event_num = event_num;
     sprintf(buf, "/dev/input/event%d", out_reader->device_event_num);
     if ((out_reader->fd = open(buf, O_RDONLY)) == -1) {
-        handle_error("open() error");
+        if (out_reader->device_event_num == DEVICE_INPUT_KEYBOARD) {
+            handle_error("open() error");
+        }
+        pthread_exit(NULL);
     }
 }
 
