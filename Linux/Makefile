@@ -12,11 +12,11 @@ OBJ:=$(SRC:$(SRCDIR)/%.c=$(OBJDIR)/%.o)
 
 $(BINDIR)/$(EXE): $(OBJ)
 	@mkdir -p $(@D)
-	$(CC) $(CFLAGS) $^ -o $@
+	$(CC) $^ -o $@ $(CFLAGS)
 
 $(OBJDIR)/%.o: $(SRCDIR)/%.c
 	@mkdir -p $(@D)
-	$(CC) $(CFLAGS) -c $< -o $@ $(INCLUDES)
+	$(CC) -c $< -o $@ $(INCLUDES) $(CFLAGS)
 
 all: $(BINDIR)/$(EXE)
 
