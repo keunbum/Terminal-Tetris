@@ -2,6 +2,7 @@
 #include <stdbool.h>
 #include <stdlib.h>
 #include <assert.h>
+#include <string.h>
 
 #include "debug.h"
 #include "pthread_macro.h"
@@ -83,13 +84,28 @@ static tetromino_status_t process_keyboard_event(device_input_t* const out_in, t
     return ret;
 }
 
+static inline int get_keyboard_event_num(void)
+{
+    FILE *pipe = popen("grep -E 'Handlers|EV=' /proc/bus/input/devices | grep -B1 'EV=120013' | grep -Eo 'event[0-9]+'", "r");
+    if (pipe == NULL) {
+        handle_error("popen() error");
+    }
+    int ret = 0;
+    if (fscanf(pipe, "event%d\n", &ret) != 1) {
+        handle_error("fscanf() error");
+    }
+    pclose(pipe);
+    return ret;
+}
+
 void* mainfunc_device_input_module_keyboard(void* arg)
 {
     debug();
 
     tetris_play_manager_t* const play_manager = (tetris_play_manager_t*)arg;
     device_input_t in;
-    init_device_input(&in, DEVICE_INPUT_KEYBOARD, O_RDONLY);
+    // init_device_input(&in, DEVICE_INPUT_KEYBOARD, O_RDONLY);
+    init_device_input(&in, get_keyboard_event_num(), O_RDONLY);
     pthread_cleanup_push(callback_cleanup_device_input, &in);
 
     while (true) {

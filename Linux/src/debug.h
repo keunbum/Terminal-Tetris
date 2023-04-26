@@ -7,6 +7,7 @@
 #include <stdio.h>
 #include <wchar.h>
 
+#define eprintf(...) fprintf(stderr, __VA_ARGS__), fflush(stderr)
 #define ewgotoxy(x, y) fwprintf(stderr, L"\e[%d;%df", (x) + 1, (y) + 1)
 #define ewprintf(...) fwprintf(stderr, L##__VA_ARGS__), fflush(stderr)
 #define my_assert(...) assert(__VA_ARGS__)
@@ -14,6 +15,7 @@
 
 #else
 
+#define eprintf(...) (void)0
 #define ewgotoxy(x, y) (void)0
 #define ewprintf(...) (void)0
 #define my_assert(...) (void)0
