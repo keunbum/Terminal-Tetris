@@ -1,17 +1,18 @@
 #ifndef __TETRIS_PLAY_MANAGER__H
 #define __TETRIS_PLAY_MANAGER__H
 
+#include "device_input.h"
 #include "game_system/game_system_manager.h"
+#include "terminal.h"
 #include "tetris/object/board.h"
+#include "tetris/object/frame.h"
 #include "tetris/object/screen.h"
 #include "tetris/object/tetromino.h"
-#include "tetris/object/frame.h"
-#include "tetris/play/tetris_play_tetromino_statistic.h"
 #include "tetris/play/tetris_play_tetromino_generator.h"
 #include "tetris/play/tetris_play_tetromino_manager.h"
+#include "tetris/play/tetris_play_tetromino_statistic.h"
 #include "thread_module.h"
 #include "timer/timer_drawer.h"
-#include "terminal.h"
 
 #define TETRIS_PLAY_TIMER_POS_X_WPRINT (TETRIS_PLAY_SINGLE_SCREEN_POS_X_WPRINT + 2)
 #define TETRIS_PLAY_TIMER_POS_Y_WPRINT (TETRIS_PLAY_BOARD_POS_Y_WPRINT + TETRIS_PLAY_BOARD_WIDTH / 2 - 2)
@@ -39,7 +40,8 @@ typedef struct {
     frame_t screen_frame;
     tetromino_manager_t tetro_man;
     terminal_t terminal;
-    
+    // device_input_t input;
+
     timer_drawer_t timer_drawer;
     thread_module_t sub_modules[TETRIS_PLAY_SUBMODULE_NUM];
 } tetris_play_manager_t;

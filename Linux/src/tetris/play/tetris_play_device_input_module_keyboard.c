@@ -89,7 +89,7 @@ void* mainfunc_device_input_module_keyboard(void* arg)
 
     tetris_play_manager_t* const play_manager = (tetris_play_manager_t*)arg;
     device_input_t in;
-    init_device_input(&in, DEVICE_INPUT_KEYBOARD);
+    init_device_input(&in, DEVICE_INPUT_KEYBOARD, O_RDONLY);
     pthread_cleanup_push(callback_cleanup_device_input, &in);
 
     while (true) {

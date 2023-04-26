@@ -6,8 +6,7 @@
  * TAKUJI NISHIMURA
  * Keio University
  */
-
-#include <stdio.h>
+#include <stddef.h>
 
 #include "debug.h"
 #include "mt19937.h"

@@ -41,16 +41,4 @@ static inline void block_signal(int signum)
     }
 }
 
-/*
-#define block_signal(signum)                                           \
-    do {                                                               \
-        sigset_t sigset;                                               \
-        sigemptyset(&sigset);                                          \
-        sigaddset(&sigset, signum);                                    \
-        int res;                                                       \
-        if ((res = pthread_sigmask(SIG_BLOCK, &sigset, NULL)) == -1) { \
-            handle_error_en("pthread_sigmask() error", res);           \
-        }                                                              \
-    } while (false) */
-
 #endif /* __SIGNAL_MACRO__H */

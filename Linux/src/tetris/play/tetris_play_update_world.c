@@ -36,7 +36,7 @@ static void clear_filled_lines(board_t* const out_board)
 {
     debug();
 
-    static const double S_CLEAR_BOARD_INTERVAL_SEC = 0.05;
+    static const double S_CLEAR_BOARD_INTERVAL_SEC = 0.03;
     static int s_que[4];
     int end = 0;
     /* Check full lines */
@@ -54,15 +54,14 @@ static void clear_filled_lines(board_t* const out_board)
     /* Reflect them visually */
     traverse_inner_col(j, out_board)
     {
+        nanosleep_chrono(TO_NSEC(S_CLEAR_BOARD_INTERVAL_SEC));
         for (int ptr = 0; ptr < end; ++ptr) {
             int i = s_que[ptr];
             set_block_each(&out_board->grid[i][j], BLOCK_NATURE_EMPTY, BLOCK_WPRINT_WHITE_LARGE_SQUARE);
             pos_int_t pos_wprint = get_intpos_intwprint(create_posint(out_board->pos.x + i, out_board->pos.y + j));
             wdraw_unit_matrix_at_r(out_board->grid[i][j].wprint, pos_wprint.x, pos_wprint.y);
         }
-        ewprintf("\n");
         fflush(stdout);
-        nanosleep_chrono(TO_NSEC(S_CLEAR_BOARD_INTERVAL_SEC));
     }
     /* Fill empty lines */
     for (int ptr = 0; ptr < end; ++ptr) {
@@ -82,11 +81,9 @@ static void clear_filled_lines(board_t* const out_board)
         for (int i = L - 1; i > R; --i) {
             traverse_inner_col(j, out_board)
             {
-                ewprintf("(%d, %d) --> (%d, %d)\n", i, j, i + move_dist, j);
                 out_board->grid[i + move_dist][j] = out_board->grid[i][j];
                 set_block_each(&out_board->grid[i][j], BLOCK_NATURE_EMPTY, BLOCK_WPRINT_WHITE_LARGE_SQUARE);
             }
-            ewprintf("\n");
         }
     }
     wdraw_board(out_board);
@@ -128,6 +125,7 @@ void process_tetromino_try_status(tetromino_status_t status, tetris_play_manager
         out_play_manager->tetro_man.is_swaped_once = false;
         out_play_manager->tetro_man.tetromino_init_velocity += out_play_manager->tetro_man.unit_velocity;
         out_play_manager->tetro_man.tetro_main = NULL;
+        cleanup_tetromino_silhouette(&out_play_manager->tetro_man.tetro_silhou);
         break;
     case TETROMINO_STATUS_MOVE:
         /* intentional fallthrough */
@@ -154,7 +152,16 @@ void update_gameworld(tetris_play_manager_t* const out_play_manager)
     /* As long as you run the input processing thread separately,
        you need to take care of the critical section problem. */
     lock_tetromino_manager(&out_play_manager->tetro_man);
-    tetromino_status_t ret = update_tetromino_manager(&out_play_manager->tetro_man, out_play_manager->game_delta_time);
-    process_tetromino_try_status(ret, out_play_manager);
+    tetromino_status_t res = update_tetromino_manager(&out_play_manager->tetro_man, out_play_manager->game_delta_time);
+    process_tetromino_try_status(res, out_play_manager);
     unlock_tetromino_manager(&out_play_manager->tetro_man);
 }
+
+void new_update_gameworld(tetris_play_manager_t* const out_play_manager)
+{
+    debug();
+
+    tetromino_status_t res = update_tetromino_manager(&out_play_manager->tetro_man, out_play_manager->game_delta_time);
+    process_tetromino_try_status(res, out_play_manager);
+}
+

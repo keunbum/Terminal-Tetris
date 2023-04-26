@@ -47,7 +47,7 @@ static void doit_drawer_main_logic(const realtime_timer_t* timer, const draw_mod
     }
 }
 
-static void cleanup_timer_drawer_module(realtime_timer_t* const out_timer)
+static inline void cleanup_timer_drawer_module(realtime_timer_t* const out_timer)
 {
     debug();
 

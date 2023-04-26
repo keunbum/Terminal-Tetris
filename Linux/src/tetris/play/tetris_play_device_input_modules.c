@@ -47,11 +47,11 @@ void* mainfunc_device_input_modules(void* arg)
 
     for (int i = 0; i < THREAD_MODULE_NUM; ++i) {
         s_modules[i].main_func_arg = arg;
-        run_thread_module_in_parallel(s_modules + i);
+        run_thread_module(s_modules + i);
     }
 
     for (size_t i = 0; i < TETRIS_PLAY_SUBMODULE_NUM; ++i) {
-        join_thread_module_in_parallel(s_modules + i);
+        join_thread_module(s_modules + i);
     }
 
     cleanup_device_input_modules(s_modules);

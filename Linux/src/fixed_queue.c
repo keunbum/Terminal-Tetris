@@ -24,14 +24,8 @@ void init_queue_malloc(fixed_queue_t* const out_que, int max_size)
     out_que->pa = (void**)malloc(sizeof(void*) * out_que->max_size);
 }
 
-/* Not A Good Logic */
 void cleanup_queue_free(fixed_queue_t* const out_que)
 {
-    // while (!is_queue_empty(out_que)) {
-    //     void* cur = pop_queue(out_que);
-    //     free(cur);
-    //     cur = NULL;
-    // }
     my_assert(out_que->pa != NULL);
     free(out_que->pa);
     out_que->pa = NULL;

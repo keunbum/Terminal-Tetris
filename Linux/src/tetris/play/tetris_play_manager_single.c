@@ -7,6 +7,7 @@
 
 #include "chronometry.h"
 #include "debug.h"
+#include "device_input.h"
 #include "draw/digital_digit.h"
 #include "draw/draw_tool.h"
 #include "error_handling.h"
@@ -53,12 +54,12 @@ static tetris_play_status_t run_tetris_play_modules_in_parallel(tetris_play_mana
     block_signal(timer->timersig);
 
     for (size_t i = 0; i < TETRIS_PLAY_SUBMODULE_NUM; ++i) {
-        run_thread_module_in_parallel(out_play_manager->sub_modules + i);
+        run_thread_module(out_play_manager->sub_modules + i);
     }
 
     for (size_t i = 0; i < TETRIS_PLAY_SUBMODULE_NUM; ++i) {
         thread_module_t* const module = out_play_manager->sub_modules + i;
-        join_thread_module_in_parallel(module);
+        join_thread_module(module);
     }
 
     const thread_module_t* main_module = out_play_manager->sub_modules + 0;
@@ -91,7 +92,15 @@ static void init_tetris_play_objects(tetris_play_manager_t* const out_play_manag
         UNIT_MATRIX_CORNER_BOT_RIGHT);
     init_tetromino_manager(&out_play_manager->tetro_man, out_play_manager->tetromino_queue_max_size);
     init_terminal(&out_play_manager->terminal);
+    // init_device_input(&out_play_manager->input, DEVICE_INPUT_KEYBOARD, O_RDONLY | O_NONBLOCK);
     init_timer_drawer(&out_play_manager->timer_drawer, REALTIME_TIMER_SIG);
+}
+
+static void cleanup_tetris_play_objects(tetris_play_manager_t* const out_play_manager)
+{
+    // cleanup_device_input(&out_play_manager->input);
+    cleanup_terminal(&out_play_manager->terminal);
+    cleanup_tetromino_manager_free(&out_play_manager->tetro_man);
 }
 
 static void init_tetris_play_manager(tetris_play_manager_t* const out_play_manager)
@@ -103,12 +112,6 @@ static void init_tetris_play_manager(tetris_play_manager_t* const out_play_manag
     out_play_manager->status = TETRIS_PLAY_STATUS_RUNNING;
     init_tetris_play_objects(out_play_manager);
     load_tetris_play_scene(out_play_manager);
-}
-
-static void cleanup_tetris_play_objects(tetris_play_manager_t* const out_play_manager)
-{
-    cleanup_terminal(&out_play_manager->terminal);
-    cleanup_tetromino_manager_free(&out_play_manager->tetro_man);
 }
 
 static void cleanup_tetris_play_manager(tetris_play_manager_t* const out_play_manager)
@@ -213,6 +216,11 @@ void* run_tetris_play_single_mode(void* arg)
                 .main_func_arg = (void*)&s_play_manager,
                 .is_detached = false,
             },
+            // {
+            //     .main_func = new_mainfunc_game_main_loop,
+            //     .main_func_arg = (void*)&s_play_manager,
+            //     .is_detached = false,
+            // },
             {
                 .main_func = mainfunc_game_play_timer,
                 .main_func_arg = (void*)&s_play_manager.timer_drawer,

@@ -17,7 +17,7 @@ typedef struct {
     void* retval;
 } thread_module_t;
 
-static inline void run_thread_module_in_parallel(thread_module_t* const out_module)
+static inline void run_thread_module(thread_module_t* const out_module)
 {
     debug();
 
@@ -33,7 +33,7 @@ static inline void run_thread_module_in_parallel(thread_module_t* const out_modu
     }
 }
 
-static inline void join_thread_module_in_parallel(thread_module_t* const out_module)
+static inline void join_thread_module(thread_module_t* const out_module)
 {
     if (out_module->is_detached) {
         return;
