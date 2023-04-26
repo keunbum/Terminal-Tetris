@@ -35,7 +35,7 @@ void cleanup_tetromino_silhouette(tetromino_t* const out_tetro)
     }
 }
 
-void update_tetromino_silhouette(tetromino_t* const restrict out_tetro_des, const tetromino_t* restrict tetro_src, block_wprint_t init_block_wprint)
+static void update_tetromino_silhouette_with(tetromino_t* const restrict out_tetro_des, const tetromino_t* restrict tetro_src, block_wprint_t init_block_wprint)
 {
     debug();
 
@@ -46,6 +46,13 @@ void update_tetromino_silhouette(tetromino_t* const restrict out_tetro_des, cons
     out_tetro_des->block.wprint = init_block_wprint;
     out_tetro_des->clean_wprint = BLOCK_WPRINT_WHITE_LARGE_SQUARE;
     // out_tetro_des->prev_drawn = NULL;
+}
+
+void update_tetromino_silhouette(tetromino_t* const restrict out_tetro_des, const tetromino_t* restrict tetro_src)
+{
+    debug();
+
+    update_tetromino_silhouette_with(out_tetro_des, tetro_src, BLOCK_WPRINT_BLACK_SQUARE_BUTTON);
 }
 
 void update_tetromino_silhouette_dir_pos(tetromino_t* const restrict out_tetro_des, const tetromino_t* restrict tetro_src, const board_t* board)

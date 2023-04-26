@@ -164,12 +164,12 @@ void* run_tetris_play_single_mode(void* arg)
             /* Also be inited with init() */
             .board = {
                 /* Also should be inited with init() */
-                .block_corner_top_left = BLOCK_WPRINT_BLACK_SQUARE_BUTTON,
-                .block_corner_top_right = BLOCK_WPRINT_BLACK_SQUARE_BUTTON,
-                .block_corner_bot_left = BLOCK_WPRINT_BLACK_SQUARE_BUTTON,
-                .block_corner_bot_right = BLOCK_WPRINT_BLACK_SQUARE_BUTTON,
-                .block_ver_line = BLOCK_WPRINT_BLACK_SQUARE_BUTTON,
-                .block_hor_line = BLOCK_WPRINT_BLACK_SQUARE_BUTTON,
+                .block_corner_top_left = BLOCK_WPRINT_BLACK_LARGE_SQUARE,
+                .block_corner_top_right = BLOCK_WPRINT_BLACK_LARGE_SQUARE,
+                .block_corner_bot_left = BLOCK_WPRINT_BLACK_LARGE_SQUARE,
+                .block_corner_bot_right = BLOCK_WPRINT_BLACK_LARGE_SQUARE,
+                .block_ver_line = BLOCK_WPRINT_BLACK_LARGE_SQUARE,
+                .block_hor_line = BLOCK_WPRINT_BLACK_LARGE_SQUARE,
                 .block_inner = BLOCK_WPRINT_WHITE_LARGE_SQUARE,
                 .block_skyline = BLOCK_WPRINT_SKYLINE,
                 .block_sky = BLOCK_WPRINT_NIGHTSKY,

@@ -36,7 +36,7 @@ static void clear_filled_lines(board_t* const out_board)
 {
     debug();
 
-    static const double S_CLEAR_BOARD_INTERVAL_SEC = 0.03;
+    static const float S_CLEAR_BOARD_INTERVAL_SEC = 0.015f;
     static int s_que[4];
     int end = 0;
     /* Check full lines */
@@ -54,13 +54,13 @@ static void clear_filled_lines(board_t* const out_board)
     /* Reflect them visually */
     traverse_inner_col(j, out_board)
     {
-        nanosleep_chrono(TO_NSEC(S_CLEAR_BOARD_INTERVAL_SEC));
         for (int ptr = 0; ptr < end; ++ptr) {
             int i = s_que[ptr];
             set_block_each(&out_board->grid[i][j], BLOCK_NATURE_EMPTY, BLOCK_WPRINT_WHITE_LARGE_SQUARE);
             pos_int_t pos_wprint = get_intpos_intwprint(create_posint(out_board->pos.x + i, out_board->pos.y + j));
             wdraw_unit_matrix_at_r(out_board->grid[i][j].wprint, pos_wprint.x, pos_wprint.y);
         }
+        nanosleep_chrono(TO_NSEC(S_CLEAR_BOARD_INTERVAL_SEC));
         fflush(stdout);
     }
     /* Fill empty lines */

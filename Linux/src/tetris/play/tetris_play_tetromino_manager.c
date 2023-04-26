@@ -165,7 +165,7 @@ tetromino_status_t update_tetromino_manager(tetromino_manager_t* const out_man, 
     }
     if (res == 1) {
         init_tetromino_silhouette(&out_man->tetro_silhou);
-        update_tetromino_silhouette(&out_man->tetro_silhou, out_man->tetro_main, BLOCK_WPRINT_LIGHT_LARGE_SQUARE);
+        update_tetromino_silhouette(&out_man->tetro_silhou, out_man->tetro_main);
     }
     return try_move_down_tetromino_deltatime_r(&out_man->board, out_man->tetro_main, delta_time);
 }
@@ -205,7 +205,7 @@ tetromino_status_t try_swap_tetromino_hold(tetromino_manager_t* const out_man)
         create_pos(TETRIS_PLAY_TETROMINO_INIT_POS_X, TETRIS_PLAY_TETROMINO_INIT_POS_Y));
     out_man->tetro_main->clean_wprint = BLOCK_WPRINT_EMPTY;
 
-    update_tetromino_silhouette(&out_man->tetro_silhou, out_man->tetro_main, BLOCK_WPRINT_LIGHT_LARGE_SQUARE);
+    update_tetromino_silhouette(&out_man->tetro_silhou, out_man->tetro_main);
     wdraw_a_tetromino_with_silhouette(out_man->tetro_main, &out_man->tetro_silhou, &out_man->board);
 
     out_man->tetro_main->clean_wprint = BLOCK_WPRINT_WHITE_LARGE_SQUARE;
