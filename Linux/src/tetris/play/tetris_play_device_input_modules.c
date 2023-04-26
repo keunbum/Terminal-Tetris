@@ -54,7 +54,7 @@ void* mainfunc_device_input_modules(void* arg)
         join_thread_module(s_modules + i);
     }
 
-    cleanup_device_input_modules(s_modules);
+    pthread_cleanup_pop(1);
 
     return NULL;
 }

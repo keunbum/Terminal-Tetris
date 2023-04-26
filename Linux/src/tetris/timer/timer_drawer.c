@@ -109,7 +109,7 @@ void* run_timer_drawer_with(void* arg)
 
     doit_drawer_main_logic(timer, &timer_drawer->draw_module);
 
-    cleanup_timer_drawer_module(timer);
+    pthread_cleanup_pop(1);
     
     return NULL;
 }

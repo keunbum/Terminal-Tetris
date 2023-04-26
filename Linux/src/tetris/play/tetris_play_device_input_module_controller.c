@@ -95,5 +95,7 @@ void* mainfunc_device_input_controller(void* arg)
         unlock_tetromino_manager(&play_manager->tetro_man);
     }
 
+    pthread_cleanup_pop(1);
+
     return NULL;
 }

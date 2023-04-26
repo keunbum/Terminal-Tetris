@@ -99,6 +99,8 @@ void* mainfunc_device_input_module_keyboard(void* arg)
         process_tetromino_try_status(res, play_manager);
         unlock_tetromino_manager(&play_manager->tetro_man);
     }
+    
+    pthread_cleanup_pop(1);
 
     return NULL;
 }
