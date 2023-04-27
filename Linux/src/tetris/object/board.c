@@ -70,7 +70,7 @@ void wdraw_board(const board_t* board)
     my_assert(board != NULL);
 
     cursor_lock();
-    wgotoxy(board->pos_wprint.x, board->pos_wprint.y);
+    wgotoxy(board->next_pos_wprint.x, board->next_pos_wprint.y);
     for (int i = 0; i < board->height; ++i) {
         static wchar_t wbuf[TETRIS_PLAY_BOARD_WIDTH + 1];
         for (int j = 0; j < board->width; ++j) {

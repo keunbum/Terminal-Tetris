@@ -32,7 +32,7 @@ static inline void petrify_tetromino(board_t* const out_board, const tetromino_t
     }
 }
 
-static void clear_filled_lines(board_t* const out_board)
+static int clear_filled_lines(board_t* const out_board)
 {
     debug();
 
@@ -49,7 +49,7 @@ static void clear_filled_lines(board_t* const out_board)
         }
     }
     if (end == 0) {
-        return;
+        return 0;
     }
     /* Reflect them visually */
     traverse_inner_col(j, out_board)
@@ -57,8 +57,8 @@ static void clear_filled_lines(board_t* const out_board)
         for (int ptr = 0; ptr < end; ++ptr) {
             int i = s_que[ptr];
             set_block_each(&out_board->grid[i][j], BLOCK_NATURE_EMPTY, BLOCK_WPRINT_WHITE_LARGE_SQUARE);
-            pos_int_t pos_wprint = get_intpos_intwprint(create_posint(out_board->pos.x + i, out_board->pos.y + j));
-            wdraw_unit_matrix_at_r(out_board->grid[i][j].wprint, pos_wprint.x, pos_wprint.y);
+            pos_int_t next_pos_wprint = get_intpos_intwprint(create_posint(out_board->pos.x + i, out_board->pos.y + j));
+            wdraw_unit_matrix_at_r(out_board->grid[i][j].wprint, next_pos_wprint.x, next_pos_wprint.y);
         }
         nanosleep_chrono(TO_NSEC(S_CLEAR_BOARD_INTERVAL_SEC));
         fflush(stdout);
@@ -87,6 +87,7 @@ static void clear_filled_lines(board_t* const out_board)
         }
     }
     wdraw_board(out_board);
+    return end;
     fflush(stdout);
 }
 
@@ -109,6 +110,7 @@ skyline_return_line:
     return first_pos_x <= board->skyline_pos.x;
 }
 
+
 void process_tetromino_try_status(tetromino_status_t status, tetris_play_manager_t* const out_play_manager)
 {
     // debug();
@@ -122,15 +124,13 @@ void process_tetromino_try_status(tetromino_status_t status, tetris_play_manager
     case TETROMINO_STATUS_ONTHEGROUND:
         petrify_tetromino(&out_play_manager->tetro_man.board, out_play_manager->tetro_man.tetro_main);
         render_out(out_play_manager);
-        clear_filled_lines(&out_play_manager->tetro_man.board);
+        int lines = clear_filled_lines(&out_play_manager->tetro_man.board);
+        inc_cleared_lines(&out_play_manager->tetro_man.stat, lines);
+        update_tetromino_manager_info(&out_play_manager->tetro_man, lines);
         if (is_at_skyline(&out_play_manager->tetro_man.board, out_play_manager->tetro_man.tetro_main)) {
             out_play_manager->status = TETRIS_PLAY_STATUS_GAMEOVER;
         }
-        cleanup_tetromino_free(out_play_manager->tetro_man.tetro_main);
-        out_play_manager->tetro_man.is_swaped_once = false;
-        out_play_manager->tetro_man.tetromino_init_velocity += out_play_manager->tetro_man.unit_velocity;
-        out_play_manager->tetro_man.tetro_main = NULL;
-        cleanup_tetromino_silhouette(&out_play_manager->tetro_man.tetro_silhou);
+        cleanup_tetromino_ontheground(&out_play_manager->tetro_man);
         break;
     case TETROMINO_STATUS_ONTHEWALL:
         /* intentional fallthrough */

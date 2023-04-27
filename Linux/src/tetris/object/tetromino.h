@@ -31,7 +31,7 @@ struct tetromino {
     symbol_id_t symbol_id;
     dir_t dir;
     pos_t pos;
-    pos_t pos_wprint;
+    pos_t next_pos_wprint;
     velocity_t velocity;
     block_t block;
     block_wprint_t clean_wprint;
@@ -76,7 +76,7 @@ static inline tetromino_symbol_t get_tetromino_symbol(symbol_id_t sid, dir_t dir
 static inline void update_tetromino_pos(tetromino_t* const out_tetro, pos_t pos)
 {
     out_tetro->pos = pos;
-    out_tetro->pos_wprint = get_pos_wprint(out_tetro->pos);
+    out_tetro->next_pos_wprint = get_pos_wprint(out_tetro->pos);
 }
 
 static inline tetromino_t* create_tetromino_empty_malloc(void)
@@ -90,7 +90,7 @@ void save_tetromino_tobedrawn(tetromino_t* const out_tetro);
 void cleanup_tetromino_free(tetromino_t* const out_tetro);
 
 tetromino_t* init_tetromino_malloc(int id, symbol_id_t symbol_id, dir_t dir, pos_t pos, velocity_t velocity, block_t block, block_wprint_t clean_wprint, tetromino_t* prev_drawn);
-tetromino_t* init_tetromino_poswprint_malloc(int id, symbol_id_t symbol_id, dir_t dir, pos_t pos_wprint, velocity_t velocity, block_t block, block_wprint_t clean_wprint, tetromino_t* prev_drawn);
+tetromino_t* init_tetromino_poswprint_malloc(int id, symbol_id_t symbol_id, dir_t dir, pos_t next_pos_wprint, velocity_t velocity, block_t block, block_wprint_t clean_wprint, tetromino_t* prev_drawn);
 
 #ifdef TETRIS_DEBUG
 static inline void debug_tetromino(const tetromino_t* tetro)

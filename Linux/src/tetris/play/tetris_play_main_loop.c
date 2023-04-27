@@ -41,11 +41,7 @@ void* mainfunc_game_main_loop(void* arg)
         get_chrono_time(&start_time);
 
         ++frame_cnt;
-        if (acc_time >= 1.0f) {
-            wprintf_at_r(2, 50, L"fps: %d\n", frame_cnt);
-            acc_time = 0.0f;
-            frame_cnt = 0;
-        }
+        wdraw_fps(&frame_cnt, &acc_time);
 
         play_manager->game_delta_time = prev_frame_time * TETRIS_PLAY_GAME_DELTA_TIME_FACTOR;
 
@@ -87,11 +83,7 @@ void* new_mainfunc_game_main_loop(void* arg)
         get_chrono_time(&start_time);
 
         ++frame_cnt;
-        if (acc_time >= 1.0f) {
-            wprintf_at_r(2, 50, L"fps: %d\n", frame_cnt);
-            acc_time = 0.0f;
-            frame_cnt = 0;
-        }
+        wdraw_fps(&frame_cnt, &acc_time);
 
         play_manager->game_delta_time = prev_frame_time * TETRIS_PLAY_GAME_DELTA_TIME_FACTOR;
         new_update_gameworld(play_manager);
@@ -100,7 +92,7 @@ void* new_mainfunc_game_main_loop(void* arg)
             tetromino_status_t res = new_process_keyboard_event(&play_manager->input, &play_manager->tetro_man);
             process_tetromino_try_status(res, play_manager);
         } else {
-            __snseconds_t sleep_time = max(0, TO_NSEC(TETRIS_PLAY_FRAME_TIME) - get_elapsed_time_nsec(&start_time));
+            __snseconds_t sleep_time = max(0L, TO_NSEC(TETRIS_PLAY_FRAME_TIME) - get_elapsed_time_nsec(&start_time));
             nanosleep_chrono(sleep_time);
         }
 

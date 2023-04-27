@@ -3,16 +3,15 @@
 #include "pthread_macro.h"
 #include "tetris/scene/tetris_play_renderer.h"
 #include "tetris_play_update_tetromino_status.h"
-#include "tetris_play_tetromino_silhouette.h"
 
 static void set_tetro_queue_default(tetromino_t* const out_tetro, int i, pos_int_t start_pos_wprint)
 {
     static const int S_POS_X_INTERVAL = 4;
 
-    pos_int_t pos_wprint;
-    pos_wprint.x = start_pos_wprint.x + (i + 1) * S_POS_X_INTERVAL - 2;
-    pos_wprint.y = start_pos_wprint.y + 5;
-    out_tetro->pos_wprint = get_pos(pos_wprint);
+    pos_int_t next_pos_wprint;
+    next_pos_wprint.x = start_pos_wprint.x + (i + 1) * S_POS_X_INTERVAL - 2;
+    next_pos_wprint.y = start_pos_wprint.y + 5;
+    out_tetro->next_pos_wprint = get_pos(next_pos_wprint);
 }
 
 static void callback_wdraw_tetromino_manager_queue(void* const out_void, int i, void* arg)
@@ -28,8 +27,8 @@ static void wdraw_tetromino_manager_queue(const tetromino_manager_t* man)
 {
     debug();
 
-    wdraw_frame(&man->frame, 6);
-    traverse_queue(&man->que, callback_wdraw_tetromino_manager_queue, (void*)&man->pos_wprint);
+    wdraw_frame(&man->next_frame, 6);
+    traverse_queue(&man->que, callback_wdraw_tetromino_manager_queue, (void*)&man->next_pos_wprint);
 }
 
 static void wdraw_tetromino_manager_hold_frame(const tetromino_manager_t* man)
@@ -55,7 +54,7 @@ static void spawn_tetromino(tetromino_manager_t* const out_man, tetromino_t** co
     (*target_tetro)->velocity = init_velocity;
     (*target_tetro)->clean_wprint = BLOCK_WPRINT_WHITE_LARGE_SQUARE;
     push_queue(&out_man->que, create_tetromino_random_malloc(&out_man->tetro_gen, create_pos_empty(), 0, BLOCK_WPRINT_EMPTY));
-    traverse_queue(&out_man->que, callback_spawn_tetromino_manager_tetro_main, (void*)&out_man->pos_wprint);
+    traverse_queue(&out_man->que, callback_spawn_tetromino_manager_tetro_main, (void*)&out_man->next_pos_wprint);
 }
 
 static void swap_main_hold(tetromino_manager_t* const out_man)
@@ -83,8 +82,8 @@ void init_tetromino_manager(tetromino_manager_t* const out_man, int que_max_size
 
     my_assert(out_man != NULL);
 
-    out_man->pos_wprint.x = TETRIS_PLAY_TETROMINO_MANAGER_POS_X_WPRINT;
-    out_man->pos_wprint.y = TETRIS_PLAY_TETROMINO_MANAGER_POS_Y_WPRINT;
+    out_man->next_pos_wprint.x = TETRIS_PLAY_TETROMINO_MANAGER_POS_X_WPRINT;
+    out_man->next_pos_wprint.y = TETRIS_PLAY_TETROMINO_MANAGER_POS_Y_WPRINT;
     out_man->hold_pos.x = TETRIS_PLAY_TETROMINO_MANAGER_HOLD_FRAME_POS_X + 1;
     out_man->hold_pos.y = TETRIS_PLAY_TETROMINO_MANAGER_HOLD_FRAME_POS_Y + 2;
 
@@ -102,10 +101,10 @@ void init_tetromino_manager(tetromino_manager_t* const out_man, int que_max_size
     while (out_man->que.cnt < TETROMINO_MANAGER_QUEUE_FULL_SIZE) {
         push_queue(&out_man->que, (void*)create_tetromino_random_malloc(&out_man->tetro_gen, create_pos(0, 0), 0, BLOCK_WPRINT_EMPTY));
     }
-    init_frame(&out_man->frame,
+    init_frame(&out_man->next_frame,
         TETRIS_PLAY_TETROMINO_MANAGER_QUEUE_FRAME_HEIGHT_WPRINT,
         TETRIS_PLAY_TETROMINO_MANAGER_QUEUE_FRAME_WIDTH_WPRINT,
-        out_man->pos_wprint,
+        out_man->next_pos_wprint,
         L"NEXT",
         UNIT_MATRIX_HOR_LINE,
         UNIT_MATRIX_VER_LINE,
@@ -135,7 +134,7 @@ void cleanup_tetromino_manager_free(tetromino_manager_t* const out_man)
 
     cleanup_tetromino_manager_lock(out_man);
     cleanup_frame(&out_man->hold_frame);
-    cleanup_frame(&out_man->frame);
+    cleanup_frame(&out_man->next_frame);
     while (!is_queue_empty(&out_man->que)) {
         tetromino_t* tetro = (tetromino_t*)pop_queue(&out_man->que);
         cleanup_tetromino_free(tetro);
@@ -177,6 +176,7 @@ void wdraw_tetromino_manager(const tetromino_manager_t* man)
     wdraw_tetris_play_statistics(&man->stat);
     wdraw_tetromino_manager_queue(man);
     wdraw_tetromino_manager_hold_frame(man);
+    wdraw_tetromino_speed(man);
 }
 
 tetromino_status_t try_swap_tetromino_hold(tetromino_manager_t* const out_man)
@@ -195,7 +195,7 @@ tetromino_status_t try_swap_tetromino_hold(tetromino_manager_t* const out_man)
     static const int S_X_OFFSET[] = {-1, -1, 0, 0, 0, 0, 0};
     static const int S_Y_OFFSET[] = {0, 0, 1, 1, 1, 1, 1};
     out_man->tetro_hold->pos = create_pos(out_man->hold_pos.x + S_X_OFFSET[out_man->tetro_hold->symbol_id], out_man->hold_pos.y + S_Y_OFFSET[out_man->tetro_hold->symbol_id]);
-    out_man->tetro_hold->pos_wprint = out_man->tetro_hold->pos;
+    out_man->tetro_hold->next_pos_wprint = out_man->tetro_hold->pos;
     out_man->tetro_hold->dir = TETROMINO_INIT_DIR;
     out_man->tetro_hold->clean_wprint = BLOCK_WPRINT_EMPTY;
 

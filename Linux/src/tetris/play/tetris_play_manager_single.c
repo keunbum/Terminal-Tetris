@@ -31,15 +31,15 @@ static void ready_getset_go(const tetris_play_manager_t* play_manager)
     for (int cur_sec = play_manager->ready_getset_go_sec; cur_sec >= 0; --cur_sec) {
         struct timespec start_time;
         get_chrono_time(&start_time);
-        const pos_t pos_wprint = {
-            play_manager->pos_wprint.x + 2,
-            play_manager->tetro_man.board.pos_wprint.y + play_manager->tetro_man.board.width - 2,
+        const pos_t next_pos_wprint = {
+            play_manager->next_pos_wprint.x + 2,
+            play_manager->tetro_man.board.next_pos_wprint.y + play_manager->tetro_man.board.width - 2,
         };
         if (cur_sec == 0) {
-            wdraw_digital_digit5_at_r(G_DIGITAL_DIGIT5_EMPTY, (int)pos_wprint.x, (int)pos_wprint.y);
+            wdraw_digital_digit5_at_r(G_DIGITAL_DIGIT5_EMPTY, (int)next_pos_wprint.x, (int)next_pos_wprint.y);
             break;
         }
-        wdraw_digital_digit5_at_r(G_DIGITAL_DIGIT5S[cur_sec], (int)pos_wprint.x, (int)pos_wprint.y);
+        wdraw_digital_digit5_at_r(G_DIGITAL_DIGIT5S[cur_sec], (int)next_pos_wprint.x, (int)next_pos_wprint.y);
         /* Of course, it's not exactly 1 second. */
         /* However, it is a bit cumbersome to write a realtime timer haha; */
         nanosleep_chrono(TO_NSEC(1) - get_elapsed_time_nsec(&start_time));
@@ -84,7 +84,7 @@ static void init_tetris_play_objects(tetris_play_manager_t* const out_play_manag
 
     init_frame(&out_play_manager->screen_frame,
         TETRIS_PLAY_SINGLE_SCREEN_HEIGHT_WPRINT, TETRIS_PLAY_SINGLE_SCREEN_WIDTH_WPRINT,
-        out_play_manager->pos_wprint,
+        out_play_manager->next_pos_wprint,
         NULL,
         UNIT_MATRIX_HOR_LINE,
         UNIT_MATRIX_VER_LINE,
@@ -163,7 +163,7 @@ void* run_tetris_play_single_mode(void* arg)
     static tetris_play_manager_t s_play_manager = {
         .ready_getset_go_sec = TETRIS_PLAY_TIMEINTERVAL_BEFORESTART_SEC,
         .tetromino_queue_max_size = TETROMINO_MANAGER_QUEUE_MAX_SIZE,
-        .pos_wprint = { TETRIS_PLAY_SINGLE_SCREEN_POS_X_WPRINT, TETRIS_PLAY_SINGLE_SCREEN_POS_Y_WPRINT },
+        .next_pos_wprint = { TETRIS_PLAY_SINGLE_SCREEN_POS_X_WPRINT, TETRIS_PLAY_SINGLE_SCREEN_POS_Y_WPRINT },
         .play_mode = TETRIS_PLAY_MODE_SINGLE,
         .status = TETRIS_PLAY_STATUS_RUNNING,
         .game_delta_time = 0.0,
@@ -185,7 +185,7 @@ void* run_tetris_play_single_mode(void* arg)
                 // .block_sky = BLOCK_WPRINT_NIGHTSKY,
 
                 .pos = { TETRIS_PLAY_BOARD_POS_X, TETRIS_PLAY_BOARD_POS_Y },
-                .pos_wprint = { TETRIS_PLAY_BOARD_POS_X_WPRINT, TETRIS_PLAY_BOARD_POS_Y_WPRINT },
+                .next_pos_wprint = { TETRIS_PLAY_BOARD_POS_X_WPRINT, TETRIS_PLAY_BOARD_POS_Y_WPRINT },
                 .frame_pos = { BOARD_FRAME_POS_X, BOARD_FRAME_POS_Y },
                 .frame_pos_wprint = { BOARD_FRAME_POS_X_WPRINT, BOARD_FRAME_POS_Y_WPRINT },
                 .skyline_pos = { TETRIS_PLAY_SKYLINE_POS_X, BOARD_FRAME_POS_Y },
