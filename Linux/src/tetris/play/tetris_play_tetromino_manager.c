@@ -8,10 +8,10 @@ static void set_tetro_queue_default(tetromino_t* const out_tetro, int i, pos_int
 {
     static const int S_POS_X_INTERVAL = 4;
 
-    pos_int_t next_pos_wprint;
-    next_pos_wprint.x = start_pos_wprint.x + (i + 1) * S_POS_X_INTERVAL - 2;
-    next_pos_wprint.y = start_pos_wprint.y + 5;
-    out_tetro->next_pos_wprint = get_pos(next_pos_wprint);
+    pos_int_t pos_wprint;
+    pos_wprint.x = start_pos_wprint.x + (i + 1) * S_POS_X_INTERVAL - 2;
+    pos_wprint.y = start_pos_wprint.y + 5;
+    out_tetro->pos_wprint = get_pos(pos_wprint);
 }
 
 static void callback_wdraw_tetromino_manager_queue(void* const out_void, int i, void* arg)
@@ -195,7 +195,7 @@ tetromino_status_t try_swap_tetromino_hold(tetromino_manager_t* const out_man)
     static const int S_X_OFFSET[] = {-1, -1, 0, 0, 0, 0, 0};
     static const int S_Y_OFFSET[] = {0, 0, 1, 1, 1, 1, 1};
     out_man->tetro_hold->pos = create_pos(out_man->hold_pos.x + S_X_OFFSET[out_man->tetro_hold->symbol_id], out_man->hold_pos.y + S_Y_OFFSET[out_man->tetro_hold->symbol_id]);
-    out_man->tetro_hold->next_pos_wprint = out_man->tetro_hold->pos;
+    out_man->tetro_hold->pos_wprint = out_man->tetro_hold->pos;
     out_man->tetro_hold->dir = TETROMINO_INIT_DIR;
     out_man->tetro_hold->clean_wprint = BLOCK_WPRINT_EMPTY;
 

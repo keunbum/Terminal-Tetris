@@ -31,7 +31,7 @@ typedef enum {
 typedef struct {
     const int ready_getset_go_sec;
     const int tetromino_queue_max_size;
-    const pos_int_t next_pos_wprint;
+    const pos_int_t pos_wprint;
 
     tetris_play_mode_t play_mode;
     tetris_play_status_t status;

@@ -7,7 +7,7 @@
 #include "tetris_play_tetromino_generator.h"
 
 typedef struct {
-    pos_int_t next_pos_wprint;
+    pos_int_t pos_wprint;
     pos_int_t tetromino_pos_wprint;
     int interval_height;
     size_t tetromino_cleared_lines;

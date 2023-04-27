@@ -9,7 +9,7 @@
 #include "tetris_play_scene.h"
 #include "tetris/play/tetris_play_tetromino_silhouette.h"
 
-static void render_a_tetromino_poswprint(const tetromino_t* tetro, pos_int_t next_pos_wprint)
+static void render_a_tetromino_poswprint(const tetromino_t* tetro, pos_int_t pos_wprint)
 {
     // debug();
 
@@ -19,11 +19,11 @@ static void render_a_tetromino_poswprint(const tetromino_t* tetro, pos_int_t nex
     if (tetro->block.wprint == BLOCK_WPRINT_EMPTY) {
         traverse_symbol(i, j, symbol) {
             static wchar_t buf[3] = {BLOCK_WPRINT_EMPTY, BLOCK_WPRINT_EMPTY, L'\0'};
-            wdraw_row_at(buf, next_pos_wprint.x + i, next_pos_wprint.y + 2 * j);
+            wdraw_row_at(buf, pos_wprint.x + i, pos_wprint.y + 2 * j);
         }
     } else {
         traverse_symbol(i, j, symbol) {
-            wdraw_unit_matrix_at(tetro->block.wprint, next_pos_wprint.x + i, next_pos_wprint.y + 2 * j);
+            wdraw_unit_matrix_at(tetro->block.wprint, pos_wprint.x + i, pos_wprint.y + 2 * j);
         }
     }
     cursor_unlock();
@@ -50,7 +50,7 @@ static void render_a_skyline(const board_t* board)
     int i = TETRIS_PLAY_SKYLINE_POS_X - TETRIS_PLAY_BOARD_POS_X;
     my_assert(1 <= i && i <= board->height - 2);
     cursor_lock();
-    wgotoxy((int)board->next_pos_wprint.x + i, (int)board->next_pos_wprint.y);
+    wgotoxy((int)board->pos_wprint.x + i, (int)board->pos_wprint.y);
     for (int step = 0; step < 1; ++step) {
         static wchar_t buf[TETRIS_PLAY_BOARD_WIDTH + 1];
         for (int j = 0; j < board->width; ++j) {
@@ -70,9 +70,9 @@ void wdraw_a_tetromino(tetromino_t* const out_tetro)
         return;
     }
     if (!is_first_drawn_tetromino(out_tetro)) {
-        render_a_tetromino_poswprint(out_tetro->prev_drawn, get_posint(out_tetro->prev_drawn->next_pos_wprint));
+        render_a_tetromino_poswprint(out_tetro->prev_drawn, get_posint(out_tetro->prev_drawn->pos_wprint));
     }
-    render_a_tetromino_poswprint(out_tetro, get_posint(out_tetro->next_pos_wprint));
+    render_a_tetromino_poswprint(out_tetro, get_posint(out_tetro->pos_wprint));
     save_tetromino_tobedrawn(out_tetro);
 }
 

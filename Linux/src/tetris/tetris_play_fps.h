@@ -17,7 +17,7 @@ typedef float game_time_t;
 static inline void wdraw_fps(int* out_frame, game_time_t* out_time)
 {
    if (*out_time >= 1.0f) {
-      wprintf_at_r(FRAME_DRAW_POS_X_WPRINT, FRAME_DRAW_POS_Y_WPRINT, L"FPS: %.2f\n", *out_frame / *out_time);
+      wprintf_at_r(FRAME_DRAW_POS_X_WPRINT, FRAME_DRAW_POS_Y_WPRINT, L"  FPS: %.2f\n", *out_frame / *out_time);
       *out_time = 0.0f;
       *out_frame = 0;
    }   

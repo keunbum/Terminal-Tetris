@@ -45,7 +45,7 @@ void init_tetris_play_statistics_malloc(tetris_play_statistic_t* const out_stat,
 {
     debug();
     
-    out_stat->next_pos_wprint = create_posint(TETRIS_PLAY_STATISTIC_POS_X_WPRINT, TETRIS_PLAY_STATISTIC_POS_Y_WPRINT);
+    out_stat->pos_wprint = create_posint(TETRIS_PLAY_STATISTIC_POS_X_WPRINT, TETRIS_PLAY_STATISTIC_POS_Y_WPRINT);
     out_stat->tetromino_pos_wprint = create_posint(TETRIS_PLAY_STATISTIC_TETROMINO_POS_X_WPRINT, TETRIS_PLAY_STATISTIC_TETROMINO_POS_Y_WPRINT);
     out_stat->interval_height = TETRIS_PLAY_STATISTIC_INTERVAL_HEIGHT;
     out_stat->tetromino_cleared_lines = 0;
@@ -54,8 +54,8 @@ void init_tetris_play_statistics_malloc(tetris_play_statistic_t* const out_stat,
         static const int S_TETRO_X_CORRECTION[TETROMINO_NUM_OF_KINDS] = { +0, -1, +0, +0, +0, +0, +0 };
         const int each_pos_x_wprint = out_stat->tetromino_pos_wprint.x + (symbol_id + 1) * out_stat->interval_height + S_TETRO_X_CORRECTION[symbol_id];
         const int each_pos_y_wprint = out_stat->tetromino_pos_wprint.y + 1;
-        pos_t next_pos_wprint = { (pos_e_t)each_pos_x_wprint, (pos_e_t)each_pos_y_wprint };
-        out_stat->tetrominos[symbol_id] = create_tetromino_symbol_poswprint_malloc(out_gen, symbol_id, next_pos_wprint, BLOCK_WPRINT_EMPTY);
+        pos_t pos_wprint = { (pos_e_t)each_pos_x_wprint, (pos_e_t)each_pos_y_wprint };
+        out_stat->tetrominos[symbol_id] = create_tetromino_symbol_poswprint_malloc(out_gen, symbol_id, pos_wprint, BLOCK_WPRINT_EMPTY);
     }
 
     for (int i = 0; i < TETROMINO_NUM_OF_KINDS; ++i) {
@@ -64,7 +64,7 @@ void init_tetris_play_statistics_malloc(tetris_play_statistic_t* const out_stat,
 
     init_frame(&out_stat->next_frame,
         TETRIS_PLAY_STATISTIC_FRAME_HEIGHT, TETRIS_PLAY_STATISTIC_FRAME_WIDTH,
-        out_stat->next_pos_wprint,
+        out_stat->pos_wprint,
         L"STATISTICS",
         UNIT_MATRIX_HOR_LINE,
         UNIT_MATRIX_VER_LINE,

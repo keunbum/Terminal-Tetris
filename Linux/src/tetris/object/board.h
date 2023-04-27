@@ -55,7 +55,7 @@ typedef struct {
     // const wchar_t block_sky;
 
     const pos_int_t pos;
-    const pos_int_t next_pos_wprint;
+    const pos_int_t pos_wprint;
     const pos_int_t frame_pos;
     const pos_int_t frame_pos_wprint;
     const pos_int_t skyline_pos;
