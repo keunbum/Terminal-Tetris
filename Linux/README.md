@@ -111,6 +111,18 @@ Xbox Controller 테스트.
 
 </details>
 
+<details><summary>2023.04.27</summary>
+
+https://youtu.be/dU2VdnSt04k
+
+실루엣 및 보조 HUD 구현
+
+계속 눌림이 좀 아쉬움.  
+반응 속도가 느린 게 프로그램 문제인지, 가상 머신 그래픽 한계인지는 아직 불분명.  
+터미널 출력의 한계일 수도 있고.
+
+</details>
+
 
 
 ---
