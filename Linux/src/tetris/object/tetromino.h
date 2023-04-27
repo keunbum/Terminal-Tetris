@@ -43,15 +43,15 @@ extern const tetromino_symbol_t G_TETROMINO_SYMBOLS[TETROMINO_NUM_OF_KINDS][DIR_
 
 /* -----------------------------------------------------------------------------------------*/
 
-static inline bool is_empty_block(tetromino_symbol_t m, int pos)
+static inline bool is_full_block(tetromino_symbol_t m, int pos)
 {
-    return ((m >> pos) & 1) == 0;
+    return (m >> pos) & 1;
 }
 
 #define traverse_symbol(i, j, symbol) \
     for (int i = 0; i < 4; ++i)       \
         for (int j = 0; j < 4; ++j)   \
-            if (!is_empty_block(symbol, i * 4 + j))
+            if (is_full_block(symbol, i * 4 + j))
 
 static inline bool is_first_drawn_tetromino(const tetromino_t* tetro)
 {

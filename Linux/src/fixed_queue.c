@@ -1,4 +1,5 @@
 #include <stdlib.h>
+#include <assert.h>
 
 #include "fixed_queue.h"
 
@@ -7,16 +8,16 @@ void traverse_queue(const fixed_queue_t* que, void (*func)(void* const, int, voi
     size_t ptr = que->beg;
     for (int i = 0; i < (int)que->cnt; ++i) {
         func(que->pa[ptr], i, arg);
-        if (++ptr == que->max_size) {
-            ptr = 0;
-        }
+        ptr = (ptr + 1) & (que->max_size - 1);
+        // if (++ptr == que->max_size) {
+        //     ptr = 0;
+        // }
     }
 }
 
 void init_queue_malloc(fixed_queue_t* const out_que, int max_size)
 {
     debug();
-    
     out_que->max_size = max_size;
     out_que->beg = 0;
     out_que->end = 0;

@@ -18,9 +18,7 @@ static void render_a_tetromino_poswprint(const tetromino_t* tetro, pos_int_t pos
     tetromino_symbol_t symbol = get_tetromino_symbol(tetro->symbol_id, tetro->dir);
     if (tetro->block.wprint == BLOCK_WPRINT_EMPTY) {
         traverse_symbol(i, j, symbol) {
-            static wchar_t buf[3];
-            buf[0] = buf[1] = tetro->block.wprint;
-            buf[2] = L'\0';
+            static wchar_t buf[3] = {BLOCK_WPRINT_EMPTY, BLOCK_WPRINT_EMPTY, L'\0'};
             wdraw_row_at(buf, pos_wprint.x + i, pos_wprint.y + 2 * j);
         }
     } else {
@@ -93,11 +91,7 @@ void render_out(tetris_play_manager_t* const out_man)
 
     my_assert(out_man != NULL);
 
-    if (out_man->status != TETRIS_PLAY_STATUS_GAMEOVER) {
-        render_tetromino_manager_out(&out_man->tetro_man);
-        render_a_skyline(&out_man->tetro_man.board);
-    } else {
-        ewprintf("render_out(): out_man->status = TETRIS_PLAY_STATUS_GAMEOVER, so do nothing.\n");
-    }
+    render_tetromino_manager_out(&out_man->tetro_man);
+    render_a_skyline(&out_man->tetro_man.board);
     fflush(stdout);
 }

@@ -99,7 +99,7 @@ void init_tetromino_manager(tetromino_manager_t* const out_man, int que_max_size
     init_tetromino_generator(&out_man->tetro_gen);
     init_tetris_play_statistics_malloc(&out_man->stat, &out_man->tetro_gen);
     init_queue_malloc(&out_man->que, que_max_size);
-    while (!is_queue_full(&out_man->que)) {
+    while (out_man->que.cnt < TETROMINO_MANAGER_QUEUE_FULL_SIZE) {
         push_queue(&out_man->que, (void*)create_tetromino_random_malloc(&out_man->tetro_gen, create_pos(0, 0), 0, BLOCK_WPRINT_EMPTY));
     }
     init_frame(&out_man->frame,

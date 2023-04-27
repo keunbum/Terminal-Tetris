@@ -70,50 +70,52 @@ void* mainfunc_game_main_loop(void* arg)
     return (void*)play_manager->status;
 }
 
-// void* new_mainfunc_game_main_loop(void* arg)
-// {
-//     debug();
+void* new_mainfunc_game_main_loop(void* arg)
+{
+    debug();
 
-//     tetris_play_manager_t* const play_manager = (tetris_play_manager_t*)arg;
-//     init_game_main_loop(play_manager);
+    tetris_play_manager_t* const play_manager = (tetris_play_manager_t*)arg;
+    init_game_main_loop(play_manager);
 
-//     game_time_t prev_frame_time = 0.0f;
-//     int frame_cnt = 0;
-//     game_time_t acc_time = 0.0f;
-//     while (play_manager->status == TETRIS_PLAY_STATUS_RUNNING) {
-//         struct timespec start_time;
-//         get_chrono_time(&start_time);
+    game_time_t prev_frame_time = 0.0f;
 
-//         ++frame_cnt;
-//         if (acc_time >= 1.0f) {
-//             wprintf_at_r(2, 50, L"fps: %d\n", frame_cnt);
-//             acc_time = 0.0f;
-//             frame_cnt = 0;
-//         }
+    int frame_cnt = 0;
+    game_time_t acc_time = 0.0f;
 
-//         if (new_read_device_input_event(&play_manager->input)) {
-//             tetromino_status_t res = process_keyboard_event(&play_manager->input, &play_manager->tetro_man);
-//             process_tetromino_try_status(res, play_manager);
-//         }
+    while (play_manager->status == TETRIS_PLAY_STATUS_RUNNING) {
+        struct timespec start_time;
+        get_chrono_time(&start_time);
 
-//         play_manager->game_delta_time = prev_frame_time * TETRIS_PLAY_GAME_DELTA_TIME_FACTOR;
-//         new_update_gameworld(play_manager);
+        ++frame_cnt;
+        if (acc_time >= 1.0f) {
+            wprintf_at_r(2, 50, L"fps: %d\n", frame_cnt);
+            acc_time = 0.0f;
+            frame_cnt = 0;
+        }
 
-//         __snseconds_t sleep_time = max(0, TO_NSEC(TETRIS_PLAY_FRAME_TIME) - get_elapsed_time_nsec(&start_time));
-//         nanosleep_chrono(sleep_time);
+        play_manager->game_delta_time = prev_frame_time * TETRIS_PLAY_GAME_DELTA_TIME_FACTOR;
+        new_update_gameworld(play_manager);
 
-//         prev_frame_time = get_elapsed_time_sec(&start_time);
-//         acc_time += prev_frame_time;
-//     }
+        if (new_read_device_input_event(&play_manager->input)) {
+            tetromino_status_t res = new_process_keyboard_event(&play_manager->input, &play_manager->tetro_man);
+            process_tetromino_try_status(res, play_manager);
+        } else {
+            __snseconds_t sleep_time = max(0, TO_NSEC(TETRIS_PLAY_FRAME_TIME) - get_elapsed_time_nsec(&start_time));
+            nanosleep_chrono(sleep_time);
+        }
 
-//     for (int i = 1; i < TETRIS_PLAY_SUBMODULE_NUM; ++i) {
-//         int res = pthread_cancel(play_manager->sub_modules[i].thread_id);
-//         if (res != 0) {
-//             handle_error_en("pthread_cancel() error", res);
-//         }
-//     }
+        prev_frame_time = get_elapsed_time_sec(&start_time);
+        acc_time += prev_frame_time;
+    }
 
-//     cleanup_game_main_loop(play_manager);
+    for (int i = 1; i < TETRIS_PLAY_SUBMODULE_NUM; ++i) {
+        int res = pthread_cancel(play_manager->sub_modules[i].thread_id);
+        if (res != 0) {
+            handle_error_en("pthread_cancel() error", res);
+        }
+    }
 
-//     return (void*)play_manager->status;
-// }
+    cleanup_game_main_loop(play_manager);
+
+    return (void*)play_manager->status;
+}

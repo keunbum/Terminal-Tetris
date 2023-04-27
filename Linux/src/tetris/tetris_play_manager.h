@@ -26,7 +26,7 @@ typedef enum {
     TETRIS_PLAY_STATUS_PAUSE,
 } tetris_play_status_t;
 
-#define TETRIS_PLAY_SUBMODULE_NUM (3)
+#define TETRIS_PLAY_SUBMODULE_NUM (2)
 
 typedef struct {
     const int ready_getset_go_sec;
@@ -40,7 +40,7 @@ typedef struct {
     frame_t screen_frame;
     tetromino_manager_t tetro_man;
     terminal_t terminal;
-    // device_input_t input;
+    device_input_t input;
 
     timer_drawer_t timer_drawer;
     thread_module_t sub_modules[TETRIS_PLAY_SUBMODULE_NUM];

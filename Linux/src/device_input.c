@@ -41,6 +41,6 @@ void read_device_input_event(device_input_t* const out_in)
 
 bool new_read_device_input_event(device_input_t* const out_in)
 {
-    const ssize_t expected_read_size = (ssize_t)sizeof(struct input_event);
-    return read(out_in->fd, &out_in->event, expected_read_size) == expected_read_size;
+    static const ssize_t s_expected_read_size = (ssize_t)sizeof(struct input_event);
+    return read(out_in->fd, &out_in->event, s_expected_read_size) == s_expected_read_size;
 }

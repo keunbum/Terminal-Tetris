@@ -22,6 +22,8 @@
 #include "tetris_play_manager_single.h"
 #include "tetris_play_update_world.h"
 
+#define BOARD_WPRINT_BLOCK BLOCK_WPRINT_BRICK
+
 static void ready_getset_go(const tetris_play_manager_t* play_manager)
 {
     debug();
@@ -92,26 +94,34 @@ static void init_tetris_play_objects(tetris_play_manager_t* const out_play_manag
         UNIT_MATRIX_CORNER_BOT_RIGHT);
     init_tetromino_manager(&out_play_manager->tetro_man, out_play_manager->tetromino_queue_max_size);
     init_terminal(&out_play_manager->terminal);
-    // init_device_input(&out_play_manager->input, DEVICE_INPUT_KEYBOARD, O_RDONLY | O_NONBLOCK);
     init_timer_drawer(&out_play_manager->timer_drawer, REALTIME_TIMER_SIG);
 }
 
 static void cleanup_tetris_play_objects(tetris_play_manager_t* const out_play_manager)
 {
-    // cleanup_device_input(&out_play_manager->input);
+    cleanup_device_input(&out_play_manager->input);
     cleanup_terminal(&out_play_manager->terminal);
     cleanup_tetromino_manager_free(&out_play_manager->tetro_man);
 }
 
-static void init_tetris_play_manager(tetris_play_manager_t* const out_play_manager)
+static void init_tetris_play_manager_before_start(tetris_play_manager_t* const out_play_manager)
 {
-    debug();
+    // debug();
 
     my_assert(out_play_manager != NULL);
 
     out_play_manager->status = TETRIS_PLAY_STATUS_RUNNING;
     init_tetris_play_objects(out_play_manager);
     load_tetris_play_scene(out_play_manager);
+}
+
+static void init_tetris_play_manager_after_start(tetris_play_manager_t* const out_play_manager)
+{
+    // debug();
+
+    my_assert(out_play_manager != NULL);
+
+    init_device_input(&out_play_manager->input, DEVICE_INPUT_KEYBOARD, O_RDONLY | O_NONBLOCK);
 }
 
 static void cleanup_tetris_play_manager(tetris_play_manager_t* const out_play_manager)
@@ -126,9 +136,9 @@ static tetris_play_cmd_t play_a_new_game(tetris_play_manager_t* const out_play_m
 {
     debug();
 
-    init_tetris_play_manager(out_play_manager);
-
+    init_tetris_play_manager_before_start(out_play_manager);
     ready_getset_go(out_play_manager);
+    init_tetris_play_manager_after_start(out_play_manager);
 
     if (run_tetris_play_modules_in_parallel(out_play_manager) == TETRIS_PLAY_STATUS_ERROR) {
         handle_error("run_tetris_play_modules_in_parallel() error");
@@ -164,15 +174,15 @@ void* run_tetris_play_single_mode(void* arg)
             /* Also be inited with init() */
             .board = {
                 /* Also should be inited with init() */
-                .block_corner_top_left = BLOCK_WPRINT_BLACK_LARGE_SQUARE,
-                .block_corner_top_right = BLOCK_WPRINT_BLACK_LARGE_SQUARE,
-                .block_corner_bot_left = BLOCK_WPRINT_BLACK_LARGE_SQUARE,
-                .block_corner_bot_right = BLOCK_WPRINT_BLACK_LARGE_SQUARE,
-                .block_ver_line = BLOCK_WPRINT_BLACK_LARGE_SQUARE,
-                .block_hor_line = BLOCK_WPRINT_BLACK_LARGE_SQUARE,
+                .block_corner_top_left = BOARD_WPRINT_BLOCK,
+                .block_corner_top_right = BOARD_WPRINT_BLOCK,
+                .block_corner_bot_left = BOARD_WPRINT_BLOCK,
+                .block_corner_bot_right = BOARD_WPRINT_BLOCK,
+                .block_ver_line = BOARD_WPRINT_BLOCK,
+                .block_hor_line = BOARD_WPRINT_BLOCK,
                 .block_inner = BLOCK_WPRINT_WHITE_LARGE_SQUARE,
-                .block_skyline = BLOCK_WPRINT_SKYLINE,
-                .block_sky = BLOCK_WPRINT_NIGHTSKY,
+                .block_skyline = BOARD_WPRINT_BLOCK,
+                // .block_sky = BLOCK_WPRINT_NIGHTSKY,
 
                 .pos = { TETRIS_PLAY_BOARD_POS_X, TETRIS_PLAY_BOARD_POS_Y },
                 .pos_wprint = { TETRIS_PLAY_BOARD_POS_X_WPRINT, TETRIS_PLAY_BOARD_POS_Y_WPRINT },
@@ -211,26 +221,26 @@ void* run_tetris_play_single_mode(void* arg)
             },
         },
         .sub_modules = {
-            {
-                .main_func = mainfunc_game_main_loop,
-                .main_func_arg = (void*)&s_play_manager,
-                .is_detached = false,
-            },
             // {
-            //     .main_func = new_mainfunc_game_main_loop,
+            //     .main_func = mainfunc_game_main_loop,
             //     .main_func_arg = (void*)&s_play_manager,
             //     .is_detached = false,
             // },
+            {
+                .main_func = new_mainfunc_game_main_loop,
+                .main_func_arg = (void*)&s_play_manager,
+                .is_detached = false,
+            },
             {
                 .main_func = mainfunc_game_play_timer,
                 .main_func_arg = (void*)&s_play_manager.timer_drawer,
                 .is_detached = false,
             },
-            {
-                .main_func = mainfunc_device_input_modules,
-                .main_func_arg = (void*)&s_play_manager,
-                .is_detached = false,
-            },
+            // {
+            //     .main_func = mainfunc_device_input_modules,
+            //     .main_func_arg = (void*)&s_play_manager,
+            //     .is_detached = false,
+            // },
         },
     };
 

@@ -9,11 +9,11 @@
 pos_t get_tetromino_silhouette_pos(const board_t* board, const tetromino_t* tetro)
 {
     debug();
-
-    for (pos_int_t cpos = get_posint(tetro->pos); cpos.x < board->pos.x + board->height; ++cpos.x) {
-        pos_int_t npos = { cpos.x + 1, cpos.y };
-        if (!is_ok_tetromino_next_status(board, tetro, npos, tetro->dir)) {
-            return get_pos(cpos);
+    int cpos_y = (int) tetro->pos.y;
+    for (int cpos_x = (int) tetro->pos.x; cpos_x < board->pos.x + board->height; ++cpos_x) {
+        // pos_int_t npos = { cpos.x + 1, cpos.y };
+        if (!is_ok_tetromino_next_status(board, tetro, create_posint(cpos_x + 1, cpos_y), tetro->dir)) {
+            return create_pos((pos_e_t)cpos_x, (pos_e_t)cpos_y);
         }
     }
     my_assert(false);
@@ -35,33 +35,3 @@ void cleanup_tetromino_silhouette(tetromino_t* const out_tetro)
     }
 }
 
-static void update_tetromino_silhouette_with(tetromino_t* const restrict out_tetro_des, const tetromino_t* restrict tetro_src, block_wprint_t init_block_wprint)
-{
-    debug();
-
-    my_assert(out_tetro_des != NULL);
-    my_assert(tetro_src != NULL);
-
-    out_tetro_des->symbol_id = tetro_src->symbol_id;
-    out_tetro_des->block.wprint = init_block_wprint;
-    out_tetro_des->clean_wprint = BLOCK_WPRINT_WHITE_LARGE_SQUARE;
-    // out_tetro_des->prev_drawn = NULL;
-}
-
-void update_tetromino_silhouette(tetromino_t* const restrict out_tetro_des, const tetromino_t* restrict tetro_src)
-{
-    debug();
-
-    update_tetromino_silhouette_with(out_tetro_des, tetro_src, BLOCK_WPRINT_BLACK_SQUARE_BUTTON);
-}
-
-void update_tetromino_silhouette_dir_pos(tetromino_t* const restrict out_tetro_des, const tetromino_t* restrict tetro_src, const board_t* board)
-{
-    debug();
-
-    my_assert(out_tetro_des != NULL);
-    my_assert(tetro_src != NULL);
-
-    out_tetro_des->dir = tetro_src->dir;
-    update_tetromino_pos(out_tetro_des, get_tetromino_silhouette_pos(board, tetro_src));
-}

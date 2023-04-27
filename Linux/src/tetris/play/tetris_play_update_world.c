@@ -114,6 +114,11 @@ void process_tetromino_try_status(tetromino_status_t status, tetris_play_manager
     // debug();
 
     switch (status) {
+    case TETROMINO_STATUS_MOVE:
+        /* intentional fallthrough */
+    case TETROMINO_STATUS_ROTATE:
+        render_out(out_play_manager);
+        break;
     case TETROMINO_STATUS_ONTHEGROUND:
         petrify_tetromino(&out_play_manager->tetro_man.board, out_play_manager->tetro_man.tetro_main);
         render_out(out_play_manager);
@@ -127,17 +132,10 @@ void process_tetromino_try_status(tetromino_status_t status, tetris_play_manager
         out_play_manager->tetro_man.tetro_main = NULL;
         cleanup_tetromino_silhouette(&out_play_manager->tetro_man.tetro_silhou);
         break;
-    case TETROMINO_STATUS_MOVE:
-        /* intentional fallthrough */
-    case TETROMINO_STATUS_ROTATE:
-            render_out(out_play_manager);
-        break;
     case TETROMINO_STATUS_ONTHEWALL:
-        /* Do Nothing */
-        break;
+        /* intentional fallthrough */
     case TETROMINO_STATUS_NULL:
-        /* Do Nothing */
-        break;
+        /* intentional fallthrough */
 #ifdef TETRIS_DEBUG
     default:
         my_assert(false);

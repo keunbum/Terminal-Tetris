@@ -19,19 +19,19 @@ bool is_ok_tetromino_next_status(const board_t* restrict board, const tetromino_
 
     tetromino_symbol_t nsymbol = get_tetromino_symbol(tetro->symbol_id, nrotate_dir);
 
+    bool is_ok = true;
     traverse_symbol(i, j, nsymbol) {
-        pos_int_t each_npos = { npos.x + i, npos.y + j };
-        my_assert(TETRIS_PLAY_TETROMINO_POS_X_MIN <= each_npos.x);
-        int ni = each_npos.x - board->pos.x;
-        int nj = each_npos.y - board->pos.y;
-        if (each_npos.x > TETRIS_PLAY_TETROMINO_POS_X_MAX
-            || each_npos.y < TETRIS_PLAY_TETROMINO_POS_Y_MIN
-            || each_npos.y > TETRIS_PLAY_TETROMINO_POS_Y_MAX
-            || board->grid[ni][nj].nature != BLOCK_NATURE_EMPTY) {
-            return false;
-        }
+        int ni = npos.x + i - board->pos.x;
+        int nj = npos.y + j - board->pos.y;
+        // if (each_npos.x > TETRIS_PLAY_TETROMINO_POS_X_MAX
+        //     || each_npos.y < TETRIS_PLAY_TETROMINO_POS_Y_MIN
+        //     || each_npos.y > TETRIS_PLAY_TETROMINO_POS_Y_MAX
+        //     || board->grid[ni][nj].nature != BLOCK_NATURE_EMPTY) {
+        //     return false;
+        // }
+        is_ok &= board->grid[ni][nj].nature == BLOCK_NATURE_EMPTY;
     }
-    return true;
+    return is_ok;
 }
 
 tetromino_status_t try_move_down_tetromino_deltatime_r(board_t* const restrict out_board, tetromino_t* const restrict out_tetro, game_time_t delta_time)
@@ -83,7 +83,7 @@ tetromino_status_t try_rotate_tetromino_r(board_t* const restrict out_board, tet
     static const int S_DX[] = { 0, 0, 0 };
     static const int S_DY[] = { 0, 1, -1 };
     for (int i = 0; i < 3; ++i) {
-        for (int scalar = 1; scalar <= 3; scalar++) {
+        for (int scalar = 1; scalar <= 2; scalar++) {
             pos_t npos = {
                 out_tetro->pos.x + scalar * S_DX[i],
                 out_tetro->pos.y + scalar * S_DY[i]

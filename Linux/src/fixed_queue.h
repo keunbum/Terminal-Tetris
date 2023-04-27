@@ -37,10 +37,11 @@ static inline void push_queue(fixed_queue_t* const out_que, void* tetro)
     my_assert(out_que->cnt < out_que->max_size);
 
     out_que->pa[out_que->end] = tetro;
-    /* I know this way to be faster than the remainder operator. */
-    if (++out_que->end == out_que->max_size) {
-        out_que->end = 0;
-    }
+    /* max_size must be a power of 2. */
+    out_que->end = (out_que->end + 1) & (out_que->max_size - 1);
+    // if (++out_que->end == out_que->max_size) {
+    //     out_que->end = 0;
+    // }
     out_que->cnt += 1;
 }
 
@@ -49,9 +50,10 @@ static inline void* pop_queue(fixed_queue_t* const out_que)
     my_assert(!is_queue_empty(out_que));
     
     void* ret = out_que->pa[out_que->beg];
-    if (++out_que->beg == out_que->max_size) {
-        out_que->beg = 0;
-    }
+    out_que->beg = (out_que->beg + 1) & (out_que->max_size - 1);
+    // if (++out_que->beg == out_que->max_size) {
+    //     out_que->beg = 0;
+    // }
     out_que->cnt -= 1;
     return ret;
 }
