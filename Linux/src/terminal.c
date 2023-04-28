@@ -1,5 +1,5 @@
-#include <unistd.h>
 #include <stdio.h>
+#include <unistd.h>
 
 #include "debug.h"
 #include "error_handling.h"
@@ -17,7 +17,7 @@ static void turn_on_terminal_raw(terminal_t* const out_term)
 static void turn_off_terminal_raw(terminal_t* const out_term)
 {
     debug();
-    
+
     tcsetattr(STDIN_FILENO, TCSANOW, &out_term->old_termios);
 }
 

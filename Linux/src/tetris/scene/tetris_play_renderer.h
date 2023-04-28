@@ -2,7 +2,7 @@
 #define __TETRIS_PLAY_RENDERER__H
 
 #include "tetris/object/tetromino.h"
-#include "tetris/tetris_play_manager.h"
+#include "tetris/play/tetris_play_manager.h"
 
 void wdraw_a_tetromino(tetromino_t* const out_tetro);
 void wdraw_a_tetromino_with_silhouette(tetromino_t* const out_tetro, tetromino_t* const out_tetro_silhou, const board_t* board);

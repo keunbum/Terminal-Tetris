@@ -4,7 +4,7 @@
 #include "debug.h"
 #include "draw/draw_tool.h"
 #include "error_handling.h"
-#include "tetris/tetris_play_manager.h"
+#include "tetris/play/tetris_play_manager.h"
 
 static void draw_tetris_play_single_default_scene(const tetris_play_manager_t* play_manager)
 {

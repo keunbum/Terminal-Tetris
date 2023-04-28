@@ -3,11 +3,11 @@
 #include "chronometry.h"
 #include "debug.h"
 #include "draw/cursor.h"
-#include "tetris/tetris_play_fps.h"
+#include "tetris_play_device_input_module_keyboard.h"
+#include "tetris_play_fps.h"
 #include "tetris_play_main_loop.h"
 #include "tetris_play_tetromino_generator.h"
 #include "tetris_play_update_world.h"
-#include "tetris_play_device_input_module_keyboard.h"
 
 static void init_game_main_loop(tetris_play_manager_t* const out_play_manager)
 {

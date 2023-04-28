@@ -10,7 +10,7 @@
 #include "tetris/play/tetris_play_tetromino_statistic.h"
 #include "tetris/play/tetris_play_update_tetromino_status.h"
 #include "tetris/scene/tetris_play_screen.h"
-#include "tetris/tetris_play_fps.h"
+#include "tetris_play_fps.h"
 #include "tetris_play_tetromino_generator.h"
 #include "tetris_play_tetromino_silhouette.h"
 

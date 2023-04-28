@@ -1,10 +1,10 @@
 #include <assert.h>
 #include <stdbool.h>
 
-#include "tetris_play_device_input_modules.h"
-#include "tetris/tetris_play_manager.h"
-#include "tetris_play_device_input_module_keyboard.h"
+#include "tetris/play/tetris_play_manager.h"
 #include "tetris_play_device_input_module_controller.h"
+#include "tetris_play_device_input_module_keyboard.h"
+#include "tetris_play_device_input_modules.h"
 
 #define THREAD_MODULE_NUM (2)
 

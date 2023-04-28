@@ -14,11 +14,11 @@
 #include "signal_macro.h"
 #include "tetris/object/board.h"
 #include "tetris/scene/tetris_play_scene.h"
-#include "tetris/tetris_play_manager.h"
 #include "tetris/timer/game_play_timer.h"
 #include "tetris/timer/timer_drawer.h"
 #include "tetris_play_device_input_modules.h"
 #include "tetris_play_main_loop.h"
+#include "tetris_play_manager.h"
 #include "tetris_play_manager_single.h"
 #include "tetris_play_update_world.h"
 

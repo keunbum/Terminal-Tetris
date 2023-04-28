@@ -55,7 +55,7 @@ void init_board(board_t* const out_board)
                 }
             }
         }
-    }    
+    }
 }
 
 void cleanup_board(board_t* const out_board)

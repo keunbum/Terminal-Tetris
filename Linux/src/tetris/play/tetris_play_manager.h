@@ -11,8 +11,8 @@
 #include "tetris/play/tetris_play_tetromino_generator.h"
 #include "tetris/play/tetris_play_tetromino_manager.h"
 #include "tetris/play/tetris_play_tetromino_statistic.h"
+#include "tetris/timer/timer_drawer.h"
 #include "thread_module.h"
-#include "timer/timer_drawer.h"
 
 #define TETRIS_PLAY_TIMER_POS_X_WPRINT (TETRIS_PLAY_SINGLE_SCREEN_POS_X_WPRINT + 2)
 #define TETRIS_PLAY_TIMER_POS_Y_WPRINT (TETRIS_PLAY_BOARD_POS_Y_WPRINT + TETRIS_PLAY_BOARD_WIDTH / 2 - 1)

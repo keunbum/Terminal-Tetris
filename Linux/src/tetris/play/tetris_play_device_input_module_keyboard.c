@@ -1,15 +1,14 @@
+#include <assert.h>
 #include <pthread.h>
 #include <stdbool.h>
 #include <stdlib.h>
-#include <assert.h>
 #include <string.h>
 
 #include "debug.h"
+#include "device_input.h"
 #include "pthread_macro.h"
-#include "tetris/play/tetris_play_update_world.h"
 #include "tetris_play_device_input_module_keyboard.h"
 #include "tetris_play_tetromino_manager.h"
-#include "device_input.h"
 
 static void callback_cleanup_device_input(void* arg)
 {
@@ -86,7 +85,7 @@ static tetromino_status_t process_keyboard_event(device_input_t* const out_in, t
 
 static inline int get_keyboard_event_num(void)
 {
-    FILE *pipe = popen("grep -E 'Handlers|EV=' /proc/bus/input/devices | grep -B1 'EV=120013' | grep -Eo 'event[0-9]+'", "r");
+    FILE* pipe = popen("grep -E 'Handlers|EV=' /proc/bus/input/devices | grep -B1 'EV=120013' | grep -Eo 'event[0-9]+'", "r");
     if (pipe == NULL) {
         handle_error("popen() error");
     }
@@ -178,7 +177,7 @@ void* mainfunc_device_input_module_keyboard(void* arg)
         process_tetromino_try_status(res, play_manager);
         unlock_tetromino_manager(&play_manager->tetro_man);
     }
-    
+
     pthread_cleanup_pop(1);
 
     return NULL;
