@@ -31,12 +31,14 @@
 // ref: https://en.wikipedia.org/wiki/Geometric_Shapes_(Unicode_block)
 // ref: https://en.wikipedia.org/wiki/Box-drawing_character
 // ref: https://www.compart.com/en/unicode/block/U+25A0
+// ref: https://unicode.org/emoji/charts/full-emoji-list.html
 
 typedef enum {
     BLOCK_WPRINT_EMPTY = (int)(L' '),
     BLOCK_WPRINT_BLACK_LARGE_SQUARE = (int)(0x2B1B),
     BLOCK_WPRINT_WHITE_LARGE_SQUARE = (int)(0x2B1C),
     BLOCK_WPRINT_BLACK_SQUARE_BUTTON = (int)(L'\U0001f532'),
+    BLOCK_WPRINT_WHITE_SQUARE_BUTTON = (int)(L'\U0001F533'),
     BLOCK_WPRINT_LIGHT_LARGE_SQUARE = (int)(L'\U0001f3fb'),
     BLOCK_WPRINT_SKYLINE = (int)(L'\u274E'),
     BLOCK_WPRINT_NIGHTSKY = (int)(L'\U0001f386'),

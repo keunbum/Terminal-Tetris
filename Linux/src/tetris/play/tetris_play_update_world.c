@@ -56,7 +56,7 @@ static int clear_filled_lines(board_t* const out_board)
     {
         for (int ptr = 0; ptr < end; ++ptr) {
             int i = s_que[ptr];
-            set_block_each(&out_board->grid[i][j], BLOCK_NATURE_EMPTY, BLOCK_WPRINT_WHITE_LARGE_SQUARE);
+            set_block_each(&out_board->grid[i][j], BLOCK_NATURE_EMPTY, BOARD_INNTER_BLOCK_WPRINT);
             pos_int_t pos_wprint = get_intpos_intwprint(create_posint(out_board->pos.x + i, out_board->pos.y + j));
             wdraw_unit_matrix_at_r(out_board->grid[i][j].wprint, pos_wprint.x, pos_wprint.y);
         }
@@ -82,7 +82,7 @@ static int clear_filled_lines(board_t* const out_board)
             traverse_inner_col(j, out_board)
             {
                 out_board->grid[i + move_dist][j] = out_board->grid[i][j];
-                set_block_each(&out_board->grid[i][j], BLOCK_NATURE_EMPTY, BLOCK_WPRINT_WHITE_LARGE_SQUARE);
+                set_block_each(&out_board->grid[i][j], BLOCK_NATURE_EMPTY, BOARD_INNTER_BLOCK_WPRINT);
             }
         }
     }

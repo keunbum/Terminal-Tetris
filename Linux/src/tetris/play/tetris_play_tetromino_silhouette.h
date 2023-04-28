@@ -4,6 +4,8 @@
 #include "tetris/object/board.h"
 #include "tetris/object/tetromino.h"
 
+#define TETROMINO_SILHOUETTE_BLOCK_WPRINT BLOCK_WPRINT_WHITE_SQUARE_BUTTON
+
 pos_t get_tetromino_silhouette_pos(const board_t* board, const tetromino_t* tetro);
 
 void init_tetromino_silhouette(tetromino_t* const out_tetro);
@@ -18,12 +20,12 @@ static inline void update_tetromino_silhouette_with(tetromino_t* const restrict 
 
     out_tetro_des->symbol_id = tetro_src->symbol_id;
     out_tetro_des->block.wprint = init_block_wprint;
-    out_tetro_des->clean_wprint = BLOCK_WPRINT_WHITE_LARGE_SQUARE;
+    out_tetro_des->clean_wprint = BOARD_INNTER_BLOCK_WPRINT;
 }
 
 static inline void update_tetromino_silhouette(tetromino_t* const restrict out_tetro_des, const tetromino_t* restrict tetro_src)
 {
-    update_tetromino_silhouette_with(out_tetro_des, tetro_src, BLOCK_WPRINT_BLACK_SQUARE_BUTTON);
+    update_tetromino_silhouette_with(out_tetro_des, tetro_src, TETROMINO_SILHOUETTE_BLOCK_WPRINT);
 }
 
 static inline void update_tetromino_silhouette_dir_pos(tetromino_t* const restrict out_tetro_des, const tetromino_t* restrict tetro_src, const board_t* board)

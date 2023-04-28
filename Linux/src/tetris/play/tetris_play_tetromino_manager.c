@@ -52,7 +52,7 @@ static void spawn_tetromino(tetromino_manager_t* const out_man, tetromino_t** co
         TETRIS_PLAY_TETROMINO_INIT_POS_X,
         TETRIS_PLAY_TETROMINO_INIT_POS_Y);
     (*target_tetro)->velocity = init_velocity;
-    (*target_tetro)->clean_wprint = BLOCK_WPRINT_WHITE_LARGE_SQUARE;
+    (*target_tetro)->clean_wprint = BOARD_INNTER_BLOCK_WPRINT;
     push_queue(&out_man->que, create_tetromino_random_malloc(&out_man->tetro_gen, create_pos_empty(), 0, BLOCK_WPRINT_EMPTY));
     traverse_queue(&out_man->que, callback_spawn_tetromino_manager_tetro_main, (void*)&out_man->next_pos_wprint);
 }
@@ -208,7 +208,7 @@ tetromino_status_t try_swap_tetromino_hold(tetromino_manager_t* const out_man)
     update_tetromino_silhouette(&out_man->tetro_silhou, out_man->tetro_main);
     wdraw_a_tetromino_with_silhouette(out_man->tetro_main, &out_man->tetro_silhou, &out_man->board);
 
-    out_man->tetro_main->clean_wprint = BLOCK_WPRINT_WHITE_LARGE_SQUARE;
+    out_man->tetro_main->clean_wprint = BOARD_INNTER_BLOCK_WPRINT;
 
     out_man->is_swaped_once = true;
 

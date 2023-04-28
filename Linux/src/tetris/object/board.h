@@ -39,8 +39,9 @@
 #define BOARD_FRAME_POS_X_WPRINT (TETRIS_PLAY_BOARD_POS_X_WPRINT - 1)
 #define BOARD_FRAME_POS_Y_WPRINT (TETRIS_PLAY_BOARD_POS_Y_WPRINT - 2)
 
-// typedef pthread_spinlock_t board_lock_t;
-// typedef pthread_mutex_t board_lock_t;
+#define BOARD_INNTER_BLOCK_WPRINT BLOCK_WPRINT_BLACK_LARGE_SQUARE
+#define BOARD_WALL_BLOCK_WPRINT BLOCK_WPRINT_WHITE_LARGE_SQUARE
+
 
 typedef block_t row_t[TETRIS_PLAY_BOARD_WIDTH];
 typedef struct {
@@ -52,7 +53,6 @@ typedef struct {
     const wchar_t block_hor_line;
     const wchar_t block_inner;
     const wchar_t block_skyline;
-    // const wchar_t block_sky;
 
     const pos_int_t pos;
     const pos_int_t pos_wprint;
@@ -69,14 +69,14 @@ typedef struct {
     const int skyline;
 
     row_t grid[TETRIS_PLAY_BOARD_HEIGHT];
-
-    // board_lock_t lock;
 } board_t;
 
 typedef board_t board_t;
 
+#define traverse_inner_row(i, board) for (int i = board->skyline_pos.x - board->pos.x + 1; i < board->height - 1; ++i)
 #define traverse_inner_row_reverse(i, board) for (int i = board->height - 2; i > board->skyline_pos.x - board->pos.x; --i)
 #define traverse_inner_col(j, board) for (int j = 1; j <= board->width - 2; ++j)
+#define traverse_inner(i, j, board) traverse_inner_row(i, board) traverse_inner_col(j, board)
 
 static inline bool is_all_of_row(const board_t* board, int i, block_nature_t nature)
 {
@@ -86,34 +86,6 @@ static inline bool is_all_of_row(const board_t* board, int i, block_nature_t nat
     }
     return is_all;
 }
-
-// static inline void init_board_lock(board_t* const out_board)
-// {
-//     pthread_mutex_init(&out_board->lock, NULL);
-//     // init_lock(out_board->lock);
-// }
-
-// static inline void lock_board(board_t* const out_board)
-// {
-//     debug();
-
-//     pthread_mutex_lock(&out_board->lock);
-//     // check_lock(out_board->lock);
-// }
-
-// static inline void unlock_board(board_t* const out_board)
-// {
-//     debug();
-    
-//     pthread_mutex_unlock(&out_board->lock);
-//     // check_unlock(out_board->lock);
-// }
-
-// static inline void cleanup_board_lock(board_t* const out_board)
-// {
-//     pthread_mutex_destroy(&out_board->lock);
-//     // cleanup_lock(out_board->lock);
-// }
 
 static inline const row_t* get_grid(const board_t* board)
 {

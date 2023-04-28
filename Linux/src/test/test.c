@@ -22,5 +22,10 @@ int test_module(int argc, char* argv[])
     (void)argc;
     (void)argv;
 
-    return test_system();
+    wprintf(L"\e[0;%dm", 35);
+    wprintf(L"\e[%dm", 43);
+    wprintf(L"HI!\n");
+    wprintf(L"Hello!!\n");
+    return 0;
+    // return test_system();
 }

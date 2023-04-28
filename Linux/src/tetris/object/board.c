@@ -79,5 +79,14 @@ void wdraw_board(const board_t* board)
         wbuf[board->width] = L'\0';
         wdraw_row_newline(wbuf, board->width_wprint);
     }
+    // wgotoxy(board->pos_wprint.x + 1, board->pos_wprint.y + 2);
+    // traverse_inner_row(i, board) {
+    //     static wchar_t wbuf[TETRIS_PLAY_BOARD_WIDTH - 2 + 1];
+    //     traverse_inner_col(j, board) {
+    //         wbuf[j - 1] = board->grid[i][j].wprint;
+    //     }
+    //     wbuf[board->width - 2] = L'\0';
+    //     wdraw_row_newline(wbuf, board->width_wprint - 2 * 2);
+    // }
     cursor_unlock();
 }

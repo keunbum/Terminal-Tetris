@@ -22,8 +22,6 @@
 #include "tetris_play_manager_single.h"
 #include "tetris_play_update_world.h"
 
-#define BOARD_WPRINT_BLOCK BLOCK_WPRINT_BRICK
-
 static void ready_getset_go(const tetris_play_manager_t* play_manager)
 {
     debug();
@@ -174,14 +172,14 @@ void* run_tetris_play_single_mode(void* arg)
             /* Also be inited with init() */
             .board = {
                 /* Also should be inited with init() */
-                .block_corner_top_left = BOARD_WPRINT_BLOCK,
-                .block_corner_top_right = BOARD_WPRINT_BLOCK,
-                .block_corner_bot_left = BOARD_WPRINT_BLOCK,
-                .block_corner_bot_right = BOARD_WPRINT_BLOCK,
-                .block_ver_line = BOARD_WPRINT_BLOCK,
-                .block_hor_line = BOARD_WPRINT_BLOCK,
-                .block_inner = BLOCK_WPRINT_WHITE_LARGE_SQUARE,
-                .block_skyline = BOARD_WPRINT_BLOCK,
+                .block_corner_top_left = BOARD_WALL_BLOCK_WPRINT,
+                .block_corner_top_right = BOARD_WALL_BLOCK_WPRINT,
+                .block_corner_bot_left = BOARD_WALL_BLOCK_WPRINT,
+                .block_corner_bot_right = BOARD_WALL_BLOCK_WPRINT,
+                .block_ver_line = BOARD_WALL_BLOCK_WPRINT,
+                .block_hor_line = BOARD_WALL_BLOCK_WPRINT,
+                .block_inner = BOARD_INNTER_BLOCK_WPRINT,
+                .block_skyline = BOARD_WALL_BLOCK_WPRINT,
                 // .block_sky = BLOCK_WPRINT_NIGHTSKY,
 
                 .pos = { TETRIS_PLAY_BOARD_POS_X, TETRIS_PLAY_BOARD_POS_Y },

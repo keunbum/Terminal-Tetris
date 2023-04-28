@@ -30,6 +30,8 @@ void init_terminal(terminal_t* const out_term)
     if (freopen("/dev/null", "r", stdin) == NULL) {
         handle_error("\"/dev/null\", \"r\", stdin) failed.");
     }
+    set_terminal_background_color(out_term, 40);
+    set_terminal_text_color(out_term, 35);
 }
 
 void cleanup_terminal(terminal_t* const out_term)
