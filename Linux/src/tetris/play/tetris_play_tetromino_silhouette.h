@@ -4,7 +4,7 @@
 #include "tetris/object/board.h"
 #include "tetris/object/tetromino.h"
 
-#define TETROMINO_SILHOUETTE_BLOCK_WPRINT BLOCK_WPRINT_WHITE_SQUARE_BUTTON
+#define TETROMINO_SILHOUETTE_BLOCK_WPRINT BLOCK_WPRINT_BLACK_SQUARE_BUTTON
 
 pos_t get_tetromino_silhouette_pos(const board_t* board, const tetromino_t* tetro);
 
