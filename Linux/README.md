@@ -123,7 +123,14 @@ https://youtu.be/dU2VdnSt04k
 
 </details>
 
+<details><summary>2023.04.29</summary>
 
+https://youtu.be/ef0avagY-WU
+
+7 bag 시스템 구현 및 UI 변경  
+난이도 그럴 듯 하게 조절해야 할 듯
+
+</details>
 
 ---
 
