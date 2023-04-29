@@ -43,6 +43,8 @@ void init_tetromino_generator(tetromino_generator_t* const out_gen)
 
     out_gen->spawnd_cnt = 0;
     out_gen->block_wprint_set = GS_BLOCK_WPRINT_SET;
+    out_gen->ptr = 0;
+    iota_int(out_gen->symbols, out_gen->symbols + TETROMINO_NUM_OF_KINDS, 0);
 }
 
 void cleanup_tetromino_generator(tetromino_generator_t* const out_gen)
@@ -55,11 +57,29 @@ void cleanup_tetromino_generator(tetromino_generator_t* const out_gen)
     (void)out_gen;
 }
 
+static inline symbol_id_t get_symbol_id_random_default(void)
+{
+    return (symbol_id_t)(rng() % TETROMINO_NUM_OF_KINDS);
+}
+
+static inline symbol_id_t get_symbol_id_random_7bag(tetromino_generator_t* const out_gen)
+{
+    if (out_gen->ptr == 0) {
+        shuffle_int(out_gen->symbols, out_gen->symbols + TETROMINO_NUM_OF_KINDS);
+    }
+    symbol_id_t ret = out_gen->symbols[out_gen->ptr++];
+    if (out_gen->ptr == TETROMINO_NUM_OF_KINDS) {
+        out_gen->ptr = 0;
+    }
+    return ret;
+}
+
 tetromino_t* create_tetromino_random_malloc(tetromino_generator_t* const out_gen, pos_t init_pos, velocity_t init_velocity, block_wprint_t init_clean_block)
 {
     debug();
 
-    symbol_id_t init_symbol_id = (symbol_id_t)(rng() % TETROMINO_NUM_OF_KINDS);
+    // symbol_id_t init_symbol_id = get_symbol_id_random_default();
+    symbol_id_t init_symbol_id = get_symbol_id_random_7bag(out_gen);
     block_t init_block = { BLOCK_NATURE_FULL, GS_BLOCK_WPRINT_SET->wprint_values[init_symbol_id] };
     tetromino_t* pa_ret = init_tetromino_malloc(out_gen->spawnd_cnt++,
         init_symbol_id,

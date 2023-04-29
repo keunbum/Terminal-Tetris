@@ -7,6 +7,8 @@
 typedef struct {
     int spawnd_cnt;
     const block_wprint_set_t* block_wprint_set;
+    int ptr;
+    symbol_id_t symbols[TETROMINO_NUM_OF_KINDS];
 } tetromino_generator_t;
 
 static inline const block_wprint_set_t* get_block_wprint_set(const tetromino_generator_t* tetro_gen)
