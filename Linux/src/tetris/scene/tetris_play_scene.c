@@ -15,9 +15,12 @@ static void draw_tetris_play_single_default_scene(const tetris_play_manager_t* p
     wdraw_frame(&play_manager->screen_frame, 0);
     wdraw_board(&play_manager->tetro_man.board);
     wdraw_tetromino_manager(&play_manager->tetro_man);
-    int _ = 0;
-    game_time_t __ = 1.0f;
-    wdraw_fps(&_, &__);
+    {
+        int _ = 0;
+        game_time_t __ = 1.0f;
+        wdraw_fps(&_, &__);
+    }
+    wdraw_show_manual(play_manager, TETRIS_PLAY_MANUAL_KEYBOARD);
     fflush(stdout);
 }
 

@@ -46,4 +46,11 @@ typedef struct {
     thread_module_t sub_modules[TETRIS_PLAY_SUBMODULE_NUM];
 } tetris_play_manager_t;
 
+typedef enum {
+    TETRIS_PLAY_MANUAL_KEYBOARD,
+    TETRIS_PLAY_MANUAL_CONTROLLER,
+} tetris_play_manual_t;
+
+void wdraw_show_manual(const tetris_play_manager_t* play_manager, tetris_play_manual_t manual);
+
 #endif /* __TETRIS_PLAY_MANAGER__H */

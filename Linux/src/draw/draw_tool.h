@@ -51,7 +51,7 @@ static inline void wdraw_row_newline(const wchar_t* wbuf, int cursor_move_width)
 {
     // debug();
     my_assert(wbuf != NULL);
-    wprintf(wbuf);
+    fputws(wbuf, stdout);
     wprintf(L"\e[1B\e[%dD", cursor_move_width);
 }
 
@@ -61,6 +61,16 @@ static inline void wdraw_rows_newline_at(int height, const wchar_t** wbuf, int c
     wgotoxy(pos_x_wprint, pos_y_wprint);
     for (int i = 0; i < height; ++i) {
         wdraw_row_newline(wbuf[i], cursor_move_width);
+    }
+    // wdraw_newline();
+}
+
+static inline void wdraw_rows_newline_at_each(int height, const wchar_t** wbuf, int pos_x_wprint, int pos_y_wprint)
+{
+    my_assert(wbuf != NULL);
+    wgotoxy(pos_x_wprint, pos_y_wprint);
+    for (int i = 0; i < height; ++i) {
+        wdraw_row_newline(wbuf[i], wcslen(wbuf[i]));
     }
     // wdraw_newline();
 }

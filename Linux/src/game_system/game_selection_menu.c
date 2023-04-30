@@ -5,7 +5,7 @@
 #include <wchar.h>
 
 #include "debug.h"
-#include "draw/cursor.h"
+#include "draw/draw_tool.h"
 #include "error_handling.h"
 #include "game_selection_menu.h"
 #include "tetris/play/tetris_play_manager_single.h"
@@ -28,7 +28,14 @@ static void draw_game_selection_menu_screen(void)
     debug();
 
     wclear();
-    wprintf(L"SELECT GAME\n");
+    static const wchar_t* S_TITLE[] = {
+        L"__  __      __  __ ___    __             __ ",
+        L"(_  |_  |   |_  /    |    / _   /\\  |\\/| |_  ",
+        L"__) |__ |__ |__ \\__  |    \\__) /--\\ |  | |__ "        
+    };    
+    wdraw_rows_newline_at_each(3, S_TITLE, 0, 0);
+    fputwc(L'\n', stdout);
+    // wprintf(L"SELECT GAME\n");
     for (int i = 0; i < GS_GAME_SELECTION_MENU_TOTAL_OPTION_NUM; ++i) {
         if (i > 0) {
             wprintf(L"  ");

@@ -3,7 +3,7 @@
 #include <wchar.h>
 
 #include "debug.h"
-#include "draw/cursor.h"
+#include "draw/draw_tool.h"
 #include "error_handling.h"
 #include "game_selection_menu.h"
 #include "title_menu.h"
@@ -14,9 +14,19 @@ static void draw_title_menu_screen(void)
 
     static const char* S_TITLE_MENU_OPTIONS_TEXT[] = { "select games", "exit" };
     static const int S_TITLE_MENU_TOTAL_OPTION_NUM = (int)(sizeof(S_TITLE_MENU_OPTIONS_TEXT) / sizeof(S_TITLE_MENU_OPTIONS_TEXT[0]));
+    static const wchar_t* S_TITLE[] = {
+        L".___________. _______ .___________..______       __       _______.",
+        L"|           ||   ____||           ||   _  \\     |  |     /       |",
+        L"`---|  |----`|  |__   `---|  |----`|  |_)  |    |  |    |   (----\\",
+        L"    |  |     |   __|      |  |     |      /     |  |     \\   \\    ",
+        L"    |  |     |  |____     |  |     |  |\\  \\----.|  | .----)   |   ",
+        L"    |__|     |_______|    |__|     | _| `._____||__| |_______/    "
+    };
 
     wclear();
-    wprintf(L"TETRIS\n");
+    wdraw_rows_newline_at_each(6, S_TITLE, 0, 0);
+    fputwc(L'\n', stdout);
+    // wprintf(L"TETRIS\n");
     for (int i = 0; i < S_TITLE_MENU_TOTAL_OPTION_NUM; ++i) {
         if (i > 0) {
             wprintf(L"  ");
