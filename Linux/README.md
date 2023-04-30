@@ -132,6 +132,15 @@ https://youtu.be/ef0avagY-WU
 
 </details>
 
+<details><summary>2023.04.30</summary>
+
+https://youtu.be/WRsyfd3xiZM
+
+조작키 설명 추가.
+
+
+</details>
+
 ---
 
 ## Index
@@ -2836,6 +2845,24 @@ FPS가 너무 높아도 안좋고, 낮아도 안좋고.. 120 정도가 적당한
 </details>
 
 [//]: # (End of 04.29)
+
+<details><summary>04.30(일)</summary>
+
+아스키 아트를 지원해주는 아주 신박한 [사이트](https://wepplication.github.io/tools/asciiArtGen/)가 있다.
+
+
+### Achievements of the day
+
+  - [X] 조작키 안내 
+  - [ ] 점스 시스템 구현 (각종 테크닉 점수, 클리어한 라인 수) --> 조사 충분히 해보기.
+  - [ ] 난이도 부여(시간이나 클리어한 라인 수에 따라 낙하 속도 증가)  
+        --> 대충 구현해놓긴 했는데 좀 더 체계적으로 설계해보기.
+  - [ ] DAS, ARR ... --> 관련 [링크](https://namu.wiki/w/%ED%85%8C%ED%8A%B8%EB%A6%AC%EC%8A%A4/%EC%9A%A9%EC%96%B4#s-3.4)
+  - [ ] 그밖에 버그 있나 확인.
+
+</details>
+
+[//]: # (End of 04.30)
 
 </blockquote></details>
 
