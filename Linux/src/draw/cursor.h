@@ -47,19 +47,19 @@ static inline void wmove_cursor_left_by(int n)
 #define wmove_cursor_right() wmove_cursor_right_by(1)
 #define wmove_cursor_left() wmove_cursor_left_by(1)
 
-// typedef pthread_spinlock_t cursor_lock_t;
-typedef pthread_mutex_t cursor_lock_t;
+typedef pthread_spinlock_t cursor_lock_t;
+// typedef pthread_mutex_t cursor_lock_t;
 
 extern cursor_lock_t g_cursor_lock;
 
-// #define init_cursor_lock() func_check_error(pthread_spin_init, &g_cursor_lock, PTHREAD_PROCESS_PRIVATE)
-// #define cursor_lock() func_check_error(pthread_spin_lock, &g_cursor_lock)
-// #define cursor_unlock() func_check_error(pthread_spin_unlock, &g_cursor_lock)
-// #define cleanup_cursor_lock() func_check_error(pthread_spin_destroy, &g_cursor_lock)
+#define init_cursor_lock() func_check_error(pthread_spin_init, &g_cursor_lock, PTHREAD_PROCESS_PRIVATE)
+#define cursor_lock() func_check_error(pthread_spin_lock, &g_cursor_lock)
+#define cursor_unlock() func_check_error(pthread_spin_unlock, &g_cursor_lock)
+#define cleanup_cursor_lock() func_check_error(pthread_spin_destroy, &g_cursor_lock)
 
-#define init_cursor_lock() init_lock(g_cursor_lock)
-#define cursor_lock() check_lock(g_cursor_lock)
-#define cursor_unlock() check_unlock(g_cursor_lock)
-#define cleanup_cursor_lock() cleanup_lock(g_cursor_lock)
+// #define init_cursor_lock() init_lock(g_cursor_lock)
+// #define cursor_lock() check_lock(g_cursor_lock)
+// #define cursor_unlock() check_unlock(g_cursor_lock)
+// #define cleanup_cursor_lock() cleanup_lock(g_cursor_lock)
 
 #endif /* __CURSOR__H */
