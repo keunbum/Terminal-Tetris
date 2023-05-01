@@ -29,7 +29,7 @@ static void draw_game_selection_menu_screen(void)
 
     wclear();
     static const wchar_t* S_TITLE[] = {
-        L"__  __      __  __ ___    __             __ ",
+        L" __  __      __  __ ___    __             __ ",
         L"(_  |_  |   |_  /    |    / _   /\\  |\\/| |_  ",
         L"__) |__ |__ |__ \\__  |    \\__) /--\\ |  | |__ "        
     };    

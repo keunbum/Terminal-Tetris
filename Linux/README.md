@@ -246,7 +246,7 @@ Windows 버전부터는 DirectX 사용하는 걸로..)
 ## 개발 문서
 
 ### 요구 사항 분석서
-[본문](./requirements_analysis.md)
+[본문](./requirements_analysis.md) 
 
 ### 해결 방안
 [본문](./solution.md)
@@ -2854,7 +2854,7 @@ FPS가 너무 높아도 안좋고, 낮아도 안좋고.. 120 정도가 적당한
 ### Achievements of the day
 
   - [X] 조작키 안내 
-  - [ ] 점스 시스템 구현 (각종 테크닉 점수, 클리어한 라인 수) --> 조사 충분히 해보기.
+  - [ ] 점수 시스템 구현 (각종 테크닉 점수, 클리어한 라인 수) --> 조사 충분히 해보기.
   - [ ] 난이도 부여(시간이나 클리어한 라인 수에 따라 낙하 속도 증가)  
         --> 대충 구현해놓긴 했는데 좀 더 체계적으로 설계해보기.
   - [ ] DAS, ARR ... --> 관련 [링크](https://namu.wiki/w/%ED%85%8C%ED%8A%B8%EB%A6%AC%EC%8A%A4/%EC%9A%A9%EC%96%B4#s-3.4)
@@ -2867,3 +2867,29 @@ FPS가 너무 높아도 안좋고, 낮아도 안좋고.. 120 정도가 적당한
 </blockquote></details>
 
 [//]: # (End of 2023.04)
+
+
+
+
+<font size="3"> <details><summary>2023.05</summary><blockquote> </font>
+
+<details><summary>05.01(월)</summary>
+
+소리 출력 좀 알아 봤는데 만만치 않다. 이건 후순위로 미뤄야 함.  
+사실상 커널 프로그래밍임.
+
+### Achievements of the day
+
+오늘 크게 한 건 없음..
+
+  - [ ] 점수 시스템 구현 (각종 테크닉 점수, 클리어한 라인 수) --> 조사 충분히 해보기. [(2009-가이드라인](https://tetris.fandom.com/wiki/Tetris_Guideline))
+  - [ ] 난이도 부여(시간이나 클리어한 라인 수에 따라 낙하 속도 증가)  
+        --> 대충 구현해놓긴 했는데 좀 더 체계적으로 설계해보기.
+  - [ ] DAS, ARR 구현해보기 --> 관련 [링크](https://namu.wiki/w/%ED%85%8C%ED%8A%B8%EB%A6%AC%EC%8A%A4/%EC%9A%A9%EC%96%B4#s-3.4)
+  - [ ] 소리(효과음) 출력 알아보기. --> https://www.kernel.org/doc/html/v4.16/sound/kernel-api/index.html
+  - [ ] 슬슬 문서화도 신경 써야 할 듯.
+  - [ ] 그밖에 버그 있나 확인.
+
+</blockquote></details>
+
+[//]: # (End of 2023.05)
