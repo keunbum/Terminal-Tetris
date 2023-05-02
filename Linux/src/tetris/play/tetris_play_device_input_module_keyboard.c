@@ -12,18 +12,12 @@
 
 static void callback_cleanup_device_input(void* arg)
 {
-    debug();
-
-    my_assert(arg != NULL);
-
     device_input_t* const input_reader = (device_input_t*)arg;
     cleanup_device_input(input_reader);
 }
 
-static tetromino_status_t process_keyboard_event(device_input_t* const out_in, tetromino_manager_t* const tetro_man)
+static tetromino_status_t process_keyboard_event_thread(device_input_t* const out_in, tetromino_manager_t* const tetro_man)
 {
-    // debug();
-
     const struct input_event* ev = &out_in->event;
     board_t* board = &tetro_man->board;
     tetromino_t* tetro = tetro_man->tetro_main;
@@ -97,10 +91,8 @@ static inline int get_keyboard_event_num(void)
     return ret;
 }
 
-tetromino_status_t new_process_keyboard_event(device_input_t* const out_in, tetromino_manager_t* const tetro_man)
+tetromino_status_t process_keyboard_event(device_input_t* const out_in, tetromino_manager_t* const tetro_man)
 {
-    // debug();
-
     const struct input_event* ev = &out_in->event;
     board_t* board = &tetro_man->board;
     tetromino_t* tetro = tetro_man->tetro_main;
@@ -173,7 +165,7 @@ void* mainfunc_device_input_module_keyboard(void* arg)
     while (true) {
         read_device_input_event(&in);
         lock_tetromino_manager(&play_manager->tetro_man);
-        tetromino_status_t res = process_keyboard_event(&in, &play_manager->tetro_man);
+        tetromino_status_t res = process_keyboard_event_thread(&in, &play_manager->tetro_man);
         process_tetromino_try_status(res, play_manager);
         unlock_tetromino_manager(&play_manager->tetro_man);
     }

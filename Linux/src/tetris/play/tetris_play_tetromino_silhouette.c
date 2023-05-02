@@ -1,4 +1,5 @@
 #include <assert.h>
+#include <stdlib.h>
 
 #include "tetris_play_tetromino_silhouette.h"
 #include "debug.h"

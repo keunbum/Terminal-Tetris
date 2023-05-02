@@ -10,21 +10,14 @@
 
 static void init_game_system(void)
 {
-    debug();
-
     localize();
-
     init_cursor_lock();
-
-    init_mt19937((uint32_t)time(NULL));
+    mt19937_srand((uint32_t)time(NULL));
 }
 
 static void cleanup_game_system(void)
 {
-    debug();
-
     cleanup_cursor_lock();
-
     cleanup_tetris_play_scene();
 }
 

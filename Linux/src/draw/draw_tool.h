@@ -24,6 +24,8 @@
 #define UNIT_MATRIX_HOR_LINE_THIN (0x2501)
 #define UNIT_MATRIX_VER_LINE_THIN (0x2503)
 
+#define wdraw_newline() fputwc(L'\n', stdout)
+
 #define wprintf_at(x, y, ...) \
     do {                      \
         wgotoxy(x, y);        \
@@ -38,18 +40,16 @@
         cursor_unlock();        \
     } while (false)
 
-#define wdraw_newline() wprintf(L"\n")
-
 static inline void wdraw_row_at(const wchar_t* wbuf, int pos_x_wprint, int pos_y_wprint)
 {
     my_assert(wbuf != NULL);
     wgotoxy(pos_x_wprint, pos_y_wprint);
-    wprintf(wbuf);
+    fputws(wbuf, stdout);
+    // wprintf(wbuf);
 }
 
 static inline void wdraw_row_newline(const wchar_t* wbuf, int cursor_move_width)
 {
-    // debug();
     my_assert(wbuf != NULL);
     fputws(wbuf, stdout);
     wprintf(L"\e[1B\e[%dD", cursor_move_width);
@@ -62,7 +62,6 @@ static inline void wdraw_rows_newline_at(int height, const wchar_t** wbuf, int c
     for (int i = 0; i < height; ++i) {
         wdraw_row_newline(wbuf[i], cursor_move_width);
     }
-    // wdraw_newline();
 }
 
 static inline void wdraw_rows_newline_at_each(int height, const wchar_t** wbuf, int pos_x_wprint, int pos_y_wprint)
@@ -72,7 +71,6 @@ static inline void wdraw_rows_newline_at_each(int height, const wchar_t** wbuf, 
     for (int i = 0; i < height; ++i) {
         wdraw_row_newline(wbuf[i], wcslen(wbuf[i]));
     }
-    // wdraw_newline();
 }
 
 static inline void wdraw_rows_newline_at_r(int height, const wchar_t** wbuf, int cursor_move_width, int pos_x_wprint, int pos_y_wprint)
@@ -84,7 +82,7 @@ static inline void wdraw_rows_newline_at_r(int height, const wchar_t** wbuf, int
 
 static inline void wdraw_unit_matrix(wchar_t wch)
 {
-    putwc(wch, stdout);
+    fputwc(wch, stdout);
 }
 
 static inline void wdraw_unit_matrix_at(wchar_t wch, int x, int y)

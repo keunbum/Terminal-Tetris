@@ -1,60 +1,60 @@
-#include <assert.h>
-#include <stdbool.h>
+// #include <assert.h>
+// #include <stdbool.h>
 
-#include "tetris/play/tetris_play_manager.h"
-#include "tetris_play_device_input_module_controller.h"
-#include "tetris_play_device_input_module_keyboard.h"
-#include "tetris_play_device_input_modules.h"
+// #include "tetris/play/tetris_play_manager.h"
+// #include "tetris_play_device_input_module_controller.h"
+// #include "tetris_play_device_input_module_keyboard.h"
+// #include "tetris_play_device_input_modules.h"
 
-#define THREAD_MODULE_NUM (2)
+// #define THREAD_MODULE_NUM (2)
 
-static void cleanup_device_input_modules(void* arg)
-{
-    thread_module_t* const modules = (thread_module_t*)arg;
-    for (int i = 0; i < THREAD_MODULE_NUM; ++i) {
-        int res = pthread_cancel(modules[i].thread_id);
-        if (res != 0) {
-            handle_error_en("pthread_cancel() error", res);
-        }
-    }
-}
+// static void cleanup_device_input_modules(void* arg)
+// {
+//     thread_module_t* const modules = (thread_module_t*)arg;
+//     for (int i = 0; i < THREAD_MODULE_NUM; ++i) {
+//         int res = pthread_cancel(modules[i].thread_id);
+//         if (res != 0) {
+//             handle_error_en("pthread_cancel() error", res);
+//         }
+//     }
+// }
 
-static void callback_cleanup_device_input_modules(void* arg)
-{
-    my_assert(arg != NULL);
+// static void callback_cleanup_device_input_modules(void* arg)
+// {
+//     my_assert(arg != NULL);
 
-    cleanup_device_input_modules(arg);
-}
+//     cleanup_device_input_modules(arg);
+// }
 
-void* mainfunc_device_input_modules(void* arg)
-{
-    debug();
+// void* mainfunc_device_input_modules(void* arg)
+// {
+//     debug();
 
-    static thread_module_t s_modules[THREAD_MODULE_NUM] = {
-        {
-            .is_detached = false,
-            .main_func = mainfunc_device_input_module_keyboard,
-            .retval = NULL,
-        },
-        {
-            .is_detached = false,
-            .main_func = mainfunc_device_input_controller,
-            .retval = NULL,
-        }
-    };
+//     static thread_module_t s_modules[THREAD_MODULE_NUM] = {
+//         {
+//             .is_detached = false,
+//             .main_func = mainfunc_device_input_module_keyboard,
+//             .retval = NULL,
+//         },
+//         {
+//             .is_detached = false,
+//             .main_func = mainfunc_device_input_controller,
+//             .retval = NULL,
+//         }
+//     };
 
-    pthread_cleanup_push(callback_cleanup_device_input_modules, s_modules);
+//     pthread_cleanup_push(callback_cleanup_device_input_modules, s_modules);
 
-    for (int i = 0; i < THREAD_MODULE_NUM; ++i) {
-        s_modules[i].main_func_arg = arg;
-        run_thread_module(s_modules + i);
-    }
+//     for (int i = 0; i < THREAD_MODULE_NUM; ++i) {
+//         s_modules[i].main_func_arg = arg;
+//         run_thread_module(s_modules + i);
+//     }
 
-    for (size_t i = 0; i < TETRIS_PLAY_SUBMODULE_NUM; ++i) {
-        join_thread_module(s_modules + i);
-    }
+//     for (size_t i = 0; i < TETRIS_PLAY_SUBMODULE_NUM; ++i) {
+//         join_thread_module(s_modules + i);
+//     }
 
-    pthread_cleanup_pop(1);
+//     pthread_cleanup_pop(1);
 
-    return NULL;
-}
+//     return NULL;
+// }

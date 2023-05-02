@@ -53,23 +53,20 @@ static inline bool is_full_block(tetromino_symbol_t m, int pos)
         for (int j = 0; j < 4; ++j)   \
             if (is_full_block(symbol, i * 4 + j))
 
-static inline bool is_first_drawn_tetromino(const tetromino_t* tetro)
-{
-    my_assert(tetro != NULL);
-
-    return tetro->prev_drawn == NULL;
-}
-
 static inline bool is_valid_tetromino(const tetromino_t* tetro)
 {
     return tetro != NULL;
 }
 
+static inline bool is_first_drawn_tetromino(const tetromino_t* tetro)
+{
+    my_assert(tetro != NULL);
+
+    return !is_valid_tetromino(tetro->prev_drawn);
+}
+
 static inline tetromino_symbol_t get_tetromino_symbol(symbol_id_t sid, dir_t dir)
 {
-    my_assert(0 <= sid && sid < TETROMINO_NUM_OF_KINDS);
-    my_assert(0 <= dir && dir < DIR_NUM_OF_KINDS);
-
     return G_TETROMINO_SYMBOLS[sid][dir];
 }
 
@@ -77,11 +74,6 @@ static inline void update_tetromino_pos(tetromino_t* const out_tetro, pos_t pos)
 {
     out_tetro->pos = pos;
     out_tetro->pos_wprint = get_pos_wprint(out_tetro->pos);
-}
-
-static inline tetromino_t* create_tetromino_empty_malloc(void)
-{
-    return (tetromino_t*)malloc(sizeof(tetromino_t));
 }
 
 const wchar_t* get_dir_wstr(dir_t dir);

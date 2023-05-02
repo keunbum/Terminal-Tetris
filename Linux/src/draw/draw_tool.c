@@ -5,29 +5,33 @@
 #include "debug.h"
 #include "draw_tool.h"
 
+#define MAX_BUF_SIZE (256)
+
 // [sx, ex)
-static void wdraw_col_matrix_at(wchar_t ch, int sx, int ex, int sy)
+static void wdraw_col_matrix_at(wchar_t wch, int sx, int ex, int sy)
 {
     wgotoxy(sx, sy);
-    for (int i = sx; i < ex; i += 1) {
-        wdraw_unit_matrix_at(ch, i, sy);
+    for (int _ = 0; _ < ex - sx; ++_) {
+        wdraw_unit_matrix(wch);
+        fputws(L"\e[1B\e[1D", stdout);
     }
 }
 
 // [sy, ey)
-static void wdraw_row_matrix_at(wchar_t ch, int sx, int sy, int ey)
+static void wdraw_row_matrix_at(wchar_t wch, int sx, int sy, int ey)
 {
-    wgotoxy(sx, sy);
-    for (int j = sy; j < ey; j += 1) {
-        wdraw_unit_matrix(ch);
+    static wchar_t s_wbuf[MAX_BUF_SIZE];
+    int n = ey - sy;
+    for (int i = 0; i < n; ++i) {
+        s_wbuf[i] = wch;
     }
+    s_wbuf[n] = L'\0';
+    wdraw_row_at(s_wbuf, sx, sy);
 }
 
 /* height and width both means total length */
 void wdraw_boundary_at_with(wchar_t hor_block, wchar_t ver_block, int height, int width, int start_pos_x, int start_pos_y, wchar_t top_lft, wchar_t top_rgt, wchar_t bot_lft, wchar_t bot_rgt)
 {
-    debug();
-
     int x0 = start_pos_x;
     int x1 = x0 + height - 1;
     int y0 = start_pos_y;
@@ -45,15 +49,12 @@ void wdraw_boundary_at_with(wchar_t hor_block, wchar_t ver_block, int height, in
     wdraw_col_matrix_at(ver_block, x0 + 1, x1, y1);
 }
 
-void wset_row_line(wchar_t* const buf, int length, wchar_t beg, wchar_t mid, wchar_t end)
+void wset_row_line(wchar_t* const wbuf, int length, wchar_t beg, wchar_t mid, wchar_t end)
 {
-    // debug();
-
-    buf[0] = beg;
+    wbuf[0] = beg;
     for (int i = 1; i < length - 1; ++i) {
-        buf[i] = mid;
+        wbuf[i] = mid;
     }
-    //    wmemset(buf + 1, mid, length - 2);
-    buf[length - 1] = end;
-    buf[length] = L'\0';
+    wbuf[length - 1] = end;
+    wbuf[length] = L'\0';
 }

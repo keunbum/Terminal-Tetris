@@ -3,6 +3,6 @@
 
 #include "device_input.h"
 
-void* mainfunc_device_input_controller(void* arg);
+// void* mainfunc_device_input_controller(void* arg);
 
 #endif /* __TETRIS_PLAY_DEVICE_INPUT_MODULE_CONTROLLER__H */

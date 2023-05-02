@@ -5,7 +5,5 @@
 
 void localize(void)
 {
-    debug();
-
     setlocale(LC_CTYPE, "");
 }

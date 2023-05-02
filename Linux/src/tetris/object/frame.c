@@ -6,18 +6,16 @@ void init_frame(
     frame_t* const next_frame,
     int height_wprint, int width_wprint,
     pos_int_t pos_wprint,
-    title_t title,
+    title_t title_or_null,
     block_wprint_t hor_block, block_wprint_t ver_block,
     block_wprint_t corner_top_lft, block_wprint_t corner_top_rgt, block_wprint_t corner_bot_lft, block_wprint_t corner_bot_rgt)
 {
-    debug();
-
     next_frame->height_wprint = height_wprint;
     next_frame->width_wprint = width_wprint;
 
     next_frame->pos_wprint = pos_wprint;
 
-    next_frame->title = title;
+    next_frame->title = title_or_null;
 
     next_frame->hor_block = hor_block;
     next_frame->ver_block = ver_block;
@@ -29,16 +27,12 @@ void init_frame(
 
 void cleanup_frame(frame_t* const next_frame)
 {
-    debug();
-
     /* do nothing */
     (void)next_frame;
 }
 
 void wdraw_frame(const frame_t* next_frame, int title_pos_y_offset)
 {
-    debug();
-    
     my_assert(next_frame != NULL);
 
     if (next_frame->title != NULL) {

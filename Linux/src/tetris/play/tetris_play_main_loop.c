@@ -1,5 +1,6 @@
 #include <unistd.h>
 
+#include "algorithm.h"
 #include "chronometry.h"
 #include "debug.h"
 #include "draw/cursor.h"
@@ -47,7 +48,7 @@ void* mainfunc_game_main_loop(void* arg)
 
         update_gameworld(play_manager);
 
-        __snseconds_t sleep_time = max(0, TO_NSEC(TETRIS_PLAY_FRAME_TIME) - get_elapsed_time_nsec(&start_time));
+        __snseconds_t sleep_time = max_long(0L, TO_NSEC(TETRIS_PLAY_FRAME_TIME) - get_elapsed_time_nsec(&start_time));
         nanosleep_chrono(sleep_time);
 
         prev_frame_time = get_elapsed_time_sec(&start_time);
@@ -89,10 +90,10 @@ void* new_mainfunc_game_main_loop(void* arg)
         new_update_gameworld(play_manager);
 
         if (new_read_device_input_event(&play_manager->input)) {
-            tetromino_status_t res = new_process_keyboard_event(&play_manager->input, &play_manager->tetro_man);
+            tetromino_status_t res = process_keyboard_event(&play_manager->input, &play_manager->tetro_man);
             process_tetromino_try_status(res, play_manager);
         } else {
-            __snseconds_t sleep_time = max(0L, TO_NSEC(TETRIS_PLAY_FRAME_TIME) - get_elapsed_time_nsec(&start_time));
+            __snseconds_t sleep_time = max_long(0L, TO_NSEC(TETRIS_PLAY_FRAME_TIME) - get_elapsed_time_nsec(&start_time));
             nanosleep_chrono(sleep_time);
         }
 

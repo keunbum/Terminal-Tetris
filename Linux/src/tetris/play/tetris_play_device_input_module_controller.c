@@ -1,7 +1,7 @@
+#include <assert.h>
 #include <pthread.h>
 #include <stdbool.h>
 #include <stdlib.h>
-#include <assert.h>
 
 #include "debug.h"
 #include "pthread_macro.h"
@@ -10,16 +10,12 @@
 
 static void callback_cleanup_device_input(void* arg)
 {
-    debug();
-
     device_input_t* const inm = (device_input_t*)arg;
     cleanup_device_input(inm);
 }
 
 static tetromino_status_t process_controller_event(device_input_t* const out_in, tetromino_manager_t* const out_tetro_man)
 {
-    // debug();
-
     const struct input_event* ev = &out_in->event;
     board_t* board = &out_tetro_man->board;
     tetromino_t* tetro = out_tetro_man->tetro_main;
@@ -30,12 +26,12 @@ static tetromino_status_t process_controller_event(device_input_t* const out_in,
         switch (ev->code) {
         case ABS_HAT0X:
             switch (ev->value) {
-                case -1:
-                    ret = try_move_tetromino_byone_r(board, tetro, DIR_LEFT);
-                    break;
-                case +1:
-                    ret = try_move_tetromino_byone_r(board, tetro, DIR_RIGHT);
-                    break;
+            case -1:
+                ret = try_move_tetromino_byone_r(board, tetro, DIR_LEFT);
+                break;
+            case +1:
+                ret = try_move_tetromino_byone_r(board, tetro, DIR_RIGHT);
+                break;
             }
             break;
         case ABS_HAT0Y:

@@ -5,11 +5,11 @@
 #include <wchar.h>
 
 #include "block.h"
+#include "pthread_macro.h"
 #include "tetris/object/board.h"
 #include "tetris/object/tetromino.h"
 #include "tetris/scene/tetris_play_screen.h"
 #include "tetris_play_object.h"
-#include "pthread_macro.h"
 
 #define TETRIS_PLAY_BOARD_INNER_HEIGHT (20)
 #define TETRIS_PLAY_BOARD_INNER_WIDTH (10)
@@ -19,9 +19,6 @@
 #define TETRIS_PLAY_BOARD_HEIGHT_WPRINT (TETRIS_PLAY_BOARD_HEIGHT)
 #define TETRIS_PLAY_BOARD_WIDTH_WPRINT (2 * TETRIS_PLAY_BOARD_WIDTH)
 
-/*#define TETRIS_PLAY_BOARD_POS_X_WPRINT \
-    (TETRIS_PLAY_SINGLE_SCREEN_POS_X_WPRINT + (TETRIS_PLAY_SINGLE_SCREEN_HEIGHT_WPRINT - TETRIS_PLAY_BOARD_HEIGHT_WPRINT) / 2 + 5)
-*/
 #define TETRIS_PLAY_BOARD_POS_X_WPRINT \
     (TETRIS_PLAY_SINGLE_SCREEN_POS_X_WPRINT + 8)
 #define TETRIS_PLAY_BOARD_POS_Y_WPRINT \
@@ -41,7 +38,6 @@
 
 #define BOARD_INNTER_BLOCK_WPRINT BLOCK_WPRINT_WHITE_LARGE_SQUARE
 #define BOARD_WALL_BLOCK_WPRINT BLOCK_WPRINT_NEW_MOON
-
 
 typedef block_t row_t[TETRIS_PLAY_BOARD_WIDTH];
 typedef struct {
@@ -87,15 +83,9 @@ static inline bool is_all_of_row(const board_t* board, int i, block_nature_t nat
     return is_all;
 }
 
-static inline const row_t* get_grid(const board_t* board)
-{
-    return board->grid;
-}
-
 static inline const block_t* get_board_grid_block(const board_t* board, int i, int j)
 {
-    const block_t* ret = get_grid(board)[i] + j;
-    return ret;
+    return &board->grid[i][j];
 }
 
 static inline void set_board_grid_block(board_t* const out_board, int i, int j, block_t block)

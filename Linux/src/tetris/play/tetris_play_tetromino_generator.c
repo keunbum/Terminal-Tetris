@@ -1,5 +1,6 @@
 #include <stdlib.h>
 
+#include "algorithm.h"
 #include "debug.h"
 #include "mt19937.h"
 #include "tetris/object/block_wprint.h"
@@ -105,5 +106,5 @@ tetromino_t* create_tetromino_symbol_poswprint_malloc(tetromino_generator_t* con
         init_block,
         init_clean_block,
         NULL);
-    return pa_ret;    
+    return pa_ret;
 }

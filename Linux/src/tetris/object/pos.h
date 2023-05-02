@@ -3,12 +3,14 @@
 
 #include <stdbool.h>
 
-typedef float pos_e_t;
+typedef float pos_each_float_t;
+typedef pos_each_float_t pos_e_t;
 
 typedef struct {
     pos_e_t x;
     pos_e_t y;
-} pos_t;
+} pos_float_t;
+typedef pos_float_t pos_t;
 
 typedef struct {
     int x;
@@ -17,22 +19,20 @@ typedef struct {
 
 static inline pos_t create_pos(pos_e_t x, pos_e_t y)
 {
-    pos_t ret = {x, y};
-    return ret;
+    return (pos_t) { x, y };
 }
 
-static inline pos_t create_pos_empty()
+static inline pos_t create_pos_default(void)
 {
-    return create_pos(0, 0);
+    return create_pos(0.0, 0.0);
 }
 
 static inline pos_int_t create_posint(int x, int y)
 {
-    pos_int_t ret = {x, y};
-    return ret;
+    return (pos_int_t) { x, y };
 }
 
-static inline pos_int_t create_posint_empty()
+static inline pos_int_t create_posint_default()
 {
     return create_posint(0, 0);
 }
@@ -49,7 +49,6 @@ static inline pos_int_t get_intpos_intwprint(pos_int_t pos)
 
 static inline pos_int_t get_posint(pos_t pos)
 {
-    // return create_posint((int)(pos.x + __FLT_EPSILON__), (int)(pos.y + __FLT_EPSILON__));
     return create_posint((int)pos.x, (int)pos.y);
 }
 

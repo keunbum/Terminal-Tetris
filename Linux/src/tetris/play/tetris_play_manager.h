@@ -6,7 +6,6 @@
 #include "terminal.h"
 #include "tetris/object/board.h"
 #include "tetris/object/frame.h"
-#include "tetris/object/screen.h"
 #include "tetris/object/tetromino.h"
 #include "tetris/play/tetris_play_tetromino_generator.h"
 #include "tetris/play/tetris_play_tetromino_manager.h"

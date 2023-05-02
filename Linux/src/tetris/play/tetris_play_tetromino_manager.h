@@ -59,26 +59,26 @@ typedef struct {
 
 static inline void init_tetromino_manager_lock(tetromino_manager_t* const out_tetromino_manager)
 {
-    init_lock(out_tetromino_manager->lock);
+    init_mutex_lock(out_tetromino_manager->lock);
 }
 
 static inline void lock_tetromino_manager(tetromino_manager_t* const out_tetromino_manager)
 {
     debug();
 
-    check_lock(out_tetromino_manager->lock);
+    check_mutex_lock(out_tetromino_manager->lock);
 }
 
 static inline void unlock_tetromino_manager(tetromino_manager_t* const out_tetromino_manager)
 {
     debug();
 
-    check_unlock(out_tetromino_manager->lock);
+    check_mutex_unlock(out_tetromino_manager->lock);
 }
 
 static inline void cleanup_tetromino_manager_lock(tetromino_manager_t* const out_tetromino_manager)
 {
-    cleanup_lock(out_tetromino_manager->lock);
+    cleanup_mutex_lock(out_tetromino_manager->lock);
 }
 
 static inline void cleanup_tetromino_ontheground(tetromino_manager_t* const out_man)
