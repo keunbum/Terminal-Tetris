@@ -31,15 +31,9 @@ void cleanup_device_input(device_input_t* const out_in)
     }
 }
 
-void read_device_input_event(device_input_t* const out_in)
-{
-    const ssize_t expected_read_size = (ssize_t)sizeof(struct input_event);
-    if (read(out_in->fd, &out_in->event, expected_read_size) != expected_read_size) {
-        handle_error("read() error");
-    }
-}
-
-bool new_read_device_input_event(device_input_t* const out_in)
+/* return true; if something has been read.
+   return false; if not */
+bool read_device_input_event(device_input_t* const out_in)
 {
     static const ssize_t s_expected_read_size = (ssize_t)sizeof(struct input_event);
     return read(out_in->fd, &out_in->event, s_expected_read_size) == s_expected_read_size;

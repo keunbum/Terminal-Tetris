@@ -147,18 +147,6 @@ void update_gameworld(tetris_play_manager_t* const out_play_manager)
 {
     debug();
 
-    /* As long as you run the input processing thread separately,
-       you need to take care of the critical section problem. */
-    lock_tetromino_manager(&out_play_manager->tetro_man);
-    tetromino_status_t res = update_tetromino_manager(&out_play_manager->tetro_man, out_play_manager->game_delta_time);
-    process_tetromino_try_status(res, out_play_manager);
-    unlock_tetromino_manager(&out_play_manager->tetro_man);
-}
-
-void new_update_gameworld(tetris_play_manager_t* const out_play_manager)
-{
-    debug();
-
     tetromino_status_t res = update_tetromino_manager(&out_play_manager->tetro_man, out_play_manager->game_delta_time);
     process_tetromino_try_status(res, out_play_manager);
 }

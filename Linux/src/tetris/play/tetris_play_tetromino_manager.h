@@ -54,32 +54,32 @@ typedef struct {
     frame_t next_frame;
     frame_t hold_frame;
 
-    tetromino_manager_lock_t lock;
+    // tetromino_manager_lock_t lock;
 } tetromino_manager_t;
 
-static inline void init_tetromino_manager_lock(tetromino_manager_t* const out_tetromino_manager)
-{
-    init_mutex_lock(out_tetromino_manager->lock);
-}
+// static inline void init_tetromino_manager_lock(tetromino_manager_t* const out_tetromino_manager)
+// {
+//     init_mutex_lock(out_tetromino_manager->lock);
+// }
 
-static inline void lock_tetromino_manager(tetromino_manager_t* const out_tetromino_manager)
-{
-    debug();
+// static inline void lock_tetromino_manager(tetromino_manager_t* const out_tetromino_manager)
+// {
+//     debug();
 
-    check_mutex_lock(out_tetromino_manager->lock);
-}
+//     check_mutex_lock(out_tetromino_manager->lock);
+// }
 
-static inline void unlock_tetromino_manager(tetromino_manager_t* const out_tetromino_manager)
-{
-    debug();
+// static inline void unlock_tetromino_manager(tetromino_manager_t* const out_tetromino_manager)
+// {
+//     debug();
 
-    check_mutex_unlock(out_tetromino_manager->lock);
-}
+//     check_mutex_unlock(out_tetromino_manager->lock);
+// }
 
-static inline void cleanup_tetromino_manager_lock(tetromino_manager_t* const out_tetromino_manager)
-{
-    cleanup_mutex_lock(out_tetromino_manager->lock);
-}
+// static inline void cleanup_tetromino_manager_lock(tetromino_manager_t* const out_tetromino_manager)
+// {
+//     cleanup_mutex_lock(out_tetromino_manager->lock);
+// }
 
 static inline void cleanup_tetromino_ontheground(tetromino_manager_t* const out_man)
 {

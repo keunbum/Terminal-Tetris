@@ -219,13 +219,8 @@ void* run_tetris_play_single_mode(void* arg)
             },
         },
         .sub_modules = {
-            // {
-            //     .main_func = mainfunc_game_main_loop,
-            //     .main_func_arg = (void*)&s_play_manager,
-            //     .is_detached = false,
-            // },
             {
-                .main_func = new_mainfunc_game_main_loop,
+                .main_func = mainfunc_game_main_loop,
                 .main_func_arg = (void*)&s_play_manager,
                 .is_detached = false,
             },
@@ -234,11 +229,6 @@ void* run_tetris_play_single_mode(void* arg)
                 .main_func_arg = (void*)&s_play_manager.timer_drawer,
                 .is_detached = false,
             },
-            // {
-            //     .main_func = mainfunc_device_input_modules,
-            //     .main_func_arg = (void*)&s_play_manager,
-            //     .is_detached = false,
-            // },
         },
     };
 
