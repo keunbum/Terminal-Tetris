@@ -13,8 +13,6 @@ const wchar_t* get_tetromino_status_wstr(tetromino_status_t status)
 
 bool is_ok_tetromino_next_status(const board_t* restrict board, const tetromino_t* restrict tetro, pos_int_t npos, dir_t nrotate_dir)
 {
-    debug();
-
     my_assert(is_valid_tetromino(tetro));
 
     tetromino_symbol_t nsymbol = get_tetromino_symbol(tetro->symbol_id, nrotate_dir);
@@ -23,12 +21,6 @@ bool is_ok_tetromino_next_status(const board_t* restrict board, const tetromino_
     traverse_symbol(i, j, nsymbol) {
         int ni = npos.x + i - board->pos.x;
         int nj = npos.y + j - board->pos.y;
-        // if (each_npos.x > TETRIS_PLAY_TETROMINO_POS_X_MAX
-        //     || each_npos.y < TETRIS_PLAY_TETROMINO_POS_Y_MIN
-        //     || each_npos.y > TETRIS_PLAY_TETROMINO_POS_Y_MAX
-        //     || board->grid[ni][nj].nature != BLOCK_NATURE_EMPTY) {
-        //     return false;
-        // }
         is_ok &= board->grid[ni][nj].nature == BLOCK_NATURE_EMPTY;
     }
     return is_ok;
@@ -36,8 +28,6 @@ bool is_ok_tetromino_next_status(const board_t* restrict board, const tetromino_
 
 tetromino_status_t try_move_down_tetromino_deltatime_r(board_t* const restrict out_board, tetromino_t* const restrict out_tetro, game_time_t delta_time)
 {
-    debug();
-
     my_assert(is_valid_tetromino(out_tetro));
 
     pos_t npos = {
@@ -54,8 +44,6 @@ tetromino_status_t try_move_down_tetromino_deltatime_r(board_t* const restrict o
 
 tetromino_status_t try_move_tetromino_byone_r(board_t* const restrict out_board, tetromino_t* const restrict out_tetro, dir_t dir)
 {
-    debug();
-
     if (!is_valid_tetromino(out_tetro)) {
         return TETROMINO_STATUS_NULL;
     }
@@ -74,8 +62,6 @@ tetromino_status_t try_move_tetromino_byone_r(board_t* const restrict out_board,
 
 tetromino_status_t try_rotate_tetromino_r(board_t* const restrict out_board, tetromino_t* const restrict out_tetro, int by)
 {
-    debug();
-
     if (!is_valid_tetromino(out_tetro)) {
         return TETROMINO_STATUS_NULL;
     }
@@ -99,10 +85,8 @@ tetromino_status_t try_rotate_tetromino_r(board_t* const restrict out_board, tet
     return TETROMINO_STATUS_ONTHEWALL;
 }
 
-tetromino_status_t harddrop_tetromino_r(board_t* const restrict out_board, tetromino_t* const out_tetro)
+tetromino_status_t harddrop_tetromino_r(board_t* const restrict out_board, tetromino_t* const restrict out_tetro)
 {
-    debug();
-
     if (!is_valid_tetromino(out_tetro)) {
         return TETROMINO_STATUS_NULL;
     }

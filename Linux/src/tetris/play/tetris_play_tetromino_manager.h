@@ -40,12 +40,12 @@ typedef struct {
     pos_int_t next_pos_wprint;
     pos_int_t hold_pos;
 
-    bool is_swaped_once;
     game_time_t unit_velocity;
     game_time_t tetromino_init_velocity;
+    bool is_swaped_once;
     tetromino_t* tetro_main;
     tetromino_t* tetro_hold;
-    tetromino_t tetro_silhou;
+    tetromino_t tetro_silhou; // name from --> https://tetris.fandom.com/wiki/Ghost_piece
     board_t board;
 
     tetromino_generator_t tetro_gen;
@@ -53,33 +53,7 @@ typedef struct {
     fixed_queue_t que;
     frame_t next_frame;
     frame_t hold_frame;
-
-    // tetromino_manager_lock_t lock;
 } tetromino_manager_t;
-
-// static inline void init_tetromino_manager_lock(tetromino_manager_t* const out_tetromino_manager)
-// {
-//     init_mutex_lock(out_tetromino_manager->lock);
-// }
-
-// static inline void lock_tetromino_manager(tetromino_manager_t* const out_tetromino_manager)
-// {
-//     debug();
-
-//     check_mutex_lock(out_tetromino_manager->lock);
-// }
-
-// static inline void unlock_tetromino_manager(tetromino_manager_t* const out_tetromino_manager)
-// {
-//     debug();
-
-//     check_mutex_unlock(out_tetromino_manager->lock);
-// }
-
-// static inline void cleanup_tetromino_manager_lock(tetromino_manager_t* const out_tetromino_manager)
-// {
-//     cleanup_mutex_lock(out_tetromino_manager->lock);
-// }
 
 static inline void cleanup_tetromino_ontheground(tetromino_manager_t* const out_man)
 {
@@ -90,8 +64,6 @@ static inline void cleanup_tetromino_ontheground(tetromino_manager_t* const out_
 
 static inline void wdraw_tetromino_speed(const tetromino_manager_t* man)
 {
-    // debug();
-
     const int pos_x_wprint = SPEED_DRAW_POS_X_WPRINT;
     const int pos_y_wprint = SPEED_DRAW_POS_Y_WPRINT;
     wprintf_at_r(pos_x_wprint, pos_y_wprint, L"SPEED: %-4.2lf", man->tetromino_init_velocity);

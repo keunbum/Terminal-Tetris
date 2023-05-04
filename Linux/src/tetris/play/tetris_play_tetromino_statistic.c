@@ -9,10 +9,6 @@
 
 static inline void wdraw_tetromino_spawned_cnt(const tetris_play_statistic_t* st, symbol_id_t id)
 {
-    debug();
-
-    my_assert(st != NULL);
-
     const int pos_x_wprint = st->tetromino_pos_wprint.x + (id + 1) * st->interval_height;
     const int pos_y_wprint = st->tetromino_pos_wprint.y;
     wprintf_at_r(pos_x_wprint + 1 + 0, pos_y_wprint + 11, L"%d", st->tetromino_spawned_cnts[id]);
@@ -20,10 +16,6 @@ static inline void wdraw_tetromino_spawned_cnt(const tetris_play_statistic_t* st
 
 static inline void wdraw_cleared_lines(const tetris_play_statistic_t* st)
 {
-    debug();
-
-    my_assert(st != NULL);
-
     const int pos_x_wprint = LINES_DRAW_POS_X_WPRINT;
     const int pos_y_wprint = LINES_DRAW_POS_Y_WPRINT;
     wprintf_at_r(pos_x_wprint, pos_y_wprint, L"LINES: %-4d", st->tetromino_cleared_lines);
@@ -31,10 +23,6 @@ static inline void wdraw_cleared_lines(const tetris_play_statistic_t* st)
 
 static void wdraw_tetris_play_statistics_tetrominos(const tetris_play_statistic_t* st)
 {
-    debug();
-
-    my_assert(st != NULL);
-
     for (symbol_id_t i = 0; i < TETROMINO_NUM_OF_KINDS; ++i) {
         wdraw_a_tetromino(st->tetrominos[i]);
         wdraw_tetromino_spawned_cnt(st, i);
@@ -43,8 +31,6 @@ static void wdraw_tetris_play_statistics_tetrominos(const tetris_play_statistic_
 
 void init_tetris_play_statistics_malloc(tetris_play_statistic_t* const out_stat, tetromino_generator_t* const out_gen)
 {
-    debug();
-    
     out_stat->pos_wprint = create_posint(TETRIS_PLAY_STATISTIC_POS_X_WPRINT, TETRIS_PLAY_STATISTIC_POS_Y_WPRINT);
     out_stat->tetromino_pos_wprint = create_posint(TETRIS_PLAY_STATISTIC_TETROMINO_POS_X_WPRINT, TETRIS_PLAY_STATISTIC_TETROMINO_POS_Y_WPRINT);
     out_stat->interval_height = TETRIS_PLAY_STATISTIC_INTERVAL_HEIGHT;
@@ -76,8 +62,6 @@ void init_tetris_play_statistics_malloc(tetris_play_statistic_t* const out_stat,
 
 void cleanup_tetris_play_statistics_free(tetris_play_statistic_t* const out_stat)
 {
-    debug();
-
     cleanup_frame(&out_stat->next_frame);
     for (symbol_id_t symbol_id = 0; symbol_id < TETROMINO_NUM_OF_KINDS; ++symbol_id) {
         cleanup_tetromino_free(out_stat->tetrominos[symbol_id]);
@@ -86,10 +70,6 @@ void cleanup_tetris_play_statistics_free(tetris_play_statistic_t* const out_stat
 
 void wdraw_tetris_play_statistics(const tetris_play_statistic_t* st)
 {
-    debug();
-
-    my_assert(st != NULL);
-
     wdraw_frame(&st->next_frame, 3);
     wdraw_tetris_play_statistics_tetrominos(st);
     wdraw_cleared_lines(st);

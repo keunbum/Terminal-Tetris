@@ -8,10 +8,6 @@
 
 static void draw_tetris_play_single_default_scene(const tetris_play_manager_t* play_manager)
 {
-    debug();
-
-    my_assert(play_manager != NULL);
-
     wdraw_frame(&play_manager->screen_frame, 0);
     wdraw_board(&play_manager->tetro_man.board);
     wdraw_tetromino_manager(&play_manager->tetro_man);
@@ -26,8 +22,6 @@ static void draw_tetris_play_single_default_scene(const tetris_play_manager_t* p
 
 void load_tetris_play_scene(const tetris_play_manager_t* play_manager)
 {
-    debug();
-
     wclear();
     wdisable_cursor();
 
@@ -45,8 +39,6 @@ void load_tetris_play_scene(const tetris_play_manager_t* play_manager)
 
 void cleanup_tetris_play_scene(void)
 {
-    debug();
-
     wenable_cursor();
     wclear();
 }

@@ -24,20 +24,18 @@
 
 static void ready_getset_go(const tetris_play_manager_t* play_manager)
 {
-    debug();
-
     for (int cur_sec = play_manager->ready_getset_go_sec; cur_sec >= 0; --cur_sec) {
         struct timespec start_time;
         get_chrono_time(&start_time);
-        const pos_t pos_wprint = {
+        const pos_int_t pos_wprint = {
             play_manager->pos_wprint.x + 2,
             play_manager->tetro_man.board.pos_wprint.y + play_manager->tetro_man.board.width - 2,
         };
         if (cur_sec == 0) {
-            wdraw_digital_digit5_at_r(G_DIGITAL_DIGIT5_EMPTY, (int)pos_wprint.x, (int)pos_wprint.y);
+            wdraw_digital_digit5_at_r(G_DIGITAL_DIGIT5_EMPTY, pos_wprint.x, pos_wprint.y);
             break;
         }
-        wdraw_digital_digit5_at_r(G_DIGITAL_DIGIT5S[cur_sec], (int)pos_wprint.x, (int)pos_wprint.y);
+        wdraw_digital_digit5_at_r(G_DIGITAL_DIGIT5S[cur_sec], pos_wprint.x, pos_wprint.y);
         /* Of course, it's not exactly 1 second. */
         /* However, it is a bit cumbersome to write a realtime timer haha; */
         nanosleep_chrono(TO_NSEC(1) - get_elapsed_time_nsec(&start_time));
@@ -46,8 +44,6 @@ static void ready_getset_go(const tetris_play_manager_t* play_manager)
 
 static tetris_play_status_t run_tetris_play_modules_in_parallel(tetris_play_manager_t* const out_play_manager)
 {
-    debug();
-
     realtime_timer_t* timer = &out_play_manager->timer_drawer.timer;
 
     /* Block REALTIME_TIMER_SIG */
@@ -78,8 +74,6 @@ static int selection_after_game_over(void)
 
 static void init_tetris_play_objects(tetris_play_manager_t* const out_play_manager)
 {
-    debug();
-
     init_frame(&out_play_manager->screen_frame,
         TETRIS_PLAY_SINGLE_SCREEN_HEIGHT_WPRINT, TETRIS_PLAY_SINGLE_SCREEN_WIDTH_WPRINT,
         out_play_manager->pos_wprint,
@@ -104,10 +98,6 @@ static void cleanup_tetris_play_objects(tetris_play_manager_t* const out_play_ma
 
 static void init_tetris_play_manager_before_start(tetris_play_manager_t* const out_play_manager)
 {
-    // debug();
-
-    my_assert(out_play_manager != NULL);
-
     out_play_manager->status = TETRIS_PLAY_STATUS_RUNNING;
     init_tetris_play_objects(out_play_manager);
     load_tetris_play_scene(out_play_manager);
@@ -115,17 +105,11 @@ static void init_tetris_play_manager_before_start(tetris_play_manager_t* const o
 
 static void init_tetris_play_manager_after_start(tetris_play_manager_t* const out_play_manager)
 {
-    // debug();
-
-    my_assert(out_play_manager != NULL);
-
     init_device_input(&out_play_manager->input, DEVICE_INPUT_KEYBOARD, O_RDONLY | O_NONBLOCK);
 }
 
 static void cleanup_tetris_play_manager(tetris_play_manager_t* const out_play_manager)
 {
-    my_assert(out_play_manager != NULL);
-
     cleanup_tetris_play_scene();
     cleanup_tetris_play_objects(out_play_manager);
 }
@@ -155,7 +139,6 @@ void* run_tetris_play_single_mode(void* arg)
 {
     debug();
 
-    my_assert(arg == NULL);
     (void)arg;
 
     static tetris_play_manager_t s_play_manager = {
@@ -180,7 +163,6 @@ void* run_tetris_play_single_mode(void* arg)
                 .block_hor_line = BOARD_WALL_BLOCK_WPRINT,
                 .block_inner = BOARD_INNTER_BLOCK_WPRINT,
                 .block_skyline = BOARD_WALL_BLOCK_WPRINT,
-                // .block_sky = BLOCK_WPRINT_NIGHTSKY,
 
                 .pos = { TETRIS_PLAY_BOARD_POS_X, TETRIS_PLAY_BOARD_POS_Y },
                 .pos_wprint = { TETRIS_PLAY_BOARD_POS_X_WPRINT, TETRIS_PLAY_BOARD_POS_Y_WPRINT },

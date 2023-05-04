@@ -9,8 +9,6 @@
 
 static void wdraw_timer_frame_at(int pos_x_wprint, int pos_y_wprint)
 {
-    // debug();
-
     static wchar_t s_top_line[TIMER_FRAME_WIDTH + 1];
     static wchar_t s_mid_line[TIMER_FRAME_WIDTH + 1];
     static wchar_t s_bot_line[TIMER_FRAME_WIDTH + 1];
@@ -27,8 +25,6 @@ static void wdraw_timer_frame_at(int pos_x_wprint, int pos_y_wprint)
 
 static void doit_drawer_main_logic(const realtime_timer_t* timer, const draw_module_t* draw_module)
 {
-    // debug();
-
     const int timer_pos_x_wprint = draw_module->pos_x_wprint + 1;
     const int timer_pos_y_wprint = draw_module->pos_y_wprint + 3;
 
@@ -49,8 +45,6 @@ static void doit_drawer_main_logic(const realtime_timer_t* timer, const draw_mod
 
 static inline void cleanup_timer_drawer_module(realtime_timer_t* const out_timer)
 {
-    debug();
-
     my_assert(out_timer != NULL);
 
     if (timer_delete(out_timer->timerid) == -1) {
@@ -60,16 +54,12 @@ static inline void cleanup_timer_drawer_module(realtime_timer_t* const out_timer
 
 static void callback_cleanup_timer_drawer_module(void* arg)
 {
-    debug();
-
     realtime_timer_t* timer = (realtime_timer_t*)arg;
     cleanup_timer_drawer_module(timer);
 }
 
 static void init_timer(realtime_timer_t* const out_timer)
 {
-    debug();
-
     my_assert(out_timer->timersig == REALTIME_TIMER_SIG);
 
     /* Set sigset */
@@ -94,8 +84,6 @@ void init_timer_drawer(timer_drawer_t* const out_timer_drawer, int timersig)
 
 void* run_timer_drawer_with(void* arg)
 {
-    debug();
-
     timer_drawer_t* timer_drawer = (timer_drawer_t*)arg;
     realtime_timer_t* timer = (realtime_timer_t*)&timer_drawer->timer;
 

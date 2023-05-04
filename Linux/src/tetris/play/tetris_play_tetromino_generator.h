@@ -5,18 +5,11 @@
 #include "tetris/object/tetromino.h"
 
 typedef struct {
-    int spawnd_cnt;
+    int tetromino_spawnd_cnt;
     const block_wprint_set_t* block_wprint_set;
-    int ptr;
+    int symbols_ptr;
     symbol_id_t symbols[TETROMINO_NUM_OF_KINDS];
 } tetromino_generator_t;
-
-static inline const block_wprint_set_t* get_block_wprint_set(const tetromino_generator_t* tetro_gen)
-{
-    my_assert(tetro_gen->block_wprint_set != NULL);
-
-    return tetro_gen->block_wprint_set;
-}
 
 void init_tetromino_generator(tetromino_generator_t* const out_gen);
 void cleanup_tetromino_generator(tetromino_generator_t* const out_gen);

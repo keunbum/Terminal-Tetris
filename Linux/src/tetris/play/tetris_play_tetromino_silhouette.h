@@ -13,8 +13,6 @@ void cleanup_tetromino_silhouette(tetromino_t* const out_tetro);
 
 static inline void update_tetromino_silhouette_with(tetromino_t* const restrict out_tetro_des, const tetromino_t* restrict tetro_src, block_wprint_t init_block_wprint)
 {
-    debug();
-
     my_assert(out_tetro_des != NULL);
     my_assert(tetro_src != NULL);
 

@@ -1,7 +1,4 @@
-#include <locale.h>
-#include <stdio.h>
 #include <stdlib.h>
-#include <time.h>
 
 #include "debug.h"
 #include "game_system/game_system_manager.h"
@@ -9,15 +6,11 @@
 
 static void main2(void)
 {
-    debug();
-
     run_game_system_manager();
 }
 
 int main(int argc, char* argv[])
 {
-    debug();
-
     (void)argc;
     (void)argv;
 

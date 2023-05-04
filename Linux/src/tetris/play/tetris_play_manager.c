@@ -5,29 +5,29 @@
 
 #define MANUAL_ROWS (8)
 #define MANUAL_COLS (2)
-#define MAX_STR_LEN (32)
+#define MAX_WSTR_LEN (32)
 
 typedef const wchar_t* tetris_play_manual_row_t[MANUAL_COLS];
 
-static void print_sub_wstr(int width, wchar_t inner, wchar_t edge)
+static void print_sub_wstr(int width, wchar_t beg_and_inner, wchar_t end)
 {
-    static wchar_t s_buf[MAX_STR_LEN];
-    wmemset(s_buf + 0, inner, width - 1);
-    s_buf[width - 1] = edge;
+    static wchar_t s_buf[MAX_WSTR_LEN];
+    wmemset(s_buf + 0, beg_and_inner, width - 1);
+    s_buf[width - 1] = end;
     s_buf[width] = L'\0';
     fputws(s_buf, stdout);
 }
 
 static void print_tetris_play_manual(int row, int col, const tetris_play_manual_row_t rows[MANUAL_ROWS], pos_int_t at)
 {
-    static const size_t S_UNIT_WIDTH = 13u;
-    const int cursor_move_len = 1 + col * (S_UNIT_WIDTH + 1);
+    static const size_t S_UNIT_CELL_WIDTH = 13u;
+    const int cursor_move_len = 1 + col * (S_UNIT_CELL_WIDTH + 1);
     wgotoxy(at.x, at.y);
     for (int i = 0; i < row + 1; ++i) {
         {
             fputwc(L'+', stdout);
-            for (int j = 0; j < col; ++j) {
-                print_sub_wstr(S_UNIT_WIDTH + 1, L'-', L'+');
+            for (int _ = 0; _ < col; ++_) {
+                print_sub_wstr(S_UNIT_CELL_WIDTH + 1, L'-', L'+');
             }
             wprintf(L"\e[1B\e[%dD", cursor_move_len);
         }
@@ -37,13 +37,11 @@ static void print_tetris_play_manual(int row, int col, const tetris_play_manual_
         {
             fputwc(L'|', stdout);
             for (int j = 0; j < col; ++j) {
-                size_t slen = wcslen(rows[i][j]);
-                size_t len_left = (S_UNIT_WIDTH - slen + 1) / 2;
-                size_t len_right = S_UNIT_WIDTH - (slen + len_left);
-
-                wprintf(L"%*ls", slen + len_left, rows[i][j]);
-
-                print_sub_wstr(len_right + 1, L' ', L'|');
+                size_t wstr_len = wcslen(rows[i][j]);
+                size_t margin_left = (S_UNIT_CELL_WIDTH - wstr_len + 1) / 2;
+                size_t margin_right = S_UNIT_CELL_WIDTH - (wstr_len + margin_left);
+                wprintf(L"%*ls", wstr_len + margin_left, rows[i][j]);
+                print_sub_wstr(margin_right + 1, L' ', L'|');
             }
             wprintf(L"\e[1B\e[%dD", cursor_move_len);
         }

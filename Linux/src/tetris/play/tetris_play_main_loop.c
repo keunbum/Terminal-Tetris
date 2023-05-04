@@ -39,7 +39,7 @@ void* mainfunc_game_main_loop(void* arg)
 
         if (read_device_input_event(&play_manager->input)) {
             tetromino_status_t res = process_input_event(&play_manager->input, &play_manager->tetro_man);
-            process_tetromino_try_status(res, play_manager);
+            process_tetromino_status(res, play_manager);
         } else {
             __snseconds_t sleep_time = max_long(0L, TO_NSEC(TETRIS_PLAY_FRAME_TIME) - get_elapsed_time_nsec(&start_time));
             nanosleep_chrono(sleep_time);

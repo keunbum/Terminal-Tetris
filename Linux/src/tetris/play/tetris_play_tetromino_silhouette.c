@@ -12,14 +12,12 @@ pos_t get_tetromino_silhouette_pos(const board_t* board, const tetromino_t* tetr
     debug();
     int cpos_y = (int) tetro->pos.y;
     for (int cpos_x = (int) tetro->pos.x; cpos_x < board->pos.x + board->height; ++cpos_x) {
-        // pos_int_t npos = { cpos.x + 1, cpos.y };
         if (!is_ok_tetromino_next_status(board, tetro, create_posint(cpos_x + 1, cpos_y), tetro->dir)) {
             return create_pos((pos_e_t)cpos_x, (pos_e_t)cpos_y);
         }
     }
     my_assert(false);
-    pos_t ret = {};
-    return ret;
+    return (pos_t){};
 }
 
 void init_tetromino_silhouette(tetromino_t* const out_tetro)
@@ -35,4 +33,3 @@ void cleanup_tetromino_silhouette(tetromino_t* const out_tetro)
         out_tetro->prev_drawn = NULL;
     }
 }
-

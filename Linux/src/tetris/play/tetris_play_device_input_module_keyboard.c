@@ -99,7 +99,7 @@ tetromino_status_t process_keyboard_event(device_input_t* const out_in, tetromin
 //         read_device_input_event(&in);
 //         lock_tetromino_manager(&play_manager->tetro_man);
 //         tetromino_status_t res = process_keyboard_event_thread(&in, &play_manager->tetro_man);
-//         process_tetromino_try_status(res, play_manager);
+//         process_tetromino_status(res, play_manager);
 //         unlock_tetromino_manager(&play_manager->tetro_man);
 //     }
 
