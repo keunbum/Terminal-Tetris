@@ -9,7 +9,7 @@
 #include "error_handling.h"
 #include "pthread_macro.h"
 
-#define EV_KEYBOARD 120013
+#define EV_KEYBOARD (120013)
 
 #define DEVICE_INPUT_KEYBOARD (2)
 #define DEVICE_INPUT_CONTROLLER_NS (6)

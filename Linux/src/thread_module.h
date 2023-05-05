@@ -19,8 +19,6 @@ typedef struct {
 
 static inline void run_thread_module(thread_module_t* const out_module)
 {
-    debug();
-
     int res = pthread_create(&out_module->thread_id, NULL, out_module->main_func, out_module->main_func_arg);
     if (res != 0) {
         handle_error_en("pthread_create() error", res);

@@ -1,12 +1,12 @@
 #ifndef __CHRONOMETRY__H
 #define __CHRONOMETRY__H
 
+#include <assert.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <sys/time.h>
 #include <time.h>
 #include <unistd.h>
-#include <assert.h>
 
 typedef float __sseconds_t;
 typedef __syscall_slong_t __snseconds_t;
@@ -20,8 +20,7 @@ typedef __syscall_slong_t __snseconds_t;
 
 static inline struct timespec nsec_to_timespec(__snseconds_t nsec)
 {
-    struct timespec ret = { nsec / NSEC_VAL, nsec % NSEC_VAL };
-    return ret;
+    return (struct timespec) { nsec / NSEC_VAL, nsec % NSEC_VAL };
 }
 
 static inline struct timespec sec_to_timespec(__sseconds_t sec)
@@ -32,7 +31,6 @@ static inline struct timespec sec_to_timespec(__sseconds_t sec)
 static inline struct timespec timespec_diff(const struct timespec* restrict start, const struct timespec* restrict end)
 {
     __snseconds_t nsec = TO_NSEC(end->tv_sec - start->tv_sec) + (end->tv_nsec - start->tv_nsec);
-    assert(nsec >= 0);
     return nsec_to_timespec(nsec);
 }
 
@@ -40,8 +38,7 @@ static inline struct timespec get_elapsed_time(const struct timespec* start)
 {
     struct timespec end;
     get_chrono_time(&end);
-    struct timespec ret = timespec_diff(start, &end);
-    return ret;
+    return timespec_diff(start, &end);
 }
 
 static inline __snseconds_t timespec_to_nsec(struct timespec ts)

@@ -9,15 +9,12 @@ void traverse_queue(const fixed_queue_t* que, void (*func)(void* const, int, voi
     for (int i = 0; i < (int)que->cnt; ++i) {
         func(que->pa[ptr], i, arg);
         ptr = (ptr + 1) & (que->max_size - 1);
-        // if (++ptr == que->max_size) {
-        //     ptr = 0;
-        // }
     }
 }
 
 void init_queue_malloc(fixed_queue_t* const out_que, int max_size)
 {
-    debug();
+    /* max_size must be a power of 2. */
     out_que->max_size = max_size;
     out_que->beg = 0;
     out_que->end = 0;
@@ -27,7 +24,6 @@ void init_queue_malloc(fixed_queue_t* const out_que, int max_size)
 
 void cleanup_queue_free(fixed_queue_t* const out_que)
 {
-    my_assert(out_que->pa != NULL);
     free(out_que->pa);
     out_que->pa = NULL;
 }

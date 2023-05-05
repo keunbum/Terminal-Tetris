@@ -9,8 +9,6 @@
 
 void init_device_input(device_input_t* const out_in, int event_num, int flags)
 {
-    debug();
-
     char buf[BUF_SIZE];
     out_in->device_event_num = event_num;
     sprintf(buf, "/dev/input/event%d", out_in->device_event_num);
@@ -24,8 +22,6 @@ void init_device_input(device_input_t* const out_in, int event_num, int flags)
 
 void cleanup_device_input(device_input_t* const out_in)
 {
-    debug();
-
     if (close(out_in->fd) == -1) {
         handle_error("close() error");
     }

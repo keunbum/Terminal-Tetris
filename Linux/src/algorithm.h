@@ -12,7 +12,7 @@ static inline void swap_int(int* a, int* b)
 {
     int tmp = *a;
     *a = *b;
-    *b= tmp;
+    *b = tmp;
 }
 
 static inline void iota_int(int* first, int* last, int val)

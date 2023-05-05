@@ -1,10 +1,12 @@
-/* Ref:
+/* Ref: https://dl.acm.org/doi/pdf/10.1145/272991.272995
+ *
  * Mersenne Twister: A 623-Dimensionally Equidistributed Uniform Pseudo-Random Number Generator
  * MAKOTO MATSUMOTO
  * Keio University and the Max-Planck-Institut fu¨ r Mathematik
  * and
  * TAKUJI NISHIMURA
  * Keio University
+ * 
  */
 #include <stddef.h>
 
@@ -33,7 +35,7 @@ static size_t s_mti = N + 1;
 /* initializing the array with a NONZERO seed */
 void mt19937_srand(uint32_t seed)
 {
-    /* setting initial seeds to s_mt[N] using */
+    /* setting initial seeds to s_mt[N] */
     s_mt[0] = seed;
     for (s_mti = 1; s_mti < N; ++s_mti) {
         s_mt[s_mti] = F * (s_mt[s_mti - 1] ^ (s_mt[s_mti - 1] >> (W - 2))) + s_mti;
@@ -46,7 +48,6 @@ uint32_t mt19937_rng(void)
     if (s_mti >= N) {
         static uint32_t mag01[2] = { 0x0, MATRIX_A };
         size_t kk;
-        my_assert(s_mti != N + 1);
         for (kk = 0; kk < N - M; ++kk) {
             y = (s_mt[kk] & UPPER_MASK) | (s_mt[kk + 1] & LOWER_MASK);
             s_mt[kk] = s_mt[kk + M] ^ (y >> 1) ^ mag01[y & 0x1];
