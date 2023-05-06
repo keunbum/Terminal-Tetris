@@ -7,7 +7,7 @@
 #include "tetris/play/tetris_play_update_world.h"
 #include "tetris_play_renderer.h"
 #include "tetris_play_scene.h"
-#include "tetris/play/tetris_play_tetromino_silhouette.h"
+#include "tetris/play/tetris_play_ghost_piece.h"
 
 static void render_a_tetromino_poswprint(const tetromino_t* tetro, pos_int_t pos_wprint)
 {
@@ -36,8 +36,8 @@ static void callback_render_tetromino_manager_out(void* const out_void, int i, v
 
 static void render_tetromino_manager_out(tetromino_manager_t* const out_man)
 {
-    wdraw_a_tetromino_with_silhouette(out_man->tetro_main, &out_man->tetro_silhou, &out_man->board);
-    wdraw_a_tetromino(out_man->tetro_hold);
+    wdraw_a_tetromino_with_silhouette(out_man->main_piece, &out_man->ghost_piece, &out_man->board);
+    wdraw_a_tetromino(out_man->hold_piece);
     traverse_queue(&out_man->que, callback_render_tetromino_manager_out, NULL);
 }
 
@@ -72,7 +72,7 @@ void wdraw_a_tetromino(tetromino_t* const out_tetro)
 
 void wdraw_a_tetromino_with_silhouette(tetromino_t* const out_tetro, tetromino_t* const out_tetro_silhou, const board_t* board)
 {
-    update_tetromino_silhouette_dir_pos(out_tetro_silhou, out_tetro, board);
+    update_ghost_piece_dir_pos(out_tetro_silhou, out_tetro, board);
     wdraw_a_tetromino(out_tetro_silhou);
     wdraw_a_tetromino(out_tetro);
 }

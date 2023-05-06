@@ -5,7 +5,6 @@
 #include <string.h>
 
 #include "debug.h"
-#include "device_input.h"
 #include "pthread_macro.h"
 #include "tetris_play_device_input_module_keyboard.h"
 #include "tetris_play_tetromino_manager.h"
@@ -28,7 +27,7 @@ tetromino_status_t process_keyboard_event(device_input_t* const out_in, tetromin
 {
     const struct input_event* ev = &out_in->event;
     board_t* board = &tetro_man->board;
-    tetromino_t* tetro = tetro_man->tetro_main;
+    tetromino_t* tetro = tetro_man->main_piece;
     tetromino_status_t ret = TETROMINO_STATUS_NULL;
 
     switch (ev->type) {
@@ -84,26 +83,3 @@ tetromino_status_t process_keyboard_event(device_input_t* const out_in, tetromin
     }
     return ret;
 }
-
-// void* mainfunc_device_input_module_keyboard(void* arg)
-// {
-//     debug();
-
-//     tetris_play_manager_t* const play_manager = (tetris_play_manager_t*)arg;
-//     device_input_t in;
-//     // init_device_input(&in, DEVICE_INPUT_KEYBOARD, O_RDONLY);
-//     init_device_input(&in, get_keyboard_event_num(), O_RDONLY);
-//     pthread_cleanup_push(callback_cleanup_device_input, &in);
-
-//     while (true) {
-//         read_device_input_event(&in);
-//         lock_tetromino_manager(&play_manager->tetro_man);
-//         tetromino_status_t res = process_keyboard_event_thread(&in, &play_manager->tetro_man);
-//         process_tetromino_status(res, play_manager);
-//         unlock_tetromino_manager(&play_manager->tetro_man);
-//     }
-
-//     pthread_cleanup_pop(1);
-
-//     return NULL;
-// }

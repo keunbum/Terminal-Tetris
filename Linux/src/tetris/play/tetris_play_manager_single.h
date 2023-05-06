@@ -1,6 +1,6 @@
-#ifndef __TETRIS_PLAY_SINGLE_MANAGER__H
-#define __TETRIS_PLAY_SINGLE_MANAGER__H
+#ifndef __TETRIS_PLAY_MANAGER_SINGLE__H
+#define __TETRIS_PLAY_MANAGER_SINGLE__H
 
-void* run_tetris_play_single_mode(void* arg);
+void* run_tetris_play_manager_single(void* arg);
 
-#endif /* __TETRIS_PLAY_SINGLE_MANAGER__H */
+#endif /* __TETRIS_PLAY_MANAGER_SINGLE__H */

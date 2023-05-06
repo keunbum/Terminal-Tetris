@@ -14,9 +14,8 @@ const tetromino_symbol_t G_TETROMINO_SYMBOLS[TETROMINO_NUM_OF_KINDS][DIR_NUM_OF_
     { 0x0063, 0x0264, 0x0630, 0x0132 }, // Z
 };
 
-static void init_tetromino(tetromino_t* const out_tetro, int id, symbol_id_t symbol_id, dir_t dir, pos_t pos, pos_t pos_wprint, velocity_t velocity, block_t block, block_wprint_t clean_wprint, tetromino_t* prev_drawn)
+static void init_tetromino(tetromino_t* const out_tetro, symbol_id_t symbol_id, dir_t dir, pos_t pos, pos_t pos_wprint, velocity_t velocity, block_t block, block_wprint_t clean_wprint, tetromino_t* prev_drawn)
 {
-    out_tetro->id = id;
     out_tetro->symbol_id = symbol_id;
     out_tetro->dir = dir;
     out_tetro->pos = pos;
@@ -41,12 +40,11 @@ wchar_t get_symbol_wch(symbol_id_t symbol_id)
 
 void save_tetromino_tobedrawn(tetromino_t* const out_tetro)
 {
-    my_assert(out_tetro != NULL);
+    my_assert(is_valid_tetromino(out_tetro));
 
     if (!is_valid_tetromino(out_tetro->prev_drawn)) {
         out_tetro->prev_drawn = (tetromino_t*)malloc(sizeof(tetromino_t));
     }
-    out_tetro->prev_drawn->id = out_tetro->id;
     out_tetro->prev_drawn->symbol_id = out_tetro->symbol_id;
     out_tetro->prev_drawn->dir = out_tetro->dir;
     out_tetro->prev_drawn->pos = out_tetro->pos;
@@ -66,16 +64,16 @@ void cleanup_tetromino_free(tetromino_t* const out_tetro)
     free(out_tetro);
 }
 
-tetromino_t* init_tetromino_malloc(int id, symbol_id_t symbol_id, dir_t dir, pos_t pos, velocity_t velocity, block_t block, block_wprint_t clean_wprint, tetromino_t* prev_drawn)
+tetromino_t* init_tetromino_malloc(symbol_id_t symbol_id, dir_t dir, pos_t pos, velocity_t velocity, block_t block, block_wprint_t clean_wprint, tetromino_t* prev_drawn)
 {
     tetromino_t* pa_tetro = (tetromino_t*)malloc(sizeof(tetromino_t));
-    init_tetromino(pa_tetro, id, symbol_id, dir, pos, create_pos_default(), velocity, block, clean_wprint, prev_drawn);
+    init_tetromino(pa_tetro, symbol_id, dir, pos, create_pos_default(), velocity, block, clean_wprint, prev_drawn);
     return pa_tetro;
 }
 
-tetromino_t* init_tetromino_poswprint_malloc(int id, symbol_id_t symbol_id, dir_t dir, pos_t pos_wprint, velocity_t velocity, block_t block, block_wprint_t clean_wprint, tetromino_t* prev_drawn)
+tetromino_t* init_tetromino_poswprint_malloc(symbol_id_t symbol_id, dir_t dir, pos_t pos_wprint, velocity_t velocity, block_t block, block_wprint_t clean_wprint, tetromino_t* prev_drawn)
 {
     tetromino_t* pa_tetro = (tetromino_t*)malloc(sizeof(tetromino_t));
-    init_tetromino(pa_tetro, id, symbol_id, dir, create_pos_default(), pos_wprint, velocity, block, clean_wprint, prev_drawn);
+    init_tetromino(pa_tetro, symbol_id, dir, create_pos_default(), pos_wprint, velocity, block, clean_wprint, prev_drawn);
     return pa_tetro;
 }

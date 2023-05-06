@@ -9,29 +9,31 @@
 #include "tetris_play_main_loop.h"
 #include "tetris_play_update_world.h"
 
-static void init_game_main_loop(tetris_play_manager_t* const out_play_manager)
+static void init_tetris_play_main_loop(tetris_play_manager_t* const out_play_manager)
 {
     out_play_manager->status = TETRIS_PLAY_STATUS_RUNNING;
 }
 
-static void cleanup_game_main_loop(tetris_play_manager_t* const out_play_manager)
+static void cleanup_tetris_play_main_loop(tetris_play_manager_t* const out_play_manager)
 {
     (void)(out_play_manager);
     wclear();
 }
 
-void* mainfunc_game_main_loop(void* arg)
+void* mainfunc_tetris_play_main_loop(void* arg)
 {
     tetris_play_manager_t* const play_manager = (tetris_play_manager_t*)arg;
-    init_game_main_loop(play_manager);
-    game_time_t prev_frame_time = 0.0f;
     int frame_cnt = 0;
+    game_time_t prev_frame_time = 0.0f;
     game_time_t acc_time = 0.0f;
+
+    init_tetris_play_main_loop(play_manager);
+
     while (play_manager->status == TETRIS_PLAY_STATUS_RUNNING) {
         struct timespec start_time;
         get_chrono_time(&start_time);
 
-        ++frame_cnt;
+        frame_cnt += 1;
         wdraw_fps(&frame_cnt, &acc_time);
 
         play_manager->game_delta_time = prev_frame_time * TETRIS_PLAY_GAME_DELTA_TIME_FACTOR;
@@ -56,7 +58,7 @@ void* mainfunc_game_main_loop(void* arg)
         }
     }
 
-    cleanup_game_main_loop(play_manager);
+    cleanup_tetris_play_main_loop(play_manager);
 
     return (void*)play_manager->status;
 }

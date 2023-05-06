@@ -40,10 +40,6 @@ void cleanup_board(board_t* const out_board)
 
 void wdraw_board(const board_t* board)
 {
-    debug();
-
-    my_assert(board != NULL);
-
     cursor_lock();
     wgotoxy(board->pos_wprint.x, board->pos_wprint.y);
     for (int i = 0; i < board->height; ++i) {

@@ -16,7 +16,7 @@
 static const game_system_module_t GS_GAME_OBJECTS[GAME_SYSTEM_MODULE_NUM] = {
     {
         .name = "basic tetris",
-        .module = run_tetris_play_single_mode,
+        .module = run_tetris_play_manager_single,
         .module_arg = NULL,
     },
 };
@@ -46,8 +46,9 @@ static void draw_game_selection_menu_screen(void)
 static game_selection_menu_cmd_t read_game_selection_menu_option(void)
 {
     game_selection_menu_cmd_t cmd;
-    int res = scanf("%d", &cmd);
-    (void)res;
+    if (scanf("%d", &cmd) != 1) {
+        handle_error("scanf() error:");
+    }
     return cmd;
 }
 
@@ -75,7 +76,7 @@ static bool handle_game_selection_menu_cmd(game_selection_menu_cmd_t cmd)
         return false;
     }
     if (1 <= cmd && cmd <= GS_GAME_SELECTION_MENU_TOTAL_OPTION_NUM - 1) {
-        const game_system_module_t* game = GS_GAME_OBJECTS + cmd_to_gamenum((int)cmd);
+        const game_system_module_t* game = GS_GAME_OBJECTS + cmd_to_gamenum(cmd);
         game->module(game->module_arg);
         return true;
     }

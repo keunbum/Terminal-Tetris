@@ -14,7 +14,6 @@
 /* For all macro functions, it must be implemented as a wchar_t version. */
 
 #define wclear() wprintf(L"\e[H\e[J")
-
 #define wdisable_cursor() wprintf(L"\e[?25l")
 #define wenable_cursor() wprintf(L"\e[?25h")
 

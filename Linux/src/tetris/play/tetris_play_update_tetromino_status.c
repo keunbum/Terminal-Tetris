@@ -1,6 +1,6 @@
 #include "tetris_play_update_tetromino_status.h"
 #include "debug.h"
-#include "tetris_play_tetromino_silhouette.h"
+#include "tetris_play_ghost_piece.h"
 
 static const int GS_DX[] = { 1, 0, -1, 0, 0 };
 static const int GS_DY[] = { 0, 1, 0, -1, 0 };
@@ -90,6 +90,6 @@ tetromino_status_t harddrop_tetromino_r(board_t* const restrict out_board, tetro
     if (!is_valid_tetromino(out_tetro)) {
         return TETROMINO_STATUS_NULL;
     }
-    update_tetromino_pos(out_tetro, get_tetromino_silhouette_pos(out_board, out_tetro));
+    update_tetromino_pos(out_tetro, get_ghost_piece_pos(out_board, out_tetro));
     return TETROMINO_STATUS_ONTHEGROUND;
 }

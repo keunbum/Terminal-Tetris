@@ -9,7 +9,6 @@
 #include "tetris/object/board.h"
 #include "tetris/object/tetromino.h"
 #include "tetris/scene/tetris_play_screen.h"
-#include "tetris_play_object.h"
 
 #define TETRIS_PLAY_BOARD_INNER_HEIGHT (20)
 #define TETRIS_PLAY_BOARD_INNER_WIDTH (10)
@@ -81,16 +80,6 @@ static inline bool is_all_of_row(const board_t* board, int i, block_nature_t nat
         is_all &= (board->grid[i][j].nature == nature);
     }
     return is_all;
-}
-
-static inline const block_t* get_board_grid_block(const board_t* board, int i, int j)
-{
-    return &board->grid[i][j];
-}
-
-static inline void set_board_grid_block(board_t* const out_board, int i, int j, block_t block)
-{
-    out_board->grid[i][j] = block;
 }
 
 void init_board(board_t* const out_board);

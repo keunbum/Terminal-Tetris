@@ -2,6 +2,7 @@
 #define __TETRIS_PLAY_UPDATE_TETROMINO_STATUS__H
 
 #include "tetris/object/board.h"
+#include "tetris_play_fps.h"
 
 #define TETRIS_PLAY_TETROMINO_INIT_POS_X (TETRIS_PLAY_SKYLINE_POS_X)
 #define TETRIS_PLAY_TETROMINO_INIT_POS_Y (TETRIS_PLAY_BOARD_POS_Y + TETRIS_PLAY_BOARD_WIDTH / 2 - 1)

@@ -70,9 +70,9 @@ void wdraw_show_manual(const tetris_play_manager_t* play_manager, tetris_play_ma
         play_manager->pos_wprint.y + play_manager->screen_frame.width_wprint + 2
     };
     wdraw_rows_newline_at(3, S_MANUAL_TITLE, wcslen(S_MANUAL_TITLE[0]), pos_wprint.x, pos_wprint.y);
-    pos_wprint.x += 4;
     switch (manual) {
     case TETRIS_PLAY_MANUAL_KEYBOARD:
+        pos_wprint.x += 4;
         print_tetris_play_manual(MANUAL_ROWS, MANUAL_COLS, S_COLS, pos_wprint);
         break;
     case TETRIS_PLAY_MANUAL_CONTROLLER:

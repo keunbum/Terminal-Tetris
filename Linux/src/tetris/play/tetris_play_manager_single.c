@@ -36,8 +36,6 @@ static void ready_getset_go(const tetris_play_manager_t* play_manager)
             break;
         }
         wdraw_digital_digit5_at_r(G_DIGITAL_DIGIT5S[cur_sec], pos_wprint.x, pos_wprint.y);
-        /* Of course, it's not exactly 1 second. */
-        /* However, it is a bit cumbersome to write a realtime timer haha; */
         nanosleep_chrono(TO_NSEC(1) - get_elapsed_time_nsec(&start_time));
     }
 }
@@ -75,7 +73,8 @@ static int selection_after_game_over(void)
 static void init_tetris_play_objects(tetris_play_manager_t* const out_play_manager)
 {
     init_frame(&out_play_manager->screen_frame,
-        TETRIS_PLAY_SINGLE_SCREEN_HEIGHT_WPRINT, TETRIS_PLAY_SINGLE_SCREEN_WIDTH_WPRINT,
+        TETRIS_PLAY_SINGLE_SCREEN_HEIGHT_WPRINT,
+        TETRIS_PLAY_SINGLE_SCREEN_WIDTH_WPRINT,
         out_play_manager->pos_wprint,
         NULL,
         UNIT_MATRIX_HOR_LINE,
@@ -116,8 +115,6 @@ static void cleanup_tetris_play_manager(tetris_play_manager_t* const out_play_ma
 
 static tetris_play_cmd_t play_a_new_game(tetris_play_manager_t* const out_play_manager)
 {
-    debug();
-
     init_tetris_play_manager_before_start(out_play_manager);
     ready_getset_go(out_play_manager);
     init_tetris_play_manager_after_start(out_play_manager);
@@ -135,10 +132,8 @@ static tetris_play_cmd_t play_a_new_game(tetris_play_manager_t* const out_play_m
 
 /* --------------------------------------------------------------------------------------------------------- */
 
-void* run_tetris_play_single_mode(void* arg)
+void* run_tetris_play_manager_single(void* arg)
 {
-    debug();
-
     (void)arg;
 
     static tetris_play_manager_t s_play_manager = {
@@ -202,7 +197,7 @@ void* run_tetris_play_single_mode(void* arg)
         },
         .sub_modules = {
             {
-                .main_func = mainfunc_game_main_loop,
+                .main_func = mainfunc_tetris_play_main_loop,
                 .main_func_arg = (void*)&s_play_manager,
                 .is_detached = false,
             },

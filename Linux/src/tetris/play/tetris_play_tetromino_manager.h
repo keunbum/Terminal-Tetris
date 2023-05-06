@@ -12,7 +12,7 @@
 #include "tetris/scene/tetris_play_screen.h"
 #include "tetris_play_fps.h"
 #include "tetris_play_tetromino_generator.h"
-#include "tetris_play_tetromino_silhouette.h"
+#include "tetris_play_ghost_piece.h"
 
 #define TETROMINO_MANAGER_QUEUE_MAX_SIZE (8)
 #define TETROMINO_MANAGER_QUEUE_FULL_SIZE (6)
@@ -31,6 +31,7 @@
 
 #define SPEED_DRAW_POS_X_WPRINT (3)
 #define SPEED_DRAW_POS_Y_WPRINT (50)
+
 #define LINES_DRAW_POS_X_WPRINT (4)
 #define LINES_DRAW_POS_Y_WPRINT (50)
 
@@ -43,9 +44,9 @@ typedef struct {
     game_time_t unit_velocity;
     game_time_t tetromino_init_velocity;
     bool is_swaped_once;
-    tetromino_t* tetro_main;
-    tetromino_t* tetro_hold;
-    tetromino_t tetro_silhou; // name from --> https://tetris.fandom.com/wiki/Ghost_piece
+    tetromino_t* main_piece;
+    tetromino_t* hold_piece;
+    tetromino_t ghost_piece; // name from https://tetris.fandom.com/wiki/Ghost_piece
     board_t board;
 
     tetromino_generator_t tetro_gen;
@@ -57,16 +58,14 @@ typedef struct {
 
 static inline void cleanup_tetromino_ontheground(tetromino_manager_t* const out_man)
 {
-    cleanup_tetromino_free(out_man->tetro_main);
-    out_man->tetro_main = NULL;
-    cleanup_tetromino_silhouette(&out_man->tetro_silhou);
+    cleanup_tetromino_free(out_man->main_piece);
+    out_man->main_piece = NULL;
+    cleanup_ghost_piece(&out_man->ghost_piece);
 }
 
 static inline void wdraw_tetromino_speed(const tetromino_manager_t* man)
 {
-    const int pos_x_wprint = SPEED_DRAW_POS_X_WPRINT;
-    const int pos_y_wprint = SPEED_DRAW_POS_Y_WPRINT;
-    wprintf_at_r(pos_x_wprint, pos_y_wprint, L"SPEED: %-4.2lf", man->tetromino_init_velocity);
+    wprintf_at_r(SPEED_DRAW_POS_X_WPRINT, SPEED_DRAW_POS_Y_WPRINT, L"SPEED: %-4.2lf", man->tetromino_init_velocity);
 }
 
 static inline void update_tetromino_manager_info(tetromino_manager_t* const out_man, int lines)

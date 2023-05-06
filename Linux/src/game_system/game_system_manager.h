@@ -16,8 +16,8 @@ typedef enum {
 
 typedef enum {
     TETRIS_PLAY_CMD_ERROR = -1,
-    TETRIS_PLAY_CMD_EXIT_GAME = 0,
-    TETRIS_PLAY_CMD_REGAME = 1,
+    TETRIS_PLAY_CMD_EXIT_GAME,
+    TETRIS_PLAY_CMD_REGAME,
 } tetris_play_cmd_t;
 
 void exit_cleanup_game_system(int status);

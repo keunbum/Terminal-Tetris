@@ -5,6 +5,7 @@
 
 #define DIGITAL_DIGIT5_HEIGHT (5)
 #define DIGITAL_DIGIT5_WIDTH (5)
+
 typedef wchar_t* digital_digit5_t[DIGITAL_DIGIT5_HEIGHT];
 
 extern const digital_digit5_t G_DIGITAL_DIGIT5S[];

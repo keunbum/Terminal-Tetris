@@ -23,16 +23,12 @@ static void cleanup_game_system(void)
 
 void exit_cleanup_game_system(int status)
 {
-    debug();
-
     cleanup_game_system();
     exit(status);
 }
 
 void run_game_system_manager(void)
 {
-    debug();
-
     init_game_system();
     run_title_menu();
     cleanup_game_system();
