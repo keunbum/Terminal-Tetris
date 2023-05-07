@@ -13,7 +13,7 @@ static inline uint32_t rng(void)
     return mt19937_rng();
 }
 
-// [s, e)
+/* [s, e) */
 static inline int32_t rng_range(int32_t s, int32_t e)
 {
     uint32_t n = e - s;

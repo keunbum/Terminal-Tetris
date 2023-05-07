@@ -99,7 +99,7 @@ static void init_tetris_play_manager_before_start(tetris_play_manager_t* const o
 {
     out_play_manager->status = TETRIS_PLAY_STATUS_RUNNING;
     init_tetris_play_objects(out_play_manager);
-    load_tetris_play_scene(out_play_manager);
+    init_tetris_play_scene(out_play_manager);
 }
 
 static void init_tetris_play_manager_after_start(tetris_play_manager_t* const out_play_manager)

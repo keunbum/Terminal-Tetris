@@ -7,10 +7,10 @@
 
 #define BUF_SIZE (64)
 
-void init_device_input(device_input_t* const out_in, int event_num, int flags)
+void init_device_input(device_input_t* const out_in, int device_event_num, int flags)
 {
     char buf[BUF_SIZE];
-    out_in->device_event_num = event_num;
+    out_in->device_event_num = device_event_num;
     sprintf(buf, "/dev/input/event%d", out_in->device_event_num);
     if ((out_in->fd = open(buf, flags)) == -1) {
         if (out_in->device_event_num == DEVICE_INPUT_KEYBOARD) {

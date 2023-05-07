@@ -78,7 +78,6 @@ const wchar_t* get_dir_wstr(dir_t dir);
 wchar_t get_symbol_wch(symbol_id_t symbol_id);
 void save_tetromino_tobedrawn(tetromino_t* const out_tetro);
 void cleanup_tetromino_free(tetromino_t* const out_tetro);
-
 tetromino_t* init_tetromino_malloc(symbol_id_t symbol_id, dir_t dir, pos_t pos, velocity_t velocity, block_t block, block_wprint_t clean_wprint, tetromino_t* prev_drawn);
 tetromino_t* init_tetromino_poswprint_malloc(symbol_id_t symbol_id, dir_t dir, pos_t pos_wprint, velocity_t velocity, block_t block, block_wprint_t clean_wprint, tetromino_t* prev_drawn);
 

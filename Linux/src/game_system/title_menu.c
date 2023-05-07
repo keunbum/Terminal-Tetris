@@ -11,8 +11,6 @@
 
 static void draw_title_menu_screen(void)
 {
-    debug();
-
     static const char* S_TITLE_MENU_OPTIONS_TEXT[] = { "select games", "exit" };
     static const int S_TITLE_MENU_TOTAL_OPTION_NUM = (int)(sizeof(S_TITLE_MENU_OPTIONS_TEXT) / sizeof(S_TITLE_MENU_OPTIONS_TEXT[0]));
     static const wchar_t* S_TITLE[6] = {
@@ -38,8 +36,6 @@ static void draw_title_menu_screen(void)
 
 static title_menu_cmd_t read_title_menu_option(void)
 {
-    debug();
-
     int cmd;
     title_menu_cmd_t ret;
     if (scanf("%d", &cmd) != 1) {

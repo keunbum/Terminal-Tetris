@@ -6,7 +6,7 @@
  * and
  * TAKUJI NISHIMURA
  * Keio University
- * 
+ *
  */
 #include <stddef.h>
 

@@ -38,23 +38,21 @@ static void render_tetromino_manager_out(tetromino_manager_t* const out_man)
 {
     wdraw_a_tetromino_with_silhouette(out_man->main_piece, &out_man->ghost_piece, &out_man->board);
     wdraw_a_tetromino(out_man->hold_piece);
-    traverse_queue(&out_man->que, callback_render_tetromino_manager_out, NULL);
+    traverse_queue(&out_man->piece_que, callback_render_tetromino_manager_out, NULL);
 }
 
 static void render_a_skyline(const board_t* board)
 {
     int i = TETRIS_PLAY_SKYLINE_POS_X - TETRIS_PLAY_BOARD_POS_X;
-    my_assert(1 <= i && i <= board->height - 2);
+    my_assert(0 <= i && i <= board->height - 2);
     cursor_lock();
     wgotoxy(board->pos_wprint.x + i, board->pos_wprint.y);
-    for (int step = 0; step < 1; ++step) {
-        static wchar_t s_buf[TETRIS_PLAY_BOARD_WIDTH + 1];
-        for (int j = 0; j < board->width; ++j) {
-            s_buf[j] = board->grid[i + step][j].wprint;
-        }
-        s_buf[board->width] = L'\0';
-        wdraw_row_newline(s_buf, board->width_wprint);
+    static wchar_t s_buf[TETRIS_PLAY_BOARD_WIDTH + 1];
+    for (int j = 0; j < board->width; ++j) {
+        s_buf[j] = board->grid[i][j].wprint;
     }
+    s_buf[board->width] = L'\0';
+    wdraw_row_newline(s_buf, board->width_wprint);
     cursor_unlock();
 }
 

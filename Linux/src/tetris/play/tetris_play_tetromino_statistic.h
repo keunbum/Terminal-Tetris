@@ -13,7 +13,7 @@ typedef struct {
     size_t tetromino_cleared_lines;
     tetromino_t* tetrominos[TETROMINO_NUM_OF_KINDS];
     size_t tetromino_spawned_cnts[TETROMINO_NUM_OF_KINDS];
-    frame_t next_frame;
+    frame_t frame;
 } tetris_play_statistic_t;
 
 // #define TETRIS_PLAY_STATISTIC_POS_X (TETRIS_PLAY_BOARD_POS_X + 5)

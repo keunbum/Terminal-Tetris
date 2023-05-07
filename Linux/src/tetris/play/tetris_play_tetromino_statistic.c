@@ -48,7 +48,7 @@ void init_tetris_play_statistics_malloc(tetris_play_statistic_t* const out_stat)
         out_stat->tetromino_spawned_cnts[i] = 0;
     }
 
-    init_frame(&out_stat->next_frame,
+    init_frame(&out_stat->frame,
         TETRIS_PLAY_STATISTIC_FRAME_HEIGHT, TETRIS_PLAY_STATISTIC_FRAME_WIDTH,
         out_stat->pos_wprint,
         L"STATISTICS",
@@ -62,7 +62,7 @@ void init_tetris_play_statistics_malloc(tetris_play_statistic_t* const out_stat)
 
 void cleanup_tetris_play_statistics_free(tetris_play_statistic_t* const out_stat)
 {
-    cleanup_frame(&out_stat->next_frame);
+    cleanup_frame(&out_stat->frame);
     for (symbol_id_t symbol_id = 0; symbol_id < TETROMINO_NUM_OF_KINDS; ++symbol_id) {
         cleanup_tetromino_free(out_stat->tetrominos[symbol_id]);
     }    
@@ -70,7 +70,7 @@ void cleanup_tetris_play_statistics_free(tetris_play_statistic_t* const out_stat
 
 void wdraw_tetris_play_statistics(const tetris_play_statistic_t* st)
 {
-    wdraw_frame(&st->next_frame, 3);
+    wdraw_frame(&st->frame, 3);
     wdraw_tetris_play_statistics_tetrominos(st);
     wdraw_cleared_lines(st);
 }

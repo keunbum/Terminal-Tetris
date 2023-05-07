@@ -15,6 +15,7 @@ static inline void swap_int(int* a, int* b)
     *b = tmp;
 }
 
+/* [first, last) */
 static inline void iota_int(int* first, int* last, int val)
 {
     while (first != last) {
@@ -22,7 +23,7 @@ static inline void iota_int(int* first, int* last, int val)
     }
 }
 
-// [first, last)
+/* [first, last) */
 static inline void shuffle_int(int* first, int* last)
 {
     for (int i = (int) (last - first) - 1; i > 0; --i) {

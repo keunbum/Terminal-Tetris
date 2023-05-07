@@ -117,7 +117,7 @@ void process_tetromino_status(tetromino_status_t status, tetris_play_manager_t* 
         if (is_at_skyline(&out_play_manager->tetro_man.board, out_play_manager->tetro_man.main_piece)) {
             out_play_manager->status = TETRIS_PLAY_STATUS_GAMEOVER;
         }
-        cleanup_tetromino_ontheground(&out_play_manager->tetro_man);
+        cleanup_piece_ontheground(&out_play_manager->tetro_man);
         break;
     case TETROMINO_STATUS_ONTHEWALL:
         /* intentional fallthrough */

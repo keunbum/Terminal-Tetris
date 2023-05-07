@@ -18,7 +18,7 @@ int test_evdev_arr(void)
     int gamepad_stick_left_x = 0;
     int gamepad_stick_left_y = 0;
     for (;;) {
-        struct input_event events[8]; // 8 events per next_frame is pretty extreme, more like 1 or 2, sometimes as high as 4
+        struct input_event events[8]; // 8 events per frame is pretty extreme, more like 1 or 2, sometimes as high as 4
         int r1 = read(gamepad, events, sizeof events);
         if (r1 != -1) {
             int new_event_count = r1 / sizeof(struct input_event);

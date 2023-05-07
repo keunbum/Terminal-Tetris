@@ -56,7 +56,7 @@ tetromino_status_t process_keyboard_event(device_input_t* const out_in, tetromin
                 ret = try_rotate_tetromino_r(board, tetro, -1);
                 break;
             case KEY_C:
-                ret = try_swap_tetromino_hold(tetro_man);
+                ret = try_piece_hold(tetro_man);
                 break;
             case KEY_ESC:
                 /* Not a good logic */

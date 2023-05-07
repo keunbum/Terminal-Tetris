@@ -44,10 +44,10 @@ tetromino_status_t process_controller_event(device_input_t* const out_in, tetrom
                 ret = harddrop_tetromino_r(board, tetro);
                 break;
             // case BTN_WEST:
-            //     ret = try_swap_tetromino_hold(out_tetro_man);
+            //     ret = try_piece_hold(out_tetro_man);
             //     break;
             case BTN_NORTH:
-                ret = try_swap_tetromino_hold(out_tetro_man);
+                ret = try_piece_hold(out_tetro_man);
                 break;
             case BTN_TL:
                 ret = try_rotate_tetromino_r(board, tetro, -1);

@@ -21,8 +21,8 @@ typedef struct {
     struct input_event event;
 } device_input_t;
 
-void init_device_input(device_input_t* const out_reader, int event_num, int flags);
-void cleanup_device_input(device_input_t* const);
+void init_device_input(device_input_t* const out_reader, int device_event_num, int flags);
+void cleanup_device_input(device_input_t* const out_in);
 bool read_device_input_event(device_input_t* const out_in);
 
 #endif /* __DEVICE_INPUT__H */
