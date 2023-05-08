@@ -27,7 +27,7 @@ tetromino_status_t process_keyboard_event(device_input_t* const out_in, tetromin
 {
     const struct input_event* ev = &out_in->event;
     board_t* board = &tetro_man->board;
-    tetromino_t* tetro = tetro_man->main_piece;
+    tetromino_t* tetro = tetro_man->inplay_piece;
     tetromino_status_t ret = TETROMINO_STATUS_NULL;
 
     switch (ev->type) {

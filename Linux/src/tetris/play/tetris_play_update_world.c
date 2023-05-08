@@ -109,12 +109,12 @@ void process_tetromino_status(tetromino_status_t status, tetris_play_manager_t* 
         render_out(out_play_manager);
         break;
     case TETROMINO_STATUS_ONTHEGROUND:
-        petrify_tetromino(&out_play_manager->tetro_man.board, out_play_manager->tetro_man.main_piece);
+        petrify_tetromino(&out_play_manager->tetro_man.board, out_play_manager->tetro_man.inplay_piece);
         render_out(out_play_manager);
         int lines = clear_filled_lines(&out_play_manager->tetro_man.board);
         inc_cleared_lines(&out_play_manager->tetro_man.stat, lines);
         update_tetromino_manager_info(&out_play_manager->tetro_man, lines);
-        if (is_at_skyline(&out_play_manager->tetro_man.board, out_play_manager->tetro_man.main_piece)) {
+        if (is_at_skyline(&out_play_manager->tetro_man.board, out_play_manager->tetro_man.inplay_piece)) {
             out_play_manager->status = TETRIS_PLAY_STATUS_GAMEOVER;
         }
         cleanup_piece_ontheground(&out_play_manager->tetro_man);

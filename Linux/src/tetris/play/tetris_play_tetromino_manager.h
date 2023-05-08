@@ -43,7 +43,7 @@ typedef struct {
     game_time_t unit_velocity;
     game_time_t piece_velocity;
     bool is_swaped_once;
-    tetromino_t* main_piece;
+    tetromino_t* inplay_piece;
     tetromino_t* hold_piece;
     tetromino_t ghost_piece; // name from https://tetris.fandom.com/wiki/Ghost_piece
     board_t board;
@@ -57,8 +57,8 @@ typedef struct {
 
 static inline void cleanup_piece_ontheground(tetromino_manager_t* const out_man)
 {
-    cleanup_tetromino_free(out_man->main_piece);
-    out_man->main_piece = NULL;
+    cleanup_tetromino_free(out_man->inplay_piece);
+    out_man->inplay_piece = NULL;
     cleanup_ghost_piece(&out_man->ghost_piece);
 }
 

@@ -12,7 +12,7 @@ tetromino_status_t process_controller_event(device_input_t* const out_in, tetrom
 {
     const struct input_event* ev = &out_in->event;
     board_t* board = &out_tetro_man->board;
-    tetromino_t* tetro = out_tetro_man->main_piece;
+    tetromino_t* tetro = out_tetro_man->inplay_piece;
     tetromino_status_t ret = TETROMINO_STATUS_NULL;
 
     switch (ev->type) {

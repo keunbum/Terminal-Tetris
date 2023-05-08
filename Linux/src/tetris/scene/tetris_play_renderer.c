@@ -27,7 +27,7 @@ static void render_a_tetromino_poswprint(const tetromino_t* tetro, pos_int_t pos
     cursor_unlock();
 }
 
-static void callback_render_tetromino_manager_out(void* const out_void, int i, void* arg)
+static void callback_wdraw_a_tetromino(void* const out_void, int i, void* arg)
 {
     (void)i;
     (void)arg;
@@ -36,9 +36,9 @@ static void callback_render_tetromino_manager_out(void* const out_void, int i, v
 
 static void render_tetromino_manager_out(tetromino_manager_t* const out_man)
 {
-    wdraw_a_tetromino_with_silhouette(out_man->main_piece, &out_man->ghost_piece, &out_man->board);
+    wdraw_a_tetromino_with_ghost_piece(out_man->inplay_piece, &out_man->ghost_piece, &out_man->board);
     wdraw_a_tetromino(out_man->hold_piece);
-    traverse_queue(&out_man->piece_que, callback_render_tetromino_manager_out, NULL);
+    traverse_queue(&out_man->piece_que, callback_wdraw_a_tetromino, NULL);
 }
 
 static void render_a_skyline(const board_t* board)
@@ -68,7 +68,7 @@ void wdraw_a_tetromino(tetromino_t* const out_tetro)
     save_tetromino_tobedrawn(out_tetro);
 }
 
-void wdraw_a_tetromino_with_silhouette(tetromino_t* const out_tetro, tetromino_t* const out_tetro_silhou, const board_t* board)
+void wdraw_a_tetromino_with_ghost_piece(tetromino_t* const out_tetro, tetromino_t* const out_tetro_silhou, const board_t* board)
 {
     update_ghost_piece_dir_pos(out_tetro_silhou, out_tetro, board);
     wdraw_a_tetromino(out_tetro_silhou);
