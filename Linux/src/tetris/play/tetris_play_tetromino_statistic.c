@@ -2,12 +2,12 @@
 #include "draw/draw_tool.h"
 #include "tetris/object/tetromino.h"
 #include "tetris/scene/tetris_play_renderer.h"
-#include "tetris/object/board.h"
+#include "tetris/object/matrix.h"
 
 #define TETRIS_PLAY_STATISTIC_FRAME_HEIGHT (3 * TETROMINO_NUM_OF_KINDS + 2)
 #define TETRIS_PLAY_STATISTIC_FRAME_WIDTH (16)
 
-static inline void wdraw_tetromino_spawned_cnt(const tetris_play_statistic_t* st, symbol_id_t id)
+static inline void wdraw_tetromino_spawned_cnt(const tetris_play_statistic_t* st, shape_id_t id)
 {
     const int pos_x_wprint = st->tetromino_pos_wprint.x + (id + 1) * st->interval_height;
     const int pos_y_wprint = st->tetromino_pos_wprint.y;
@@ -23,7 +23,7 @@ static inline void wdraw_cleared_lines(const tetris_play_statistic_t* st)
 
 static void wdraw_tetris_play_statistics_tetrominos(const tetris_play_statistic_t* st)
 {
-    for (symbol_id_t i = 0; i < TETROMINO_NUM_OF_KINDS; ++i) {
+    for (shape_id_t i = 0; i < TETROMINO_NUM_OF_KINDS; ++i) {
         wdraw_a_tetromino(st->tetrominos[i]);
         wdraw_tetromino_spawned_cnt(st, i);
     }
@@ -36,12 +36,12 @@ void init_tetris_play_statistics_malloc(tetris_play_statistic_t* const out_stat)
     out_stat->interval_height = TETRIS_PLAY_STATISTIC_INTERVAL_HEIGHT;
     out_stat->tetromino_cleared_lines = 0;
 
-    for (symbol_id_t symbol_id = 0; symbol_id < TETROMINO_NUM_OF_KINDS; ++symbol_id) {
+    for (shape_id_t shape_id = 0; shape_id < TETROMINO_NUM_OF_KINDS; ++shape_id) {
         static const int S_TETRO_X_CORRECTION[TETROMINO_NUM_OF_KINDS] = { +0, -1, +0, +0, +0, +0, +0 };
-        const int each_pos_x_wprint = out_stat->tetromino_pos_wprint.x + (symbol_id + 1) * out_stat->interval_height + S_TETRO_X_CORRECTION[symbol_id];
+        const int each_pos_x_wprint = out_stat->tetromino_pos_wprint.x + (shape_id + 1) * out_stat->interval_height + S_TETRO_X_CORRECTION[shape_id];
         const int each_pos_y_wprint = out_stat->tetromino_pos_wprint.y + 1;
         pos_t pos_wprint = { (pos_e_t)each_pos_x_wprint, (pos_e_t)each_pos_y_wprint };
-        out_stat->tetrominos[symbol_id] = create_tetromino_symbol_poswprint_malloc(symbol_id, pos_wprint, BLOCK_WPRINT_EMPTY);
+        out_stat->tetrominos[shape_id] = create_tetromino_shape_poswprint_malloc(shape_id, pos_wprint, BLOCK_WPRINT_EMPTY);
     }
 
     for (int i = 0; i < TETROMINO_NUM_OF_KINDS; ++i) {
@@ -63,8 +63,8 @@ void init_tetris_play_statistics_malloc(tetris_play_statistic_t* const out_stat)
 void cleanup_tetris_play_statistics_free(tetris_play_statistic_t* const out_stat)
 {
     cleanup_frame(&out_stat->frame);
-    for (symbol_id_t symbol_id = 0; symbol_id < TETROMINO_NUM_OF_KINDS; ++symbol_id) {
-        cleanup_tetromino_free(out_stat->tetrominos[symbol_id]);
+    for (shape_id_t shape_id = 0; shape_id < TETROMINO_NUM_OF_KINDS; ++shape_id) {
+        cleanup_tetromino_free(out_stat->tetrominos[shape_id]);
     }    
 }
 
@@ -75,7 +75,7 @@ void wdraw_tetris_play_statistics(const tetris_play_statistic_t* st)
     wdraw_cleared_lines(st);
 }
 
-void inc_tetromino_cnt(tetris_play_statistic_t* const out_stat, symbol_id_t id)
+void inc_tetromino_cnt(tetris_play_statistic_t* const out_stat, shape_id_t id)
 {
     out_stat->tetromino_spawned_cnts[id] += 1;
     wdraw_tetromino_spawned_cnt(out_stat, id);

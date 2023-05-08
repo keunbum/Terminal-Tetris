@@ -66,8 +66,8 @@ void wdraw_show_manual(const tetris_play_manager_t* play_manager, tetris_play_ma
         { L"EXIT", L"Esc" },
     };
     pos_int_t pos_wprint = {
-        play_manager->pos_wprint.x + 0,
-        play_manager->pos_wprint.y + play_manager->screen_frame.width_wprint + 2
+        play_manager->screen_pos_wprint.x + 0,
+        play_manager->screen_pos_wprint.y + play_manager->screen_frame.width_wprint + 2
     };
     wdraw_rows_newline_at(3, S_MANUAL_TITLE, wcslen(S_MANUAL_TITLE[0]), pos_wprint.x, pos_wprint.y);
     switch (manual) {

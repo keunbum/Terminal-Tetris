@@ -11,6 +11,6 @@ typedef wchar_t* digital_digit5_t[DIGITAL_DIGIT5_HEIGHT];
 extern const digital_digit5_t G_DIGITAL_DIGIT5S[];
 extern const digital_digit5_t G_DIGITAL_DIGIT5_EMPTY;
 
-void wdraw_digital_digit5_at_r(const digital_digit5_t digit, int pos_x, int pos_y);
+void wdraw_digital_digit5_at(const digital_digit5_t digit, int pos_x, int pos_y);
 
 #endif /* __DIGITAL_DIGIT__H */

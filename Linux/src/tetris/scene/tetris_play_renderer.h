@@ -5,7 +5,7 @@
 #include "tetris/play/tetris_play_manager.h"
 
 void wdraw_a_tetromino(tetromino_t* const out_tetro);
-void wdraw_a_tetromino_with_ghost_piece(tetromino_t* const out_tetro, tetromino_t* const out_tetro_silhou, const board_t* board);
+void wdraw_a_tetromino_with_ghost_piece(tetromino_t* const out_tetro, tetromino_t* const out_ghost_piece, const matrix_t* matrix);
 void render_out(tetris_play_manager_t* const out_man);
 
 #endif /* __TETRIS_PLAY_RENDERER__H */

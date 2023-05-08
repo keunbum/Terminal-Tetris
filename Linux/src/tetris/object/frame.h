@@ -16,10 +16,10 @@ typedef struct {
 
     block_wprint_t hor_block;
     block_wprint_t ver_block;
-    block_wprint_t corner_top_lft;
-    block_wprint_t corner_top_rgt;
-    block_wprint_t corner_bot_lft;
-    block_wprint_t corner_bot_rgt;
+    block_wprint_t corner_top_lft_block;
+    block_wprint_t corner_top_rgt_block;
+    block_wprint_t corner_bot_lft_block;
+    block_wprint_t corner_bot_rgt_block;
 } frame_t;
 
 void init_frame(
@@ -28,7 +28,7 @@ void init_frame(
     pos_int_t pos_wprint,
     title_t title_or_null,
     block_wprint_t hor_block, block_wprint_t ver_block,
-    block_wprint_t corner_top_lft, block_wprint_t corner_top_rgt, block_wprint_t corner_bot_lft, block_wprint_t corner_bot_rgt);
+    block_wprint_t corner_top_lft_block, block_wprint_t corner_top_rgt_block, block_wprint_t corner_bot_lft_block, block_wprint_t corner_bot_rgt_block);
 void cleanup_frame(frame_t* const frame);
 void wdraw_frame(const frame_t* frame, int title_pos_x_offset);
 

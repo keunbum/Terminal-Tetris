@@ -8,7 +8,7 @@ void init_frame(
     pos_int_t pos_wprint,
     title_t title_or_null,
     block_wprint_t hor_block, block_wprint_t ver_block,
-    block_wprint_t corner_top_lft, block_wprint_t corner_top_rgt, block_wprint_t corner_bot_lft, block_wprint_t corner_bot_rgt)
+    block_wprint_t corner_top_lft_block, block_wprint_t corner_top_rgt_block, block_wprint_t corner_bot_lft_block, block_wprint_t corner_bot_rgt_block)
 {
     out_frame->height_wprint = height_wprint;
     out_frame->width_wprint = width_wprint;
@@ -20,10 +20,10 @@ void init_frame(
     out_frame->hor_block = hor_block;
     out_frame->ver_block = ver_block;
     
-    out_frame->corner_top_lft = corner_top_lft;
-    out_frame->corner_top_rgt = corner_top_rgt;
-    out_frame->corner_bot_lft = corner_bot_lft;
-    out_frame->corner_bot_rgt = corner_bot_rgt;
+    out_frame->corner_top_lft_block = corner_top_lft_block;
+    out_frame->corner_top_rgt_block = corner_top_rgt_block;
+    out_frame->corner_bot_lft_block = corner_bot_lft_block;
+    out_frame->corner_bot_rgt_block = corner_bot_rgt_block;
 }
 
 void cleanup_frame(frame_t* const out_frame)
@@ -44,8 +44,8 @@ void wdraw_frame(const frame_t* frame, int title_pos_y_offset)
         frame->width_wprint,
         frame->pos_wprint.x,
         frame->pos_wprint.y,
-        (wchar_t)frame->corner_top_lft,
-        (wchar_t)frame->corner_top_rgt,
-        (wchar_t)frame->corner_bot_lft,
-        (wchar_t)frame->corner_bot_rgt);
+        (wchar_t)frame->corner_top_lft_block,
+        (wchar_t)frame->corner_top_rgt_block,
+        (wchar_t)frame->corner_bot_lft_block,
+        (wchar_t)frame->corner_bot_rgt_block);
 }

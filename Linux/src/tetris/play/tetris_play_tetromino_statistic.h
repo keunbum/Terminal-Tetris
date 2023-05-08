@@ -16,10 +16,10 @@ typedef struct {
     frame_t frame;
 } tetris_play_statistic_t;
 
-// #define TETRIS_PLAY_STATISTIC_POS_X (TETRIS_PLAY_BOARD_POS_X + 5)
+// #define TETRIS_PLAY_STATISTIC_POS_X (TETRIS_PLAY_MATRIX_POS_X + 5)
 // #define TETRIS_PLAY_STATISTIC_POS_Y (TETRIS_PLAY_SINGLE_SCREEN_POS_Y + 5)
 
-#define TETRIS_PLAY_STATISTIC_POS_X_WPRINT (TETRIS_PLAY_BOARD_POS_X_WPRINT + 1)
+#define TETRIS_PLAY_STATISTIC_POS_X_WPRINT (TETRIS_PLAY_MATRIX_POS_X_WPRINT + 1)
 #define TETRIS_PLAY_STATISTIC_POS_Y_WPRINT (TETRIS_PLAY_SINGLE_SCREEN_POS_Y_WPRINT + 3)
 
 #define TETRIS_PLAY_STATISTIC_INTERVAL_HEIGHT (3)
@@ -31,7 +31,7 @@ void init_tetris_play_statistics_malloc(tetris_play_statistic_t* const out_stat)
 void cleanup_tetris_play_statistics_free(tetris_play_statistic_t* const out_stat);
 void wdraw_tetris_play_statistics(const tetris_play_statistic_t* st);
 
-void inc_tetromino_cnt(tetris_play_statistic_t* const out_stat, symbol_id_t id);
+void inc_tetromino_cnt(tetris_play_statistic_t* const out_stat, shape_id_t id);
 void inc_cleared_lines(tetris_play_statistic_t* const out_stat, int by);
 
 #endif /* __TETRIS_PLAY_TETROMINO_STATISTIC__H */

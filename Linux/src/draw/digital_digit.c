@@ -84,7 +84,7 @@ const digital_digit5_t G_DIGITAL_DIGIT5_EMPTY = {
     L"     ",
 };
 
-void wdraw_digital_digit5_at_r(const digital_digit5_t digit, int pos_x, int pos_y)
+void wdraw_digital_digit5_at(const digital_digit5_t digit, int pos_x, int pos_y)
 {
     wdraw_rows_newline_at_r(DIGITAL_DIGIT5_HEIGHT, (const wchar_t**)digit, DIGITAL_DIGIT5_WIDTH, pos_x, pos_y);
     fflush(stdout);

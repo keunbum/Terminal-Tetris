@@ -3,13 +3,13 @@
 
 #include "tetris_play_ghost_piece.h"
 #include "debug.h"
-#include "tetris_play_update_tetromino_status.h"
+#include "tetris_play_update_tetromino_in_play_status.h"
 
-pos_t get_ghost_piece_pos(const board_t* board, const tetromino_t* tetro)
+pos_t get_ghost_piece_pos(const matrix_t* matrix, const tetromino_t* tetro)
 {
     int cpos_y = (int) tetro->pos.y;
-    for (int cpos_x = (int) tetro->pos.x; cpos_x < board->pos.x + board->height; ++cpos_x) {
-        if (!is_ok_tetromino_next_status(board, tetro, create_posint(cpos_x + 1, cpos_y), tetro->dir)) {
+    for (int cpos_x = (int) tetro->pos.x; cpos_x < matrix->pos.x + matrix->height; ++cpos_x) {
+        if (!is_ok_tetromino_in_play_next_status(matrix, tetro, create_posint(cpos_x + 1, cpos_y), tetro->dir)) {
             return create_pos((pos_e_t)cpos_x, (pos_e_t)cpos_y);
         }
     }

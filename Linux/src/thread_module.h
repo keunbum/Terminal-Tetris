@@ -1,5 +1,5 @@
-#ifndef __TETRIS_PLAY_SUBMODULE__H
-#define __TETRIS_PLAY_SUBMODULE__H
+#ifndef __THREAD_MODULE__H
+#define __THREAD_MODULE__H
 
 #include <pthread.h>
 #include <stdbool.h>
@@ -44,4 +44,4 @@ static inline void join_thread_module(thread_module_t* const out_module)
 void init_thread_module(thread_module_t* const out_module, bool is_detached, thread_module_func_t main_func, void* main_func_arg);
 void cleanup_thread_module(thread_module_t* const out_module);
 
-#endif /* __TETRIS_PLAY_SUBMODULE__H */
+#endif /* __THREAD_MODULE__H */

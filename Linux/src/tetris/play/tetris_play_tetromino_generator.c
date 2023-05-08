@@ -25,9 +25,9 @@ void init_tetromino_generator(tetromino_generator_t* const out_gen)
 {
     out_gen->tetromino_spawnd_cnt = 0;
     out_gen->block_wprint_set = GS_BLOCK_WPRINT_SET_DEFAULT;
-    out_gen->symbols_ptr = 0;
-    iota_int(out_gen->symbols, out_gen->symbols + TETROMINO_NUM_OF_KINDS, 0);
-    shuffle_int(out_gen->symbols, out_gen->symbols + TETROMINO_NUM_OF_KINDS);
+    out_gen->shapes_ptr = 0;
+    iota_int(out_gen->shapes, out_gen->shapes + TETROMINO_NUM_OF_KINDS, 0);
+    shuffle_int(out_gen->shapes, out_gen->shapes + TETROMINO_NUM_OF_KINDS);
 }
 
 void cleanup_tetromino_generator(tetromino_generator_t* const out_gen)
@@ -36,22 +36,22 @@ void cleanup_tetromino_generator(tetromino_generator_t* const out_gen)
     (void)out_gen;
 }
 
-static inline symbol_id_t get_symbol_id_random_7bag(tetromino_generator_t* const out_gen)
+static inline shape_id_t get_shape_id_random_7bag(tetromino_generator_t* const out_gen)
 {
-    symbol_id_t ret = out_gen->symbols[out_gen->symbols_ptr++];
-    if (out_gen->symbols_ptr == TETROMINO_NUM_OF_KINDS) {
-        out_gen->symbols_ptr = 0;
-        shuffle_int(out_gen->symbols, out_gen->symbols + TETROMINO_NUM_OF_KINDS);
+    shape_id_t ret = out_gen->shapes[out_gen->shapes_ptr++];
+    if (out_gen->shapes_ptr == TETROMINO_NUM_OF_KINDS) {
+        out_gen->shapes_ptr = 0;
+        shuffle_int(out_gen->shapes, out_gen->shapes + TETROMINO_NUM_OF_KINDS);
     }
     return ret;
 }
 
 tetromino_t* create_tetromino_random_malloc(tetromino_generator_t* const out_gen, pos_t init_pos, velocity_t init_velocity, block_wprint_t init_clean_block)
 {
-    symbol_id_t init_symbol_id = get_symbol_id_random_7bag(out_gen);
-    block_t init_block = { BLOCK_NATURE_FULL, GS_BLOCK_WPRINT_SET_DEFAULT->wprint_values[init_symbol_id] };
+    shape_id_t init_shape_id = get_shape_id_random_7bag(out_gen);
+    block_t init_block = { BLOCK_NATURE_FULL, GS_BLOCK_WPRINT_SET_DEFAULT->wprint_values[init_shape_id] };
     return init_tetromino_malloc(
-        init_symbol_id,
+        init_shape_id,
         TETROMINO_INIT_DIR,
         init_pos,
         init_velocity,
@@ -60,11 +60,11 @@ tetromino_t* create_tetromino_random_malloc(tetromino_generator_t* const out_gen
         NULL);
 }
 
-tetromino_t* create_tetromino_symbol_poswprint_malloc(symbol_id_t init_symbol_id, pos_t init_pos_wprint, block_wprint_t init_clean_block)
+tetromino_t* create_tetromino_shape_poswprint_malloc(shape_id_t init_shape_id, pos_t init_pos_wprint, block_wprint_t init_clean_block)
 {
-    block_t init_block = { BLOCK_NATURE_FULL, GS_BLOCK_WPRINT_SET_DEFAULT->wprint_values[init_symbol_id] };
+    block_t init_block = { BLOCK_NATURE_FULL, GS_BLOCK_WPRINT_SET_DEFAULT->wprint_values[init_shape_id] };
     return init_tetromino_poswprint_malloc(
-        init_symbol_id,
+        init_shape_id,
         TETROMINO_INIT_DIR,
         init_pos_wprint,
         0,

@@ -11,7 +11,7 @@ static void decode_sec_to_hhmmss(int sec, int* const out_hh, int* const out_mm, 
     *out_ss = sec % 60;
 }
 
-static void draw_sec_in_hhmmss_at_r(int sec, int pos_x, int pos_y)
+static void draw_sec_in_hhmmss_at(int sec, int pos_x, int pos_y)
 {
     int hh, mm, ss;
     decode_sec_to_hhmmss(sec, &hh, &mm, &ss);
@@ -21,7 +21,7 @@ static void draw_sec_in_hhmmss_at_r(int sec, int pos_x, int pos_y)
 
 void draw_game_play_timer_at_with_r(int x, int y, int sec)
 {
-    draw_sec_in_hhmmss_at_r(sec, x, y);
+    draw_sec_in_hhmmss_at(sec, x, y);
 }
 
 void* mainfunc_game_play_timer(void* arg)

@@ -1,5 +1,5 @@
-#ifndef __BLOCK_CODE__H
-#define __BLOCK_CODE__H
+#ifndef __BLOCK_WPRINT__H
+#define __BLOCK_WPRINT__H
 
 #include <wchar.h>
 
@@ -53,4 +53,4 @@ typedef enum {
     BLOCK_WPRINT_RAINBOW = (int) (L'\U0001f308'),
 } block_wprint_t;
 
-#endif /* __BLOCK_CODE__H */
+#endif /* __BLOCK_WPRINT__H */

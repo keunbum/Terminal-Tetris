@@ -9,7 +9,7 @@
 static void draw_tetris_play_single_default_scene(const tetris_play_manager_t* play_manager)
 {
     wdraw_frame(&play_manager->screen_frame, 0);
-    wdraw_board(&play_manager->tetro_man.board);
+    wdraw_matrix(&play_manager->tetro_man.matrix);
     wdraw_tetromino_manager(&play_manager->tetro_man);
     {
         int _ = 0;
