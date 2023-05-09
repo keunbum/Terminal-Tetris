@@ -3038,6 +3038,31 @@ FPS가 너무 높아도 안좋고, 낮아도 안좋고.. 120 정도가 적당한
 
 [//]: # (End of 05.08)
 
+<details><summary>05.09(화)</summary>
+
+자소서 쓰느라 한 건 많이 없음.  
+신경을 아예 안 쓸 순 없는데 그렇다고 너무 시간을 뺏겨도 안되고.  
+어렵다.
+
+하긴 포트폴리오를 잘 해내고 싶은 욕심이 커서  
+자소서에 무심하긴 했지..
+
+### Achievements of the day
+
+가이드라인 내 테트리스 용어에 맞춰 코드 수정.
+
+  - [ ] 점수 시스템 구현 (각종 테크닉 점수, 클리어한 라인 수) --> 조사 충분히 해보기. [(2009-가이드라인](https://tetris.fandom.com/wiki/Tetris_Guideline))
+  - [ ] 난이도 부여(시간이나 클리어한 라인 수에 따라 낙하 속도 증가)  
+        --> 대충 구현해놓긴 했는데 좀 더 체계적으로 설계해보기.
+  - [ ] DAS, ARR 구현해보기 --> 관련 [링크](https://namu.wiki/w/%ED%85%8C%ED%8A%B8%EB%A6%AC%EC%8A%A4/%EC%9A%A9%EC%96%B4#s-3.4)
+  - [ ] 소리(효과음) 출력 알아보기. --> https://www.kernel.org/doc/html/v4.16/sound/kernel-api/index.html
+  - [ ] 슬슬 문서화도 신경 써야 할 듯.
+  - [ ] 그밖에 버그 있나 확인.
+
+</details>
+
+[//]: # (End of 05.09)
+
 
 </blockquote></details>
 
