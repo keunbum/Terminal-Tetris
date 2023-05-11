@@ -18,7 +18,7 @@
 #define TETRIS_PLAY_MATRIX_WIDTH_WPRINT (2 * TETRIS_PLAY_MATRIX_WIDTH)
 
 #define TETRIS_PLAY_MATRIX_POS_X_WPRINT \
-    (TETRIS_PLAY_SINGLE_SCREEN_POS_X_WPRINT + 8)
+    (TETRIS_PLAY_SINGLE_SCREEN_POS_X_WPRINT + 8 + 0)
 #define TETRIS_PLAY_MATRIX_POS_Y_WPRINT \
     (TETRIS_PLAY_SINGLE_SCREEN_POS_Y_WPRINT + (TETRIS_PLAY_SINGLE_SCREEN_WIDTH_WPRINT - TETRIS_PLAY_MATRIX_WIDTH_WPRINT) / 2 + 0)
 #define TETRIS_PLAY_MATRIX_POS_X TETRIS_PLAY_MATRIX_POS_X_WPRINT
@@ -37,7 +37,6 @@
 #define MATRIX_INNTER_BLOCK_WPRINT BLOCK_WPRINT_WHITE_LARGE_SQUARE
 #define MATRIX_WALL_BLOCK_WPRINT BLOCK_WPRINT_NEW_MOON
 
-// typedef block_t row_t[TETRIS_PLAY_MATRIX_WIDTH];
 typedef struct {
     const wchar_t block_corner_top_left;
     const wchar_t block_corner_top_right;
@@ -62,19 +61,18 @@ typedef struct {
     const int frame_width;
     const int skyline;
 
-    // row_t grid[TETRIS_PLAY_MATRIX_HEIGHT];
     block_t grid[TETRIS_PLAY_MATRIX_HEIGHT][TETRIS_PLAY_MATRIX_WIDTH];
 } matrix_t;
 
-#define traverse_inner_row(i, matrix) for (int i = matrix->skyline_pos.x - matrix->pos.x + 1; i < matrix->height - 1; ++i)
-#define traverse_inner_row_reverse(i, matrix) for (int i = matrix->height - 2; i > matrix->skyline_pos.x - matrix->pos.x; --i)
-#define traverse_inner_col(j, matrix) for (int j = 1; j <= matrix->width - 2; ++j)
-#define traverse_inner(i, j, matrix) traverse_inner_row(i, matrix) traverse_inner_col(j, matrix)
+#define traverse_matrix_inner_row(i, matrix) for (int i = matrix->skyline_pos.x - matrix->pos.x + 1; i < matrix->height - 1; ++i)
+#define traverse_matrix_inner_row_reverse(i, matrix) for (int i = matrix->height - 2; i > matrix->skyline_pos.x - matrix->pos.x; --i)
+#define traverse_matrix_inner_col(j, matrix) for (int j = 1; j <= matrix->width - 2; ++j)
+#define traverse_matrix_inner(i, j, matrix) traverse_matrix_inner_row(i, matrix) traverse_matrix_inner_col(j, matrix)
 
-static inline bool is_all_of_row(const matrix_t* matrix, int i, block_nature_t nature)
+static inline bool is_all_of_matrix_row(const matrix_t* matrix, int i, block_nature_t nature)
 {
     bool is_all = true;
-    traverse_inner_col(j, matrix) {
+    traverse_matrix_inner_col(j, matrix) {
         is_all &= (matrix->grid[i][j].nature == nature);
     }
     return is_all;

@@ -9,29 +9,29 @@
 #include "tetris_play_update_tetromino_in_play_status.h"
 #include "tetris_play_update_gameplay.h"
 
-static inline void lockdown_tetromino(matrix_t* const out_board, const tetromino_t* tetro)
+static inline void lockdown_tetromino(matrix_t* const out_matrix, const tetromino_t* tetro)
 {
     tetromino_shape_t shape = get_tetromino_shape(tetro->shape_id, tetro->dir);
     traverse_shape(i, j, shape) {
         int ex = (int)tetro->pos.x + i;
         int ey = (int)tetro->pos.y + j;
-        int ei = ex - out_board->pos.x;
-        int ej = ey - out_board->pos.y;
-        out_board->grid[ei][ej].nature = tetro->block.nature;
-        if (ei > out_board->skyline) {
-            out_board->grid[ei][ej].wprint = tetro->block.wprint;
+        int ei = ex - out_matrix->pos.x;
+        int ej = ey - out_matrix->pos.y;
+        out_matrix->grid[ei][ej].nature = tetro->block.nature;
+        if (ei > out_matrix->skyline) {
+            out_matrix->grid[ei][ej].wprint = tetro->block.wprint;
         }
     }
 }
 
-static int clear_filled_lines(matrix_t* const out_board)
+static int clear_filled_lines(matrix_t* const out_matrix)
 {
     static int s_que[4];
     int end = 0;
     /* Check full lines */
     {
-        traverse_inner_row_reverse(i, out_board) {
-            if (is_all_of_row(out_board, i, BLOCK_NATURE_FULL)) {
+        traverse_matrix_inner_row_reverse(i, out_matrix) {
+            if (is_all_of_matrix_row(out_matrix, i, BLOCK_NATURE_FULL)) {
                 s_que[end++] = i;
             }
         }
@@ -41,12 +41,12 @@ static int clear_filled_lines(matrix_t* const out_board)
     }
     /* Reflect them visually */
     {
-        traverse_inner_col(j, out_board) {
+        traverse_matrix_inner_col(j, out_matrix) {
             for (int ptr = 0; ptr < end; ++ptr) {
                 int i = s_que[ptr];
-                set_block_each(&out_board->grid[i][j], BLOCK_NATURE_EMPTY, MATRIX_INNTER_BLOCK_WPRINT);
-                pos_int_t pos_wprint = get_intpos_intwprint(create_posint(out_board->pos.x + i, out_board->pos.y + j));
-                wdraw_unit_matrix_at_r(out_board->grid[i][j].wprint, pos_wprint.x, pos_wprint.y);
+                set_block_each(&out_matrix->grid[i][j], BLOCK_NATURE_EMPTY, MATRIX_INNTER_BLOCK_WPRINT);
+                pos_int_t pos_wprint = get_intpos_intwprint(create_posint(out_matrix->pos.x + i, out_matrix->pos.y + j));
+                wdraw_unit_matrix_at_r(out_matrix->grid[i][j].wprint, pos_wprint.x, pos_wprint.y);
             }
             static const float S_CLEAR_MATRIX_INTERVAL_SEC = 0.015f;
             nanosleep_chrono(TO_NSEC(S_CLEAR_MATRIX_INTERVAL_SEC));
@@ -60,24 +60,24 @@ static int clear_filled_lines(matrix_t* const out_board)
             int R;
             if (ptr == end - 1) {
                 // R = s_que[ptr] - 1;
-                // while (R >= filled_min_x && !is_all_of_row(out_board, R, BLOCK_NATURE_EMPTY)) {
+                // while (R >= filled_min_x && !is_all_of_matrix_row(out_matrix, R, BLOCK_NATURE_EMPTY)) {
                 //     R -= 1;
                 // }
                 // hmm...
-                R = out_board->skyline;
+                R = out_matrix->skyline;
             } else {
                 R = s_que[ptr + 1];
             }
             int move_dist = ptr + 1;
             for (int i = L - 1; i > R; --i) {
-                traverse_inner_col(j, out_board)
+                traverse_matrix_inner_col(j, out_matrix)
                 {
-                    out_board->grid[i + move_dist][j] = out_board->grid[i][j];
-                    set_block_each(&out_board->grid[i][j], BLOCK_NATURE_EMPTY, MATRIX_INNTER_BLOCK_WPRINT);
+                    out_matrix->grid[i + move_dist][j] = out_matrix->grid[i][j];
+                    set_block_each(&out_matrix->grid[i][j], BLOCK_NATURE_EMPTY, MATRIX_INNTER_BLOCK_WPRINT);
                 }
             }
         }
-        wdraw_matrix(out_board);
+        wdraw_matrix(out_matrix);
         fflush(stdout);
     }
     return end;
