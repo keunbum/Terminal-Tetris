@@ -37,11 +37,6 @@ static inline pos_int_t create_posint_default()
     return create_posint(0, 0);
 }
 
-static inline pos_t get_pos_wprint(pos_t pos)
-{
-    return create_pos(pos.x + __FLT_EPSILON__, 2 * (pos.y + __FLT_EPSILON__));
-}
-
 static inline pos_int_t get_intpos_intwprint(pos_int_t pos)
 {
     return create_posint(pos.x, 2 * pos.y);

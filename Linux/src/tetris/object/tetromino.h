@@ -68,12 +68,6 @@ static inline tetromino_shape_t get_tetromino_shape(shape_id_t shape_id, dir_t d
     return G_TETROMINO_SYMBOLS[shape_id][dir];
 }
 
-static inline void update_tetromino_pos(tetromino_t* const out_tetro, pos_t pos)
-{
-    out_tetro->pos = pos;
-    out_tetro->pos_wprint = get_pos_wprint(out_tetro->pos);
-}
-
 const wchar_t* get_dir_wstr(dir_t dir);
 wchar_t get_shape_wch(shape_id_t shape_id);
 void save_tetromino_tobedrawn(tetromino_t* const out_tetro);

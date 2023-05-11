@@ -42,15 +42,21 @@ static void render_tetromino_manager_out(tetromino_manager_t* const out_man)
 
 static void render_a_skyline_r(const matrix_t* matrix)
 {
-    int i = TETRIS_PLAY_SKYLINE_POS_X - TETRIS_PLAY_MATRIX_POS_X;
     cursor_lock();
-    wgotoxy(matrix->pos_wprint.x + i, matrix->pos_wprint.y);
-    static wchar_t s_buf[TETRIS_PLAY_MATRIX_WIDTH + 1];
-    for (int j = 0; j < matrix->width; ++j) {
-        s_buf[j] = matrix->grid[i][j].wprint;
+    wgotoxy(matrix->in_play_pos_wprint.x - 4, matrix->in_play_pos_wprint.y);
+    int skyline_i = TETRIS_PLAY_SKYLINE_POS_X - TETRIS_PLAY_MATRIX_POS_X;
+    for (int step = -3; step <= 0; ++step) {
+        static wchar_t s_wbuf[2 * TETRIS_PLAY_MATRIX_WIDTH + 1];
+        int ptr = 0;
+        for (int j = 0; j < matrix->width; ++j) {
+            block_wprint_t block_wprint = matrix->grid[skyline_i + step][j].wprint;
+            for (int _ = 0; _ < 1 + (block_wprint == BLOCK_WPRINT_EMPTY); ++_) {
+                s_wbuf[ptr++] = block_wprint;
+            }
+        }
+        s_wbuf[ptr] = L'\0';
+        wdraw_row_newline(s_wbuf, ptr);
     }
-    s_buf[matrix->width] = L'\0';
-    wdraw_row_newline(s_buf, matrix->width_wprint);
     cursor_unlock();
 }
 

@@ -3,6 +3,7 @@
 
 #include "tetris/object/matrix.h"
 #include "tetris/object/tetromino.h"
+#include "tetris_play_update_tetromino_in_play_status.h"
 
 #define GHOST_PIECE_BLOCK_WPRINT BLOCK_WPRINT_BLACK_SQUARE_BUTTON
 

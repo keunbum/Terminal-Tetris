@@ -9,7 +9,7 @@ static void set_next_queue_default(tetromino_t* const out_tetro, int i, pos_int_
     static const int S_POS_X_INTERVAL = 4;
 
     pos_int_t pos_wprint;
-    pos_wprint.x = start_pos_wprint.x + (i + 1) * S_POS_X_INTERVAL - 2;
+    pos_wprint.x = start_pos_wprint.x + i * S_POS_X_INTERVAL + 1;
     pos_wprint.y = start_pos_wprint.y + 5;
     out_tetro->pos_wprint = get_pos(pos_wprint);
 }
@@ -43,6 +43,10 @@ static void spawn_tetromino(tetromino_manager_t* const out_man, tetromino_t** co
     (*target_tetro)->pos = create_pos(
         TETRIS_PLAY_TETROMINO_IN_PLAY_INIT_POS_X,
         TETRIS_PLAY_TETROMINO_IN_PLAY_INIT_POS_Y);
+    static const int S_TETROMINO_IN_PLAY_POS_X_OFFSET[TETROMINO_NUM_OF_KINDS] = { +1, +0, +0, +0, +0, +0, +0};
+    // static const S_TETROMINO_IN_PLAY_POS_Y_OFFSET = {+0, };
+    (*target_tetro)->pos.x += S_TETROMINO_IN_PLAY_POS_X_OFFSET[(*target_tetro)->shape_id];
+    // (*target_tetro)->pos.y += S_TETROMINO_IN_PLAY_POS_Y_OFFSET[(*target_tetro)->shape_id];
     (*target_tetro)->velocity = init_velocity;
     (*target_tetro)->clean_wprint = MATRIX_INNTER_BLOCK_WPRINT;
     push_queue(&out_man->next_queue, create_tetromino_random_malloc(&out_man->tetro_gen, create_pos_default(), 0, BLOCK_WPRINT_EMPTY));
@@ -71,7 +75,7 @@ void init_tetromino_manager(tetromino_manager_t* const out_man, int que_max_size
 {
     out_man->next_queue_pos_wprint.x = TETRIS_PLAY_TETROMINO_MANAGER_POS_X_WPRINT;
     out_man->next_queue_pos_wprint.y = TETRIS_PLAY_TETROMINO_MANAGER_POS_Y_WPRINT;
-    out_man->hold_piece_pos.x = TETRIS_PLAY_TETROMINO_MANAGER_HOLD_FRAME_POS_X + 1;
+    out_man->hold_piece_pos.x = TETRIS_PLAY_TETROMINO_MANAGER_HOLD_FRAME_POS_X + 0;
     out_man->hold_piece_pos.y = TETRIS_PLAY_TETROMINO_MANAGER_HOLD_FRAME_POS_Y + 2;
 
     out_man->is_swaped_once = false;
@@ -167,7 +171,7 @@ tetromino_in_play_status_t try_hold_tetromino_in_play(tetromino_manager_t* const
         swap_tetromino_in_play_hold(out_man);
     }
     {
-        static const int S_X_OFFSET[] = {-1, -1, 0, 0, 0, 0, 0};
+        static const int S_X_OFFSET[] = {0, 0, 0, 0, 0, 0, 0};
         static const int S_Y_OFFSET[] = {0, 0, 1, 1, 1, 1, 1};
         out_man->tetromino_hold->pos = create_pos(out_man->hold_piece_pos.x + S_X_OFFSET[out_man->tetromino_hold->shape_id], out_man->hold_piece_pos.y + S_Y_OFFSET[out_man->tetromino_hold->shape_id]);
         out_man->tetromino_hold->pos_wprint = out_man->tetromino_hold->pos;

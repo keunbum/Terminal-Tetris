@@ -29,7 +29,7 @@ static void ready_getset_go(const tetris_play_manager_t* play_manager)
         get_chrono_time(&start_time);
         const pos_int_t digital_digit_pos_wprint = {
             play_manager->screen_pos_wprint.x + 2,
-            play_manager->tetro_man.matrix.pos_wprint.y + play_manager->tetro_man.matrix.width - 2,
+            play_manager->tetro_man.matrix.in_play_pos_wprint.y + 8,
         };
         if (cur_sec == 0) {
             wdraw_digital_digit5_at(G_DIGITAL_DIGIT5_EMPTY, digital_digit_pos_wprint.x, digital_digit_pos_wprint.y);
@@ -156,22 +156,23 @@ void* run_tetris_play_manager_single(void* arg)
                 .block_corner_bot_right = MATRIX_WALL_BLOCK_WPRINT,
                 .block_ver_line = MATRIX_WALL_BLOCK_WPRINT,
                 .block_hor_line = MATRIX_WALL_BLOCK_WPRINT,
-                .block_inner = MATRIX_INNTER_BLOCK_WPRINT,
+                .block_in_play = MATRIX_INNTER_BLOCK_WPRINT,
                 .block_skyline = MATRIX_WALL_BLOCK_WPRINT,
 
                 .pos = { TETRIS_PLAY_MATRIX_POS_X, TETRIS_PLAY_MATRIX_POS_Y },
-                .pos_wprint = { TETRIS_PLAY_MATRIX_POS_X_WPRINT, TETRIS_PLAY_MATRIX_POS_Y_WPRINT },
+                .in_play_pos_wprint = { TETRIS_PLAY_MATRIX_IN_PLAY_POS_X_WPRINT, TETRIS_PLAY_MATRIX_IN_PLAY_POS_Y_WPRINT },
                 .frame_pos = { MATRIX_FRAME_POS_X, MATRIX_FRAME_POS_Y },
                 .frame_pos_wprint = { MATRIX_FRAME_POS_X_WPRINT, MATRIX_FRAME_POS_Y_WPRINT },
                 .skyline_pos = { TETRIS_PLAY_SKYLINE_POS_X, MATRIX_FRAME_POS_Y },
 
                 .height = TETRIS_PLAY_MATRIX_HEIGHT,
+                .in_play_height = TETRIS_PLAY_MATRIX_IN_PLAY_HEIGHT,
                 .width = TETRIS_PLAY_MATRIX_WIDTH,
                 .height_wprint = TETRIS_PLAY_MATRIX_HEIGHT_WPRINT,
                 .width_wprint = TETRIS_PLAY_MATRIX_WIDTH_WPRINT,
                 .frame_height = MATRIX_FRAME_HEIGHT,
                 .frame_width = MATRIX_FRAME_WIDTH,
-                .skyline = TETRIS_PLAY_SKYLINE_POS_X - TETRIS_PLAY_MATRIX_POS_X,
+                .skyline_i = TETRIS_PLAY_SKYLINE_POS_X - TETRIS_PLAY_MATRIX_POS_X,
             },
         },
         .timer_drawer = {
