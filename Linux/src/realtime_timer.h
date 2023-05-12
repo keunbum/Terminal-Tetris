@@ -7,17 +7,18 @@
 #define REALTIME_TIMER_CLOCK_ID CLOCK_REALTIME
 #define REALTIME_TIMER_SIG SIGRTMIN
 
-// typedef struct realtime_timer realtime_timer_t;
-// typedef void* (*timer_main_logic_t)(const realtime_timer_t*);
-
 typedef struct {
     timer_t timerid;
     clockid_t clockid;
     sigset_t sigset;
     int timersig;
     struct itimerspec its;
-    // timer_main_logic_t logic;
-    // void* logic_arg;
 } realtime_timer_t;
+
+void init_realtime_timer(realtime_timer_t* const out_realtime_timer, clockid_t clockid, int timersig, struct itimerspec its);
+void cleanup_realtime_timer(realtime_timer_t* const out_realtime_timer);
+void register_realtime_timer(realtime_timer_t* const out_realtime_timer);
+void remove_realtime_timer(realtime_timer_t* const out_realtime_timer);
+void start_realtime_timer(realtime_timer_t* const out_timer);
 
 #endif /* __REALTIME_TIMER__H */

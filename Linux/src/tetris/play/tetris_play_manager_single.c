@@ -15,8 +15,7 @@
 #include "tetris/object/matrix.h"
 #include "tetris/scene/tetris_play_scene.h"
 #include "tetris/timer/game_play_timer.h"
-#include "tetris/timer/timer_drawer.h"
-// #include "tetris_play_device_input.h"
+#include "tetris/timer/tetris_play_timer.h"
 #include "tetris_play_main_loop.h"
 #include "tetris_play_manager.h"
 #include "tetris_play_manager_single.h"
@@ -42,7 +41,7 @@ static void ready_getset_go(const tetris_play_manager_t* play_manager)
 
 static tetris_play_status_t run_tetris_play_modules_in_parallel(tetris_play_manager_t* const out_play_manager)
 {
-    realtime_timer_t* timer = &out_play_manager->timer_drawer.timer;
+    realtime_timer_t* timer = &out_play_manager->tetris_play_timer.game_play_timer.realtime_timer;
 
     /* Block REALTIME_TIMER_SIG */
     block_signal(timer->timersig);
@@ -85,12 +84,13 @@ static void init_tetris_play_objects(tetris_play_manager_t* const out_play_manag
         UNIT_MATRIX_CORNER_BOT_RIGHT);
     init_tetromino_manager(&out_play_manager->tetro_man, out_play_manager->tetromino_next_queue_max_size);
     init_terminal(&out_play_manager->terminal);
-    init_timer_drawer(&out_play_manager->timer_drawer, REALTIME_TIMER_SIG);
+    init_tetris_play_timer(&out_play_manager->tetris_play_timer, (pos_int_t) { TETRIS_PLAY_TIMER_POS_X_WPRINT, TETRIS_PLAY_TIMER_POS_Y_WPRINT }, REALTIME_TIMER_SIG);
 }
 
 static void cleanup_tetris_play_objects(tetris_play_manager_t* const out_play_manager)
 {
     cleanup_device_input(&out_play_manager->input);
+    cleanup_tetris_play_timer(&out_play_manager->tetris_play_timer);
     cleanup_terminal(&out_play_manager->terminal);
     cleanup_tetromino_manager_free(&out_play_manager->tetro_man);
 }
@@ -175,27 +175,6 @@ void* run_tetris_play_manager_single(void* arg)
                 .skyline_i = TETRIS_PLAY_SKYLINE_POS_X - TETRIS_PLAY_MATRIX_POS_X,
             },
         },
-        .timer_drawer = {
-            /* Also should be inited with init() */
-            .timer = {
-                .clockid = REALTIME_TIMER_CLOCK_ID,
-                .its = {
-                    .it_interval = {
-                        .tv_sec = GAME_PLAY_TIMER_IT_INTERVAL_SEC,
-                        .tv_nsec = GAME_PLAY_TIMER_IT_INTERVAL_NSEC,
-                    },
-                    .it_value = {
-                        .tv_sec = GAME_PLAY_TIMER_IT_VALUE_SEC,
-                        .tv_nsec = GAME_PLAY_TIMER_IT_VALUE_NSEC,
-                    },
-                },
-            },
-            .draw_module = {
-                .pos_x_wprint = TETRIS_PLAY_TIMER_POS_X_WPRINT,
-                .pos_y_wprint = TETRIS_PLAY_TIMER_POS_Y_WPRINT,
-                .draw_func = draw_game_play_timer_at_with_r,
-            },
-        },
         .sub_modules = {
             {
                 .main_func = mainfunc_tetris_play_main_loop,
@@ -203,8 +182,8 @@ void* run_tetris_play_manager_single(void* arg)
                 .is_detached = false,
             },
             {
-                .main_func = mainfunc_game_play_timer,
-                .main_func_arg = (void*)&s_play_manager.timer_drawer,
+                .main_func = run_tetris_play_timer,
+                .main_func_arg = (void*)&s_play_manager.tetris_play_timer,
                 .is_detached = false,
             },
         },

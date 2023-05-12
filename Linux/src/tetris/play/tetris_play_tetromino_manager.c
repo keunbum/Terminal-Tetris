@@ -43,10 +43,8 @@ static void spawn_tetromino(tetromino_manager_t* const out_man, tetromino_t** co
     (*target_tetro)->pos = create_pos(
         TETRIS_PLAY_TETROMINO_IN_PLAY_INIT_POS_X,
         TETRIS_PLAY_TETROMINO_IN_PLAY_INIT_POS_Y);
-    static const int S_TETROMINO_IN_PLAY_POS_X_OFFSET[TETROMINO_NUM_OF_KINDS] = { +1, +0, +0, +0, +0, +0, +0};
-    // static const S_TETROMINO_IN_PLAY_POS_Y_OFFSET = {+0, };
+    static const int S_TETROMINO_IN_PLAY_POS_X_OFFSET[TETROMINO_NUM_OF_KINDS] = { +1, +0, +0, +0, +0, +0, +0 };
     (*target_tetro)->pos.x += S_TETROMINO_IN_PLAY_POS_X_OFFSET[(*target_tetro)->shape_id];
-    // (*target_tetro)->pos.y += S_TETROMINO_IN_PLAY_POS_Y_OFFSET[(*target_tetro)->shape_id];
     (*target_tetro)->velocity = init_velocity;
     (*target_tetro)->clean_wprint = MATRIX_INNTER_BLOCK_WPRINT;
     push_queue(&out_man->next_queue, create_tetromino_random_malloc(&out_man->tetro_gen, create_pos_default(), 0, BLOCK_WPRINT_EMPTY));
@@ -67,8 +65,9 @@ static int try_spawn_tetromino(tetromino_manager_t* const out_man, tetromino_t**
     }
     spawn_tetromino(out_man, out_tetro, out_man->tetromino_in_play_velocity);
     inc_tetromino_cnt(&out_man->stat, (*out_tetro)->shape_id);
-    return is_ok_tetromino_in_play_next_status(&out_man->matrix, *out_tetro, get_posint((*out_tetro)->pos), (*out_tetro)->dir) 
-        ? 1 : -1;
+    return is_ok_tetromino_in_play_next_status(&out_man->matrix, *out_tetro, get_posint((*out_tetro)->pos), (*out_tetro)->dir)
+        ? 1
+        : -1;
 }
 
 void init_tetromino_manager(tetromino_manager_t* const out_man, int que_max_size)
@@ -171,8 +170,8 @@ tetromino_in_play_status_t try_hold_tetromino_in_play(tetromino_manager_t* const
         swap_tetromino_in_play_hold(out_man);
     }
     {
-        static const int S_X_OFFSET[] = {0, 0, 0, 0, 0, 0, 0};
-        static const int S_Y_OFFSET[] = {0, 0, 1, 1, 1, 1, 1};
+        static const int S_X_OFFSET[] = { 0, 0, 0, 0, 0, 0, 0 };
+        static const int S_Y_OFFSET[] = { 0, 0, 1, 1, 1, 1, 1 };
         out_man->tetromino_hold->pos = create_pos(out_man->hold_piece_pos.x + S_X_OFFSET[out_man->tetromino_hold->shape_id], out_man->hold_piece_pos.y + S_Y_OFFSET[out_man->tetromino_hold->shape_id]);
         out_man->tetromino_hold->pos_wprint = out_man->tetromino_hold->pos;
         out_man->tetromino_hold->dir = TETROMINO_INIT_DIR;
@@ -180,7 +179,8 @@ tetromino_in_play_status_t try_hold_tetromino_in_play(tetromino_manager_t* const
         wdraw_a_tetromino(out_man->tetromino_hold);
     }
     {
-        update_tetromino_pos(out_man->tetromino_in_play, 
+        update_tetromino_pos(
+            out_man->tetromino_in_play,
             create_pos(TETRIS_PLAY_TETROMINO_IN_PLAY_INIT_POS_X, TETRIS_PLAY_TETROMINO_IN_PLAY_INIT_POS_Y));
         out_man->tetromino_in_play->clean_wprint = BLOCK_WPRINT_EMPTY;
         update_ghost_piece(&out_man->ghost_piece, out_man->tetromino_in_play);

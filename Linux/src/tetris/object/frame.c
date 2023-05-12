@@ -26,6 +26,11 @@ void init_frame(
     out_frame->corner_bot_rgt_block = corner_bot_rgt_block;
 }
 
+void init_frame_with(frame_t* const out_dst, const frame_t* src)
+{
+    *out_dst = *src;
+}
+
 void cleanup_frame(frame_t* const out_frame)
 {
     /* do nothing */

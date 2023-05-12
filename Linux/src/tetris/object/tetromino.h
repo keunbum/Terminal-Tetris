@@ -23,8 +23,8 @@ typedef enum {
 
 typedef int shape_id_t;
 typedef float velocity_t;
-typedef struct tetromino tetromino_t;
 
+typedef struct tetromino tetromino_t;
 struct tetromino {
     shape_id_t shape_id;
     dir_t dir;
@@ -47,8 +47,8 @@ static inline bool is_mino(tetromino_shape_t m, int pos)
 }
 
 #define traverse_shape(i, j, shape) \
-    for (int i = 0; i < 4; ++i)       \
-        for (int j = 0; j < 4; ++j)   \
+    for (int i = 0; i < 4; ++i)     \
+        for (int j = 0; j < 4; ++j) \
             if (is_mino(shape, i * 4 + j))
 
 static inline bool is_valid_tetromino(const tetromino_t* tetro)
@@ -58,7 +58,7 @@ static inline bool is_valid_tetromino(const tetromino_t* tetro)
 
 static inline bool is_first_drawn_tetromino(const tetromino_t* tetro)
 {
-    my_assert(tetro != NULL);
+    my_assert(is_valid_tetromino(tetro));
 
     return !is_valid_tetromino(tetro->prev_drawn);
 }
