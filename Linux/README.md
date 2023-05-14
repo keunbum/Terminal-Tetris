@@ -133,8 +133,18 @@ https://youtu.be/WRsyfd3xiZM
 
 조작키 설명 추가.
 
+</details>
+
+<details><summary>2023.05.14</summary>
+
+https://youtu.be/CrFLw8BuQ3Q
+
+- Next Queue 사이즈 5->6로 변경.
+- 매트릭스 벽 제거.
+- Game Over 1초 동안 보여주기.
 
 </details>
+
 
 ---
 
@@ -3071,7 +3081,6 @@ FPS가 너무 높아도 안좋고, 낮아도 안좋고.. 120 정도가 적당한
 포트폴리오에 너무 손 안 대는데 요즘..  
 
 힘 닿는 데까지 하는 거야. 이럴 때일수록 부담없이 하는 걸로.  
-떨어지면 할 수 없는 거지 뭐..
 
 ### Achievements of the day
 
@@ -3100,6 +3109,19 @@ FPS가 너무 높아도 안좋고, 낮아도 안좋고.. 120 정도가 적당한
 </details>
 
 [//]: # (End of 05.13)
+
+<details><summary>05.14(일)</summary>
+
+아직 문서화 다 못했지만 제출함.  
+
+### Achievements of the day
+
+포트폴리오 제출 전 최신 버전 영상 촬영.  
+
+
+</details>
+
+[//]: # (End of 05.14)
 
 
 </blockquote></details>
