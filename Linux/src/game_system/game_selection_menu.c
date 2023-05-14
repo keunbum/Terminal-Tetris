@@ -42,12 +42,11 @@ static void draw_game_selection_menu_screen(void)
     }
     wdraw_newline();
 }
-
 static game_selection_menu_cmd_t read_game_selection_menu_option(void)
 {
     game_selection_menu_cmd_t cmd;
     if (scanf("%d", &cmd) != 1) {
-        handle_error("scanf() error:");
+        handle_error("scanf() != 1");
     }
     return cmd;
 }

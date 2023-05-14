@@ -20,6 +20,23 @@ static void cleanup_tetris_play_main_loop(tetris_play_manager_t* const out_play_
     wclear();
 }
 
+static void wdraw_game_over(void)
+{
+    static const wchar_t* S_TITLE[] = {
+        L" __             __ ",
+        L"/ _   /\\  |\\/| |_  ",
+        L"\\__) /--\\ |  | |__ ",
+        L" __        __  __    ",
+        L"/  \\ \\  / |_  |__) | ",
+        L"\\__/  \\/  |__ | \\  . "
+
+    };
+
+    wdraw_rows_newline_at_each(6, S_TITLE, 4, 25);
+    wdraw_newline();
+    sleep(1);
+}
+
 void* mainfunc_tetris_play_main_loop(void* arg)
 {
     tetris_play_manager_t* const play_manager = (tetris_play_manager_t*)arg;
@@ -50,6 +67,8 @@ void* mainfunc_tetris_play_main_loop(void* arg)
         prev_frame_time = get_elapsed_time_sec(&start_time);
         acc_time += prev_frame_time;
     }
+
+    wdraw_game_over();
 
     for (int i = 1; i < TETRIS_PLAY_SUBMODULE_NUM; ++i) {
         int res = pthread_cancel(play_manager->sub_modules[i].thread_id);
