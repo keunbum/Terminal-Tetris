@@ -11,12 +11,11 @@ static void main2(void)
 
 int main(int argc, char* argv[])
 {
-    (void)argc;
-    (void)argv;
-
 #ifdef UNIT_TEST
     test_module(argc, argv);
 #else
+    (void)argc;
+    (void)argv;
     main2();
 #endif
     return EXIT_SUCCESS;
