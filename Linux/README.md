@@ -3123,6 +3123,18 @@ FPS가 너무 높아도 안좋고, 낮아도 안좋고.. 120 정도가 적당한
 
 [//]: # (End of 05.14)
 
+<details><summary>05.15(월)</summary>
+
+가이드라인 번역 작업 이어서 진행.  
+코드를 뜯어 고치기엔 시간이 부족했음.
+
+### Achievements of the day
+
+
+</details>
+
+[//]: # (End of 05.15)
+
 
 </blockquote></details>
 
