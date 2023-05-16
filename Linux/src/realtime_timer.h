@@ -5,7 +5,6 @@
 #include <time.h>
 
 #define REALTIME_TIMER_CLOCK_ID CLOCK_REALTIME
-#define REALTIME_TIMER_SIG SIGRTMIN
 
 typedef struct {
     timer_t timerid;

@@ -43,7 +43,7 @@ static tetris_play_status_t run_tetris_play_modules_in_parallel(tetris_play_mana
 {
     realtime_timer_t* timer = &out_play_manager->tetris_play_timer.game_play_timer.realtime_timer;
 
-    /* Block REALTIME_TIMER_SIG */
+    /* Block TETRIS_PLAY_TIMER_SIG */
     block_signal(timer->timersig);
 
     for (size_t i = 0; i < TETRIS_PLAY_SUBMODULE_NUM; ++i) {
@@ -84,7 +84,7 @@ static void init_tetris_play_objects(tetris_play_manager_t* const out_play_manag
         UNIT_MATRIX_CORNER_BOT_RIGHT);
     init_tetromino_manager(&out_play_manager->tetro_man, out_play_manager->tetromino_next_queue_max_size);
     init_terminal(&out_play_manager->terminal);
-    init_tetris_play_timer(&out_play_manager->tetris_play_timer, (pos_int_t) { TETRIS_PLAY_TIMER_POS_X_WPRINT, TETRIS_PLAY_TIMER_POS_Y_WPRINT }, REALTIME_TIMER_SIG);
+    init_tetris_play_timer(&out_play_manager->tetris_play_timer, (pos_int_t) { TETRIS_PLAY_TIMER_POS_X_WPRINT, TETRIS_PLAY_TIMER_POS_Y_WPRINT }, TETRIS_PLAY_TIMER_SIG);
 }
 
 static void cleanup_tetris_play_objects(tetris_play_manager_t* const out_play_manager)

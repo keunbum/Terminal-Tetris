@@ -22,7 +22,7 @@ void cleanup_realtime_timer(realtime_timer_t* const out_realtime_timer)
 
 void register_realtime_timer(realtime_timer_t* const out_realtime_timer)
 {
-    my_assert(out_realtime_timer->timersig == REALTIME_TIMER_SIG);
+    my_assert(out_realtime_timer->timersig == TETRIS_PLAY_TIMER_SIG);
 
     /* Set sigset */
     sigemptyset(&out_realtime_timer->sigset);
