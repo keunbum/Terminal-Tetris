@@ -3162,6 +3162,17 @@ FPS가 너무 높아도 안좋고, 낮아도 안좋고.. 120 정도가 적당한
 
 [//]: # (End of 05.19)
 
+<details><summary>05.20(토)</summary>
+
+쉬는 날.  
+힘들 땐 푹 쉬는 게 현명한 거다.
+
+### Achievements of the day
+
+
+</details>
+
+[//]: # (End of 05.20)
 
 </blockquote></details>
 
