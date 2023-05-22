@@ -3178,6 +3178,20 @@ FPS가 너무 높아도 안좋고, 낮아도 안좋고.. 120 정도가 적당한
 
 [//]: # (End of 05.21)
 
+<details><summary>05.22(월)</summary>
+
+멘탈이 쉽게 회복되지가 않는다..  
+며칠째 그 생각만 하고 있네.
+
+정신적으로 지쳐서 집중할 수가 없어...
+
+### Achievements of the day
+
+
+</details>
+
+[//]: # (End of 05.22)
+
 </blockquote></details>
 
 [//]: # (End of 2023.05)
