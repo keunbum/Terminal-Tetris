@@ -3192,6 +3192,22 @@ FPS가 너무 높아도 안좋고, 낮아도 안좋고.. 120 정도가 적당한
 
 [//]: # (End of 05.22)
 
+<details><summary>05.23(화)</summary>
+
+이제 좀 안정은 된 듯..  
+
+무리할 필요 없고 조금씩 늘려가는 걸로.
+
+### Achievements of the day
+
+코드 리팩토링.  
+util.h부터 이어서 할 것.
+
+
+</details>
+
+[//]: # (End of 05.22)
+
 </blockquote></details>
 
 [//]: # (End of 2023.05)
