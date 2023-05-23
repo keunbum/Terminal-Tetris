@@ -10,7 +10,7 @@
     do {                                          \
         int res;                                  \
         if ((res = func(__VA_ARGS__)) != 0) {     \
-            handle_error_en(#func " error", res); \
+            handle_error_num(#func " error", res); \
         }                                         \
     } while (false)
 #else

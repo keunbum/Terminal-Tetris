@@ -13,7 +13,7 @@ static void do_game_play_timer_routine(const game_play_timer_t* game_play_timer)
         int sig;
         int res = sigwait(&timer->sigset, &sig);
         if (res != 0) {
-            handle_error_en("sigwait() error", res);
+            handle_error_num("sigwait() error", res);
         }
         run_game_play_timer_module(&game_play_timer->main_module);
     }

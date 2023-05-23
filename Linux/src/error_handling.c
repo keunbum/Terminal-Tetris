@@ -11,8 +11,8 @@ void handle_error(const char* msg)
     exit(EXIT_FAILURE);
 }
 
-void handle_error_en(const char* msg, int en)
+void handle_error_num(const char* msg, int error_num)
 {
-    errno = en;
+    errno = error_num;
     handle_error(msg);
 }

@@ -18,6 +18,6 @@ void init_realtime_timer(realtime_timer_t* const out_realtime_timer, clockid_t c
 void cleanup_realtime_timer(realtime_timer_t* const out_realtime_timer);
 void register_realtime_timer(realtime_timer_t* const out_realtime_timer);
 void remove_realtime_timer(realtime_timer_t* const out_realtime_timer);
-void start_realtime_timer(realtime_timer_t* const out_timer);
+void start_realtime_timer(realtime_timer_t* const out_realtime_timer);
 
 #endif /* __REALTIME_TIMER__H */

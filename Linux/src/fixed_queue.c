@@ -14,8 +14,9 @@ void traverse_queue(const fixed_queue_t* que, void (*func)(void* const, int, voi
 
 void init_queue_malloc(fixed_queue_t* const out_que, int max_size)
 {
-    /* max_size must be a power of 2 */
     out_que->max_size = max_size;
+    /* max_size must be a power of 2 */
+    my_assert((out_que->max_size & (out_que->max_size - 1)) == 0);
     out_que->beg = 0;
     out_que->end = 0;
     out_que->cnt = 0;

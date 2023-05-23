@@ -13,10 +13,14 @@ void init_device_input(device_input_t* const out_in, int device_event_num, int f
     out_in->device_event_num = device_event_num;
     sprintf(buf, "/dev/input/event%d", out_in->device_event_num);
     if ((out_in->fd = open(buf, flags)) == -1) {
-        if (out_in->device_event_num == DEVICE_INPUT_KEYBOARD) {
-            handle_error("open() error");
-        }
-        pthread_exit(NULL);
+        sprintf(buf, "open() error, event: %d", device_event_num);
+        handle_error(buf);
+
+        /* that.. let's leave it for now because it might use multi-threading. */
+        // if (out_in->device_event_num == DEVICE_INPUT_KEYBOARD) {
+        //     handle_error("open() error");
+        // }
+        // pthread_exit(NULL);
     }
 }
 
@@ -27,10 +31,10 @@ void cleanup_device_input(device_input_t* const out_in)
     }
 }
 
-/* return true; if something has been read.
-   return false; if not */
+/* return whether the input was read correctly. */
 bool read_device_input_event(device_input_t* const out_in)
 {
     static const ssize_t s_expected_read_size = (ssize_t)sizeof(struct input_event);
-    return read(out_in->fd, &out_in->event, s_expected_read_size) == s_expected_read_size;
+    const ssize_t actual_read_size = read(out_in->fd, &out_in->event, s_expected_read_size);
+    return actual_read_size == s_expected_read_size;
 }

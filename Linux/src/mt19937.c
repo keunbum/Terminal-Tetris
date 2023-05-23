@@ -1,6 +1,9 @@
-/* Ref: https://dl.acm.org/doi/pdf/10.1145/272991.272995
- *
+/* Ref
+ * https://dl.acm.org/doi/pdf/10.1145/272991.272995
+ * https://en.wikipedia.org/wiki/Mersenne_Twister
+ * 
  * Mersenne Twister: A 623-Dimensionally Equidistributed Uniform Pseudo-Random Number Generator
+ * 
  * MAKOTO MATSUMOTO
  * Keio University and the Max-Planck-Institut fu¨ r Mathematik
  * and
@@ -8,6 +11,8 @@
  * Keio University
  *
  */
+
+/* Of course, I didn't understand the principle and only brought the code. */
 #include <stddef.h>
 
 #include "debug.h"

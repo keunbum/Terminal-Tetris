@@ -17,7 +17,7 @@ static inline void block_signal(int signum)
     sigaddset(&sigset, signum);
     int res = pthread_sigmask(SIG_BLOCK, &sigset, NULL);
     if (res == -1) {
-        handle_error_en("pthread_sigmask() error", res);
+        handle_error_num("pthread_sigmask() error", res);
     }
 }
 

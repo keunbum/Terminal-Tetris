@@ -13,11 +13,11 @@ static inline uint32_t rng(void)
     return mt19937_rng();
 }
 
-/* [s, e) */
-static inline int32_t rng_range(int32_t s, int32_t e)
+/* [st, en) */
+static inline int32_t rng_range(int32_t st, int32_t en)
 {
-    uint32_t n = e - s;
-    return (int32_t) (rng() % n) + s;
+    uint32_t n = en - st;
+    return (int32_t) (rng() % n) + st;
 }
 
 #endif /* __MT19937__H */
