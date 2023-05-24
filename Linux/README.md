@@ -10,52 +10,56 @@
 
 마크다운 동영상 지원 안돼서 유튜브 링크로 대체  
 
-<details><summary>2023.03.30</summary>
+<font size="3"> <details><summary>2023.03</summary><blockquote> </font>
 
+#### 2023.03.30
 https://youtu.be/hotEwiW4uZQ  
 
 - 아직 못움직임.
 - 라인 클리어 못함.
 - 난수 생성 빈약함.
 
-</details>
+---
+
+</blockquote></details>
+
+[//]: # (End of 2023.03)
  
 
-<details><summary>2023.04.01</summary>
- 
+<font size="3"> <details><summary>2023.04</summary><blockquote> </font>
+
+#### 2023.04.01
 https://youtu.be/ffQKhxhylG8  
 
-어제 상황에서 추가로 구현한 건 없고 테트리스 블록만 바꿈.  
+- 어제 상황에서 추가로 구현한 건 없고 테트리스 블록만 바꿈.  
 - 이제보니 시간 오차도 있음. (최대한 1초에 가깝게 구현하기.)   
 
-</details>
+---
 
-<details><summary>2023.04.06</summary>
- 
+#### 2023.04.06
 https://youtu.be/J76D3ZUa2Nc
 
 - 테트로미노 스폰 위치 랜덤화
 
-</details>
+---
 
-
-<details><summary>2023.04.07</summary>
+#### 2023.04.07
  
 https://youtu.be/fuThpI5kqPI
 
 - 실루엣 구현 (렉이 좀 있음)
 
-</details>
+---
 
-<details><summary>2023.04.09</summary>
+#### 2023.04.09</summary>
  
 https://www.youtube.com/watch?v=mRXKvNAepy0
 
 - 회전 개념 적용 (아직 입력 못받음)
 
-</details>
+---
 
-<details><summary>2023.04.10</summary>
+#### 2023.04.10</summary>
  
 https://youtu.be/a-AEmpm-fSU
 
@@ -64,58 +68,61 @@ https://youtu.be/a-AEmpm-fSU
   --> 근데 테스트 해보니까 rand()보다 더 말도 안되는 경우도 있는데;  
       확률 분포가 골고루 나오게끔 조작을 가해야하나..
 
-</details>
+---
 
-<details><summary>2023.04.18</summary>
+#### 2023.04.18</summary>
 
 https://youtu.be/gPueVyOEVMs     
 
-기본 조작 및 라인 클리어만 구현..  
-(라인 클리어 후 블록 이동X)
+- 기본 조작 및 라인 클리어만 구현.. (라인 클리어 후 블록 이동X)
 
-</details>
+---
 
-<details><summary>2023.04.19</summary>
+#### 2023.04.19</summary>
 
 https://youtu.be/7kN9u0RXD_s
 
-라인 클리어 후 블록 이동 구현.  
-버그의 향연..ㅠㅠㅠ
+ - 라인 클리어 후 블록 이동 구현. (버그의 향연..ㅠㅠㅠ)
 
-</details>
+---
 
-<details><summary>2023.04.25</summary>
+#### 2023.04.25</summary>
 
 https://youtu.be/GoYNYvaGNYA  
 https://youtu.be/IzYS_XyzfK8
 
-Xbox Controller 테스트.
+- Xbox Controller 테스트.
 
-치명적인 버그는 없음.  
-(~~영상에는 컨트롤러만 쓰긴 했는데  
-게임 도중 키보드와 혼용하면 커맨드가 2번 적용되는 버그가 있긴함..  
-원인은 아직 모름. 파일 디스크립터가 다른데 대체 왜?~~  
-인덱싱 실수로 키보드 파일 디스크립터만 닫지 않아서 생긴 문제였음. 해결함.)
+  치명적인 버그는 없음.  
+  (~~영상에는 컨트롤러만 쓰긴 했는데  
+  게임 도중 키보드와 혼용하면 커맨드가 2번 적용되는 버그가 있긴함..  
+  원인은 아직 모름. 파일 디스크립터가 다른데 대체 왜?~~  
+  인덱싱 실수로 키보드 파일 디스크립터만 닫지 않아서 생긴 문제였음. 해결함.)
 
-키보드와 달리 게임 패드는 계속 눌림을 지원해주지 않는다.  
-그래서 빨리 움직이려면 방향키 연타해야 함.  
-소프트웨어적으로 계속 눌림을 구현해야 하는데 쉽진 않을 듯..
+- 키보드와 달리 게임 패드는 계속 눌림을 지원해주지 않는다.  
+  그래서 빨리 움직이려면 방향키 연타해야 함.  
+  소프트웨어적으로 계속 눌림을 구현해야 하는데 쉽진 않을 듯..
 
-의사 난수 어느 한쪽으로 몰리는 경향 있음.  
-알고리즘을 바꾸거나 인위적으로 조작 가해야 할지도.
+- 의사 난수 어느 한쪽으로 몰리는 경향 있음.  
+  알고리즘을 바꾸거나 인위적으로 조작 가해야 할지도.
 
-</details>
+---
 
-<details><summary>2023.04.29</summary>
+#### 2023.04.29</summary>
 
 https://youtu.be/ef0avagY-WU
 
-7 bag 시스템 구현 및 UI 변경  
-난이도 그럴 듯 하게 조절해야 할 듯
+- 7 bag 시스템 구현 및 UI 변경  
+- 난이도 그럴 듯 하게 조절해야 할 듯
 
-</details>
+---
 
-<details><summary>2023.05.14</summary>
+</blockquote></details>
+
+
+<font size="3"> <details><summary>2023.05</summary><blockquote> </font>
+
+#### 2023.05.14</summary>
 
 https://youtu.be/CrFLw8BuQ3Q
 
@@ -123,8 +130,18 @@ https://youtu.be/CrFLw8BuQ3Q
 - 매트릭스 벽 제거.
 - Game Over 1초 동안 보여주기.
 
-</details>
+---
 
+#### 2023.05.24</summary>
+
+https://youtu.be/HyTi_F1tIL4
+
+- DualSense 테스트
+- FPS 60 안팎으로 조절
+
+---
+
+</blockquote></details>
 
 ---
 
@@ -3206,7 +3223,22 @@ util.h부터 이어서 할 것.
 
 </details>
 
-[//]: # (End of 05.22)
+[//]: # (End of 05.23)
+
+<details><summary>05.24(수)</summary>
+
+개발하는 시간 조금씩 잘 늘려가고 있음.
+
+### Achievements of the day
+
+tetris_play_device_input 설계 변경(리팩토링)
+
+그걸 바탕으로 한 듀얼센스 테스트 (조작키 설명은 안 바꿈)  
+그리고 화면 깜빡임 현상 때문에 FPS 60 안팎으로 조절
+
+</details>
+
+[//]: # (End of 05.24)
 
 </blockquote></details>
 
