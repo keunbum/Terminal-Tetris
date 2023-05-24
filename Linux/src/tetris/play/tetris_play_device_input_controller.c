@@ -8,7 +8,7 @@
 #include "pthread_macro.h"
 #include "tetris_play_device_input_controller.h"
 
-tetromino_in_play_status_t process_controller_event(device_input_t* const out_in, tetromino_manager_t* const out_tetro_man)
+tetromino_in_play_status_t process_tetris_play_controller_event(device_input_t* const out_in, tetromino_manager_t* const out_tetro_man)
 {
     const struct input_event* ev = &out_in->event;
     matrix_t* matrix = &out_tetro_man->matrix;

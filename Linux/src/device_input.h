@@ -11,9 +11,8 @@
 
 #define EV_KEYBOARD (120013)
 
-#define DEVICE_INPUT_KEYBOARD (2)
-#define DEVICE_INPUT_CONTROLLER_NS (6)
-#define DEVICE_INPUT_CONTROLLER_XBOX (7)
+// #define DEVICE_INPUT_KEYBOARD (2)
+#define DEVICE_INPUT_CONTROLLER (6)
 
 typedef struct {
     int fd;
@@ -24,5 +23,6 @@ typedef struct {
 void init_device_input(device_input_t* const out_in, int device_event_num, int flags);
 void cleanup_device_input(device_input_t* const out_in);
 bool read_device_input_event(device_input_t* const out_in);
+int get_keyboard_event_num(void);
 
 #endif /* __DEVICE_INPUT__H */

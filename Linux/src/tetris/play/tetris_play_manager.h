@@ -1,7 +1,7 @@
 #ifndef __TETRIS_PLAY_MANAGER__H
 #define __TETRIS_PLAY_MANAGER__H
 
-#include "device_input.h"
+#include "tetris_play_device_input.h"
 #include "game_system/game_system_manager.h"
 #include "terminal.h"
 #include "tetris/object/frame.h"
@@ -41,7 +41,7 @@ typedef struct {
     frame_t screen_frame;
     tetromino_manager_t tetro_man;
     terminal_t terminal;
-    device_input_t input;
+    tetris_play_device_input_t tetris_play_input;
 
     tetris_play_timer_t tetris_play_timer;
     thread_module_t sub_modules[TETRIS_PLAY_SUBMODULE_NUM];

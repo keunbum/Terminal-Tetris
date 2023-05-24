@@ -38,3 +38,17 @@ bool read_device_input_event(device_input_t* const out_in)
     const ssize_t actual_read_size = read(out_in->fd, &out_in->event, s_expected_read_size);
     return actual_read_size == s_expected_read_size;
 }
+
+int get_keyboard_event_num(void)
+{
+    FILE* pipe = popen("grep -E 'Handlers|EV=' /proc/bus/input/devices | grep -B1 'EV=120013' | grep -Eo 'event[0-9]+'", "r");
+    if (pipe == NULL) {
+        handle_error("popen() error");
+    }
+    int ret = 0;
+    if (fscanf(pipe, "event%d\n", &ret) != 1) {
+        handle_error("fscanf() error");
+    }
+    pclose(pipe);
+    return ret;
+}

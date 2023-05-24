@@ -10,21 +10,7 @@
 #include "tetris_play_device_input_keyboard.h"
 #include "tetris_play_tetromino_manager.h"
 
-static inline int get_keyboard_event_num(void)
-{
-    FILE* pipe = popen("grep -E 'Handlers|EV=' /proc/bus/input/devices | grep -B1 'EV=120013' | grep -Eo 'event[0-9]+'", "r");
-    if (pipe == NULL) {
-        handle_error("popen() error");
-    }
-    int ret = 0;
-    if (fscanf(pipe, "event%d\n", &ret) != 1) {
-        handle_error("fscanf() error");
-    }
-    pclose(pipe);
-    return ret;
-}
-
-tetromino_in_play_status_t process_keyboard_event(device_input_t* const out_in, tetromino_manager_t* const tetro_man)
+tetromino_in_play_status_t process_tetris_play_keyboard_event(device_input_t* const out_in, tetromino_manager_t* const tetro_man)
 {
     const struct input_event* ev = &out_in->event;
     matrix_t* matrix = &tetro_man->matrix;

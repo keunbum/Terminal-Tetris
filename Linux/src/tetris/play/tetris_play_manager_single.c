@@ -7,7 +7,6 @@
 
 #include "chronometry.h"
 #include "debug.h"
-#include "device_input.h"
 #include "draw/digital_digit.h"
 #include "draw/draw_tool.h"
 #include "error_handling.h"
@@ -16,6 +15,7 @@
 #include "tetris/scene/tetris_play_scene.h"
 #include "tetris/timer/game_play_timer.h"
 #include "tetris/timer/tetris_play_timer.h"
+#include "tetris_play_device_input_controller.h"
 #include "tetris_play_main_loop.h"
 #include "tetris_play_manager.h"
 #include "tetris_play_manager_single.h"
@@ -89,7 +89,7 @@ static void init_tetris_play_objects(tetris_play_manager_t* const out_play_manag
 
 static void cleanup_tetris_play_objects(tetris_play_manager_t* const out_play_manager)
 {
-    cleanup_device_input(&out_play_manager->input);
+    cleanup_tetris_play_device_input(&out_play_manager->tetris_play_input);
     cleanup_tetris_play_timer(&out_play_manager->tetris_play_timer);
     cleanup_terminal(&out_play_manager->terminal);
     cleanup_tetromino_manager_free(&out_play_manager->tetro_man);
@@ -104,7 +104,7 @@ static void init_tetris_play_manager_before_start(tetris_play_manager_t* const o
 
 static void init_tetris_play_manager_after_start(tetris_play_manager_t* const out_play_manager)
 {
-    init_device_input(&out_play_manager->input, DEVICE_INPUT_KEYBOARD, O_RDONLY | O_NONBLOCK);
+    init_tetris_play_device_input(&out_play_manager->tetris_play_input, DEVICE_INPUT_CONTROLLER, O_RDONLY | O_NONBLOCK, process_tetris_play_controller_event);
 }
 
 static void cleanup_tetris_play_manager(tetris_play_manager_t* const out_play_manager)

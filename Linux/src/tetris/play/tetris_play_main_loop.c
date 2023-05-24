@@ -4,7 +4,7 @@
 #include "chronometry.h"
 #include "debug.h"
 #include "draw/cursor.h"
-#include "tetris_play_device_input.h"
+#include "tetris_play_device_input_controller.h"
 #include "tetris_play_fps.h"
 #include "tetris_play_main_loop.h"
 #include "tetris_play_update_gameplay.h"
@@ -56,8 +56,8 @@ void* mainfunc_tetris_play_main_loop(void* arg)
         play_manager->game_delta_time = prev_frame_time * TETRIS_PLAY_GAME_DELTA_TIME_FACTOR;
         update_gameplay(play_manager);
 
-        if (read_device_input_event(&play_manager->input)) {
-            tetromino_in_play_status_t res = process_input_event(&play_manager->input, &play_manager->tetro_man);
+        if (read_device_input_event(&play_manager->tetris_play_input.in)) {
+            tetromino_in_play_status_t res = new_process_tetris_play_device_event(&play_manager->tetris_play_input, &play_manager->tetro_man);
             process_tetromino_status(res, play_manager);
         } else {
             __snseconds_t sleep_time = max_long(0L, TO_NSEC(TETRIS_PLAY_FRAME_TIME) - get_elapsed_time_nsec(&start_time));
