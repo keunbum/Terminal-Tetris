@@ -66,9 +66,9 @@ void wdraw_a_tetromino(tetromino_t* const out_tetro)
         return;
     }
     if (!is_first_drawn_tetromino(out_tetro)) {
-        render_a_tetromino_poswprint_r(out_tetro->prev_drawn, get_posint(out_tetro->prev_drawn->pos_wprint));
+        render_a_tetromino_poswprint_r(out_tetro->prev_drawn, cast_pos_posint(out_tetro->prev_drawn->pos_wprint));
     }
-    render_a_tetromino_poswprint_r(out_tetro, get_posint(out_tetro->pos_wprint));
+    render_a_tetromino_poswprint_r(out_tetro, cast_pos_posint(out_tetro->pos_wprint));
     save_tetromino_tobedrawn(out_tetro);
 }
 

@@ -11,7 +11,7 @@ static void set_next_queue_default(tetromino_t* const out_tetro, int i, pos_int_
     pos_int_t pos_wprint;
     pos_wprint.x = start_pos_wprint.x + i * S_POS_X_INTERVAL + 1;
     pos_wprint.y = start_pos_wprint.y + 5;
-    out_tetro->pos_wprint = get_pos(pos_wprint);
+    out_tetro->pos_wprint = cast_posint_pos(pos_wprint);
 }
 
 static void wdraw_next_queue_each(void* const out_void, int i, void* arg)
@@ -65,7 +65,7 @@ static int try_spawn_tetromino(tetromino_manager_t* const out_man, tetromino_t**
     }
     spawn_tetromino(out_man, out_tetro, out_man->tetromino_in_play_velocity);
     inc_tetromino_cnt(&out_man->stat, (*out_tetro)->shape_id);
-    return is_ok_tetromino_in_play_next_status(&out_man->matrix, *out_tetro, get_posint((*out_tetro)->pos), (*out_tetro)->dir)
+    return is_ok_tetromino_in_play_next_status(&out_man->matrix, *out_tetro, cast_pos_posint((*out_tetro)->pos), (*out_tetro)->dir)
         ? 1
         : -1;
 }

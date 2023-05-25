@@ -16,6 +16,7 @@
 #include "tetris/timer/game_play_timer.h"
 #include "tetris/timer/tetris_play_timer.h"
 #include "tetris_play_device_input_controller.h"
+#include "tetris_play_device_input_keyboard.h"
 #include "tetris_play_main_loop.h"
 #include "tetris_play_manager.h"
 #include "tetris_play_manager_single.h"
@@ -104,7 +105,8 @@ static void init_tetris_play_manager_before_start(tetris_play_manager_t* const o
 
 static void init_tetris_play_manager_after_start(tetris_play_manager_t* const out_play_manager)
 {
-    init_tetris_play_device_input(&out_play_manager->tetris_play_input, DEVICE_INPUT_CONTROLLER, O_RDONLY | O_NONBLOCK, process_tetris_play_controller_event);
+    // init_tetris_play_device_input(&out_play_manager->tetris_play_input, DEVICE_INPUT_CONTROLLER, O_RDONLY | O_NONBLOCK, process_tetris_play_controller_event);
+    init_tetris_play_device_input(&out_play_manager->tetris_play_input, get_keyboard_event_num(), O_RDONLY | O_NONBLOCK, process_tetris_play_keyboard_event);
 }
 
 static void cleanup_tetris_play_manager(tetris_play_manager_t* const out_play_manager)

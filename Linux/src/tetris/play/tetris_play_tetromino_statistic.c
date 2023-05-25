@@ -40,7 +40,7 @@ void init_tetris_play_statistics_malloc(tetris_play_statistic_t* const out_stat)
         static const int S_TETRO_X_CORRECTION[TETROMINO_NUM_OF_KINDS] = { +0, -1, +0, +0, +0, +0, +0 };
         const int each_pos_x_wprint = out_stat->tetromino_pos_wprint.x + (shape_id + 1) * out_stat->interval_height + S_TETRO_X_CORRECTION[shape_id];
         const int each_pos_y_wprint = out_stat->tetromino_pos_wprint.y + 1;
-        pos_t pos_wprint = { (pos_e_t)each_pos_x_wprint, (pos_e_t)each_pos_y_wprint };
+        pos_t pos_wprint = { (pos_each_t)each_pos_x_wprint, (pos_each_t)each_pos_y_wprint };
         out_stat->tetrominos[shape_id] = create_tetromino_shape_poswprint_malloc(shape_id, pos_wprint, BLOCK_WPRINT_EMPTY);
     }
 

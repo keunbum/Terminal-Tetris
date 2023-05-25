@@ -1,30 +1,28 @@
 #ifndef __POS__H
 #define __POS__H
 
-#include <stdbool.h>
+typedef float pos_each_t;
+typedef pos_each_t pos_each_t;
 
-typedef float pos_each_float_t;
-typedef pos_each_float_t pos_e_t;
+#define DECLARE_POS(T) \
+    typedef struct {   \
+        T x;           \
+        T y;           \
+    } pos_##T##_t
 
-typedef struct {
-    pos_e_t x;
-    pos_e_t y;
-} pos_float_t;
+DECLARE_POS(float);
 typedef pos_float_t pos_t;
 
-typedef struct {
-    int x;
-    int y;
-} pos_int_t;
+DECLARE_POS(int);
 
-static inline pos_t create_pos(pos_e_t x, pos_e_t y)
+static inline pos_t create_pos(pos_each_t x, pos_each_t y)
 {
     return (pos_t) { x, y };
 }
 
 static inline pos_t create_pos_default(void)
 {
-    return create_pos(0.0, 0.0);
+    return create_pos(0.0f, 0.0f);
 }
 
 static inline pos_int_t create_posint(int x, int y)
@@ -32,31 +30,24 @@ static inline pos_int_t create_posint(int x, int y)
     return (pos_int_t) { x, y };
 }
 
-static inline pos_int_t create_posint_default()
+static inline pos_int_t create_posint_default(void)
 {
     return create_posint(0, 0);
 }
 
-static inline pos_int_t get_intpos_intwprint(pos_int_t pos)
+static inline pos_int_t convert_intpos_intwprint(pos_int_t pos)
 {
     return create_posint(pos.x, 2 * pos.y);
 }
 
-static inline pos_int_t get_posint(pos_t pos)
+static inline pos_int_t cast_pos_posint(pos_t pos)
 {
     return create_posint((int)pos.x, (int)pos.y);
 }
 
-static inline pos_t get_pos(pos_int_t pos)
+static inline pos_t cast_posint_pos(pos_int_t pos)
 {
-    return create_pos((pos_e_t)pos.x, (pos_e_t)pos.y);
-}
-
-static inline void swap_pos(pos_t* const restrict pi, pos_t* const restrict pj)
-{
-    pos_t tmp_pos = *pi;
-    *pi = *pj;
-    *pj = tmp_pos;
+    return create_pos((pos_each_t)pos.x, (pos_each_t)pos.y);
 }
 
 #endif /* __POS__H */

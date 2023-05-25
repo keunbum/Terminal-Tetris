@@ -14,7 +14,6 @@ const wchar_t* get_tetromino_in_play_status_wstr(tetromino_in_play_status_t stat
 bool is_ok_tetromino_in_play_next_status(const matrix_t* restrict matrix, const tetromino_t* restrict tetro, pos_int_t npos, dir_t nrotate_dir)
 {
     tetromino_shape_t nshape = get_tetromino_shape(tetro->shape_id, nrotate_dir);
-
     bool is_ok = true;
     traverse_shape(i, j, nshape) {
         int ni = npos.x + i - matrix->pos.x;
@@ -30,7 +29,7 @@ tetromino_in_play_status_t try_move_down_tetromino_in_play_deltatime(matrix_t* c
         out_tetro->pos.x + GS_DX[DIR_BOT] * out_tetro->velocity * delta_time,
         out_tetro->pos.y + GS_DY[DIR_BOT] * out_tetro->velocity * delta_time
     };
-    bool is_ok = is_ok_tetromino_in_play_next_status(out_board, out_tetro, get_posint(npos), out_tetro->dir);
+    bool is_ok = is_ok_tetromino_in_play_next_status(out_board, out_tetro, cast_pos_posint(npos), out_tetro->dir);
     if (is_ok) {
         update_tetromino_pos(out_tetro, npos);
         return TETROMINO_IN_PLAY_STATUS_MOVE;
@@ -47,7 +46,7 @@ tetromino_in_play_status_t try_move_tetromino_in_play_byone(matrix_t* const rest
         out_tetro->pos.x + GS_DX[dir] * TETRIS_PLAY_TETROMINO_IN_PLAY_UNIT_DISTANCE,
         out_tetro->pos.y + GS_DY[dir] * TETRIS_PLAY_TETROMINO_IN_PLAY_UNIT_DISTANCE
     };
-    bool is_ok = is_ok_tetromino_in_play_next_status(out_board, out_tetro, get_posint(npos), out_tetro->dir);
+    bool is_ok = is_ok_tetromino_in_play_next_status(out_board, out_tetro, cast_pos_posint(npos), out_tetro->dir);
     if (is_ok) {
         update_tetromino_pos(out_tetro, npos);
         return TETROMINO_IN_PLAY_STATUS_MOVE;
@@ -64,12 +63,12 @@ tetromino_in_play_status_t try_rotate_tetromino_in_play(matrix_t* const restrict
     static const int S_DX[] = { 0, 0, 0 };
     static const int S_DY[] = { 0, 1, -1 };
     for (int i = 0; i < 3; ++i) {
-        for (int scalar = 1; scalar <= 2; scalar++) {
+        for (int scalar = 1; scalar <= 2; ++scalar) {
             pos_t npos = {
                 out_tetro->pos.x + scalar * S_DX[i],
                 out_tetro->pos.y + scalar * S_DY[i]
             };
-            bool is_ok = is_ok_tetromino_in_play_next_status(out_board, out_tetro, get_posint(npos), nrotate_dir);
+            bool is_ok = is_ok_tetromino_in_play_next_status(out_board, out_tetro, cast_pos_posint(npos), nrotate_dir);
             if (is_ok) {
                 out_tetro->dir = nrotate_dir;
                 update_tetromino_pos(out_tetro, npos);

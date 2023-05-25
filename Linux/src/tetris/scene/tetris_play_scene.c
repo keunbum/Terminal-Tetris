@@ -32,7 +32,7 @@ void init_tetris_play_scene(const tetris_play_manager_t* play_manager)
     case TETRIS_PLAY_MODE_MULTI:
         /* intentional fallthrough */
     default:
-        handle_error("init_tetris_play_scene() Not a valid game play_mode");
+        handle_error("init_tetris_play_scene(): Not a valid game play_mode");
         break;
     }
 }

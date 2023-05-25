@@ -45,7 +45,7 @@ static int clear_filled_lines(matrix_t* const out_matrix)
             for (int ptr = 0; ptr < end; ++ptr) {
                 int i = s_que[ptr];
                 set_block_each(&out_matrix->grid[i][j], BLOCK_NATURE_EMPTY, MATRIX_INNTER_BLOCK_WPRINT);
-                // pos_int_t pos_wprint = get_intpos_intwprint(create_posint(out_matrix->pos.x + i, out_matrix->pos.y + j));
+                // pos_int_t pos_wprint = convert_intpos_intwprint(create_posint(out_matrix->pos.x + i, out_matrix->pos.y + j));
                 pos_int_t pos_wprint = create_posint(out_matrix->in_play_pos_wprint.x + i - out_matrix->in_play_height - 1, out_matrix->in_play_pos_wprint.y + 2 * (j - 1));
                 wdraw_unit_matrix_at_r(out_matrix->grid[i][j].wprint, pos_wprint.x, pos_wprint.y);
             }
@@ -90,7 +90,6 @@ static inline bool is_at_skyline(const matrix_t* matrix, const tetromino_t* tetr
     
     tetromino_shape_t shape = get_tetromino_shape(tetro->shape_id, tetro->dir);
     int first_pos_x = TETRIS_PLAY_TETROMINO_IN_PLAY_POS_X_MIN;
-    
     traverse_shape(i, _, shape) {
         first_pos_x = (int)tetro->pos.x + i;
         goto skyline_return_line;
