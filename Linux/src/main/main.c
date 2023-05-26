@@ -35,6 +35,6 @@ int main(int argc, char* argv[])
  * stuff you should look for
   * special cases
   * invalid pointer operation (ex. null pointer exception)
-  * invalid argument passing --> type conversion required
+  * invalid argument passing --> type casting required
   * error return handling
 */
