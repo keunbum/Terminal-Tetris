@@ -392,11 +392,21 @@ https://youtu.be/HyTi_F1tIL4
 
   </details>  
 
-
-
 </details>
 
 [//]: # (miscellaneous search)
+
+
+<font size="3"> <details><summary>references</summary><blockquote> </font>
+
+- How to implement the UI
+  - http://iki.fi/sol/imgui/
+</details>
+
+</details>
+
+[//]: # (references)
+
 
 
 ---
@@ -3265,6 +3275,28 @@ tetris_play_device_input 설계 변경(리팩토링)
 </details>
 
 [//]: # (End of 05.26)
+
+<details><summary>05.27(토)</summary>
+
+게임 타이틀 화면을 지금처럼 말고  
+버튼 선택에 의한 이벤트 방식으로 구현하고 싶은데  
+어떻게 해야 할지 감도 안잡힘.  
+UI도 체계적으로 디자인 하고 싶은데..
+
+버튼 구조체부터 만들어서 차근차근 빌드업 해야 하는 것 정도의  
+감은 잡았는데.. 이걸 어떻게 입력 시스템이랑 합치지?
+
+그리고, 그.. 이제 리눅스 프로젝트 접고  
+윈도우즈로 넘어갈까?  
+DirectX로 제대로 만들어 보고 싶음.  
+콘솔창은 슬슬 한계가 온 듯.  
+OOP로 짜보고 싶기도 하고.  
+
+### Achievements of the day
+
+</details>
+
+[//]: # (End of 05.27)
 
 </blockquote></details>
 
