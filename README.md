@@ -2,6 +2,9 @@
 
 이런 저런 테트리스 게임을 만들고자 한다.  
 
+프로젝트를 수행할 때 읽은 개발 문서들을 정리하는 [Wiki](https://github.com/keunbum/Tetris/wiki) 만들어 봄.  
+(노션 쓸까 하다가 위키 기능 써보는 것도 경험 상 해보면 좋을 것 같아서)
+
 ---
 
 ## Index
@@ -9,7 +12,7 @@
 [Project](#project)
 
 - [Linux](#linux)
-- Windows
+- [Windows](#windows)
 
 [개요](#개요)
 
@@ -21,7 +24,7 @@
 
 ### [Linux](./Linux/README.md)
 
-### Windows
+### [Windows](./Windows/README.md)
 
 ---
 

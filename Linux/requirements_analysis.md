@@ -42,7 +42,7 @@
 
 ## Tetris Guideline
 
-분량이 많은 관계로 [본문](./tetris_guideline.md) 따로 작성.
+분량이 많은 관계로 [본문](../tetris_guideline.md) 따로 작성.
 
 프로젝트 초기에는 [테트리스 가이드라인](https://tetris.fandom.com/wiki/Tetris_Guideline)이라는 게 있는지조차 몰랐다.  
 기존 테트리스 게임을 참고하여 '아마 이런 식으로 구현되어 있지 않을까?' 하며 구현했던 식.
