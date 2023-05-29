@@ -1,5 +1,8 @@
 */bin/*
 */obj/*
+
 *.txt
-.vscode
 *.pptx
+
+.vscode
+*.vs
