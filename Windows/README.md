@@ -46,12 +46,14 @@ Windows에서 돌아가는 테트리스를 만들어 보려고 한다.
 
 ### Q2. 왜 DirectX인가?
 
-~~1. CLI --> 여러 측면에서 게임을 만드는 데 한계가 있음.~~  
-~~2. Game Engine --> 나도 언젠가 누군가가 만든 엔진을 사용하겠지만, 지금은 좀 더 밑바닥부터 구현하고 싶어서.~~  
-3. DirectX
+1. ~~CLI~~ --> 여러 측면에서 게임을 만드는 데 한계가 있음.   
+2. ~~Game Engine~~ --> 나도 언젠가 누군가가 만든 엔진을 사용하겠지만,  
+  지금은 좀 더 밑바닥부터 구현해보고 싶어서. (by [프로젝트 기본 전제](../README.md/#프로젝트-기본-전제전략))  
+3. Graphics API --> 사용법을 익히기 어렵지만 그만큼 정교하게 고성능으로 게임을 만들 수 있음.
 
 Windows에서 개발한다면 OpenGL보다는 DirectX를 택할 수밖에 없다.  
-OpenGL 대신 Vulkan이 있긴 한데, DirectX를 배워두는 게 내 앞으로의 커리어에 있어 유리할 것 같아서.
+OpenGL 대신 새로 등장한 Vulkan이 있긴 한데, DirectX를 배워두는 게 앞으로의 내 커리어에 유리할 것 같아서.  
+기회가 되면 Vulkan을 배우는 날도 오지 않을까?
 
 ### Q3. 구체적으로 어떤 라이브러리나 기술을 가져다 만들 것인가?
 
@@ -61,6 +63,8 @@ OpenGL 대신 Vulkan이 있긴 한데, DirectX를 배워두는 게 내 앞으로
 
 ### 요구 사항 분석서
 
+[본문](./requirements_analysis.md)
+
 ### 해결 방안
 
 ---
@@ -69,8 +73,9 @@ OpenGL 대신 Vulkan이 있긴 한데, DirectX를 배워두는 게 내 앞으로
 
 레퍼런스 문서 읽으면서 중요한 내용 잘 기록해 놓을 것.  
 단순히 기록하는데 그치지 말고 출처 링크도 다 명시해 놓을 것. (나중에 직접 가봐야할 필요 다분)  
+
 기억력 믿지 말자. 다음날만 되어도 다 까먹는다.  
-(그래서 따로 노션이나 위키를 만들까도 생각 중)
+작성한 문서 자주 읽어 버릇해서 익숙해져야 한다. 하루 아침에 익힐 수 있는 내용이 아님.
 
 꼭 기술적인 내용이 아니더라도  
 그날 그날 내가 무엇을 했고 어떤 일이 있었는지를 다 기록해두면 좋겠다.  
@@ -86,30 +91,49 @@ OpenGL 대신 Vulkan이 있긴 한데, DirectX를 배워두는 게 내 앞으로
 
   <details><summary>05.28(일)</summary>
   
-  기본 문서 생성 및 작성
-
-  - [왜 개발자는 윈도우즈를 선호하는가?](https://softwareengineering.stackexchange.com/questions/60544/why-do-game-developers-prefer-windows)
+  [왜 개발자는 윈도우즈를 선호하는가?](https://softwareengineering.stackexchange.com/questions/60544/why-do-game-developers-prefer-windows)
 
   DOS를 게임 개발에 사용하던 마소는 다른 경쟁사와 뒤처지지 않기 위해,  
   Windows에서의 독자적인 게임 개발을 위한, 로우 레벨의 통일된 API가 필요했다.  
 
   성능 저하 없고, 모든 그래픽, 사운드 및 입력 하드웨어를 위한 단일 API.  
-  그리하여 [DirectX](https://en.wikipedia.org/wiki/DirectX)가 탄생하게 되었다.
+  그리하여 [DirectX](https://en.wikipedia.org/wiki/DirectX)가 탄생하게 되었다. ([나무위키 문서](https://namu.wiki/w/DirectX)도 읽어 보기)
 
   이에 대응하여 만든 API 규격이 [OpenGL](https://en.wikipedia.org/wiki/OpenGL)이라고 한다.  
-  [OpenGL 이야기](https://namu.wiki/w/OpenGL)도 읽어 볼 것.
+  [OpenGL 나무위키](https://namu.wiki/w/OpenGL)도 읽어 볼 것. 
 
   
   ### Achievements of the day
 
-  [위키](https://github.com/keunbum/Tetris/wiki) 생성.  
-  이것도 내 공부법을 찾기 위한 과정 중 하나.
+  기본 문서 생성 및 작성
 
-  내일 [여기](https://learn.microsoft.com/en-us/windows/win32/learnwin32/working-with-strings#unicode-and-ansi-functions)서부터 이어서 읽기.
+  깃허브 레포지터리 내부에 [위키](https://github.com/keunbum/Tetris/wiki) 생성.  
+  (이것도 내 공부 노하우를 찾기 위한 과정 중 하나)
+
+  내일 [여기](https://learn.microsoft.com/en-us/windows/win32/learnwin32/what-is-a-window-)서부터 이어서 읽기.
 
 
   [//]: # (End of 05.28)
 
+
+  </details>
+
+  <details><summary>05.29(월)</summary>
+
+  마이크로소프트 개발 문서에서 기초 Windows 프로그래밍 개념 습득 중.  
+  깃허브 위키에 그걸 정리해보고 있는데 번역하느라 좀 시간이 걸리는 듯.  
+  (넘 미련하게 공부하고 있는 건가. 흠..)
+  
+  ### Achievements of the day
+
+  [What Is a Window?](https://learn.microsoft.com/en-us/windows/win32/learnwin32/what-is-a-window-)부터 진행 중..  
+  낼 [Writing the Window Procedure](https://learn.microsoft.com/en-us/windows/win32/learnwin32/writing-the-window-procedure)부터 이어서 하면 됨. (작성하다가 말았음)
+
+
+  [//]: # (End of 05.29)
+
+
+  </details>
 
   </blockquote></details>
 
