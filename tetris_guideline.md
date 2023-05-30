@@ -116,7 +116,7 @@ T-Tetromino가 지면에 착지하여 Lock Down되기 전에, T-Slot에서 회�
 
 ### 2.1 인터페이스
 
-![Tetris Interface](../img/tetris_interface.png)
+![Tetris Interface](./img/tetris_interface.png)
 
 #### **1. The Matrix**
 게임 플레이가 발생하는 영역이다. 표준 매트릭스 치수는 높이 20셀 x 너비 10셀이다.
@@ -130,7 +130,7 @@ T-Tetromino가 지면에 착지하여 Lock Down되기 전에, T-Slot에서 회�
 #### **3. Next Queue**
 넥스트 큐를 통해 플레이어는 생성되어 플레이에 투입될 다음 테트로미노를 볼 수 있다. [Matrix](#matrix)의 오른쪽 상단 근처에 있어야 한다. 이상적으로는 다음 6개의 테트로미노가 이 대기열에 표시되어야 하지만 이는 1에서 6까지 다양할 수 있다. 대기열은 수직 또는 수평일 수 있으며 매트릭스에 들어갈 다음 테트로미노는 매트릭스 상단에 가장 가깝다. 테트로미노는 대기열에서 다음과 같이 북쪽 방향을 가리켜야 한다.
 
-![next queue](../img/next_queue.png)
+![next queue](./img/next_queue.png)
 
 대기열의 테트리미노에 애니메이션이 제공되는 경우 플레이어의 주변 시야에서 쉽게 구분할 수 있도록 하는 것이 최우선 순위이다.
 
@@ -189,7 +189,7 @@ I-Tetromino와 O-Tetromino는 정확히 중앙에 생성된다. I-Tetrimino는 2
 
 (예시 그림)
 
-<img src = "../img/tetromino%20generation.png" width="40%" height="40%">
+<img src = "./img/tetromino%20generation.png" width="40%" height="40%">
 
 ---
 
@@ -197,7 +197,7 @@ I-Tetromino와 O-Tetromino는 정확히 중앙에 생성된다. I-Tetrimino는 2
 
 원문에는 모바일과 리모컨도 있긴 한데 여기선 생략함.
 
-![Tetris Control](../img/tetris_control.png)
+![Tetris Control](./img/tetris_control.png)
 
 |          Control Function         |           Joystick          |   Keyboard  |
 |:---------------------------------:|:---------------------------:|:-----------:|

@@ -42,7 +42,8 @@ Windows에서 돌아가는 테트리스를 만들어 보려고 한다.
 그야 Windows가 두터운 사용자(게이머)층을 보유하고 있기 때문.  
 그에 따라 현업에서도 주요 타겟이 Windows인 경우가 많고.
 
-게임 개발에 유용한 DirectX를 사용할 수 있어서.
+게임 개발에 유용한 DirectX를 사용할 수 있어서.  
+내가 모바일 게임보다는 큰 화면에서 즐길 수 있는 PC/콘솔 게임을 선호해서.
 
 ### Q2. 왜 DirectX인가?
 
@@ -71,13 +72,6 @@ OpenGL 대신 새로 등장한 Vulkan이 있긴 한데, DirectX를 배워두는 
 
 ## 프로젝트 일지
 
-레퍼런스 문서 읽으면서 중요한 내용 잘 기록해 놓을 것.  
-단순히 기록하는데 그치지 말고 출처 링크도 다 명시해 놓을 것. (나중에 직접 가봐야할 필요 다분)  
-
-기억력 믿지 말자. 다음날만 되어도 다 까먹는다.  
-작성한 문서 자주 읽어 버릇해서 익숙해져야 한다. 하루 아침에 익힐 수 있는 내용이 아님.
-
-꼭 기술적인 내용이 아니더라도  
 그날 그날 내가 무엇을 했고 어떤 일이 있었는지를 다 기록해두면 좋겠다.  
 어떤 점이 어려웠는지, 무엇 때문에 고생했는지, 어려움을 해결하기 위해 어떤 시도들을 했었는지.  
 
@@ -87,7 +81,6 @@ OpenGL 대신 새로 등장한 Vulkan이 있긴 한데, DirectX를 배워두는 
 ---
 
 <font size="3"> <details><summary>2023.05</summary><blockquote> </font>
-
 
   <details><summary>05.28(일)</summary>
   
@@ -107,21 +100,20 @@ OpenGL 대신 새로 등장한 Vulkan이 있긴 한데, DirectX를 배워두는 
 
   기본 문서 생성 및 작성
 
-  깃허브 레포지터리 내부에 [위키](https://github.com/keunbum/Tetris/wiki) 생성.  
+  깃허브에 [위키](https://github.com/keunbum/Tetris/wiki) 생성.  
   (이것도 내 공부 노하우를 찾기 위한 과정 중 하나)
 
   내일 [여기](https://learn.microsoft.com/en-us/windows/win32/learnwin32/what-is-a-window-)서부터 이어서 읽기.
 
+  </details>
 
   [//]: # (End of 05.28)
 
 
-  </details>
-
   <details><summary>05.29(월)</summary>
 
   마이크로소프트 개발 문서에서 기초 Windows 프로그래밍 개념 습득 중.  
-  깃허브 위키에 그걸 정리해보고 있는데 번역하느라 좀 시간이 걸리는 듯.  
+  [깃허브 위키](https://github.com/keunbum/Tetris/wiki)에 그걸 정리해보고 있는데 번역하느라 좀 시간이 걸리는 듯.  
   (넘 미련하게 공부하고 있는 건가. 흠..)
   
   ### Achievements of the day
@@ -130,11 +122,33 @@ OpenGL 대신 새로 등장한 Vulkan이 있긴 한데, DirectX를 배워두는 
   낼 [Writing the Window Procedure](https://learn.microsoft.com/en-us/windows/win32/learnwin32/writing-the-window-procedure)부터 이어서 하면 됨. (작성하다가 말았음)
 
 
+
+  </details>
+
   [//]: # (End of 05.29)
+
+
+  <details><summary>05.30(화)</summary>
+  
+  [Managing Application State](https://learn.microsoft.com/en-us/windows/win32/learnwin32/managing-application-state-) 문서 읽어 봤는데, 100% 이해 못했다..  
+  어렵다...  
+  이제 슬슬 언어 문법도 신경써야 할 듯.
+  
+  ### Achievements of the day
+
+- [Writing the Window Procedure](https://learn.microsoft.com/en-us/windows/win32/learnwin32/writing-the-window-procedure)부터 이어서 진행.
+
+  내일 C++ Template 익힌 후에 [Managing Application State](https://learn.microsoft.com/en-us/windows/win32/learnwin32/managing-application-state-)부터 이어서 하기.
+
+- [C++ 문서](https://github.com/keunbum/Tetris/wiki/CPP) 생성
+
+  MSDN 읽으면서 이해 안되는 부분이 생기기 시작했기 때문에 C++ 문법 좀 익혀 보려고.
 
 
   </details>
 
-  </blockquote></details>
+  [//]: # (End of 05.30)
+
+</blockquote></details>
 
 [//]: # (End of 2023.05)
