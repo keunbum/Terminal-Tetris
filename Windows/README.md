@@ -78,13 +78,15 @@ OpenGL 대신 새로 등장한 Vulkan이 있긴 한데, DirectX를 배워두는 
 내 개발 방법론이나 일하는 방식에 있어서 어떤 점이 미숙하고 어떤 문제점이 있는지를 복기해서  
 보완할 수 있는 기회가 되었으면 하는 바람.
 
+(기술적인 내용은 따로 [위키](https://github.com/keunbum/Tetris/wiki)를 만들었으니 이곳에 작성바람)
+
 ---
 
 <font size="3"> <details><summary>2023.05</summary><blockquote> </font>
 
   <details><summary>05.28(일)</summary>
   
-  [왜 개발자는 윈도우즈를 선호하는가?](https://softwareengineering.stackexchange.com/questions/60544/why-do-game-developers-prefer-windows)
+  [왜 게임 개발자는 윈도우즈를 선호하는가?](https://softwareengineering.stackexchange.com/questions/60544/why-do-game-developers-prefer-windows)
 
   DOS를 게임 개발에 사용하던 마소는 다른 경쟁사와 뒤처지지 않기 위해,  
   Windows에서의 독자적인 게임 개발을 위한, 로우 레벨의 통일된 API가 필요했다.  
@@ -144,10 +146,28 @@ OpenGL 대신 새로 등장한 Vulkan이 있긴 한데, DirectX를 배워두는 
 
   MSDN 읽으면서 이해 안되는 부분이 생기기 시작했기 때문에 C++ 문법 좀 익혀 보려고.
 
+  내일 [정적 변수](https://github.com/keunbum/Tetris/wiki/Memory-model-and-namespace#%EC%A0%95%EC%A0%81-%EB%B3%80%EC%88%98)부터 이어서 작성.
+
 
   </details>
 
   [//]: # (End of 05.30)
+
+  <details><summary>05.31(수)</summary>
+
+
+  [Note](https://github.com/keunbum/Tetris/wiki/Memory-model-and-namespace#note)에 [translation unit](https://learn.microsoft.com/en-us/cpp/cpp/program-and-linkage-cpp?view=msvc-170) 정리하기
+  
+  ### Achievements of the day
+
+  [정적 변수](https://github.com/keunbum/Tetris/wiki/Memory-model-and-namespace#%EC%A0%95%EC%A0%81-%EB%B3%80%EC%88%98)부터 작성.
+
+  [Definition 문서](https://en.cppreference.com/w/cpp/language/definition) 읽다가 말았음.  
+  내일 이거랑 [declarations](https://en.cppreference.com/w/cpp/language/declarations) 읽어 보고, 책에서 <정적 존속 시간, 외부 링크> 읽기
+
+  </details>
+
+  [//]: # (End of 05.31)  
 
 </blockquote></details>
 
