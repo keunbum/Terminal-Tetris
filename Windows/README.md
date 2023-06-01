@@ -167,8 +167,23 @@ OpenGL 대신 새로 등장한 Vulkan이 있긴 한데, DirectX를 배워두는 
 
   </details>
 
-  [//]: # (End of 05.31)  
+  [//]: # (End of 05.31)   
 
 </blockquote></details>
 
 [//]: # (End of 2023.05)
+
+
+
+<font size="3"> <details><summary>2023.06</summary><blockquote> </font>
+  <details><summary>06.01(목)</summary>
+
+  쉬는 날..  
+  
+  ### Achievements of the day
+
+  </details>
+
+  [//]: # (End of 06.01) 
+
+[//]: # (End of 2023.06)
