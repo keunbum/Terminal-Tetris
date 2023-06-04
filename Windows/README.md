@@ -196,4 +196,26 @@ OpenGL 대신 새로 등장한 Vulkan이 있긴 한데, DirectX를 배워두는 
 
   [//]: # (End of 06.02)   
 
+  <details><summary>06.03(토)</summary>
+
+  쉬는 날.
+
+  ### Achievements of the day
+
+  </details>
+
+  [//]: # (End of 06.03)  
+
+  <details><summary>06.04(일)</summary>
+
+  
+
+  ### Achievements of the day
+
+  [익명 이름 공간](https://github.com/keunbum/Tetris/wiki/Memory-model-and-namespace#%EC%9D%B5%EB%AA%85-%EC%9D%B4%EB%A6%84-%EA%B3%B5%EA%B0%84) 작성하다가 말았음.
+
+  </details>
+
+  [//]: # (End of 06.04) 
+
 [//]: # (End of 2023.06)
