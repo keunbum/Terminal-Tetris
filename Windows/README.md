@@ -218,4 +218,15 @@ OpenGL 대신 새로 등장한 Vulkan이 있긴 한데, DirectX를 배워두는 
 
   [//]: # (End of 06.04) 
 
+  <details><summary>06.05(월)</summary>
+
+
+  ### Achievements of the day
+
+  [Meet the new C++ standard](https://github.com/keunbum/Tetris/wiki/Meet-the-new-C---standard) 작성하다가 말았음.
+
+  </details>
+
+  [//]: # (End of 06.05)   
+
 [//]: # (End of 2023.06)
