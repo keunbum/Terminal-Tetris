@@ -250,4 +250,16 @@ OpenGL 대신 새로 등장한 Vulkan이 있긴 한데, DirectX를 배워두는 
 
   [//]: # (End of 06.07)  
 
+  <details><summary>06.08(목)</summary>
+
+  클래스 템플릿 간단하게 다뤄 봄.
+
+  ### Achievements of the day
+
+  내일 [템플릿 클래스와 프렌드 함수](https://github.com/keunbum/Tetris/wiki/Recycling-of-CPP-Code#%ED%85%9C%ED%94%8C%EB%A6%BF-%ED%81%B4%EB%9E%98%EC%8A%A4%EC%99%80-%ED%94%84%EB%A0%8C%EB%93%9C-%ED%95%A8%EC%88%98)부터 이어서 작성. 단 그 전에 `프렌드`부터 제대로 알아야 할 듯.
+
+  </details>
+
+  [//]: # (End of 06.08)  
+
 [//]: # (End of 2023.06)
