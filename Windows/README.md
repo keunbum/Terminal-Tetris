@@ -262,4 +262,21 @@ OpenGL 대신 새로 등장한 Vulkan이 있긴 한데, DirectX를 배워두는 
 
   [//]: # (End of 06.08)  
 
+  <details><summary>06.09(금)</summary>
+
+  클래스 템플릿 간단하게 다뤄 봄.
+
+  요 근래 C++ 문법만 판 것 같아서 다시 개발 문서로 돌아 옴.  
+  적절하게 왔다 갔다 하기.
+
+  ### Achievements of the day
+
+  [Managing Application State](https://github.com/keunbum/Tetris/wiki/Managing-Application-State) 작성하다가 문법적으로 막히는 거 있어서 아직 미완성.
+
+  
+  </details>
+
+  [//]: # (End of 06.09)  
+
+
 [//]: # (End of 2023.06)
