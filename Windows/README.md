@@ -279,4 +279,15 @@ OpenGL 대신 새로 등장한 Vulkan이 있긴 한데, DirectX를 배워두는 
   [//]: # (End of 06.09)  
 
 
+  <details><summary>06.12(월)</summary>
+
+  ### Achievements of the day
+
+  [오버로딩 제약](https://github.com/keunbum/Tetris/wiki/Use-of-Class#%EC%98%A4%EB%B2%84%EB%A1%9C%EB%94%A9-%EC%A0%9C%EC%95%BD) 작성.
+  
+  </details>
+
+  [//]: # (End of 06.12)  
+
+
 [//]: # (End of 2023.06)
