@@ -289,5 +289,15 @@ OpenGL 대신 새로 등장한 Vulkan이 있긴 한데, DirectX를 배워두는 
 
   [//]: # (End of 06.12)  
 
+  <details><summary>06.13(화)</summary>
+
+  ### Achievements of the day
+
+  [프렌드 생성하기](https://github.com/keunbum/Tetris/wiki/Use-of-Class#%ED%94%84%EB%A0%8C%EB%93%9C-%EC%83%9D%EC%84%B1%ED%95%98%EA%B8%B0) 작성하다가 말았음.
+
+  </details>
+
+  [//]: # (End of 06.13) 
+
 
 [//]: # (End of 2023.06)
