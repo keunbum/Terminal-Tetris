@@ -312,5 +312,17 @@ OpenGL 대신 새로 등장한 Vulkan이 있긴 한데, DirectX를 배워두는 
 
   [//]: # (End of 06.14) 
 
+  <details><summary>06.15(목)</summary>
+
+  얼마 못 함..  
+  컨디션 난조로 인한 휴식.
+
+  ### Achievements of the day
+  
+
+  </details>
+
+  [//]: # (End of 06.15) 
+
 
 [//]: # (End of 2023.06)
