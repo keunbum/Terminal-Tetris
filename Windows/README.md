@@ -324,5 +324,16 @@ OpenGL 대신 새로 등장한 Vulkan이 있긴 한데, DirectX를 배워두는 
 
   [//]: # (End of 06.15) 
 
+  <details><summary>06.16(금)</summary>
+
+  [클래스 생성자와 파괴자](https://github.com/keunbum/Tetris/wiki/Object-and-Class#%ED%81%B4%EB%9E%98%EC%8A%A4-%EC%83%9D%EC%84%B1%EC%9E%90%EC%99%80-%ED%8C%8C%EA%B4%B4%EC%9E%90) 작성하다가 말았음
+
+  ### Achievements of the day
+  
+
+  </details>
+
+  [//]: # (End of 06.16) 
+
 
 [//]: # (End of 2023.06)
