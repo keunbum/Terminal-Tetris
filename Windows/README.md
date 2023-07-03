@@ -379,6 +379,25 @@ OpenGL 대신 새로 등장한 Vulkan이 있긴 한데, DirectX를 배워두는 
   </details>
 
   [//]: # (End of 06.21) 
-
+  
+</blockquote></details>
 
 [//]: # (End of 2023.06)
+
+
+<font size="3"> <details><summary>2023.07</summary><blockquote> </font>
+  <details><summary>07.03(월)</summary>
+
+  [public 다형 상속](https://github.com/keunbum/Tetris/wiki/Class-Inheritance#public-%EB%8B%A4%ED%98%95-%EC%83%81%EC%86%8D)에서 예제 작성하다가 말았음.
+  
+  ### Achievements of the day
+  
+
+  </details>
+
+  [//]: # (End of 07.03) 
+
+  
+</blockquote></details>
+
+[//]: # (End of 2023.07)
