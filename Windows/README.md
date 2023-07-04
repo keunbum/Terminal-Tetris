@@ -397,6 +397,18 @@ OpenGL 대신 새로 등장한 Vulkan이 있긴 한데, DirectX를 배워두는 
 
   [//]: # (End of 07.03) 
 
+
+  <details><summary>07.04(화)</summary>
+
+  [포인터와 참조형의 호환](https://github.com/keunbum/Tetris/wiki/Class-Inheritance#%ED%8F%AC%EC%9D%B8%ED%84%B0%EC%99%80-%EC%B0%B8%EC%A1%B0%ED%98%95%EC%9D%98-%ED%98%B8%ED%99%98) 작성하다가 말았음.
+  
+  ### Achievements of the day
+  
+
+  </details>
+
+  [//]: # (End of 07.04) 
+
   
 </blockquote></details>
 
