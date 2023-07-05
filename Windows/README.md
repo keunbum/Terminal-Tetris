@@ -409,6 +409,17 @@ OpenGL 대신 새로 등장한 Vulkan이 있긴 한데, DirectX를 배워두는 
 
   [//]: # (End of 07.04) 
 
+  <details><summary>07.05(수)</summary>
+
+  [가상 메서드 정리](https://github.com/keunbum/Tetris/wiki/Class-Inheritance#%EA%B0%80%EC%83%81-%EB%A9%94%EC%84%9C%EB%93%9C-%EC%A0%95%EB%A6%AC) 작성 중.
+  
+  ### Achievements of the day
+  
+
+  </details>
+
+  [//]: # (End of 07.05) 
+
   
 </blockquote></details>
 
