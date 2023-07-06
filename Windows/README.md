@@ -415,10 +415,20 @@ OpenGL 대신 새로 등장한 Vulkan이 있긴 한데, DirectX를 배워두는 
   
   ### Achievements of the day
   
-
   </details>
 
   [//]: # (End of 07.05) 
+
+  <details><summary>07.06(목)</summary>
+
+  [ABC 개념의 적용](https://github.com/keunbum/Tetris/wiki/Class-Inheritance#abc-%EA%B0%9C%EB%85%90%EC%9D%98-%EC%A0%81%EC%9A%A9)까지 작성함.
+  
+  ### Achievements of the day
+  
+
+  </details>
+
+  [//]: # (End of 07.06) 
 
   
 </blockquote></details>
