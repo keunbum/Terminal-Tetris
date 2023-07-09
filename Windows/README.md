@@ -430,6 +430,17 @@ OpenGL 대신 새로 등장한 Vulkan이 있긴 한데, DirectX를 배워두는 
 
   [//]: # (End of 07.06) 
 
+  <details><summary>07.09(일)</summary>
+
+  C++ 문법 공부하는 거 넘 따분해서 API 공부로 다시 넘어 옴. (공부에 진전이 없는 느낌?)  
+  [Error Codes in COM](https://learn.microsoft.com/en-us/windows/win32/learnwin32/error-codes-in-com) 작성 중.
+  
+  ### Achievements of the day
+  
+
+  </details>
+
+  [//]: # (End of 07.09) 
   
 </blockquote></details>
 
