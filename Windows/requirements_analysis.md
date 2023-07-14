@@ -79,41 +79,192 @@
 나 혼자 수행하는 프로젝트이므로 나에게 가장 편한 방식을 정하면 됨.  
 결국엔 실수 덜하고 가독성 높이기 위한 방편이니까.
 
-* 배열 인덱싱 변수명에는 가급적 i, j, k, ...을 포함한다. (객체의 좌표 변수(주로 x, y, z을 포함)와 배열 인덱싱 변수를 혼용하지 않도록 하기 위함.)
+* 배열 인덱싱 변수명에는 가급적 `i, j, k, ...`을 포함한다.  
+  (객체의 좌표 변수(주로 `x, y, z, ...`을 포함)와 배열 인덱싱 변수를 혼용하지 않도록 하기 위함.)
 
 * `for`문 내부에서 쓰이지 않는 카운트 변수는 `_`(Underscore. under-bar라고도 한다.)로 선언한다.
 
+  <details><summary>상세</summary>
+
   대개 `for`문을 아래와 같이 작성하곤 하는데  
-  ```c
-  for (int i = 0; i < 10; ++i) {
+  ```cpp
+  for (int i = 0; i < 10; ++i)
+  {
       ...
   }
   ```
-  변수 `i`가 중괄호 안에서 쓰이지 않는다면 
-  ```c
-  for (int _ = 0; _ < 10; ++_) {
-      ...
-  }
-  ```
+  변수 `i`가 중괄호 안에서 쓰이지 않는다면  
   이런 식으로 변수를 선언하자는 뜻. (파이썬의 `for _ in range(10)`과 유사)  
+  ```cpp
+  for (int _ = 0; _ < 10; ++_)
+  {
+      ...
+  }
+  ```
 
   매크로를 사용한다면 아래와 같이 작성할 수도 있겠다.
 
-  ```c
+  ```cpp
   #define forn(i, n) for (int i = 0; i < n; ++i)
 
-  forn(_, 10) {
+  forn(_, 10)
+  {
       ...
   }
   ```
 
   `while`문을 이용하는 방법도 있긴 한데, 변수의 범위(scope)가 커지므로 `while`문보다는 `for`문을 선호한다.
-  ```c
+  ```cpp
   int _ = 10;
-  while (_-- > 0) {
+  while (_-- > 0)
+  {
       ...
   }
   ```
+  </details>
+
+* 사용하지 않는 매개변수 명은 생략한다.
+
+  <details><summary>상세</summary>
+
+  예를 들어 `main` 함수는 이렇게 선언하곤 하는데,
+  ```cpp
+  ...
+
+  int main(int argc, char* argv[])
+  {
+      ...
+  }
+  ```
+
+  (함수 호출 시 인자로 넘겨주었지만)  
+  매개변수가 쓰이지 않는다면 이렇게 작성하기.  
+  (신기하게도 컴파일이 된다.)
+
+  ```cpp
+  ...
+  
+  int main(int, char*[])
+  {
+      ...
+  }
+  ```
+
+  </details>
+
+* 융통성 있게 `goto`문을 사용한다.
+
+  <details><summary>상세</summary>
+
+  예외 처리를 위해 특정 조건에 따라 분기를 나누는 작성하다보면 코드의 중첩이 발생하는데  
+  이를 `goto`문을 사용하여 해결할 수도 있다.  
+  예를 들어 아래의 코드는..  
+
+  ```cpp
+  #include <windows.h>
+  #include <shobjidl.h> 
+
+  int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE, PWSTR pCmdLine, int nCmdShow)
+  {
+      HRESULT hr = CoInitializeEx(NULL, COINIT_APARTMENTTHREADED | 
+          COINIT_DISABLE_OLE1DDE);
+      if (SUCCEEDED(hr))
+      {
+          IFileOpenDialog *pFileOpen;
+
+          // Create the FileOpenDialog object.
+          hr = CoCreateInstance(CLSID_FileOpenDialog, NULL, CLSCTX_ALL, 
+                  IID_IFileOpenDialog, reinterpret_cast<void**>(&pFileOpen));
+
+          if (SUCCEEDED(hr))
+          {
+              // Show the Open dialog box.
+              hr = pFileOpen->Show(NULL);
+
+              // Get the file name from the dialog box.
+              if (SUCCEEDED(hr))
+              {
+                  IShellItem *pItem;
+                  hr = pFileOpen->GetResult(&pItem);
+                  if (SUCCEEDED(hr))
+                  {
+                      PWSTR pszFilePath;
+                      hr = pItem->GetDisplayName(SIGDN_FILESYSPATH, &pszFilePath);
+
+                      // Display the file name to the user.
+                      if (SUCCEEDED(hr))
+                      {
+                          MessageBoxW(NULL, pszFilePath, L"File Path", MB_OK);
+                          CoTaskMemFree(pszFilePath);
+                      }
+                      pItem->Release();
+                  }
+              }
+              pFileOpen->Release();
+          }
+          CoUninitialize();
+      }
+      return 0;
+  }  
+  ```
+ 
+  이렇게 작성하는게 내 입장에선 더 읽기가 좋음.  
+  (이렇게 하면 변수를 미리 다 선언해야 하는 단점이 있긴 함.)
+
+  [try~catch](https://github.com/microsoft/Windows-classic-samples/blob/main/Samples/Win7Samples/begin/LearnWin32/OpenDialogBox/cpp/main2.cpp)도 있긴 하니.. 여러 방안을 고려하는게 좋긴 할 듯.
+
+  ```cpp
+  #include <windows.h>
+  #include <shobjidl.h> 
+
+  int WINAPI wWinMain(
+      _In_ HINSTANCE,
+      _In_opt_ HINSTANCE,
+      _In_ PWSTR,
+      _In_ int)
+  {
+      IFileOpenDialog* pFileOpen = nullptr;
+      IShellItem* pItem = nullptr;
+      PWSTR pszFilePath{};
+      if (FAILED(CoInitializeEx(NULL, COINIT_APARTMENTTHREADED | COINIT_DISABLE_OLE1DDE)))
+      {
+          goto END_OF_MAIN;
+      }
+      // Create the FileOpenDialog object.
+      if (FAILED(CoCreateInstance(
+          CLSID_FileOpenDialog,
+          NULL,
+          CLSCTX_ALL,
+          IID_IFileOpenDialog,
+          reinterpret_cast<void**>(&pFileOpen))))
+      {
+          goto CO_UNINIT;
+      }
+      if (FAILED(pFileOpen->Show(NULL)) // Show the Open dialog box.
+          || FAILED(pFileOpen->GetResult(&pItem))) // Get the file name from the dialog box.
+      {
+          goto FILE_RELEASE;
+      }
+      if (FAILED(pItem->GetDisplayName(SIGDN_FILESYSPATH, &pszFilePath)))
+      {
+          goto ITEM_RELEASE;
+      }
+      // Display the file name to the user.
+      MessageBoxW(NULL, pszFilePath, L"File Path", MB_OK);
+      CoTaskMemFree(pszFilePath);
+  ITEM_RELEASE:
+      pItem->Release();
+  FILE_RELEASE:
+      pFileOpen->Release();
+  CO_UNINIT:
+      CoUninitialize();
+  END_OF_MAIN:
+      return 0;
+  }
+  ```
+
+  </details>
+
 
 ---
 
@@ -127,10 +278,11 @@
 * `char[]`나 `wchar_t[]` 출력할 때 끝에 널 문자(`'\0'`, `L'\0'`) 넣기.  
 * `null pointer exception` 유의  
 * `exit` 류의 시스템 콜을 사용할 때는 안 닫힌 파일를 비롯하여 정리되지 않은 항목은 없는지 잘 확인해주기.
-* 주요 시스템 콜이 실패했는지 확인하는 로직 빼먹지 말고 작성.  
+* 주요 함수 호출이 실패했는지 확인하는 로직 빼먹지 말고 작성.  
   ```c
-  if (smth_syscall(...) == -1) {
-      handle_error("smth_syscall() error");
+  if (FAILED(SmthSysCall(...)))
+  {
+      HandleError("SmthSysCall() error");
   }
   ```
 * 문자열을 출력한다면 `%c` 여러번 보다 버퍼에 모아 두었다가 한번에 `%s` 출력하기.  
