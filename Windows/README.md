@@ -442,6 +442,19 @@ OpenGL 대신 새로 등장한 Vulkan이 있긴 한데, DirectX를 배워두는 
 
   [//]: # (End of 07.09) 
   
+  <details><summary>07.25(화)</summary>
+
+  ### Achievements of the day
+  
+  [데이터형 변환 연산자](https://github.com/keunbum/Tetris/wiki/Friends-exception,-and-more#%EB%8D%B0%EC%9D%B4%ED%84%B0%ED%98%95-%EB%B3%80%ED%99%98-%EC%97%B0%EC%82%B0%EC%9E%90) 작성.
+
+  [Module 2. Using COM in Your Windows Based Program](https://github.com/keunbum/Tetris/wiki/Module-2.-Using-COM-in-Your-Windows-Based-Program) 작성 완료.
+  
+
+  </details>
+
+  [//]: # (End of 07.25) 
+  
 </blockquote></details>
 
 [//]: # (End of 2023.07)
