@@ -13,8 +13,8 @@
 
 [Project](#project)
 
-- [Linux](#linux)
-- [Windows](#windows)
+- Linux
+- Windows
 
 [개요](#개요)
 

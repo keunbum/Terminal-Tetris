@@ -73,7 +73,7 @@
 고맙게도 리눅스 터미널은 콘솔 커서 이동과 관련된 [이스케이프 시퀀스](https://gist.github.com/fnky/458719343aabd01cfb17a3a4f7296797)를 지원해준다. (man page에 이스케이프 시퀀스 관련 문서로 [console_codes](https://man7.org/linux/man-pages/man4/console_codes.4.html)도 있긴 한데 이전 링크가 좀 더 친절함.) 
 
 문서를 읽어보면 이것저것 기능이 많은데, 필요한 것만 추리면 다음과 같은 코드를 작성할 수 있다. 여러 이스케이프 시퀀스 코드를 조합하여 콘솔 출력 제어 함수를 만들어 낸다.  
-(사실 어떤 원리인지 자세히 읽어보진 않았다. 프로젝트 중에는 [스택 오버플로 글](https://stackoverflow.com/questions/26423537/how-to-position-the-input-text-cursor-in-c)만 보고 넘어갔었다. 모든 걸 이해하려고 하면 프로젝트 진행이 넘 더뎌지는 것 같아 적당한 타협이 필요했다. 이건 이해보다는 익숙함의 영역인 듯.)
+(사실 어떤 원리인지 자세히 읽어보진 않았다. 프로젝트 중에는 [스택 오버플로 글](https://stackoverflow.com/questions/26423537/how-to-position-the-input-text-cursor-in-c)만 보고 넘어갔었다. 모든 걸 이해하려고 하면 프로젝트 진행이 너무 더뎌지는 것 같아 적당한 타협이 필요했다. 이건 이해보다는 익숙함의 영역인 듯.)
 
 ```c
 /* 콘솔 창 클리어 */
