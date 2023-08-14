@@ -1,6 +1,6 @@
 # Solution
 
-[요구 사항 분석서](./requirements_analysis.md)(주로 [가이드라인](../tetris%20guideline%20docs%202009/2009%20Tetris%20Design%20Guideline.pdf) 위주)의 내용을 실제로는 어떻게, 어디까지 구현했는지를 서술한다.
+[요구 사항 분석서](./requirements_analysis.md)(주로 [가이드라인](../tetris_guideline.md) 위주)의 내용을 실제로는 어떻게, 어디까지 구현했는지를 서술한다.
 
 ---
 

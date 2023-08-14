@@ -167,7 +167,7 @@ T-Tetromino가 지면에 착지하여 Lock Down되기 전에, T-Slot에서 회�
 
 ### 1.1 무작위 생성
 
-Tetris는 일명 **bag** 시스템(7-bag system)을 사용하여 게임 플레이 중에 나타나는 테트로미노의 순서를 결정한다.  
+Tetris는 일명 **bag** 시스템([7-bag system](https://namu.wiki/w/%ED%85%8C%ED%8A%B8%EB%A6%AC%EC%8A%A4/%EC%9A%A9%EC%96%B4#s-5.3))을 사용하여 게임 플레이 중에 나타나는 테트로미노의 순서를 결정한다.  
 이 시스템은 7개의 테트로미노 간 균등한 분배를 허용한다.
 
 7개의 서로 다른 테트로미노를 가상의 가방(bag)에 넣은 후 무작위 순서로 섞는다. 이 순서는 곧 bag이 [Next Queue](#3-next-queue)에  
