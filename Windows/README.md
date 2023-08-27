@@ -473,6 +473,16 @@ OpenGL 대신 새로 등장한 Vulkan이 있긴 한데, DirectX를 배워두는 
 
   [//]: # (End of 08.09) 
 
+  <details><summary>08.27(일)</summary>
+  
+  ### Achievements of the day
+  
+  [Render Targets, Devices, and Resources](https://github.com/keunbum/Tetris/wiki/Render-Targets,-Devices,-and-Resources) 작성
+  
+  </details>
+
+  [//]: # (End of 08.27) 
+
 </blockquote></details>
 
 [//]: # (End of 2023.08)
