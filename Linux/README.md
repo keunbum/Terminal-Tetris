@@ -262,7 +262,7 @@ CLI 환경에서 프로젝트를 수행하면서
 
 <font size="3"> <details><summary>difficulties during the project</summary><blockquote> </font>
 
-  - [ ] ~~현재 내 로직에서는 둘 이상의 스레드가 표준 출력을 하는데,  
+  - [X] ~~현재 내 로직에서는 둘 이상의 스레드가 표준 출력을 하는데,  
       printf가 thread-safe 하지 않기 때문에 의도한 대로 출력되지 않을 가능성이 있다.~~
 
       [pthread 문서](https://man7.org/linux/man-pages/man7/pthreads.7.html#:~:text=Thread%2Dsafe%20functions,NULL%0A%20%20%20%20%20%20%20%20%20%20%20wcstombs()%0A%20%20%20%20%20%20%20%20%20%20%20wctomb())에 따르면 
@@ -270,7 +270,7 @@ CLI 환경에서 프로젝트를 수행하면서
       thread-safe한 줄 모르고 mutex로 해결했었는데, 그냥 printf 사용해도 될 듯. (검색할 때 더 꼼꼼하게 확인하기)  
       --> 근데, wgotoxy랑 같이 쓰이면 mutex 필요하긴 할 듯.  
       --> mutex 말고 spinlock 사용해도 충분.  
-      --> spin lock 써봤더니 버그 있음. 스레드 우선순위 문제 때문에 잘 사용해야 함. 안 그럼 무한루프 도는 것 같음;  
+      --> spinlock 써봤더니 버그 있음. 스레드 우선순위 문제 때문에 잘 사용해야 함. 안 그럼 무한루프 도는 것 같음;  
           일단 다시 mutex로 해결함.
 
   - [X] ~~리얼 타임 타이머가 fork일 때는 예상대로 잘 동작했었는데  
