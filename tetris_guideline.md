@@ -1,6 +1,6 @@
 # 2009 Tetris Design Guideline
 
-[원문](../tetris%20guideline%20docs%202009/2009%20Tetris%20Design%20Guideline.pdf)의 일부만 번역하였다.
+[원문](./tetris%20guideline%20docs%202009/2009%20Tetris%20Design%20Guideline.pdf)의 일부만 번역하였다.
 
 실제 서비스할 테트리스 게임을 만들진 못했기 때문에 일부분은 생략하고  
 실용적인 내용 위주로 재구성하여 작성하였다.
