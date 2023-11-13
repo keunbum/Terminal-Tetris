@@ -2,7 +2,7 @@
 
 이런 저런 [테트리스(TETRIS)](https://en.wikipedia.org/wiki/Tetris)를 만들고자 한다.  
 
-프로젝트를 수행할 때 읽은 개발 문서를 정리하는 [Wiki](https://github.com/keunbum/Tetris/wiki) 만듬.  
+프로젝트 수행할 때 읽은 개발 문서를 정리하는 [Wiki](https://github.com/keunbum/Tetris/wiki) 만듬.  
 
 작성한 문서 자주 읽어 버릇해서 익숙해져야 한다.  
 하루아침에 익힐 수 있는 내용이 아님.  
