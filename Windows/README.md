@@ -485,4 +485,20 @@ OpenGL 대신 새로 등장한 Vulkan이 있긴 한데, DirectX를 배워두는 
 
 </blockquote></details>
 
-[//]: # (End of 2023.08)
+<font size="3"> <details><summary>2023.11</summary><blockquote> </font>
+  <details><summary>11.14(화)</summary>
+
+  - Windows/src 생성
+
+    Direct2D 문서 공부하되, 하루에 한 줄이라도 코드 작성도 같이 해볼 예정.
+  
+  - [Class and Dynamic Memory Assignment](https://github.com/keunbum/Tetris/wiki/Class-and-Dynamic-Memory-Assignment) 작성.  
+
+    기술 면접 보면서 느낀 건데 C++도 제대로 알려면 레알 공부할 게 태산...
+  </details>
+
+  [//]: # (End of 11.14) 
+  
+
+[//]: # (End of 2023.11)
+
