@@ -4,7 +4,7 @@
 
 #include "MainWindow.h"
 
-MainWindow::MainWindow() : mFactory(nullptr), mRenderTarget(nullptr), mBrush(nullptr), mEllipse() {}
+MainWindow::MainWindow() : mFactory(nullptr), mRenderTarget(nullptr), mBrush(nullptr), mRect() {}
 
 LRESULT MainWindow::handleMessage(UINT uMsg, WPARAM wParam, LPARAM lParam)
 {
@@ -39,10 +39,10 @@ void MainWindow::calculateLayout()
         return;
     }
     const D2D1_SIZE_F winSize = mRenderTarget->GetSize();
-    const FLOAT coordX = 0.5F * winSize.width;
-    const FLOAT coordY = 0.5F * winSize.height;
-    const FLOAT radius = std::min(coordX, coordY);
-    mEllipse = D2D1::Ellipse(D2D1::Point2F(coordX, coordY), radius, radius);
+    const FLOAT x = 0.5F * winSize.width;
+    const FLOAT y = 0.5F * winSize.height;
+    const FLOAT sideHalf = 0.5F * std::min(x, y);
+    mRect = D2D1::RectF(x - sideHalf, y - sideHalf, x + sideHalf, y + sideHalf);
 }
 
 HRESULT MainWindow::createGraphicsResources()
@@ -52,10 +52,10 @@ HRESULT MainWindow::createGraphicsResources()
         return S_OK;
     }
 
-    RECT rect{};
-    GetClientRect(mHwnd, &rect);
-    const D2D1_SIZE_U size = D2D1::SizeU(rect.right, rect.bottom);
-    const D2D1_COLOR_F brushColor = D2D1::ColorF(1.0F, 1.0F, 0.0F);
+    RECT clientRect{};
+    GetClientRect(mHwnd, &clientRect);
+    const D2D1_SIZE_U size = D2D1::SizeU(clientRect.right, clientRect.bottom);
+    const D2D1_COLOR_F brushColor = D2D1::ColorF(D2D1::ColorF::Blue);
     HRESULT hr{};
     if (SUCCEEDED(hr = mFactory->CreateHwndRenderTarget(
         D2D1::RenderTargetProperties(),
@@ -84,8 +84,8 @@ void MainWindow::onPaint()
     PAINTSTRUCT ps{};
     BeginPaint(mHwnd, &ps);
     mRenderTarget->BeginDraw();
-    mRenderTarget->Clear(D2D1::ColorF(D2D1::ColorF::SkyBlue));
-    mRenderTarget->FillEllipse(mEllipse, mBrush);
+    mRenderTarget->Clear(D2D1::ColorF(D2D1::ColorF::Black));
+    mRenderTarget->FillRectangle(mRect, mBrush);
     HRESULT hr = mRenderTarget->EndDraw();
     if (FAILED(hr) || hr == D2DERR_RECREATE_TARGET)
     {

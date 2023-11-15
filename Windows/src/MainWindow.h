@@ -1,7 +1,7 @@
 #pragma once
 
-#include <windows.h>
 #include <d2d1.h>
+#include <windows.h>
 
 #pragma comment(lib, "d2d1")
 
@@ -12,7 +12,7 @@ class MainWindow : public BaseWindow<MainWindow>
 {
 public:
     MainWindow();
-    PCWSTR  getClassName() const override { return L"Circle Window Class"; }
+    PCWSTR  getClassName() const override { return L"TETRIS Window Class"; }
     LRESULT handleMessage(UINT uMsg, WPARAM wParam, LPARAM lParam) override;
 private:
     void    calculateLayout();
@@ -24,5 +24,5 @@ private:
     ID2D1Factory* mFactory;
     ID2D1HwndRenderTarget* mRenderTarget;
     ID2D1SolidColorBrush* mBrush;
-    D2D1_ELLIPSE mEllipse;
+    D2D1_RECT_F mRect;
 };

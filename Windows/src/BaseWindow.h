@@ -8,22 +8,22 @@ class BaseWindow
 public:
     static LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
     {
-        DERIVED_CLASS* derivedThis = nullptr;
+        DERIVED_CLASS* pDerived = nullptr;
         if (uMsg == WM_NCCREATE)
         {
             CREATESTRUCT* pCreate = (CREATESTRUCT*)lParam;
-            derivedThis = (DERIVED_CLASS*)pCreate->lpCreateParams;
-            SetWindowLongPtr(hwnd, GWLP_USERDATA, (LONG_PTR)derivedThis);
-            derivedThis->mHwnd = hwnd;
+            pDerived = (DERIVED_CLASS*)pCreate->lpCreateParams;
+            SetWindowLongPtr(hwnd, GWLP_USERDATA, (LONG_PTR)pDerived);
+            pDerived->mHwnd = hwnd;
         }
         else
         {
-            derivedThis = (DERIVED_CLASS*)GetWindowLongPtr(hwnd, GWLP_USERDATA);
+            pDerived = (DERIVED_CLASS*)GetWindowLongPtr(hwnd, GWLP_USERDATA);
         }
 
-        if (derivedThis != nullptr)
+        if (pDerived != nullptr)
         {
-            return derivedThis->handleMessage(uMsg, wParam, lParam);
+            return pDerived->handleMessage(uMsg, wParam, lParam);
         }
         return DefWindowProc(hwnd, uMsg, wParam, lParam);
     }
