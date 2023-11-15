@@ -485,6 +485,9 @@ OpenGL 대신 새로 등장한 Vulkan이 있긴 한데, DirectX를 배워두는 
 
 </blockquote></details>
 
+[//]: # (End of 2023.08)
+
+
 <font size="3"> <details><summary>2023.11</summary><blockquote> </font>
   <details><summary>11.14(화)</summary>
 
@@ -498,7 +501,15 @@ OpenGL 대신 새로 등장한 Vulkan이 있긴 한데, DirectX를 배워두는 
   </details>
 
   [//]: # (End of 11.14) 
+
+  <details><summary>11.15(수)</summary>
+
+  - 소스 코드 업데이트
+
+  [//]: # (End of 11.15) 
   
+
+</blockquote></details>
 
 [//]: # (End of 2023.11)
 
