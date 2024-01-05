@@ -23,8 +23,6 @@
 
 ### [Linux](./Linux/README.md)
 
-### Windows
-
 ---
 
 ## 개요
